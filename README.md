@@ -1,49 +1,60 @@
-# Pine Script V6 Documentation
+# Pine Script V6 Documentation Crawler
 
-Complete documentation for TradingView's Pine Script V6, extracted and organized.
+A Python-based tool for crawling and processing TradingView's Pine Script V6 documentation, built using the **Crawl4Ai** framework. This tool extracts, cleans, and organizes the documentation, making it easier to reference and analyze. Crawl4Ai provides the core framework for web crawling, data extraction, and asynchronous processing.
 
-## 📁 Project Structure
+## ✨ Features
 
+### Crawling
+- Automatically extracts documentation from TradingView's Pine Script V6 website using Crawl4Ai
+- Efficiently handles navigation through documentation pages
+- Supports batch processing with rate limiting
+- Maintains a structured extraction schema for consistent results
+- Saves individual URLs and combined documentation files
+
+### Content Processing
+- Cleans and formats documentation content
+- Preserves Pine Script code blocks with proper syntax highlighting
+- Extracts and formats function documentation
+- Removes unnecessary navigation elements (footer links, "On this page" sections)
+- Processes content into a clean, readable markdown format
+
+### Output Organization
+- Creates separate files for URLs and content
+- Generates combined documentation files for easy reference
+- Maintains original section order from TradingView documentation
+- Tracks extraction statistics and timestamps
+
+## 📊 Documentation Coverage
+
+| Source | Items | Sections | Size |
+|--------|-------|----------|------|
+| Reference Manual | 941 | 7 | 0.7 MB |
+| User Manual | 71 | 11 | 2.7 MB |
+
+### Reference Sections
+Annotations (10), Constants (239), Functions (475), Keywords (15), Operators (21), Types (20), Variables (161)
+
+### User Manual Sections
+Welcome, Primer, Language, Visuals, Concepts, Writing, FAQ, Error Messages, Release Notes, Migration Guides, Where Can I Get More Information
+
+## 🛠️ Setup
+
+### 1. Clone the repository:
+```bash
+git clone https://github.com/faustoevillegas86/Pine_Script_v6_doc.git
+cd Pine_Script_v6_doc
 ```
-Pine_Script_v6_doc/
-├── README.md
-├── requirements.txt
-├── setup.py                  # Installs dependencies
-├── src/
-│   ├── run_all.py            # Run complete extraction
-│   ├── extract_urls.py       # Extracts URLs from docs
-│   └── extract_content.py    # Extracts content from pages
-└── output/
-    ├── reference_urls.md     # 941 Reference URLs
-    ├── reference_content.md  # 941 items (0.7 MB)
-    ├── docs_urls.md          # 71 Docs URLs
-    └── docs_content.md       # 71 pages (2.7 MB)
-```
 
-## 🛠️ Installation
-
-### Quick Setup (Recommended)
+### 2. Install dependencies:
 ```bash
 python setup.py
 ```
 
-### Manual Installation
+Or manually:
 ```bash
-# Install Python dependencies
 pip install -r requirements.txt
-
-# Install Playwright browser
 playwright install chromium
 ```
-
-### Dependencies
-| Package | Version | Purpose |
-|---------|---------|---------|
-| crawl4ai | >=0.4.0 | Web scraping |
-| beautifulsoup4 | ~=4.12 | HTML parsing |
-| playwright | >=1.49.0 | Browser automation |
-| requests | ~=2.26 | HTTP requests |
-| aiofiles | >=24.1.0 | Async file I/O |
 
 ## 🚀 Usage
 
@@ -58,44 +69,45 @@ python src/extract_urls.py     # Extract URLs only
 python src/extract_content.py  # Extract content only
 ```
 
-## 📊 Documentation Stats
+## � Project Structure
 
-### Reference Manual (941 items)
-| Section | Count |
-|---------|-------|
-| Annotations | 10 |
-| Constants | 239 |
-| Functions | 475 |
-| Keywords | 15 |
-| Operators | 21 |
-| Types | 20 |
-| Variables | 161 |
-
-### User Manual (71 pages)
-| Section | Count |
-|---------|-------|
-| Welcome | 1 |
-| Primer | 3 |
-| Language | 16 |
-| Visuals | 11 |
-| Concepts | 13 |
-| Writing | 5 |
-| FAQ | 13 |
-| Error Messages | 1 |
-| Release Notes | 1 |
-| Migration Guides | 6 |
-| Where Can I Get More Info | 1 |
+```
+Pine_Script_v6_doc/
+├── README.md
+├── requirements.txt
+├── setup.py                  # Installs all dependencies
+├── src/
+│   ├── run_all.py            # Run complete extraction
+│   ├── extract_urls.py       # URL extraction
+│   └── extract_content.py    # Content extraction
+└── output/
+    ├── reference_urls.md     # 941 Reference URLs
+    ├── reference_content.md  # Complete reference documentation
+    ├── docs_urls.md          # 71 Docs URLs
+    └── docs_content.md       # Complete user manual
+```
 
 ## 📝 Output Files
 
-| File | Description | Size |
-|------|-------------|------|
-| `reference_urls.md` | URLs to all 941 reference items | 89 KB |
-| `reference_content.md` | Complete reference documentation | 0.7 MB |
-| `docs_urls.md` | URLs to all 71 doc pages | 7 KB |
-| `docs_content.md` | Complete user manual | 2.7 MB |
+| File | Description |
+|------|-------------|
+| `reference_urls.md` | URLs to all 941 reference items |
+| `reference_content.md` | Complete API reference (functions, types, constants, etc.) |
+| `docs_urls.md` | URLs to all 71 documentation pages |
+| `docs_content.md` | Complete user manual with tutorials and guides |
+
+## 🔧 Dependencies
+
+| Package | Purpose |
+|---------|---------|
+| crawl4ai | Web scraping framework |
+| beautifulsoup4 | HTML parsing |
+| playwright | Browser automation |
+| requests | HTTP requests |
+| aiofiles | Async file operations |
 
 ---
 
 **Source**: TradingView Pine Script V6 Documentation  
+**Framework**: [Crawl4Ai](https://github.com/unclecode/crawl4ai)  
 **Last Updated**: February 2026
