@@ -1,113 +1,113 @@
 # Pine_Script_v6_doc
 
-A Python-based tool for crawling and processing TradingView's Pine Script V6 documentation, built using the **Crawl4Ai** framework. This tool extracts, cleans, and organizes the documentation, making it easier to reference and analyze. Crawl4Ai provides the core framework for web crawling, data extraction, and asynchronous processing.
+Herramienta basada en Python para extraer y procesar la documentación de Pine Script V6 de TradingView, construida con el framework **Crawl4Ai**. Esta herramienta extrae, limpia y organiza la documentación, facilitando su referencia y análisis. Crawl4Ai proporciona el framework principal para web crawling, extracción de datos y procesamiento asíncrono.
 
-## ✨ Features
+## ✨ Características
 
-### Crawling
-- Automatically extracts documentation from TradingView's Pine Script V6 website using Crawl4Ai
-- Efficiently handles navigation through documentation pages
-- Supports batch processing with rate limiting
-- Maintains a structured extraction schema for consistent results
-- Saves individual URLs and combined documentation files
+### Extracción
+- Extrae automáticamente la documentación del sitio web de Pine Script V6 de TradingView usando Crawl4Ai
+- Maneja eficientemente la navegación a través de las páginas de documentación
+- Soporta procesamiento por lotes con limitación de velocidad
+- Mantiene un esquema de extracción estructurado para resultados consistentes
+- Guarda URLs individuales y archivos de documentación combinados
 
-### Content Processing
-- Cleans and formats documentation content
-- Preserves Pine Script code blocks with proper syntax highlighting
-- Extracts and formats function documentation
-- Removes unnecessary navigation elements (footer links, "On this page" sections)
-- Processes content into a clean, readable markdown format
+### Procesamiento de Contenido
+- Limpia y formatea el contenido de la documentación
+- Preserva bloques de código Pine Script con resaltado de sintaxis apropiado
+- Extrae y formatea la documentación de funciones
+- Elimina elementos de navegación innecesarios (links de footer, secciones "On this page")
+- Procesa el contenido en formato markdown limpio y legible
 
-### Output Organization
-- Creates separate files for URLs and content
-- Generates combined documentation files for easy reference
-- Maintains original section order from TradingView documentation
-- Tracks extraction statistics and timestamps
+### Organización de Salida
+- Crea archivos separados para URLs y contenido
+- Genera archivos de documentación combinados para fácil referencia
+- Mantiene el orden original de secciones de la documentación de TradingView
+- Rastrea estadísticas de extracción y timestamps
 
-## 📊 Documentation Coverage
+## 📊 Cobertura de Documentación
 
-| Source | Items | Sections | Size |
-|--------|-------|----------|------|
-| Reference Manual | 941 | 7 | 0.7 MB |
-| User Manual | 71 | 11 | 2.7 MB |
+| Fuente | Items | Secciones | Tamaño |
+|--------|-------|-----------|--------|
+| Manual de Referencia | 941 | 7 | 0.7 MB |
+| Manual de Usuario | 71 | 11 | 2.7 MB |
 
-### Reference Sections
+### Secciones de Referencia
 Annotations (10), Constants (239), Functions (475), Keywords (15), Operators (21), Types (20), Variables (161)
 
-### User Manual Sections
+### Secciones del Manual de Usuario
 Welcome, Primer, Language, Visuals, Concepts, Writing, FAQ, Error Messages, Release Notes, Migration Guides, Where Can I Get More Information
 
-## 🛠️ Setup
+## 🛠️ Instalación
 
-### 1. Clone the repository:
+### 1. Clonar el repositorio:
 ```bash
 git clone https://github.com/faustoevillegas86/Pine_Script_v6_doc.git
 cd Pine_Script_v6_doc
 ```
 
-### 2. Install dependencies:
+### 2. Instalar dependencias:
 ```bash
 python setup.py
 ```
 
-Or manually:
+O manualmente:
 ```bash
 pip install -r requirements.txt
 playwright install chromium
 ```
 
-## 🚀 Usage
+## 🚀 Uso
 
-### Run Complete Extraction
+### Ejecutar Extracción Completa
 ```bash
 python src/run_all.py
 ```
 
-### Run Individually
+### Ejecutar Individualmente
 ```bash
-python src/extract_urls.py     # Extract URLs only
-python src/extract_content.py  # Extract content only
+python src/extract_urls.py     # Extraer solo URLs
+python src/extract_content.py  # Extraer solo contenido
 ```
 
-## � Project Structure
+## 📁 Estructura del Proyecto
 
 ```
 Pine_Script_v6_doc/
 ├── README.md
 ├── requirements.txt
-├── setup.py                  # Installs all dependencies
+├── setup.py                  # Instala todas las dependencias
 ├── src/
-│   ├── run_all.py            # Run complete extraction
-│   ├── extract_urls.py       # URL extraction
-│   └── extract_content.py    # Content extraction
+│   ├── run_all.py            # Ejecuta extracción completa
+│   ├── extract_urls.py       # Extracción de URLs
+│   └── extract_content.py    # Extracción de contenido
 └── output/
-    ├── reference_urls.md     # 941 Reference URLs
-    ├── reference_content.md  # Complete reference documentation
-    ├── docs_urls.md          # 71 Docs URLs
-    └── docs_content.md       # Complete user manual
+    ├── reference_urls.md     # 941 URLs de Referencia
+    ├── reference_content.md  # Documentación de referencia completa
+    ├── docs_urls.md          # 71 URLs de Docs
+    └── docs_content.md       # Manual de usuario completo
 ```
 
-## 📝 Output Files
+## 📝 Archivos de Salida
 
-| File | Description |
-|------|-------------|
-| `reference_urls.md` | URLs to all 941 reference items |
-| `reference_content.md` | Complete API reference (functions, types, constants, etc.) |
-| `docs_urls.md` | URLs to all 71 documentation pages |
-| `docs_content.md` | Complete user manual with tutorials and guides |
+| Archivo | Descripción |
+|---------|-------------|
+| `reference_urls.md` | URLs de los 941 items de referencia |
+| `reference_content.md` | Referencia API completa (funciones, tipos, constantes, etc.) |
+| `docs_urls.md` | URLs de las 71 páginas de documentación |
+| `docs_content.md` | Manual de usuario completo con tutoriales y guías |
 
-## 🔧 Dependencies
+## 🔧 Dependencias
 
-| Package | Purpose |
-|---------|---------|
-| crawl4ai | Web scraping framework |
-| beautifulsoup4 | HTML parsing |
-| playwright | Browser automation |
-| requests | HTTP requests |
-| aiofiles | Async file operations |
+| Paquete | Propósito |
+|---------|-----------|
+| crawl4ai | Framework de web scraping |
+| beautifulsoup4 | Parsing de HTML |
+| playwright | Automatización de navegador |
+| requests | Peticiones HTTP |
+| aiofiles | Operaciones de archivo asíncronas |
 
 ---
 
-**Source**: TradingView Pine Script V6 Documentation  
+**Fuente**: Documentación de Pine Script V6 de TradingView  
 **Framework**: [Crawl4Ai](https://github.com/unclecode/crawl4ai)  
-**Last Updated**: February 2026
+**Última Actualización**: Febrero 2026
