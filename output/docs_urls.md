@@ -1,6 +1,6 @@
 # Pine Script V6 Documentation - URL Index
 
-Generated: 2026-02-03 09:37
+Generated: 2026-02-03 16:02
 
 ## Table of Contents
 
@@ -10,7 +10,7 @@ Generated: 2026-02-03 09:37
 - [Visuals](#visuals) (11)
 - [Concepts](#concepts) (13)
 - [Writing](#writing) (5)
-- [Faq](#faq) (13)
+- [FAQ](#faq) (13)
 - [Error Messages](#error-messages) (1)
 - [Release Notes](#release-notes) (1)
 - [Migration Guides](#migration-guides) (6)
@@ -87,7 +87,7 @@ Generated: 2026-02-03 09:37
 - [Publishing scripts](https://www.tradingview.com/pine-script-docs/writing/publishing)
 - [Limitations](https://www.tradingview.com/pine-script-docs/writing/limitations)
 
-## Faq
+## FAQ
 
 - [General](https://www.tradingview.com/pine-script-docs/faq/general)
 - [Alerts](https://www.tradingview.com/pine-script-docs/faq/alerts)

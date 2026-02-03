@@ -48,7 +48,7 @@ DOCS_ORDER = [
     'Visuals',
     'Concepts',
     'Writing',
-    'Faq',
+    'FAQ',
     'Error Messages',
     'Release Notes',
     'Migration Guides',
@@ -447,6 +447,10 @@ def clean_docs_navigation(content: str) -> str:
         if any(pattern in stripped for pattern in skip_patterns):
             continue
         
+        # Skip empty image markers (!image without path/alt text)
+        if stripped == '!image' or stripped == '![image]' or stripped == '![]':
+            continue
+        
         cleaned.append(line)
     
     result = '\n'.join(cleaned)
@@ -533,6 +537,9 @@ def generate_content_document(sections: dict, source_name: str, output_file: Pat
             doc += f"### {name}\n\n"
             doc += content + "\n\n"
             doc += "---\n\n"
+    
+    # Final cleanup: normalize FAQ capitalization
+    doc = doc.replace('Faq', 'FAQ')
     
     output_file.write_text(doc, encoding='utf-8')
     size_mb = output_file.stat().st_size / (1024 * 1024)

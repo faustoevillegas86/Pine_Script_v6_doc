@@ -44,7 +44,7 @@ DOCS_ORDER = [
     'Visuals',
     'Concepts',
     'Writing',
-    'Faq',
+    'FAQ',
     'Error Messages',
     'Release Notes',
     'Migration Guides',
@@ -145,6 +145,9 @@ async def extract_docs_urls(page):
         parts = path.split('/')
         if len(parts) >= 1 and parts[0]:
             section = parts[0].replace('-', ' ').title()
+            # Special case: FAQ should be all caps
+            if section.lower() == 'faq':
+                section = 'FAQ'
         else:
             section = 'General'
         

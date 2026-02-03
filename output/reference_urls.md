@@ -1,6 +1,6 @@
 # Pine Script V6 Reference - URL Index
 
-Generated: 2026-02-03 09:37
+Generated: 2026-02-03 16:02
 
 ## Table of Contents
 
