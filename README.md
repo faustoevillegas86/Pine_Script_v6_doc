@@ -17,6 +17,7 @@ Herramienta basada en Python para extraer y procesar la documentación de Pine S
 - Extrae y formatea la documentación de funciones
 - Elimina elementos de navegación innecesarios (links de footer, secciones "On this page")
 - Procesa el contenido en formato markdown limpio y legible
+- Incluye extracción de Apps Script enfocada en el rectángulo verde de contenido principal, excluyendo la sección “En esta página”
 
 ### Organización de Salida
 - Crea archivos separados para URLs y contenido
