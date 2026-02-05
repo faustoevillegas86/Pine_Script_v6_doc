@@ -23,6 +23,8 @@ def main():
     scripts = [
         ("URL Extraction", root / "extract_urls.py"),
         ("Content Extraction", root / "extract_content.py"),
+        ("Apps Script URL Extraction", root / "extract_apps_script_urls.py"),
+        ("Apps Script Content Extraction", root / "extract_apps_script_content.py"),
     ]
     
     for name, script in scripts:
