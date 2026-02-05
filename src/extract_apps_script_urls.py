@@ -1,15 +1,20 @@
 #!/usr/bin/env python3
 """
-Apps Script - URL Extractor
-Extracts URLs from Google Apps Script documentation pages and generates
-an indexed document.
+Google Apps Script (ES-419) - URL Extractor
+Extracts section/subsection URLs from the main content area (green box),
+excluding the "En esta página" sidebar (red box).
+
+Sources:
+- https://developers.google.com/apps-script?hl=es-419
+- https://developers.google.com/apps-script/overview?hl=es-419
+- https://developers.google.com/apps-script/reference?hl=es-419
+- https://developers.google.com/apps-script/samples?hl=es-419
 """
 
 import asyncio
-from collections import OrderedDict
 from datetime import datetime
 from pathlib import Path
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 
 from bs4 import BeautifulSoup
 from playwright.async_api import async_playwright
@@ -17,141 +22,104 @@ from playwright.async_api import async_playwright
 ROOT = Path(__file__).resolve().parent.parent
 OUTPUT_DIR = ROOT / "output"
 
-TARGET_URLS = [
+APPS_SCRIPT_PAGES = [
     "https://developers.google.com/apps-script?hl=es-419",
     "https://developers.google.com/apps-script/overview?hl=es-419",
     "https://developers.google.com/apps-script/reference?hl=es-419",
     "https://developers.google.com/apps-script/samples?hl=es-419",
 ]
 
-MAIN_CONTENT_SELECTORS = [
-    ".devsite-article-body",
-    ".devsite-article",
-    "article",
-    "main",
-]
-
-EXCLUDED_SELECTORS = [
-    ".devsite-on-this-page",
-    ".devsite-toc",
-    ".devsite-nav",
-]
+ALLOWED_PREFIXES = (
+    "https://developers.google.com/apps-script",
+    "https://developers.google.com/apps-script/",
+    "https://developers.google.com/apps-script/reference",
+    "https://developers.google.com/apps-script/samples",
+)
 
 
-async def load_page_html(page, url):
-    """Load page with Playwright and return HTML content."""
-    try:
-        await page.goto(url, wait_until="domcontentloaded", timeout=90000)
-        await asyncio.sleep(4)
-        return await page.content()
-    except Exception as exc:
-        print(f"[Error] Failed to load {url}: {exc}")
-        return ""
+def get_main_container(soup: BeautifulSoup):
+    selectors = ["main", "article", ".devsite-article", ".devsite-article-body"]
+    for selector in selectors:
+        node = soup.select_one(selector)
+        if node:
+            return node
+    return soup.body
 
 
-def find_main_container(soup):
-    """Locate the main content container in a DevSite page."""
-    for selector in MAIN_CONTENT_SELECTORS:
-        container = soup.select_one(selector)
-        if container:
-            return container
-    return soup.body or soup
+def remove_sidebar_content(main):
+    if not main:
+        return
+    for selector in [
+        ".devsite-on-this-page",
+        ".devsite-toc",
+        ".devsite-nav",
+        ".devsite-breadcrumb-nav",
+        "nav",
+        "aside",
+    ]:
+        for node in main.select(selector):
+            node.decompose()
 
 
-def remove_excluded_blocks(container):
-    """Remove navigation, TOC, and related blocks from the container."""
-    for selector in EXCLUDED_SELECTORS:
-        for element in container.select(selector):
-            element.decompose()
-
-    for element in container.find_all(["nav", "aside", "div", "section"]):
-        text = element.get_text(" ", strip=True)
-        if "En esta página" in text:
-            element.decompose()
+def is_allowed_url(url: str) -> bool:
+    if not url:
+        return False
+    if url.startswith("#"):
+        return False
+    if url.startswith("http"):
+        return url.startswith(ALLOWED_PREFIXES)
+    return url.startswith("/apps-script")
 
 
-def normalize_link(href, base_url):
-    """Normalize URLs and filter out unsupported schemes."""
-    if not href:
-        return ""
-    if href.startswith("javascript:") or href.startswith("mailto:"):
-        return ""
-    return urljoin(base_url, href)
+def extract_page_title(main, soup, url: str) -> str:
+    if main:
+        h1 = main.find("h1")
+        if h1 and h1.get_text(strip=True):
+            return h1.get_text(strip=True)
+    title = soup.title.get_text(strip=True) if soup.title else url
+    return title or url
 
 
-def extract_links_from_container(container, base_url):
-    """Extract links grouped by section headings."""
-    sections = OrderedDict()
-    current_h2 = ""
-    current_section = "General"
+async def extract_page_urls(page, url: str):
+    await page.goto(url, wait_until="domcontentloaded", timeout=90000)
+    await asyncio.sleep(3)
+    html = await page.content()
+    soup = BeautifulSoup(html, "html.parser")
+    main = get_main_container(soup)
+    remove_sidebar_content(main)
+    title = extract_page_title(main, soup, url)
 
-    def ensure_section(name):
-        if name not in sections:
-            sections[name] = []
+    seen = set()
+    items = []
+    if not main:
+        return title, items
 
-    ensure_section(current_section)
-
-    for element in container.descendants:
-        if not hasattr(element, "name"):
+    for link in main.find_all("a", href=True):
+        text = link.get_text(strip=True)
+        href = link.get("href", "").strip()
+        if not text or not href:
             continue
-
-        if element.name in {"h1", "h2", "h3", "h4"}:
-            heading_text = element.get_text(" ", strip=True)
-            if not heading_text:
-                continue
-            if element.name == "h2":
-                current_h2 = heading_text
-                current_section = heading_text
-            elif element.name in {"h3", "h4"}:
-                current_section = f"{current_h2} / {heading_text}" if current_h2 else heading_text
-            else:
-                current_section = heading_text
-            ensure_section(current_section)
+        if not is_allowed_url(href):
             continue
+        full_url = urljoin(url, href)
+        if full_url in seen:
+            continue
+        seen.add(full_url)
+        items.append({"name": text, "url": full_url})
 
-        if element.name == "a":
-            href = element.get("href", "")
-            url = normalize_link(href, base_url)
-            if not url:
-                continue
-            link_text = element.get_text(" ", strip=True)
-            if not link_text:
-                link_text = element.get("aria-label", "") or url
-            ensure_section(current_section)
-            if not any(item["url"] == url for item in sections[current_section]):
-                sections[current_section].append({
-                    "name": link_text,
-                    "url": url,
-                })
-
-    return sections
+    return title, items
 
 
-def merge_sections(target, source):
-    """Merge section dictionaries preserving order and avoiding duplicates."""
-    for section, items in source.items():
-        if section not in target:
-            target[section] = []
-        existing_urls = {item["url"] for item in target[section]}
-        for item in items:
-            if item["url"] not in existing_urls:
-                target[section].append(item)
-                existing_urls.add(item["url"])
-
-
-def generate_url_document(sections, source_name, output_file):
-    """Generate markdown document with URL index."""
-    doc = f"# {source_name} - URL Index\n\n"
+def generate_url_document(sections: dict, output_file: Path):
+    doc = "# Google Apps Script (ES-419) - URL Index\n\n"
     doc += f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M')}\n\n"
-
     doc += "## Table of Contents\n\n"
     total = 0
-    for section in sections.keys():
-        count = len(sections[section])
+    for section, items in sections.items():
+        count = len(items)
         total += count
         anchor = section.lower().replace(" ", "-")
         doc += f"- [{section}](#{anchor}) ({count})\n"
-
     doc += f"\n**Total: {total} items**\n\n"
     doc += "---\n\n"
 
@@ -167,36 +135,27 @@ def generate_url_document(sections, source_name, output_file):
 
 async def main():
     print("=" * 60)
-    print("APPS SCRIPT - URL EXTRACTOR")
+    print("GOOGLE APPS SCRIPT - URL EXTRACTOR")
     print("=" * 60)
 
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    sections = {}
 
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
         page = await browser.new_page()
 
-        aggregated_sections = OrderedDict()
-
-        for url in TARGET_URLS:
-            print(f"\n[Apps Script] Extracting URLs from {url}")
-            html = await load_page_html(page, url)
-            if not html:
-                continue
-            soup = BeautifulSoup(html, "html.parser")
-            container = find_main_container(soup)
-            remove_excluded_blocks(container)
-            sections = extract_links_from_container(container, url)
-            merge_sections(aggregated_sections, sections)
+        for url in APPS_SCRIPT_PAGES:
+            try:
+                title, items = await extract_page_urls(page, url)
+                sections[title] = items
+                print(f"[OK] {title}: {len(items)} URLs")
+            except Exception as exc:
+                print(f"[FAIL] {url}: {exc}")
 
         await browser.close()
 
-    if aggregated_sections:
-        generate_url_document(
-            aggregated_sections,
-            "Google Apps Script",
-            OUTPUT_DIR / "apps_script_urls.md",
-        )
+    generate_url_document(sections, OUTPUT_DIR / "apps_script_urls.md")
 
     print("\n" + "=" * 60)
     print("[OK] URL extraction complete!")

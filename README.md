@@ -68,8 +68,8 @@ python src/run_all.py
 ```bash
 python src/extract_urls.py     # Extraer solo URLs
 python src/extract_content.py  # Extraer solo contenido
-python src/extract_apps_script_urls.py     # Extraer URLs de Apps Script
-python src/extract_apps_script_content.py  # Extraer contenido de Apps Script
+python src/extract_apps_script_urls.py     # URLs Apps Script (ES-419)
+python src/extract_apps_script_content.py  # Contenido Apps Script (ES-419)
 ```
 
 ## 📁 Estructura del Proyecto
@@ -82,16 +82,16 @@ Pine_Script_v6_doc/
 ├── src/
 │   ├── run_all.py            # Ejecuta extracción completa
 │   ├── extract_urls.py       # Extracción de URLs
-│   ├── extract_content.py    # Extracción de contenido
-│   ├── extract_apps_script_urls.py     # Extracción de URLs de Apps Script
-│   └── extract_apps_script_content.py  # Extracción de contenido de Apps Script
+│   └── extract_content.py    # Extracción de contenido
+│   ├── extract_apps_script_urls.py     # URLs Apps Script (ES-419)
+│   └── extract_apps_script_content.py  # Contenido Apps Script (ES-419)
 └── output/
     ├── reference_urls.md     # 941 URLs de Referencia
     ├── reference_content.md  # Documentación de referencia completa
     ├── docs_urls.md          # 71 URLs de Docs
-    ├── docs_content.md       # Manual de usuario completo
-    ├── apps_script_urls.md   # URLs de Apps Script
-    └── apps_script_content.md # Contenido de Apps Script
+    └── docs_content.md       # Manual de usuario completo
+    ├── apps_script_urls.md   # URLs de Apps Script (ES-419)
+    └── apps_script_content.md # Contenido Apps Script (ES-419)
 ```
 
 ## 📝 Archivos de Salida
@@ -102,8 +102,8 @@ Pine_Script_v6_doc/
 | `reference_content.md` | Referencia API completa (funciones, tipos, constantes, etc.) |
 | `docs_urls.md` | URLs de las 71 páginas de documentación |
 | `docs_content.md` | Manual de usuario completo con tutoriales y guías |
-| `apps_script_urls.md` | URLs de la documentación de Apps Script |
-| `apps_script_content.md` | Contenido de Apps Script con enfoque en el rectángulo verde (excluye “En esta página”) |
+| `apps_script_urls.md` | URLs de secciones/subsecciones Apps Script (ES-419) |
+| `apps_script_content.md` | Contenido Apps Script (ES-419) sin barra lateral |
 
 ## 🔧 Dependencias
 
