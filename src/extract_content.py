@@ -38,21 +38,21 @@ REFERENCE_SECTIONS = {
 }
 
 # Section order for Reference (as on website)
-REFERENCE_ORDER = ['Annotations', 'Constants', 'Functions', 'Keywords', 'Operators', 'Types', 'Variables']
+REFERENCE_ORDER = ['Types', 'Variables', 'Constants', 'Functions', 'Keywords', 'Operators', 'Annotations']
 
 # Section order for Docs (as on website navigation)
 DOCS_ORDER = [
-    'Welcome',
-    'Primer',
+    'Welcome to Pine Script® v6',
+    'Pine Script® primer',
     'Language',
     'Visuals',
     'Concepts',
-    'Writing',
+    'Writing scripts',
     'FAQ',
-    'Error Messages',
-    'Release Notes',
-    'Migration Guides',
-    'Where Can I Get More Information'
+    'Errors and warnings',
+    'Release notes',
+    'Migration guides',
+    'Where can I get more information?'
 ]
 
 
@@ -415,9 +415,10 @@ def clean_docs_navigation(content: str) -> str:
             if not started_content:
                 continue
         
-        # Start content at first heading
+        # Start content at the first real heading. Some pages, such as error
+        # details, start at H2 after breadcrumbs instead of using an H1.
         if not started_content:
-            if line.startswith('# '):
+            if re.match(r'^#{1,6}\s+', line):
                 started_content = True
                 cleaned.append(line)
             continue

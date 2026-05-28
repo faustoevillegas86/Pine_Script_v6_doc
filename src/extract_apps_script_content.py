@@ -107,6 +107,8 @@ def parse_urls_from_markdown(urls_file: Path):
             if "](" in line and line.endswith(")"):
                 name = line.split("[", 1)[1].split("]", 1)[0]
                 url = line.split("(", 1)[1].rsplit(")", 1)[0]
+                if not url.startswith("http"):
+                    continue
                 urls.append({"section": current_section, "name": name, "url": url})
     return urls
 

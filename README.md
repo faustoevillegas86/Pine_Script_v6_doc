@@ -40,6 +40,9 @@ Welcome, Primer, Language, Visuals, Concepts, Writing, FAQ, Error Messages, Rele
 
 ## 🛠️ Instalación
 
+### Requisitos
+- Python 3.10-3.12 recomendado para la extracción completa. Python 3.14 puede resolver dependencias, pero en Windows puede forzar builds nativos de paquetes como `lxml` vía Crawl4AI.
+
 ### 1. Clonar el repositorio:
 ```bash
 git clone https://github.com/faustoevillegas86/Pine_Script_v6_doc.git
@@ -54,7 +57,7 @@ python setup.py
 O manualmente:
 ```bash
 pip install -r requirements.txt
-playwright install chromium
+python -m playwright install chromium
 ```
 
 ## 🚀 Uso

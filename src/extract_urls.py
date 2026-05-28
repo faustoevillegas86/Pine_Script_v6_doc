@@ -34,22 +34,51 @@ REFERENCE_SECTIONS = {
 }
 
 # Section order for Reference (as on website)
-REFERENCE_ORDER = ['Annotations', 'Constants', 'Functions', 'Keywords', 'Operators', 'Types', 'Variables']
+REFERENCE_ORDER = ['Types', 'Variables', 'Constants', 'Functions', 'Keywords', 'Operators', 'Annotations']
 
 # Section order for Docs (as on website navigation)
 DOCS_ORDER = [
-    'Welcome',
-    'Primer',
+    'Welcome to Pine Script® v6',
+    'Pine Script® primer',
     'Language',
     'Visuals',
     'Concepts',
-    'Writing',
+    'Writing scripts',
     'FAQ',
-    'Error Messages',
-    'Release Notes',
-    'Migration Guides',
-    'Where Can I Get More Information'
+    'Errors and warnings',
+    'Release notes',
+    'Migration guides',
+    'Where can I get more information?'
 ]
+
+
+def normalize_docs_url(href: str) -> str | None:
+    """Normalize Pine Script docs links to absolute URLs."""
+    if href.startswith('/'):
+        return f"https://www.tradingview.com{href}"
+    if href.startswith('http'):
+        return href
+    return None
+
+
+def add_docs_link(sections: dict, section: str, link) -> None:
+    """Add a visible sidebar link, preserving the sidebar section name."""
+    href = link.get('href', '')
+    text = link.get_text(' ', strip=True)
+
+    if not href or not text or '/pine-script-docs/' not in href:
+        return
+
+    url = normalize_docs_url(href)
+    if not url:
+        return
+
+    sections.setdefault(section, [])
+    if not any(item['url'] == url for item in sections[section]):
+        sections[section].append({
+            'name': text,
+            'url': url
+        })
 
 
 async def extract_reference_urls(page):
@@ -115,9 +144,35 @@ async def extract_docs_urls(page):
         return {}
     
     soup = BeautifulSoup(html, 'html.parser')
-    
-    # Find all links on the page
+
     sections = {}
+
+    # The sidebar contains the canonical group labels. URL slugs are shorter
+    # than visible nav names, e.g. /errors/ is "Errors and warnings".
+    toc = soup.select_one('ul.toc')
+    if toc:
+        for item in toc.find_all('li', recursive=False):
+            direct_link = item.find('a', href=True, recursive=False)
+            details = item.find('details', recursive=False)
+
+            if direct_link:
+                section = direct_link.get_text(' ', strip=True)
+                add_docs_link(sections, section, direct_link)
+                continue
+
+            if details:
+                summary = details.find('summary')
+                if not summary:
+                    continue
+                section = summary.get_text(' ', strip=True)
+                children = details.find('ul', class_='children')
+                links = children.find_all('a', href=True) if children else details.find_all('a', href=True)
+                for link in links:
+                    add_docs_link(sections, section, link)
+
+        if sections:
+            print(f"[Docs] Found {sum(len(v) for v in sections.values())} items in {len(sections)} sections")
+            return sections
     
     for link in soup.find_all('a', href=True):
         href = link.get('href', '')
@@ -133,12 +188,9 @@ async def extract_docs_urls(page):
         # Include all pine-script-docs URLs (including migration guides)
         
         # Normalize URL
-        if href.startswith('/'):
-            url = f"https://www.tradingview.com{href}"
-        elif not href.startswith('http'):
+        url = normalize_docs_url(href)
+        if not url:
             continue
-        else:
-            url = href
         
         # Determine section from URL path
         path = href.replace('/pine-script-docs/', '').strip('/')

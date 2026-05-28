@@ -1,26 +1,26 @@
 # Pine Script V6 Documentation - Complete Content
 
-Generated: 2026-05-27 18:14
+Generated: 2026-02-03 16:04
 
 ## Table of Contents
 
-- [Welcome to Pine Script® v6](#welcome-to-pine-script®-v6) (1)
-- [Pine Script® primer](#pine-script®-primer) (3)
-- [Language](#language) (17)
+- [Welcome](#welcome) (1)
+- [Primer](#primer) (3)
+- [Language](#language) (16)
 - [Visuals](#visuals) (11)
 - [Concepts](#concepts) (13)
-- [Writing scripts](#writing-scripts) (5)
-- [Errors and warnings](#errors-and-warnings) (5)
+- [Writing](#writing) (5)
 - [FAQ](#faq) (13)
-- [Release notes](#release-notes) (1)
-- [Migration guides](#migration-guides) (6)
-- [Where can I get more information?](#where-can-i-get-more-information?) (1)
+- [Error Messages](#error-messages) (1)
+- [Release Notes](#release-notes) (1)
+- [Migration Guides](#migration-guides) (6)
+- [Where Can I Get More Information](#where-can-i-get-more-information) (1)
 
-**Total: 76 items**
+**Total: 71 items**
 
 ---
 
-## Welcome to Pine Script® v6
+## Welcome
 
 ### Welcome to Pine Script® v6
 
@@ -32,7 +32,7 @@ Because each script uses computational resources in the cloud, we must impose li
 
 ---
 
-## Pine Script® primer
+## Primer
 
 ### First steps
 
@@ -386,7 +386,7 @@ The following sections provide in-depth details about Pine’s execution model, 
 TipNew to Pine Script? To make the most of the _advanced_ information below, start by learning The basics and understanding other core concepts — such as the type system, variable declarations, operators, conditional structures, and user-defined functions — before venturing further.
 ### Executions on historical bars
 When a script loads on the chart or in another location after an execution-triggering event, its compiled source code executes on _every_ accessible bar in the current dataset in order, starting with the first bar.
-NoteThe first bar that a script accesses depends on the `calc_bars_count` parameter of its declaration statement and the limits of the user’s _plan_. If the `calc_bars_count` argument is a nonzero value that is less than or equal to the plan’s bar limit, script executions begin at the specified number of bars _before_ the latest bar. Otherwise, executions start at the _earliest_ available bar.
+NoteThe first bar that a script accesses depends on the `calc_bars_count` parameter of its declaration statement and the limits of the user’s _plan_. If the `calc_bars_count` argument is a non-zero value that is less than or equal to the plan’s bar limit, script executions begin at the specified number of bars _before_ the latest bar. Otherwise, executions start at the _earliest_ available bar.
 While the script loads, the runtime system performs the following steps for _each bar_ that it accesses:
   1. It updates the built-in variables that hold bar information. For instance, the system sets the open, high, low, and close variables to hold the OHLC price values of the bar _before_ each execution.
   2. It executes the script’s compiled code from start to end using the data available as of the current bar.
@@ -540,14 +540,14 @@ Below, we explain how recalculation and rollback affect a script’s data and ou
 varip keyword. When the script executes again after rollback, it _reinitializes_ the variables with new values or references based on the latest available data.
 _temporary_ states of built-in variables that hold values for the current bar. Before the new script execution, it sets the variables to use the bar’s most recent data. For instance, the system updates close, high, and low with the latest, highest, and lowest prices reported since the bar’s opening time.
 **Reset changes to`var` variables**
-var keyword in their declaration remain initialized after the _first_ time that their scopes execute on a bar’s _closing tick_. Their assigned values or references _persist_ across subsequent bars, changing only after reassignment or compound assignment operations.
+var keyword in their declaration are initialized only _once_ — during the _first_ execution of their scopes on a _closed bar_. Variables that use the var keyword in their declaration remain initialized after the _first_ time that their scopes execute on a bar’s _closing tick_. Their assigned values or references _persist_ across subsequent bars, changing only after reassignment or compound assignment operations.
 **do not** preserve data across executions on the _ticks_ of an open bar. Rollback reverts all variables declared with var before the current bar to the last committed states in the time series as of the previous bar.
 var has a value of 20 on the open bar and 19 on the previous bar, the variable’s value reverts to 19 before the script executes on the next tick of the same bar. The temporary value of 20 does not persist.
 **Replace plotted outputs**
 `plot*()`, bgcolor(), barcolor(), and fill() functions create visual outputs on _every bar_. These outputs are _temporary_ on the open realtime bar. When the script executes again after rollback, the new outputs for the bar from calls to these functions _replace_ the ones from the previous tick.
 `plot(close)` executes on the open bar, it displays the bar’s latest close value as of the current execution. However, the plotted result is **temporary** until the bar closes. After rollback, the close variable updates, then the script calls plot() again on the next execution to replace the output from the previous tick and display the new value.
 **Remove and revert objects**
-User-defined types (UDTs) and special types, such as collections and drawing types, are reference types. They define structures from which scripts create _objects_ — independent entities that store data elsewhere in memory. Variables of these types hold _references (IDs)_ that provide access to specific objects and their data; the variables do **not** store objects directly.
+User-defined types (UDTs) and special types such as collections and drawing types are _reference types_. They define structures from which scripts create _objects_ — independent entities that store data elsewhere in memory. Variables of these types hold _references_ that provide access to specific objects and their data; the variables do **not** store objects directly.
 varip keyword, the rollback process _removes_ those objects. During the next execution on the open bar, the script creates _new objects_ if the updated logic allows it.
 label.new() to create a label object on the open bar, the system _deletes_ that object during rollback. On the next execution, the script evaluates label.new() again, creating a _new_ label that replaces the output. The label created on the previous tick no longer exists.
 var variables, the rollback process reverts any changes to those objects that occur on the open bar. The only exception is for UDTs with _fields_ that include the varip keyword. See the Objects page for more information.
@@ -663,7 +663,7 @@ if barstate.isrealtime
 // Plot candles to display the `o`, `h`, `l`, and `priceReturn` values for each realtime bar.  
 // The candles do not appear on historical bars, because `o`, `h`, and `l` are `na` on those bars.  
 plotcandle(o, h, l, priceReturn, "Return candles", color.blue, chart.fg_color, bordercolor = chart.fg_color)  
-// Display the `priceReturn` series as a purple line plot.  
+// Dispaly the `priceReturn` series as a purple line plot.  
 plot(priceReturn, "Return plot", color.purple, 3)  
 // Highlight the background of all realtime bars in orange.  
 bgcolor(barstate.isrealtime ? color.new(color.orange, 70) : na, title = "Realtime highlight")  
@@ -901,7 +901,6 @@ plot(remainder, "Remainder", plotColor, 5)
 `
 The script behaves this way because `upDownColor()` uses the history-referencing operator on the `source` series, which is _local_ to the function’s scope, and the script does not call the function on _every_ execution. When the value of `remainder` is zero, the _first_ expression in the ternary condition evaluates to `true`, and therefore the second branch of the ternary expression, which contains the function call, does _not_ execute.
 The compiler issues the following warning about the function directly in the Pine Editor:
-
 ```
 
 The function `upDownColor()` should be called on each calculation for consistency. It is recommended to extract the call from the ternary operator or from the scope.
@@ -1017,7 +1016,6 @@ _first_ available bar. On all subsequent bars, values qualified as “simple” 
 _Dynamic_. Values qualified as “series” are available at runtime, and they are the **only** values that can change across bars.
 NoteThe “const”, “input”, and “simple” qualifiers apply exclusively to value types. Pine’s reference types, such as label and array types, automatically inherit the “series” qualifier.
 Pine Script uses the following _qualifier hierarchy_ to determine the compatibility of values in a script’s calculations:
-
 ```
 
 const < input < simple < series
@@ -1406,7 +1404,6 @@ For detailed information about Pine strings and the built-in `str.*()` functions
 #### Enum types
 The enum keyword enables the creation of an _enum_ , otherwise known as an _enumeration_ , _enumerated type_ , or _enum type_. An enum is a unique type that contains distinct _named fields_. These fields represent the _members_ (i.e., possible values) of the enum type. Programmers can use enums to maintain strict control over the values accepted by variables, parameters, conditional expressions, collections, and the fields of UDT objects. Additionally, scripts can use the input.enum() function to create enum-based dropdown inputs in the “Settings/Inputs” tab.
 The syntax to declare an enum is as follows:
-
 ```
 
 [export ]enum <enumName>
@@ -1625,12 +1622,11 @@ TipAlthough collections cannot directly store the IDs of other collections, they
 #### User-defined types
 The type keyword enables the creation of _user-defined types (UDTs)_. UDTs are composite types; they can contain an arbitrary number of _fields_ that can be of _any_ supported type, including collection types and other user-defined types. Scripts use UDTs to create custom objects that can store multiple types of data in a single location.
 The syntax to declare a user-defined type is as follows:
-
 ```
 
 [export ]type <UDT_identifier>
 
-    [varip ][field_type ]<field_name>[ = <value>]
+    [field_type] <field_name>[ = <value>]
 
     ...
 
@@ -1639,8 +1635,7 @@ The syntax to declare a user-defined type is as follows:
 Where:
   * export is the optional keyword for exporting the UDT from a _library_ , enabling its use in other scripts. See the User-defined types and objects section of the Libraries page to learn more.
   * `UDT_identifier` is the _name_ of the user-defined type.
-  * varip is an optional keyword that enables the field’s assigned data to _persist_ across all ticks within a bar, similar to a `varip` variable.
-  * `field_type` is a type keyword or identifier, which specifies the field’s type.
+  * `field_type` is a type keyword or identifier, which defines the field’s type.
   * `field_name` is the name of the field.
   * `value` is an optional _default value_ for the field. Each time that the script creates a new instance of the UDT, it initializes the field with the specified value. If not specified, the field’s default value is na, or `false` if the field’s type is “bool”. Note that the default value _cannot_ be the result of a function call or any other expression; only a _literal value_ or a compatible _built-in variable_ is allowed.
 
@@ -1762,7 +1757,6 @@ float sma = ta.sma(close, length = LENGTH)
 plot(sma)  
 ```
 The above code causes the following compilation error:
-
 ```
 
 Cannot call `ta.sma()` with the argument `length = LENGTH`. An argument of "const float" type was used but a "series int" is expected.
@@ -1794,7 +1788,7 @@ label myLabel = na
 myLabel = label(na)  
 `
 ##  Tuples
-A _tuple_ is a _comma-separated list_ of expressions or identifiers enclosed in square brackets (e.g., `[expr1, expr2, expr3]`). If a structure that creates a local scope, such as a function, method, conditional structure, or loop, returns more than one result, the code lists the expressions for all the results in the form of a tuple at the end of the structure’s local block.
+A _tuple_ is a _comma-separated list_ of expressions enclosed in square brackets (e.g., `[expr1, expr2, expr3]`). If a structure that creates a local scope, such as a function, method, conditional structure, or loop, returns more than one value, the code lists those values in the form of a tuple.
 For example, the following user-defined function returns a tuple containing two values. The first item in the tuple is the sum of the function’s `a` and `b` arguments, and the second is the product of those two values:
 ```pine
 //@function Calculates the sum and product of two "float" values.
@@ -1806,7 +1800,7 @@ calcSumAndProduct(float a, float b) =>
     // Return a tuple containing the `sum` and `product` values.  
     [sum, product]  
 ```
-When calling this function later in the code, the script must use a tuple declaration to declare one new variable for each value returned by the function to use its data. For example, the `hlSum` and `hlProduct` variables in the following tuple declaration hold the `sum` and `product` values returned by a `calcSumAndProduct()` call:
+When calling this function later in the code, the script must use a tuple declaration containing one new variable for each value returned by the function to use its data. For example, the `hlSum` and `hlProduct` variables in the following tuple declaration hold the `sum` and `product` values returned by a `calcSumAndProduct()` call:
 `// Declare a tuple containing a variable for each value returned by the `calcSumAndProduct()` call.  
 [hlSum, hlProduct] = calcSumAndProduct(high, low)  
 `
@@ -2204,7 +2198,6 @@ plot(randArray.sum())
 
 # Script structure
 A Pine script follows this general structure:
-
 ```
 
 <version>
@@ -2352,28 +2345,6 @@ Expressions inside _local_ code blocks can also use line wrapping. A local block
                     -1 :  
                     ud - 1)  
 `
-Scripts can also create line-wrapped expressions by using multiline strings. A multiline string, enclosed by three pairs of quotation marks (e.g., `"""..."""`) or apostrophes (e.g., `'''...'''`), can occupy multiple lines in the Pine Editor, where each part of the code between the `"""` or `'''` delimiters represents _literal text_. If an expression uses a string spanning multiple lines as an operand or argument, Pine still treats that expression as part of a _single_ line of code. For example:
-```pine
-//@version=6
-indicator("Line wrapping with multiline strings demo", overlay = true)  
-  
-//@variable A string indicating whether the bar is rising, falling, or neutral.  
-//          The strings in the ternary operations span multiple visible lines, but the entire expression is   
-//          considered part of a single line.   
-string labelText = close > open ? """  
-Bar is rising.  
-""" : close < open ? """  
-Bar is falling.  
-""" : """  
-Bar is neutral.  
-"""  
-  
-// Draw a label to display the text from the current `labelText` string.  
-label.new(bar_index, close, labelText)  
-```
-Note that:
-  * A multiline string treats _all_ characters between the `"""` or `'''` delimiters as literal text, including the _leading spaces_ on each visible code line. If a line in a multiline string definition is indented by any number of spaces, relative to _column 0_ in the Pine Editor, the line in the resulting string also includes that indentation.
-
 ## Compiler annotations
 Compiler annotations are comments that issue special instructions for a script:
   * `//@version=` specifies the PineScript version that the compiler will use. The number in this annotation should not be confused with the script’s version number, which updates on every saved change to the code.
@@ -2489,1731 +2460,218 @@ zeroOne(boolValue) => boolValue ? 1 : 0
 
 ---
 
-### Declaration statements
-
-# Declaration statements
-##  Introduction
-In Pine Script®, a  _declaration statement_ is a mandatory function call that declares the script’s  _type_ and its _properties_ at _compile time_. The available declaration functions are indicator(), strategy(), and library(). Each type of script has different capabilities and behaviors, the compiler uses different rules to compile them, and Pine’s runtime system also executes them differently.
-Every script must include exactly **one** declaration statement, and that statement must be in the script’s global scope. Our style guide recommends placing the statement directly below the `@version=` compiler annotation at the top of the source code. For example:
-```pine
-//@version=6
-indicator("My script") // Declares that the script is an indicator named "My script" with default properties.  
-  
-// Plot the `close` series across the chart.  
-plot(close)  
-```
-The parameters of a declaration statement define various script-wide properties and default behaviors. Only the `title` parameter, which sets the script’s _main title_ , requires an argument. Supplying arguments to any other parameters is _optional_. Note that all parameters in each declaration statement require arguments qualified as “const”. They _cannot_ accept values with the “input”, “simple”, or “series” type qualifier.
-The `indicator()`, `strategy()`, and `library()` sections below explain the parameters available for each declaration statement and how they affect a script, as well as various unique characteristics of each script type.
-TipThe Pine Editor displays the Reference Manual documentation for a declaration function and its parameters in a pop-up window as the user types the statement. To view the complete Reference Manual entry from inside the editor, press the CTRL or CMD key and click the indicator(), strategy(), or library() identifier.
-## ​`indicator()`​
-The indicator() function declares that the script is an  _indicator_. Indicators perform calculations across a dataset to generate visuals, alerts, or Pine Logs. They are the most common type of scripts in Pine.
-The built-in Relative Strength Index (RSI) script is an example of an indicator. It calculates the RSI of a specified source series and plots the result in a separate pane. It can also plot a smoothed RSI, display divergence signals, and generate divergence alerts.
-Indicators have several distinct characteristics, including the following:
-  * Indicators are the _only_ scripts that can use alert triggers from calls to both the alert() and alertcondition() functions.
-  * Unlike strategies, indicators _cannot_ use any `strategy.*` built-ins or simulate trades.
-  * Unlike libraries, indicators cannot _export_ code for use in other scripts. However, other scripts that include source inputs can retrieve values from an indicator’s _plots_ created by plot() calls.
-  * The Pine Screener is compatible with indicators only. The screener can display plotted values from an indicator’s plot() function calls, and _filter_ the results using data from other plot() or alertcondition() calls.
-  * Indicators always execute _once per bar_ on historical bars, and _once per data feed update (tick)_ on realtime bars.
-  * Indicators must include _at least one_ call to a function that creates one of the following outputs: plot visuals, drawing visuals, alert triggers, or Pine Logs.
-
-The signature for the indicator() function is as follows:
-
-```
-
-indicator(title, shorttitle, overlay, format, precision, scale, max_bars_back, timeframe, timeframe_gaps, explicit_plot_zorder, max_lines_count, max_labels_count, max_boxes_count, calc_bars_count, max_polylines_count, dynamic_requests, behind_chart) → void
-
-```
-
-The following sections explain the parameters of the indicator() declaration statement and how they work.
-NoteAll the parameters described below, excluding `timeframe` and `timeframe_gaps`, also apply to the strategy() function.
-### ​`title`​ and ​`shorttitle`​
-The required `title` parameter defines the script’s _main title_. The script displays the specified “string” title in all possible chart locations by default. Additionally, the “Publish script” window automatically suggests using that title for a script publication.
-NoteIf the `title` argument is an empty string, the script uses “Study” as its main title on the chart, and the “Publish script” window does not suggest a publication title.
-The optional `shorttitle` parameter defines a _short display title_ for the script. If the declaration statement includes a `shorttitle` argument that is not an empty string, the string’s text appears instead of the main title in multiple chart locations, including:
-  * The script’s status line on the chart.
-  * The chart’s object tree and data window.
-  * The script’s “Settings” window.
-  * The “Condition” section of the “Create alert” dialog box.
-  * The listed alerts and logs for the script in the “Alerts” pane.
-  * The Pine Logs pane.
-
-NoteThese parameters are **not related** to the name that the user assigns when saving or renaming a script project using the menu options in the Pine Editor. The text assigned from those options defines the name that the user searches in their _personal library_ to open the script in the editor, add the script to the chart, or run the script in the Pine Screener.
-The example script below plots an Exponential Moving Average (EMA) for a selected source series and length. The declaration statement sets the script’s main title to `"Exponential Moving Average indicator"`. However, because the declaration statement also includes the argument `shorttitle = "EMA"`, the script’s status line and the data window display “EMA” instead of the main title. Hovering over the short title in the status line reveals a tooltip containing the script’s main title:
-```pine
-//@version=6
-indicator("Exponential Moving Average indicator", shorttitle = "EMA")  
-  
-//@variable The source series for which to calculate the EMA.  
-float sourceInput = input.source(ohlc4, "Source")  
-//@variable The length value for the EMA's smoothing factor.  
-int lengthInput = input.int(20, "Length", minval = 1)  
-  
-// Calculate the EMA for the specified series and length, and plot the result as a color-coded line.  
-float ema = ta.ema(sourceInput, lengthInput)  
-plot(ema, "EMA", ema > ema[1] ? color.green : color.red, 3)  
-```
-TipThe `shorttitle` parameter is intended for creating an _abbreviated_ display title for a script. As such, the compiler raises a warning if the specified string contains more characters than the recommended limit. If you encounter the warning, we recommend reducing the string’s length. If you want the script to display a longer title, specify that title in the `title` argument and _remove_ the `shorttitle` argument.
-### ​`overlay`​, ​`scale`​, and ​`behind_chart`​
-The `overlay`, `scale`, and `behind_chart` parameters of the declaration statement configure where the script displays its chart outputs. They control the _global default_ display location and scaling behavior of the script’s visuals, separate to the individual properties of plot visuals or drawing visuals.
-NoteThese parameters affect a script’s visuals only **once** , when the user first adds the script to their chart. If an instance of the script is already on the chart, changing the `overlay`, `scale`, or `behind_chart` arguments in the declaration statement **does not** affect that instance’s display location or scale. Programmers must _re-add_ the script to the chart to view the results of such changes.
-The `overlay` parameter specifies which _default_ chart pane the script uses to display its visuals when the user adds the script to their chart. If the argument is `true`, the script’s visuals appear in the _main chart pane_ by default, or in another script’s pane if the user adds it to the chart via the “Add indicator/strategy on” option in the other script’s “More” menu. If the `overlay` argument is `false` (default), the script’s visuals occupy a _separate chart pane_ by default.
-The `scale` parameter defines the location of the script’s _price scale_ and the scaling behavior of the script’s plots and drawings. The possible arguments are scale.left, scale.right, and scale.none. The behaviors associated with this parameter are as follows:
-  * If the declaration statement includes _any_ `scale` argument, the script scales its visuals _independently_ to fit the vertical range of the pane that it occupies.
-  * If the argument is scale.left or scale.right, and the script overlays on an existing pane, the script adds a _separate_ scale for its visuals on the specified side of that pane.
-  * If the script occupies a separate pane, an argument of scale.left or scale.right moves that pane’s scale to the specified side without creating a new scale.
-  * If the argument is scale.none, which is valid only if the `overlay` argument is `true`, the script displays plotted numbers directly on the scale of an existing pane without creating a new scale. If the user moves the script to a separate pane, the script displays values on a new price scale in that pane.
-  * If the statement does not include a `scale` argument, the script uses the main price scale for the pane it occupies, and it does _not_ scale its visuals separately if it overlays on an existing pane.
-
-The following example indicator plots an RSI as translucent, color-coded columns. The script displays the columns on the main chart pane because its declaration statement includes `overlay = true`. Additionally, the script adds a separate scale to the left side of the pane and scales its plotted values independently because the statement uses scale.left as the `scale` argument:
-```pine
-//@version=6
-indicator("`scale` demo", overlay = true, scale = scale.left, format = format.percent)  
-  
-//@variable The RSI of the `close` series with a length of 14.  
-float rsi = ta.rsi(close, 14)  
-  
-// Plot the RSI as translucent columns. Use an orange color for values of 50 or greater, and blue for others.  
-plot(rsi, "RSI", rsi <= 50 ? color.new(color.orange, 70) : color.new(color.blue, 75), 2, plot.style_columns)  
-```
-Note that:
-  * The script formats the plotted numbers and the values in the left-side scale as _percentages_ because the indicator() statement includes the argument `format = format.percent`. See the `format` and `precision` section below to learn more.
-
-The `behind_chart` parameter determines the _visual order_ of the script’s plots and drawings relative to the main chart series. Specifying an argument for this parameter affects the script’s visuals only if the `overlay` argument is `true`, because the behavior does not apply to non-overlay scripts. If the `behind_chart` value is `true` (default), the script’s visuals appear _behind_ the main series. If the value is `false`, they appear _in front_ of the main series and can cover the chart’s bars.
-NoteThe functions that create plots, background colors, and drawings include a `force_overlay` parameter. If a call to these functions specifies `true` as the `force_overlay` argument, its resulting visuals always appear over the _main_ chart pane and use that pane’s scale, regardless of the `overlay`, `behind_chart`, and `scale` arguments in the script’s declaration statement. See the `overlay` section of the Visuals overview page to learn more about this feature.
-### ​`format`​ and ​`precision`​
-The `format` and `precision` parameters of the declaration statement control the default appearance of _plotted numbers_ in the script’s status line, the price scales, and the data window.
-The `precision` parameter determines the default number of _fractional digits_ that the script shows for plotted values and the numbers in the price scale. It accepts a value from 0 to 16. This parameter affects the appearance of all plotted numbers except for those formatted using format.volume, because the decimal precision rules of the built-in volume format supersede other precision settings. If the declaration statement does not include a `precision` argument, the script inherits its default precision settings from the main chart series, or from another script if it accesses one of that script’s plots using a source input.
-The `format` parameter determines whether the script displays plotted numbers and the numbers in the price scale using a price, percentage, or volume format, or if it inherits formatting settings from the chart or another script. The possible arguments are format.price, format.percent, format.volume and format.inherit. The default is format.inherit.
-Below, we list how a script formats plotted values when using each of these arguments:
-`format.price`
-E notation (e.g., `1e+21`).
-`format.percent`
-format.price, and it appends a percent sign (`%`) to express plotted values as percentages. By default, the format rounds plotted numbers to two fractional digits. For example, it formats the value 39.787 as 39.79%. This format does _not_ recalculate values to express them as percentages. To represent a _ratio_ as a percentage when using this format, multiply the value by 100 before plotting it.
-`format.volume`
-_abbreviated_ values that follow special precision rules. If a rounded value is greater than or equal to 1000, the script includes a letter representing a multiplied quantity: “K” for thousand, “M” for million, “B” for billion, or “T” for trillion. For example, it formats a plot value of 2474 as 2.74K, and a value of 14489245 as 14.49M. If a value is extremely large, the script displays a number with commas or E notation followed by “T”. For values less than 1000, the script displays those values rounded to the nearest whole number by default. Note that these formatting rules can apply to any plotted numbers; they are not limited to only volume values.
-`format.inherit`
-source input. For example, the script uses price formatting when applied to a stock chart series, and percentage formatting when applied to a bond chart series.
-NoteIf the declaration statement uses format.inherit as the `format` argument, changing the script’s _precision_ settings via the `precision` parameter or the “Precision” field in the script’s “Settings/Style” tab causes it to _ignore_ the inherited format and instead use format.price settings with the specified precision, even if the inherited format uses format.volume rules.
-The example indicator below plots volume values as color-coded columns, and it plots the average value over a specified number of bars as a line. The indicator() declaration statement includes format.volume as the `format` argument to apply the volume formatting rules described above to the script’s plots and scale. On our daily “NASDAQ:NFLX” chart, the current plotted values are in _millions_ , so the script displays the numbers in an abbreviated format with “M” as the suffix:
-```pine
-//@version=6
-indicator("`format.volume` demo", format = format.volume)  
-  
-//@variable The number of bars over which to calculate the average volume.  
-int lengthInput = input.int(14, "Average length", minval = 1)  
-  
-//@variable A red color if `close < open`, and green otherwise. The color is 50% transparent if `volume <= volume[1]`.  
-color volColor = switch  
-    volume > volume[1] => close < open ? color.red : color.green  
-    => close < open ? color.new(color.red, 50) : color.new(color.green, 50)  
-  
-// Plot volume as columns, and the average volume as a line.  
-// Both of these plots automatically format numbers using `format.volume` rules.  
-plot(volume, "Volume", volColor, style = plot.style_columns)  
-plot(ta.sma(volume, lengthInput), "Avg volume", color.blue, linewidth = 2)  
-```
-Note that the `plot*()` functions also include `format` and `precision` parameters, which enable scripts to define specific formatting behaviors for each separate plot. By default, a plot automatically inherits the default format and precision settings defined by the declaration statement, as demonstrated by the previous example. However, if a `plot*()` call includes `format` or `precision` arguments, those arguments _take precedence_ over the script’s default settings.
-For example, in the script version below, we added the argument `format = format.price` to the plot() call for the average volume display. With this change, the script formats the average volume values using the rules defined by format.price, while the volume plot and the price scale both continue to use the default format.volume rules specified by the declaration statement:
-```pine
-//@version=6
-indicator("`format.volume` demo", format = format.volume)  
-  
-//@variable The number of bars over which to calculate the average volume.  
-int lengthInput = input.int(14, "Average length", minval = 1)  
-  
-//@variable A red color if `close < open`, and green otherwise. The color is 50% transparent if `volume <= volume[1]`.  
-color volColor = switch  
-    volume > volume[1] => close < open ? color.red : color.green  
-    => close < open ? color.new(color.red, 50) : color.new(color.green, 50)  
-  
-// Because this call does not include a `format` argument, it inherits `format.volume` rules.  
-plot(volume, "Volume", volColor, style = plot.style_columns)  
-// By contrast, this call uses `format.price` rules, because the `format` argument here  
-// *overrides* the script's default plot format.  
-plot(ta.sma(volume, lengthInput), "Avg volume", color.blue, linewidth = 2, format = format.price)  
-```
-### ​`max_bars_back`​
-The `max_bars_back` parameter of the declaration statement, if it has a specified argument, sets the initial maximum _history-referencing length_ for each series in a script. It accepts an “int” value from 0 to 5000, representing the number of past data points maintained in memory for _all_ variables and expressions.
-As a script executes, Pine’s runtime system stores data for each variable and expression across bars in fixed-length historical buffers. The script can access _past bar data_ from these buffers by using the [`[]` history-referencing operator]() or the built-in functions that reference history internally. For example, the expression `close[10]` retrieves the last saved value of the close variable from _10 bars back_.
-By default, the system automatically sizes each historical buffer by analyzing the historical references that the script executes as it loads across historical bars. For resource efficiency, each buffer typically contains only enough past data to accommodate the script’s historical references, but _not more_. For instance, if a script requests the value of a variable from up to 500 bars back as it loads across a chart’s history, the buffer for that variable typically includes data for only the latest 500 past bars.
-In most cases, this automatic sizing process accommodates a script’s historical references without issues. Therefore, manually setting the sizes of historical buffers is often **unnecessary**. However, in some cases, the system might fail to determine appropriate buffer sizes on its own, resulting in a runtime error. One possible way to resolve that error is to set the default size of the script’s historical buffers in advance by including a `max_bars_back` argument in the declaration statement.
-Before using this parameter, ensure that _all_ or _most_ of the series in the script actually require historical buffers with the _same_ specific size. Manually setting buffers in a script to use a specific size when unnecessary can **negatively** impact the script’s performance. If only _specific_ series require manually sized buffers, either of the following approaches is far more efficient:
-  * Use the max_bars_back() _function_ to set the sizes of only the problematic historical buffers.
-  * Structure the script’s history-referencing operations to request the _maximum_ required amount of history on the _first bar_.
-
-See the historical buffer limit error page to learn more. For _advanced_ details about the workings of historical buffers, refer to the Historical buffers section of the Execution model page.
-### ​`timeframe`​ and ​`timeframe_gaps`​
-The `timeframe` parameter of the indicator() declaration statement sets the script’s _main timeframe_. It enables the script to perform calculations on the data for a different timeframe than that of the chart without requiring `request.*()` function calls. The parameter accepts a valid timeframe string, such as `"1D"` for the daily timeframe or `"30"` for the 30-minute timeframe. If an argument is not specified, or if the value is an empty string (`""`), the script executes on the data for the current chart’s timeframe.
-TipScripts can retrieve a string representing the main timeframe specified in the declaration statement, even while executing other data requests with `request.*()` calls, by using the timeframe.main_period variable.
-The `timeframe_gaps` parameter determines how the script handles _time gaps_ when plotting data from a _higher timeframe_. It allows an argument only if the declaration statement also includes a `timeframe` argument. The parameter works similarly to the `gaps` parameter of request.security() and other `request.*()` functions. If the value is `true` (default), the script plots values only on the chart bars where new, _confirmed_ data is available from the specified timeframe, and displays na results on other bars. If `false`, the script plots the _last retrieved values_ from the higher timeframe on the chart bars where new data is not available.
-NoteThe indicator() declaration statement can include arguments for these parameters only if the script _does not_ use drawing objects or alert() function calls, because scripts cannot evaluate outputs from such code on other datasets.
-If the declaration statement specifies a `timeframe` argument, the script automatically adds a “Calculation” group with a “Timeframe” input to the “Settings/Inputs” tab. If the statement includes a `timeframe_gaps` argument, the script also adds a “Wait for timeframe closes” input below the “Timeframe” input. These inputs enable users to customize the script’s main timeframe and its gap-handling behavior without modifying the source code. To learn more about them, see the Leveraging multi-timeframe analysis article in our Help Center.
-The following example demonstrates the behavior of both parameters. The indicator below calculates and plots the 14-bar average of close values on a specified timeframe. The indicator() declaration statement includes `"1D"` as the `timeframe` argument, so it performs calculations using daily data for the current chart’s symbol by default, regardless of the chart’s timeframe. On an intraday chart, the script plots an “x-cross” shape only on the _last_ chart bar for each trading day by default, and na on other bars, because the declaration statement also includes the argument `timeframe_gaps = true`:
-```pine
-//@version=6
-indicator(  
-    "`timeframe` and `timeframe_gaps` demo",  
-    overlay = true, behind_chart = false,  
-    timeframe = "1D", timeframe_gaps = true // <- These arguments automatically add inputs to the "Settings/Inputs" tab.  
-)  
-  
-//@variable The 14-bar average `close` value on the script's main timeframe ("1D" by default).  
-float avgClose = ta.sma(close, 14)  
-  
-// Plot the `avgClose` series as "x-cross" shapes.  
-// By default, a new shape appears only on the last chart bar for each "1D" period. On other bars, the plot shows `na`.  
-plotshape(avgClose, "Avg close", shape.xcross, location.absolute, size = size.small)  
-```
-Note that:
-  * If the specified timeframe is _lower_ than or _equal_ to the chart’s timeframe, the script plots an “x-cross” shape on _every_ chart bar.
-  * An alternative way to achieve this script’s default result without using these parameters is to plot the value returned by the call `request.security(syminfo.tickerid, "1D", ta.sma(close, 14), gaps = barmerge.gaps_on)`. Refer to the Other timeframes and data page to learn more about `request.*()` functions.
-
-### ​`explicit_plot_zorder`​
-The `explicit_plot_zorder` parameter of the declaration statement determines the _visual order_ in which the script’s plots, horizontal levels, and fills _stack_ on the chart.
-If the value is `true`, the script visually stacks plots, levels, and fills based on the order of the `plot()*`, hline(), and fill() function calls in the source code, where each written call’s output appears _on top_ of the outputs from the calls that _precede_ it. For example, if the code lists a fill() call after a plot() call, the resulting fill appears on top of the plot. Likewise, if the code lists a plot() call after an hline() call, the plot appears on top of the horizontal line.
-If the value is `false` (default), the script visually stacks its plots, levels, and fills based on the order of those visuals in the z-index, regardless of the order in which the function calls for each type of output occur in the code. Horizontal levels always appear on top of plots, and plots always appear on top of fills. However, visual outputs of the _same_ type or group still stack on top of each other based on the order of their function calls. For example, if a script includes two calls to the plot() function, the _second_ plot appears on top of the first.
-NoteThis parameter **does not** affect visuals created by the bgcolor() function or drawing objects. Background colors and drawings _always_ stack on the chart in the order of the _z-index_ , regardless of the `explicit_plot_zorder` argument in the script’s declaration statement.
-### ​`max_lines_count`​, ​`max_labels_count`​, ​`max_boxes_count`​, and ​`max_polylines_count`​
-The `max_lines_count`, `max_labels_count`, `max_boxes_count`, and `max_polylines_count` parameters of the declaration statement limit the number of line, label, box, and polyline drawing objects that the script can maintain in memory. As the script creates new objects of a given drawing type, the runtime system _deletes_ the _oldest_ drawings of that type as necessary if the number of active objects exceeds the script’s limit.
-The `max_lines_count`, `max_labels_count`, and `max_boxes_count` parameters accept an “int” value from 1 to 500, and the `max_polylines_count` parameter accepts an “int” value from 1 to 100. The default for each parameter is 50.
-NoteThe limits defined by these parameters are approximate. The maximum number of active drawings can vary slightly across bars. Programmers can precisely limit the number of active drawings by using the `*.delete()` functions (e.g., line.delete()) on the elements of the built-in `*.all` array for each drawing type (e.g., line.all).
-See the Line, box, polyline, and label limits section of the Limitations page and the Total number of objects section of the Lines and boxes page to learn more about drawing limits.
-### ​`calc_bars_count`​
-The `calc_bars_count` parameter of the declaration statement sets the default _maximum_ number of most recent _historical bars_ that the script can access for its calculations. It accepts an “int” value that is greater than or equal to 0.
-If the value is 0 (default), the script executes on _all_ the available bars in the dataset, starting from the first available bar. If the value is greater than 0, the script instead starts executions on the bar that is N bars before the _latest_ available bar at loading time, or on the dataset’s first bar if the value exceeds the number of available bars. Additionally, a positive `calc_bars_count` argument adds a “Calculation” group with a _“Calculated bars”_ input to the script’s “Settings/Inputs” tab, where users can adjust the number of historical bars available to the script without editing the source code.
-The following example script plots the close series across a limited number of historical bars and all realtime bars. The indicator() declaration statement includes the argument `calc_bars_count = 40`, which forces the script to treat the last 40 historical bars as the _only_ ones available in the dataset by default:
-```pine
-//@version=6
-  
-// The `calc_bars_count` argument in this declaration statement specifies that the script can use  
-// only the last 40 historical bars for its calculations by default. It also adds a "Calculated bars"  
-// input to the script's "Settings/Inputs" tab.  
-indicator("`calc_bars_count` demo", calc_bars_count = 40)  
-  
-// Plot the `close` series on the specified number of recent historical bars and all realtime bars.  
-plot(close, "Close", linewidth = 2)  
-```
-NoteLimiting the bars on which a script can execute with the `calc_bars_count` parameter also limits the data points available for history-referencing operations and bar indexing. A script treats the first bar on which it _executes_ as the _earliest_ bar in the dataset, with a bar_index value of 0, even if earlier bars are otherwise available from the data feed. Therefore, [[]]() operations _cannot_ retrieve data from bars before the first bar determined by the `calc_bars_count` argument.
-### ​`dynamic_requests`​
-The `dynamic_requests` parameter of the declaration statement specifies whether the script can use `request.*()` function calls to execute dynamic requests. If the value is `true` (default), the script can:
-  * Include calls to `request.*()` functions inside the local scopes of conditional structures and loops, and in the operands of conditional expressions.
-  * Use “series” arguments that vary across bars to specify the ticker identifier, timeframe, and other settings of a `request.*()` call.
-  * Execute nested requests, where one `request.*()` call evaluates another inside its context.
-
-If the value is `false`, the script is more limited in how it can use `request.*()` functions:
-  * All `request.*()` calls must execute in the script’s global scope, and outside the conditional operands of ternary or and/or operations.
-  * All `request.*()` parameters except for `expression` require arguments with the “simple” type qualifier or a weaker qualifier, meaning their values _cannot change_ across bars.
-  * A `request.*()` call whose `expression` argument depends on another `request.*()` call _cannot_ evaluate the other call within its context.
-
-The following example script calculates a weighted moving average (WMA) of hl2 values over a specified number of chart bars. It also uses a request.security() call within an if structure to optionally calculate the latest confirmed WMA on a specified higher timeframe. The script can use the request inside the if structure because the indicator() declaration statement’s `dynamic_requests` argument is `true`:
-```pine
-//@version=6
-indicator("Conditional dynamic requests demo", overlay = true, behind_chart = false, dynamic_requests = true)  
-  
-//@variable The number of bars to use in the WMA calculation.  
-int lengthInput = input.int(5, "WMA length", minval = 1)  
-//@variable Specifies whether to retrieve a higher-timeframe WMA.  
-bool htfRequestInput = input.bool(true, "Show higher-timeframe WMA")  
-//@variable A higher-timeframe string for the data request.  
-string timeframeInput = input.timeframe("1W", "Higher timeframe", active = htfRequestInput)  
-  
-//@variable The weighted moving average of `hl2` values over the specified length.  
-float chartWMA = ta.wma(hl2, lengthInput)  
-  
-//@variable The WMA calculated on the higher timeframe if the `htfRequestInput` value is `true`, and `na` otherwise.  
-float requestedWMA = na  
-  
-if htfRequestInput  
-    // Raise an error if the specified timeframe is *not* higher than the chart's timeframe.  
-    if timeframe.in_seconds(timeframeInput) <= timeframe.in_seconds(timeframe.period)  
-        runtime.error("The requested timeframe must be higher than the chart's timeframe.")  
-  
-    // Execute the `request.security()` call for the higher-timeframe request.  
-    // The call works in this `if` structure because the declaration statement enables dynamic requests.  
-    // If we change the `dynamic_requests` argument to `false`, this call causes a *compilation error*.  
-    requestedWMA := request.security(  
-        syminfo.tickerid, timeframeInput, ta.wma(hl2, lengthInput)[1], lookahead = barmerge.lookahead_on  
-    )  
-  
-// Plot the chart WMA and the optional HTF WMA.  
-plot(chartWMA,     "Chart WMA", color.teal,   4)  
-plot(requestedWMA, "HTF WMA",   color.purple, 4)  
-```
-Note that:
-  * The script behaves the same if we remove the `dynamic_requests` argument from the declaration statement, because the default argument is `true`.
-  * If we change the `dynamic_requests` argument to `false`, the request.security() call causes a _compilation error_ because the script cannot use it inside the if statement. To resolve the error without enabling dynamic requests, programmers must move the call to the _global scope_.
-  * Users can change the “Higher timeframe” input in the “Settings/Inputs” tab only if they select the “Show higher-timeframe WMA” checkbox, because the input.timeframe() call includes the argument `active = htfRequestInput` to control when the input is _active_. See the Input function parameters section of the Inputs page to learn more about `active` and other input parameters.
-
-To learn more about the `request.*()` functions and the differences between dynamic and non-dynamic requests, refer to the Other timeframes and data page.
-## ​`strategy()`​
-The strategy() function declares that the script is a  _strategy_. Strategies can simulate orders and trades across a dataset, enabling users to backtest and forward test their trading systems. They have many similar capabilities to indicators, while also providing the ability to analyze hypothetical trading performance in a dedicated tab.
-The built-in RSI Strategy script is an example of a simple strategy. The script simulates entering and exiting positions based on the RSI crossing the defined overbought and oversold levels. It displays trade markers directly on the chart and shows a detailed strategy report in a separate panel below the chart.
-Scripts declared as strategies have several unique characteristics, including the following:
-  * Strategies are the only scripts that can send orders to the broker emulator and display simulated performance results using the Strategy Tester.
-  * The “Settings” window for strategy scripts features a unique “Properties” tab, where users can customize the properties of the strategy simulation. Programmers can specify _default_ properties for this tab via the unique parameters in the strategy() statement.
-  * Unlike indicators, strategies cannot run on data for other timeframes. They always use the same timeframe as the chart.
-  * Strategies _cannot_ create alert triggers using the alertcondition() function, but they can create them by using calls to the alert() function. Additionally, unlike indicators, they can generate special alerts from order fill events.
-  * Unlike the plots created by indicators or libraries, strategy plots are _not_ accessible to source inputs in other scripts.
-  * Strategies execute differently from indicators or libraries. By default, they execute strictly _once per closed bar_ and do _not_ execute on open bars. However, users can customize a strategy’s calculation behavior to enable additional executions on open bars or after the broker emulator fills an order.
-  * Strategies must include at least one call to an order placement command, or to a function that creates plot visuals, drawing visuals, alert triggers, or Pine Logs.
-
-The strategy() function has the following signature:
-
-```
-
-strategy(title, shorttitle, overlay, format, precision, scale, pyramiding, calc_on_order_fills, calc_on_every_tick, max_bars_back, backtest_fill_limits_assumption, default_qty_type, default_qty_value, initial_capital, currency, slippage, commission_type, commission_value, process_orders_on_close, close_entries_rule, margin_long, margin_short, explicit_plot_zorder, max_lines_count, max_labels_count, max_boxes_count, calc_bars_count, risk_free_rate, use_bar_magnifier, fill_orders_on_standard_ohlc, max_polylines_count, dynamic_requests, behind_chart) → void
-
-```
-
-Because strategies have many of the same features as indicators, the strategy() function includes most of the indicator() function’s parameters. The only exceptions are the `timeframe` and `timeframe_gaps` parameters, because strategies cannot execute on other timeframes.
-TipProgrammers can convert compatible indicator scripts into strategies by replacing the indicator() declaration statement with the strategy() declaration statement, using the same arguments, then adding calls to commands such as strategy.entry() and strategy.exit() to create orders. See an example in the How can I turn my indicator into a strategy section of the Strategies FAQ page.
-The unique parameters in the strategy() declaration statement define the _default properties_ of the strategy simulation, including the initial simulated capital, default order sizes, hypothetical trading costs, and calculation behaviors. The sections below explain these unique parameters. To learn about the other parameters that are common to both indicators and strategies, see the `indicator()` section above.
-For detailed information about how to use the unique strategy() function parameters and the built-ins in the `strategy` namespace, refer to the Strategies page.
-### ​`pyramiding`​
-The `pyramiding` parameter of the strategy() declaration statement accepts an “int” value specifying the default maximum number of _open trades_ , from the orders created by strategy.entry() calls, that a strategy allows for a single position. The default argument is 1, meaning that the strategy can open only _one_ long or short trade at a time using orders from strategy.entry() calls and _cannot_ execute another entry order in the _same direction_ until after the existing trade closes. Users can adjust the script’s pyramiding limit without editing the code by using the “Pyramiding” input in the script’s “Settings/Properties” tab.
-NotePyramiding affects only entry orders from calls to the strategy.entry() command; it does **not** affect the behavior of orders from strategy.order() calls.
-The following example strategy uses two calls to the strategy.entry() command to create market orders for entering long and short trades. The call for long orders executes once every five bars, excluding multiples of 30, and the one for short orders executes once every 30 bars. The strategy() declaration statement includes the argument `pyramiding = 3`, meaning that the strategy can enter up to _three trades_ for the same position using strategy.entry() calls by default.
-As shown below, although the strategy’s long condition (highlighted by the purple background) occurs _five_ times before the short condition (highlighted by the orange background), the strategy executes only **three** entry orders for each long position instead of five. Once the number of open trades reaches three, it does not execute new long entry orders until after the short order _closes_ the existing long position:
-```pine
-//@version=6
-strategy("Strategy `pyramiding` demo", overlay = true, pyramiding = 3, default_qty_value = 10)  
-  
-// The `pyramiding = 3` argument above specifies that, by default, the strategy cannot use `strategy.entry()` calls to  
-// maintain an open position consisting of more than three trades.  
-  
-//@variable The value for the short condition: `true` on every 30th bar, and `false` otherwise.  
-bool sellCondition = bar_index % 30 == 0  
-//@variable The value for the long condition: `true` on every 5th bar, excluding multiples of 30, and `false` otherwise.  
-bool buyCondition = bar_index % 5 == 0 and not sellCondition  
-  
-if buyCondition  
-    // Place a market order named "buy" to close any short position and enter or add to a long position.  
-    strategy.entry("buy", strategy.long)  
-if sellCondition  
-    // Place a market order named "sell" to close any long position and enter or add to a short position.  
-    strategy.entry("sell", strategy.short)  
-  
-// Highlight the background when the `buyCondition` or `sellCondition` value is `true`.  
-bgcolor(  
-    sellCondition ? color.new(color.orange, 80) : buyCondition ? color.new(color.purple, 85) : na,  
-    title = "Order conditions highlight"  
-)  
-```
-Note that:
-  * By default, the orders from the strategy.entry() command automatically close an existing position in the opposite direction and enter a new trade with the specified quantity. See the Reversing positions section of the Strategies page for more information about this behavior.
-  * The `default_qty_value` argument in the declaration statement specifies the initial default size of the strategy’s orders. See the `default_qty_type` and `default_qty_value` section to learn more.
-  * The strategy enters a new trade after every occurrence of the long condition only if the `pyramiding` value is at least 5.
-
-### ​`calc_on_every_tick`​, ​`calc_on_order_fills`​, and ​`process_orders_on_close`​
-The `calc_on_every_tick`, `calc_on_order_fills`, and `process_orders_on_close` parameters of the strategy() declaration statement specify the strategy’s default calculation behaviors. If the argument for each of these parameters is `false` (default), the strategy executes strictly _once per bar_ , on each bar’s _closing tick_ , and the broker emulator fills each order from the strategy on the _open_ of the next available bar. Specifying a value of `true` for any of these parameters changes the strategy’s default execution and order-fill behaviors. Users can also change these behaviors via the “On every tick”, “After order is filled”, and “On bar close” checkboxes in the script’s “Settings/Properties” tab.
-The `calc_on_every_tick` parameter specifies whether the strategy performs a _new execution_ on _each new tick_ of a realtime bar by default. If the value is `true`, the strategy executes once after _every update_ from the realtime data feed, similar to how an indicator executes, instead of waiting for each realtime bar to close. This parameter does _not_ affect the strategy’s executions on _historical bars_ , because realtime tick information is not available on those bars.
-The `calc_on_order_fills` parameter specifies whether the strategy can immediately recalculate and place additional orders on any bar where an _order fills_ by default. If the value is `true`, the strategy _re-executes_ on the next available tick following any tick where the broker emulator fills an order, even if that tick occurs during an open bar. This behavior enables the script to execute _more than once_ on any bar where an order fill occurs — up to four times per historical bar by default (at the open, high, low, and close), and up to once for each new tick on a realtime bar.
-NoticeA strategy that enables recalculation on each tick or after order fills can behave _differently_ on realtime bars and historical bars, and therefore repaint after it reloads. Additionally, with recalculation after order fills enabled, the broker emulator can fill some historical orders at prices that are not typically possible in real-world trading, such as the exact high or low price of a bar. Therefore, when using either of these settings, exercise caution and examine the script’s behaviors carefully to avoid misleading results.
-The `process_orders_on_close` parameter specifies whether the broker emulator can fill an order on the _same closing tick_ where the strategy creates the order by default. If the value is `false` (default), the earliest point at which the broker emulator can fill an order that occurs on a bar’s close is at the _open_ of the _following bar_ , because that point is the next possible tick. If the value is `true`, the emulator fills the order _immediately_ on the bar’s close instead of waiting for the next bar’s opening tick.
-For example, the following strategy simulates opening a position after one exponential moving average (EMA) crosses over another. On each bar where the EMAs cross, the script highlights the chart’s background, then creates a long or short market order on that bar’s closing tick. With the default behavior defined by `process_orders_on_close = false`, the broker emulator does not fill each order on the same bar where the strategy creates it. Instead, it fills the order at the open of the following bar, because that point is the next available tick:
-```pine
-//@version=6
-strategy("`process_orders_on_close` demo", overlay = true, process_orders_on_close = false)  
-  
-// Calculate fast and slow moving averages.  
-float fastMA = ta.ema(close, 13)  
-float slowMA = ta.ema(close, 26)  
-  
-// Set long and short order conditions based on crosses of the moving averages.  
-//@variable Is `true` if `fastMA` crosses above `slowMA`.  
-bool longCondition = ta.crossover(fastMA, slowMA)  
-//@variable Is `true` if `fastMA` crosses under `slowMA`.  
-bool shortCondition = ta.crossunder(fastMA, slowMA)  
-if longCondition  
-    strategy.entry("buy", strategy.long)  
-if shortCondition  
-    strategy.entry("sell", strategy.short)  
-  
-// Plot the moving averages, and highlight the bars where order conditions occur.  
-plot(fastMA, "Fast MA", color.blue,   linewidth = 2)  
-plot(slowMA, "Slow MA", color.orange, linewidth = 2)  
-// Highlights background blue if long entry condition occurs, or orange if short entry condition occurs.  
-bgcolor(longCondition ? color.new(color.blue, 85) : shortCondition ? color.new(color.orange, 80) : na)  
-```
-If we include `process_orders_on_close = true` in the strategy() declaration statement, the broker emulator is no longer limited to filling our strategy’s orders on the next available tick by default. Instead, it fills the orders immediately on each bar’s close:
-```pine
-//@version=6
-strategy("`process_orders_on_close` demo", overlay = true, process_orders_on_close = true)  
-  
-// Calculate fast and slow moving averages.  
-float fastMA = ta.ema(close, 13)  
-float slowMA = ta.ema(close, 26)  
-  
-// Set long and short order conditions based on crosses of the moving averages.  
-//@variable Is `true` if `fastMA` crosses above `slowMA`.  
-bool longCondition = ta.crossover(fastMA, slowMA)  
-//@variable Is `true` if `fastMA` crosses under `slowMA`.  
-bool shortCondition = ta.crossunder(fastMA, slowMA)  
-if longCondition  
-    strategy.entry("buy", strategy.long)  
-if shortCondition  
-    strategy.entry("sell", strategy.short)  
-  
-// Plot the moving averages, and highlight the bars where order conditions occur.  
-plot(fastMA, "Fast MA", color.blue,   linewidth = 2)  
-plot(slowMA, "Slow MA", color.orange, linewidth = 2)  
-// Highlights background blue if long entry condition occurs, or orange if short entry condition occurs.  
-bgcolor(longCondition ? color.new(color.blue, 85) : shortCondition ? color.new(color.orange, 80) : na)  
-```
-NoticeForcing orders to fill on a bar’s close can be helpful in some scenarios, such as when backtesting manual strategies where traders enter or exit positions immediately before the market closes. However, it’s crucial to understand that it can also cause _misleading_ results in some cases, because creating and filling orders on the same tick is _not_ typically possible in real-world trading.
-See the Altering calculation behavior section of the Strategies page to learn more about the `calc_on_every_tick`, `calc_on_order_fills`, and `process_orders_on_close` parameters. For detailed information about how scripts execute on historical and realtime bars, and how these parameters affect executions, refer to the Execution model page.
-### ​`slippage`​ and ​`backtest_fill_limits_assumption`​
-The `slippage` parameter of the `strategy()` declaration statement specifies the default fixed number of ticks that the strategy applies to the fill prices of _all_ market orders and stop orders to simulate slippage. If the argument is a positive “int” value, the strategy adds the specified number of ticks to the fill prices of long orders and subtracts it from the fill prices of short orders. This behavior helps simulate the disparity between expected and actual fill prices that might occur in real-world trading. If the `slippage` argument is 0 (default), the strategy fills orders at their expected prices without simulating any slippage. Users can change the specified slippage amount via the “Slippage” input in the strategy’s “Settings/Properties” tab.
-The `backtest_fill_limits_assumption` parameter specifies the default number of ticks by which the market price must _exceed_ the prices of limit orders before the broker emulator can fill the orders. If the argument is a positive “int” value, the broker emulator fills a limit order at the defined price only if the market price moves _past_ it by the specified number of ticks in the favorable direction. This behavior helps simulate the possibility of unfilled limit orders, as filling limit orders in the real world requires sufficient liquidity and price action around the limit level. If the argument is 0 (default), the emulator fills orders as soon as the market price reaches the limit price or a more favorable value. Users can adjust a strategy’s limit verification requirements via the “Verify price for limit orders” input in the “Settings/Properties” tab.
-NoticeLimit verification can cause order fills to occur at _different times_ , depending on how long it takes for the market price to exceed limit levels by the specified amount. This tradeoff is necessary to enable filling limit orders at their verified prices without introducing lookahead bias in the simulation. However, in some cases, it can also cause some limit orders to fill at times that are not possible in the real world. We therefore recommend users understand this price-time tradeoff and analyze their strategies carefully when adding verification to limit orders.
-### ​`default_qty_type`​ and ​`default_qty_value`​
-The `default_qty_type` and `default_qty_value` parameters of the strategy() declaration statement specify the initial _default order size_ for the strategy.entry() and strategy.order() commands. If a call to either command does not specify an order size, the resulting order uses the default order size defined by these parameters. Users can adjust these properties via the “Default order size” inputs in the script’s “Settings/Properties” tab.
-The `default_qty_type` parameter specifies the default _quantity type_ for each order from strategy.entry() and strategy.order() calls. The possible arguments and their effects are as follows:
-  * strategy.fixed — The default order size is a fixed number of contracts, shares, lots, or units, depending on the instrument.
-  * strategy.cash — The default size is a fixed number of units of the account currency specified by the `currency` argument.
-  * strategy.percent_of_equity — The default size is a fixed percentage of the strategy’s available equity.
-
-The default argument is strategy.fixed.
-The `default_qty_value` parameter accepts a “float” value that specifies the amount of the defined quantity type to use as the default order size. The default argument is 1, meaning that the strategy uses the default order size of one contract/share/lot/unit, one unit of the account currency, or one percent of the available equity, depending on the `default_qty_type` argument.
-The specified default order size applies only to the orders from strategy.entry() and strategy.order() calls that do _not_ include a `qty` argument. If a call to either command does include a `qty` argument, that call creates an order for the number of contracts/shares/lots/units specified by the argument instead of using the default quantity type and value. See the Position sizing section of the Strategies page for an example.
-NoteThe `default_qty_type` and `default_qty_value` parameters do not affect orders from the strategy.exit() or strategy.close() commands, because those commands create orders specifically for _closing_ trades. The default order size for those commands is the size of the trades to which they apply.
-The following example demonstrates how different default order sizes can affect a strategy’s entry orders. The script below uses a strategy.entry() call, without a `qty` argument, to place a long market order when the close and volume values are rising over a specified number of bars, then uses a strategy.close_all() call to close the open position when the close value is falling while the volume value is rising. It also plots the value of the strategy.position_size variable in a separate pane to visualize the size of each open position.
-The strategy() statement in this example includes the arguments `default_qty_type = strategy.fixed` and `default_qty_value = 20`, which set the strategy’s default order size to 20 contracts/shares/lots/units. As shown by the trade markers and the plot on our NYSE:UBER chart below, each order from the strategy.entry() command consistently opens a 20-share trade:
-```pine
-//@version=6
-// The `default_qty_*` arguments in this declaration statement specify that, by default, `strategy.entry()` and  
-// `strategy.order()` calls create orders for 20 contracts/shares/lots/units if they do not specify a `qty` argument.  
-strategy(  
-    "`default_qty_type` and `default_qty_value` demo",  
-    default_qty_type = strategy.fixed, default_qty_value = 20  
-)  
-  
-//@variable The number of bars for the `ta.rising()` and `ta.falling()` calculations.  
-int lengthInput = input.int(2, "Length", minval = 1, display = display.none)  
-  
-// Determine if the `close` series is rising or falling over `lengthInput` bars, and if the `volume` series is rising.  
-bool risingClose  = ta.rising(close,  lengthInput)  
-bool fallingClose = ta.falling(close, lengthInput)  
-bool risingVolume = ta.rising(volume, lengthInput)  
-  
-if risingVolume  
-    switch  
-        // Place a long market order if the `close` and `volume` values are both rising.  
-        risingClose  => strategy.entry("Long entry", strategy.long)  
-        // Place an order to close the position if the `close` value is falling while the `volume` value is rising.  
-        fallingClose => strategy.close_all()  
-  
-// Plot the size of the current position. The plotted value is 0 if a position is not open.  
-plot(strategy.position_size, "Position size", style = plot.style_area)  
-```
-If we edit the declaration statement to use the argument `default_qty_type = strategy.percent_of_equity`, the strategy sets the default size of each entry order to allocate 20% of its current available equity instead of the amount required to purchase 20 shares. Now, the trade markers and plot show _varying sizes_ , because the number of shares that corresponds to the default order size varies with both the strategy’s available equity and the current market price:
-```pine
-//@version=6
-// The `default_qty_*` arguments in this declaration statement specify that, by default, `strategy.entry()` and  
-// `strategy.order()` calls create orders for 20% of the available equity if they do not specify a `qty` argument.  
-strategy(  
-    "`default_qty_type` and `default_qty_value` demo",  
-    default_qty_type = strategy.percent_of_equity, default_qty_value = 20  
-)  
-  
-//@variable The number of bars for the `ta.rising()` and `ta.falling()` calculations.  
-int lengthInput = input.int(2, "Length", minval = 1, display = display.none)  
-  
-// Determine if the `close` series is rising or falling over `lengthInput` bars, and if the `volume` series is rising.  
-bool risingClose  = ta.rising(close,  lengthInput)  
-bool fallingClose = ta.falling(close, lengthInput)  
-bool risingVolume = ta.rising(volume, lengthInput)  
-  
-if risingVolume  
-    switch  
-        // Place a long market order if the `close` and `volume` values are both rising.  
-        risingClose  => strategy.entry("Long entry", strategy.long)  
-        // Place an order to close the position if the `close` value is falling while the `volume` value is rising.  
-        fallingClose => strategy.close_all()  
-  
-// Plot the size of the current position. The plotted value is 0 if a position is not open.  
-plot(strategy.position_size, "Position size", style = plot.style_area)  
-```
-### ​`initial_capital`​ and ​`currency`​
-The `initial_capital` parameter of the `strategy()` declaration statement specifies the default _initial account balance_ for the strategy’s simulation, as a quantity of the account currency. It accepts a positive “int” or “float” argument. The default is 1000000. Users can change the strategy’s initial account balance by adjusting the “Initial capital” input in the script’s “Settings/Properties” tab.
-The `currency` parameter specifies the strategy’s default _account currency_. It is the currency unit for the strategy’s initial capital and for the internal calculations in the simulation that express values as currency amounts (equity, profit and loss, commission, etc.). The parameter accepts a `currency.*` constant (e.g., currency.USD) or a string representing a valid _currency code_ , (e.g., `"USD"`). The default is currency.NONE, which specifies that the strategy uses the _same currency_ as that of the quoted prices on the chart. Users can change the strategy’s account currency via the “Base currency” input in the “Settings/Properties” tab.
-If the specified account currency differs from the chart’s currency, the strategy _converts_ monetary values in its calculations to express them in the account currency. However, the prices of the strategy’s orders remain expressed in the chart’s currency. To convert necessary monetary values to the account currency, the strategy typically uses the previous _daily_ value of a corresponding _currency pair_ as the conversion rate, or the value from a spread if no direct currency pair is available. See the Currency section of the Strategies page for more information.
-### ​`commission_type`​ and ​`commission_value`​
-The `commission_type` and `commission_value` parameters of the `strategy()` declaration statement specify the default commission fees that the broker emulator applies to the strategy’s simulated transactions. Users can customize the strategy’s commission settings via the “Commission” inputs in the “Settings/Properties” tab.
-The `commission_type` parameter determines the default _commission type_ for each executed order. The possible arguments and their effects are as follows:
-  * strategy.commission.cash_per_order — The default commission for each transaction is a fixed number of units in the strategy’s account currency.
-  * strategy.commission.cash_per_contract — The commission is a fixed account currency amount for each traded contract/lot/share/unit.
-  * strategy.commission.percent — The commission is a fixed percentage of each transaction’s value.
-
-The default argument is strategy.commission.percent.
-The `commission_value` parameter accepts a positive “int” or “float” value specifying the default fee amount for the commission type. For example, if the value is 1, the strategy simulates a fee of one unit of the account currency per transaction, one unit of the account currency per contract/share/lot/unit, or one percent of each transaction’s size by default, depending on the `commission_type` value. The default argument is 0, meaning that the strategy does not simulate commission unless the user specifies a nonzero value for the first “Commission” input in the “Properties” tab.
-### ​`close_entries_rule`​
-The `close_entries_rule` parameter of the strategy() declaration statement determines the order in which the strategy simulation closes the trades in an open market position. It accepts one of two “string” arguments: `"FIFO"` or `"ANY"`. If the value is `"FIFO"`, the broker emulator follows _First In, First Out (FIFO)_ rules when closing market positions. Under these rules, the _earliest_ open trade is always the _first_ to close, regardless of the entry IDs specified by the script’s strategy.exit() or strategy.close() calls. If the value is `"ANY"`, the broker emulator _ignores_ FIFO rules and closes the trades specified by the exit commands, even if an earlier trade with a different entry ID is open. The default is `"FIFO"`.
-NoteUsers cannot customize a strategy’s exit order rules from the script’s “Settings/Properties” tab, unlike other strategy properties. The only way to change this property is by specifying a `close_entries_rule` argument in the strategy() statement.
-Refer to the Closing a market position section of the Strategies page for an example of how changing the `close_entries_rule` argument can affect a strategy’s exit behavior.
-### ​`margin_long`​ and ​`margin_short`​
-The `margin_long` and `margin_short` parameters of the strategy() declaration statement specify the default margin requirements for the strategy’s long and short positions, respectively. Users can adjust the strategy’s long and short margin requirements via the “Margin for long positions” and “Margin for short positions” inputs in the “Settings/Properties” tab.
-Margin is the percentage of a position’s value that the simulated account must retain in its balance as _collateral_ for the broker emulator to cover the rest of the position. It is the _inverse_ of _leverage_. For example, if the margin requirement for a long position is 50%, the strategy must maintain sufficient funds to cover _half_ of the open position. This level of margin means that the strategy’s leverage is 2:1. In other words, the strategy can risk up to _twice_ its available balance on a simulated trade.
-The default `margin_long` and `margin_short` arguments are 100, meaning that the strategy must cover _100%_ of each long and short position using its simulated account balance.
-If a strategy’s available funds drop below the required margin percentage, the broker emulator triggers a _margin call_ , which forcibly _liquidates_ part or all of the simulated position to cover the loss. For detailed information about margin simulation and margin call events, refer to the How to simulate trading with leverage in Pine Script article in our Help Center.
-NoticeIf a strategy’s long or short margin percentage is _zero_ , it effectively has _infinite_ leverage. It can open and maintain positions of _any size_ , regardless of its simulated account balance. This behavior can cause **misleading** results, because real-world brokers require traders to fund at least part of their positions. Therefore, we do not recommend using a value of 0 as the `margin_long` or `margin_short` argument.
-### ​`risk_free_rate`​
-The `risk_free_rate` parameter of the strategy() declaration statement specifies the annual percentage return of a hypothetical _risk-free_ investment. The strategy uses the specified risk-free rate to calculate the Sharpe ratio and Sortino ratio metrics displayed in the “Strategy report” panel. The default value is 2, meaning that these metrics assess the strategy’s _risk-adjusted returns_ relative to a hypothetical 2% risk-free rate.
-NoteUsers cannot adjust the risk-free rate from the “Settings/Properties” tab. The only way to change the value is by specifying a `risk_free_rate` argument in the strategy() statement.
-### ​`use_bar_magnifier`​
-The `use_bar_magnifier` parameter of the strategy() declaration statement specifies whether the strategy enables the Bar Magnifier backtesting mode by default. Users can activate or deactivate the Bar Magnifier mode by selecting the “Using bar magnifier” checkbox in the strategy’s “Settings/Properties” tab. If the value is `true`, the broker emulator retrieves available prices from a _lower timeframe_ on historical bars by default for more precise intrabar order fills. If the argument is `false` (default), the broker emulator relies on default _assumptions_ about intrabar price movement instead of using prices from a lower timeframe. See the Broker emulator section of the Strategies page to learn more.
-NoteThe Bar Magnifier feature is available only to accounts with Premium and Ultimate plans.
-### ​`fill_orders_on_standard_ohlc`​
-The `fill_orders_on_standard_ohlc` parameter of the strategy() declaration statement specifies whether the broker emulator fills the strategy’s orders using actual prices by default when the strategy executes on a Heikin Ashi chart. Users can activate or deactivate the feature via the “Using standard OHLC” input in the strategy’s “Settings/Properties” tab. If the value is `false`, the emulator fills the strategy’s orders using the chart’s _synthetic prices_ by default. If `true`, it fills the orders using the _actual_ open, high, low, and close prices from a _standard chart_ dataset for more realistic results. The default argument is `false`.
-NoticeThis feature **does not** affect backtests on other non-standard charts, such as Renko or Kagi. A strategy always uses the chart’s synthetic prices when executing on those chart types, and therefore produces _unreliable_ results, regardless of the specified `fill_orders_on_standard_ohlc` argument. See the Strategy produces unrealistic results on non-standard chart types article in our Help Center to learn more.
-## ​`library()`​
-The library() function declares that the script is a library. Libraries _export_ reusable functions, methods, user-defined types (UDTs), enum types, or constant variables. Libraries can also include _non-exported_ code to demonstrate how they work and how to use them. Indicators, strategies, and other libraries can use the import keyword to import a published library’s exported code components. Importing components from libraries often helps programmers streamline script creation and simplify source code.
-The VisibleChart publication from PineCoders is an example of a library. It exports functions that perform calculations on the chart’s visible bars. The example script in the FAQ entry Can I create an indicator that plots like the built-in Volume or Volume Profile indicators demonstrates how scripts can import and use functions from this library.
-Because the primary purpose of a library is to export components for other scripts, they have multiple unique characteristics, including the following:
-  * Libraries are the only scripts that can use the export keyword.
-  * Libraries _cannot_ directly create alert triggers, but they can _export_ custom functions that contain alert() calls. Indicators and strategies can use the alert triggers from calls to those functions.
-  * A library’s title acts similarly to a _namespace_ identifier when another script imports the library. Therefore, unlike indicators and strategies, libraries must follow identifier naming rules in their titles.
-  * User-defined functions and methods exported by libraries must prefix each declared parameter with a type keyword.
-  * The example code of a library executes similarly to an indicator. When applied to a chart, the code executes _once per bar_ on historical bars and _once per tick_ on realtime bars.
-  * Libraries use default indicator properties when their code executes on a chart. The declaration statement of a library does not include parameters for setting decimal precision, plot formatting, scales, drawing limits, or other script properties.
-  * Unlike indicators, libraries can use the available `strategy.*` built-ins. However, unlike strategies, a library’s example code does _not_ display trade markers on the chart or generate a strategy report.
-  * For a library to compile, it must use the export keyword to export _at least one_ function, method, enum, UDT, or “const” variable.
-
-The library() function’s signature is as follows:
-
-```
-
-library(title, overlay, dynamic_requests) → void
-
-```
-
-The `overlay` parameter behaves the same as that of the indicator() and strategy() declaration statements. Refer to the `overlay`, `scale`, and `behind_chart` section above for information about this parameter.
-The `title` and `dynamic_requests` parameters are also common to the indicator() and strategy() functions. However, they have some _unique_ characteristics in libraries, as explained in the sections below.
-### ​`title`​
-The `title` parameter of the library() declaration statement specifies the library’s unique name, which other scripts _reference_ to import and use the library’s code. For example, if a `userName` user publishes a library that uses `"foo"` as the `title` argument, another script imports version 1 of the library using the following import statement:
-`// Imports version 1 of the `foo` library from the `userName` user.  
-import userName/foo/1  
-`
-The script can then use the library’s defined title (or a specified _alias_) similarly to a _namespace_ to access the imported components. For example, if the library exports a function named `bar()`, the script that imports the library references the library’s title using _dot notation_ when calling the function:
-`// Calls the `bar()` function from the `foo` library and assigns the result to a variable.  
-result = foo.bar()  
-`
-Because a library’s title behaves as a _code identifier_ in other scripts, the `title` argument must follow identifier naming rules. The “string” argument can contain ASCII letters (`a-z` and `A-Z`), numeric digits (`0-9`), and underscores (`_`). The argument cannot be an empty string, cannot contain spaces or special characters, and cannot _start_ with a numeric digit. Special characters include any of the following:
-  * Basic punctuation, including periods (`.`), commas (`,`), quotation marks (`"`), apostrophes (`'`), exclamation points (`!`), etc.
-  * Symbols that scripts use for syntax, such as parentheses (`( )`), square brackets (`[ ]`), plus signs (`+`), hyphens (`-`), asterisks (`*`), slashes (`/`), and percent signs (`%`).
-  * Currency symbols, such as `$` or `€`.
-  * Non-ASCII letters and digits, such as the Unicode character `𝖠` (U+1D5A0).
-  * Other Unicode characters, such as emoji or special-purpose symbols.
-
-For example, a string such as `"Library_for_14_day_averages"` is a valid `title` argument for the library() declaration statement, but an argument such as `"Library for 14-day averages"` causes a _compilation error_.
-NoteWhen preparing a publication for a library, the `title` argument appears as the _suggested title_ in the “Publish script” window. Programmers can specify a custom title for the publication if they wish. However, to import the library in another script, the import statement requires the `title` argument defined in the library’s declaration statement, **not** the publication’s custom title. Therefore, we recommend using the `title` argument as the title of a library publication for consistency.
-If a user applies the library directly to their chart, the `title` argument’s text appears as the display name in all relevant chart locations, including the script’s status line, the data window, and the Pine Logs pane.
-### ​`dynamic_requests`​
-The `dynamic_requests` parameter of the library() declaration statement specifies whether the library can use dynamic requests. If the argument is `true` (default), the library can use `request.*()` function calls with “series” arguments to define the requested ticker ID and timeframe, include `request.*()` calls in the local scopes of conditional structures or loops, and execute nested requests. Additionally, the library can _export_ user-defined functions and methods that use `request.*()` calls within their function scopes.
-NoteAll `request.*()` calls in a library’s _exported_ functions **cannot** use `expression` arguments that _depend_ on any of the functions’ _parameters_. However, `request.*()` call arguments that define ticker ID, timeframe, and other settings of a request _can_ depend on exported function parameters.
-If the `dynamic_requests` argument is `false`, the library allows `request.*()` calls only in the _global scope_ or within _non-exported_ functions, and those calls require arguments with “simple” or a weaker type qualifier for all parameters except for `expression`.
-The example library below exports a custom `requestFinancialInsights()` function, which uses multiple `request.*()` calls to retrieve the quarterly Earnings Per Share (EPS), total revenue, total outstanding shares for a stock, and estimates the instrument’s market capitalization. The function returns a tuple containing all four values. The library can export this function because its declaration statement enables dynamic requests.
-The library’s example code, listed below the user-defined function, demonstrates one way that programmers who import the library can use the function. The code creates a table and populates its cells with a `requestFinancialInsights()` call’s results on the last available bar:
-```pine
-//@version=6
-  
-//@description This library exports a function that uses dynamic `request.*()` calls to retrieve multiple financial  
-//             metrics for a stock instrument.  
-library("FinancialInsights", overlay = true, dynamic_requests = true)  
-  
-  
-//#region --- Exported code ---  
-  
-//@function      Requests the latest quarterly Earnings Per Share (EPS), total revenue, and total outstanding shares,  
-//               and calculates the latest market capitalization value for the specified stock.  
-//@param symbol  The symbol or ticker ID for the data requests. Requires an exchange prefix (e.g., `"NASDAQ:AAPL"`).  
-//@returns       A tuple containing the EPS, total revenue, outstanding shares, and market cap values, respectively.  
-export requestFinancialInsights(string symbol) =>  
-    //@variable The latest Earnings Per Share reported for the stock.  
-    float eps = request.earnings(symbol, earnings.actual)  
-    //@variable The quarterly total revenue reported for the issuing company.  
-    float totalRevenue = request.financial(symbol, "TOTAL_REVENUE", "FQ")  
-    //@variable The quarterly total number of outstanding shares reported for the stock.  
-    float totalSharesOutstanding = request.financial(symbol, "TOTAL_SHARES_OUTSTANDING", "FQ")  
-    //@variable The market capitalization, estimated by multiplying outstanding shares by current share price.  
-    float marketCap = totalSharesOutstanding * close  
-    // Return the four results in a tuple.  
-    [eps, totalRevenue, totalSharesOutstanding, marketCap]  
-//#endregion  
-  
-  
-//#region --- Example code ---  
-  
-// The code defined below shows an example of *how to use* the library's exported function.  
-// This code is *not* exported; a script that imports the library cannot access it.  
-  
-//@variable References a `table` object that displays financial insights for the stock represented on the chart.  
-var table tbl = table.new(position.top_right, 2, 5, color.yellow, border_color = color.gray, border_width = 1)  
-  
-// Initialize row and column header cells in the table on the first bar.  
-if barstate.isfirst  
-    tbl.cell(0, 1, "Latest EPS"),                tbl.cell(0, 2, "Total revenue")  
-    tbl.cell(0, 3, "Total outstanding shares"),  tbl.cell(0, 4, "Market cap")  
-    tbl.cell(1, 0, str.format("{0} ({1})", syminfo.tickerid, syminfo.currency))  
-if barstate.islast  
-    // Call the `requestFinancialInsights()` function and declare a tuple of variables to store the data on the last bar.  
-    [currEPS, currRevenue, currShares, currMarketCap] = requestFinancialInsights(syminfo.tickerid)  
-    // Populate the remaining table cells with the retrieved results.  
-    tbl.cell(1, 1, str.tostring(currEPS,       "0.00"))  
-    tbl.cell(1, 2, str.tostring(currRevenue,   format.volume))  
-    tbl.cell(1, 3, str.tostring(currShares,    format.volume))  
-    tbl.cell(1, 4, str.tostring(currMarketCap, format.volume))  
-//#endregion  
-```
-Note that:
-  * We included `dynamic_requests = true` in the library() statement only to emphasize the `dynamic_requests` parameter. Specifying this argument is unnecessary; the value is `true` by default. A compilation error occurs if we change the value to `false`, because the library cannot export the custom function or call it within the example code’s if structure.
-  * The `\\@description` annotation at the top of the script sets a _default description_ for the library. Similarly, the `\\@function`, `\\@param`, and `\\@returns` annotations specify documentation for the exported function. Users who import this hypothetical library can hover over its identifiers to view the formatted text from these annotations. Additionally, the “Publish script” window uses these annotations to generate a default publication description.
-  * The source code includes `//#region` and `//#endregion` annotations to define _collapsible regions_ that visually separate the library’s exported code from its non-exported code in the Pine Editor.
-
-See the Request publication from the TradingView account for an advanced example of a library that exports custom functions using dynamic requests.
-
-  * Introduction
-  * `indicator()`
-  * `title` and `shorttitle` 
-  * `overlay`, `scale`, and `behind_chart` 
-  * `format` and `precision` 
-  * `max_bars_back`
-  * `timeframe` and `timeframe_gaps` 
-  * `explicit_plot_zorder`
-  * `max_lines_count`, `max_labels_count`, `max_boxes_count`, and `max_polylines_count` 
-  * `calc_bars_count`
-  * `dynamic_requests`
-  * `strategy()`
-  * `pyramiding`
-  * `calc_on_every_tick`, `calc_on_order_fills`, and `process_orders_on_close` 
-  * `slippage` and `backtest_fill_limits_assumption` 
-  * `default_qty_type` and `default_qty_value` 
-  * `initial_capital` and `currency` 
-  * `commission_type` and `commission_value` 
-  * `close_entries_rule`
-  * `margin_long` and `margin_short` 
-  * `risk_free_rate`
-  * `use_bar_magnifier`
-  * `fill_orders_on_standard_ohlc`
-  * `library()`
-  * `title`
-  * `dynamic_requests`
-
----
-
 ### Variable declarations
 
 # Variable declarations
 ##  Introduction
-Variables are _named containers_ that store calculated values or other data for a script to access and use within a given scope. Variables in Pine Script® can hold data of any available type that is not void, including the direct values of value types, and the _IDs_ (references) of drawings, collections, plots or other instances of reference types.
-A variable in Pine Script consists of three main parts:
-  * An identifier (name), which represents the variable in the source code.
-  * A qualified type, which determines the kind of data the variable stores and whether the data can change.
-  * An assigned value or reference.
+Variables are identifiers that hold values. They must be _declared_ in your code before you use them. The syntax of variable declarations is:
+```
 
-Programmers write _variable declarations_ to create _custom_ variables for working with data of specific types when the available built-in variables do not suffice. A variable declaration is a statement specifying that, from a particular point onward in a specific _scope_ , an identifier refers to a variable with a given initial value or reference. The script accesses the saved value or reference while evaluating expressions or statements that use the variable’s identifier.
-There are two forms of variable declarations in Pine Script:
-  * Single-variable declarations declare and initialize _one_ variable. Programmers can include optional keywords in the statement to define the variable’s type and its declaration behavior, or to export the variable from a library.
-  * Tuple declarations declare and initialize _multiple_ variables using a _tuple_ format. Programmers use these statements to declare variables that hold the data from _function calls_ , conditional structures, or loops that return tuples of data.
-
-All of the statements in the following code block are examples of valid variable declarations. Each identifier to the left of an = operator in the code is the _name_ of a _new variable_ , and the expression or structure to the right determines that variable’s initial value or reference:
-`// Declares a variable named `oc2` that holds a "series float" value.  
-oc2 = (open + close) / 2  
-  
-// Declares a variable named `MULT` that holds a "const float" value.  
-// The `const` and `float` keywords are optional. Using `const` prevents the script from changing the value later.  
-const float MULT = 2.5  
-  
-// Declares *three* variables named `basis`, `upper`, and `lower` to hold all the values returned by `ta.bb()`.  
-// This declaration format does not support keywords; each variable inherits the type of its assigned value.  
-[basis, upper, lower] = ta.bb(oc2, 20, MULT)  
-  
-// Declares a variable named `ratio`. The type is "series float".  
-// The `float` keyword is optional, but helps promote readability.  
-float ratio = math.pow((oc2 - basis) / (upper - lower), 3)  
-  
-// Declares a `ratioColor` variable to hold a "series color" value returned by a `switch` structure.  
-// The `series` and `color` keywords are optional.  
-series color ratioColor = switch  
-    ratio >  0.05 => color.green  
-    ratio < -0.05 => color.red  
-    => color.gray  
-  
-// Declares a variable named `historyBarsStr` on the *first* bar only. Its type is "series string".  
-// The `var` keyword causes the variable and its value to *persist* across subsequent bars.  
-var historyBarsStr = "Historical bars: " + str.tostring(last_bar_index + 1)  
-  
-// Declares a persistent `timeLabel` variable to hold a `label` ID. The `label` keyword is optional.  
-var label timeLabel = label.new(  
-    last_bar_time, 0, historyBarsStr, xloc.bar_time, yloc.price, color.blue, label.style_label_left  
-)  
-  
-// Declares a persistent "float" variable named `highLevel`.  
-// The `float` keyword is *required* because the initial value is *undefined*.  
-// The `varip` keyword causes the variable to persist across *every* execution, not just every bar.  
-varip float highLevel = na  
-  
-// These statements declare variables to hold "plot" IDs, which the script can use in `fill()` function calls.  
-ratioPlot = plot(ratio, "Ratio", ratioColor, 3)  
-basisPlot = plot(0, "Zero")  
-`
-Regardless of format, several key characteristics and limitations apply to user-defined variables:
-  * Every variable has _one_ qualified type, even if its declaration does not explicitly specify the type in the code. Variables declared without type keywords or qualifier keywords _inherit_ type information from their assigned data. A variable’s qualified type _never changes_ across script executions.
-  * Most custom variables are _mutable_. Scripts can reassign mutable variables by using the reassignment or compound assignment operators. However, they _cannot_ reassign any _global_ variables from inside user-defined functions or methods.
-  * The scope of a variable depends on the location of its declaration in the code. The scope determines which parts of the script can _access_ that variable. A variable is available to all parts of a script _after_ its declaration in the _same scope_ or a _nested scope_ , but **not** to any part that is _before_ the declaration or in an _outer scope_.
-  * Variables in _different_ scopes can have the _same name_ , but all variables in the _same_ scope require _unique names_. The only exception is for variables whose identifier is an underscore (`_`), which makes them _unusable_ in any expressions or statements.
-  * If a variable in a nested scope has the same name as one in an outer scope, that variable shadows the outer scope’s variable. In other words, the script _cannot access_ the outer scope’s variable in any part of the nested scope following the inner variable’s declaration.
-  * By default, a script declares and initializes a variable anew during _each execution_ of its scope. However, a single-variable declaration can include the var or varip keyword to set an alternative declaration mode, causing the variable and its data to _persist_ across bars or ticks.
-
-## Single-variable declarations
-A single-variable declaration is a statement that creates one new variable, names it, and assigns it an initial value or reference. The statement can include _keywords_ to specify the variable’s qualified type and declaration mode, or to export the variable. The syntax is as follows:
+[<declaration_mode>] [<type>] <identifier> = <expression> | <structure>
 
 ```
 
-[export ][var |varip ][[qualifier ]<type> ]<identifier> = <expression>|<structure>
+or
+```
+
+<tuple_declaration> = <function_call> | <structure>
 
 ```
 
-Where:
-  * The `|` character represents _OR_ , all parts enclosed in angle brackets (`<>`) represent _required_ syntax, and all parts in square brackets (`[]`) represent _optional_ syntax.
-  * export is the optional keyword for exporting the variable from a library, enabling its use in other scripts. Exporting is allowed only if the variable is of a fundamental type and the declaration includes the const keyword.
-  * var and varip are optional keywords that cause the variable and its data to _persist_ across bars or ticks. If the declaration does not include either keyword, the script _reinitializes_ the variable during _every_ execution of the variable’s scope. Refer to the Declaration modes section for more information.
-  * `qualifier` and `type` refer to _keywords_ for specifying the variable’s qualified type. These keywords are usually optional. If the declaration does not include them, the variable’s assigned data determines its type information. See the Declaring qualified types section to learn more.
-  * `identifier` is the variable’s _name_.
-  * = is the assignment operator. The `expression` or `structure` part to the right of the operator determines the initial value or reference that it assigns to the new variable. `expression` refers to a literal value, the identifier of another variable, an operation, or a _function_ or method call that returns a single value or reference. `structure` refers to any conditional structure or loop that returns a single value or reference.
+where:
+  * `|` means OR, and parts enclosed in square brackets (`[]`) can appear zero or one time.
+  * <declaration_mode> is the variable’s declaration mode. It can be var or varip, or nothing.
+  * <type> is a valid _type keyword_ with an optional _qualifier prefix_. Specifying a variable’s type is optional in most cases. See the Type system page to learn more.
+  * <identifier> is the variable’s name.
+  * <expression> can be a literal, a variable, an expression or a function call.
+  * <structure> can be an if, for, while or switch _structure_.
+  * <tuple_declaration> is a comma-separated list of variable names enclosed in square brackets (`[]`), e.g., `[ma, upperBand, lowerBand]`.
 
-The example below demonstrates a single-variable declaration that declares a “float” variable named `median` to hold the current value returned by a ta.median() function call:
-```pine
-//@variable  Holds the 20-bar median of `hl2` values as of the current bar.
-float median = ta.median(hl2, 20)  
-```
-Note that:
-  * This statement initializes the `median` variable anew on _every_ execution, because it does not specify a different declaration mode with the var or varip keyword. Each execution thus _updates_ the variable with the function call’s latest result for the current bar.
-  * The `//@variable` comment is an optional annotation that _documents_ the declared variable in the code. Users can hover over the `median` identifier in the Pine Editor to view a pop-up window that displays the specified line of text.
-
-After a script declares a variable, it can then use that variable in any subsequent part of the code in the same scope or a nested scope. The variable’s identifier serves as a _placeholder_ for a specific value or reference in the script’s logic. When the script evaluates an expression that contains the identifier, it retrieves the variable’s saved data and uses that data in the calculation.
-For example, the following script calculates the median of hl2 values over a specified number of bars, then plots the median on the chart as a color-coded line. It declares variables to store the median and other values for the calculations, and uses three of the variables as arguments for the plot() call at the end:
-```pine
-//@version=6
-indicator("Single-variable declarations demo", overlay = true)  
-  
-//@variable Holds a "const string" value for use as the `title` argument in the `plot()` call.  
-const string PLOT_TITLE = "Median"  
-  
-//@variable Holds an "input int" value for use as the `length` argument in the `ta.median()` call.  
-int lengthInput = input.int(20, "Length", 1)  
-  
-//@variable Stores the current median of `hl2` values over `lengthInput` bars. The value updates on every bar.  
-//          The script uses it to calculate `isUptrend`, and to define the `series` argument of the `plot()` call.  
-float median = ta.median(hl2, length = lengthInput)  
-  
-//@variable Holds `true` if the last change in the `median` value was positive, and `false` otherwise.  
-bool isUptrend = ta.valuewhen(median != median[1], median > median[1], 0)  
-  
-//@variable Holds the value of `color.green` if the value of `isUptrend` is `true`, and `color.red` otherwise.  
-color plotColor = if isUptrend  
+These are all valid variable declarations. Note that the last declaration requires four lines of code because it uses the returned value from an if statement:
+`BULL_COLOR = color.lime  
+i = 1  
+len = input(20, "Length")  
+float f = 10.5  
+closeRoundedToTick = math.round_to_mintick(close)  
+sma = ta.sma(close, 14)  
+var barRange = float(na)  
+var firstBarOpen = open  
+varip float lastClose = na  
+[macdLine, signalLine, histLine] = ta.macd(close, 12, 26, 9)  
+plotColor = if close > open  
     color.green  
 else  
     color.red  
-  
-// Plot the current `median` value. Set the plot's title and color using the values of `PLOT_TITLE` and `plotColor`.  
-plot(series = median, title = PLOT_TITLE, color = plotColor, linewidth = 3)  
-```
-Note that:
-  * The const keyword specifies that the script cannot reassign the variable. For value types such as “string”, it also declares that the variable’s qualifier is “const”, meaning that it accepts only _constant_ values that are available at _compile time_.
-  * The script uses the int, float, bool, color, and string keywords to specify the type of each variable. Using type keywords is optional in all the above declarations, because the compiler can automatically determine the appropriate types, but doing so helps promote readability. See the Declaring qualified types section to learn more about type and qualifier keywords.
-  * The script can assign the result of the if structure to a variable because both of the structure’s local blocks return the same type (“color”). See the Matching local block type requirement section of the Conditional structures page to learn more.
-
-It’s important to note that a script _cannot_ use a custom variable in any expressions or statements that _precede_ the variable’s declaration, because the variable is _not available_ at that point in the code. Attempting to use a variable in any code before its declaration causes a compilation error.
-For example, moving the `median` declaration in the previous script to the end of the source code causes an error, because the script can no longer access the variable for the `isUptrend` calculation or the plot() call:
-```pine
-//@version=6
-indicator("Inaccessible variable demo", overlay = true)  
-  
-const string PLOT_TITLE = "Median"  
-  
-int lengthInput = input.int(20, "Length", 1)  
-  
-bool isUptrend = ta.valuewhen(median != median[1], median > median[1], 0)  
-  
-color plotColor = if isUptrend  
-    color.green  
-else  
-    color.red  
-  
-plot(series = median, title = PLOT_TITLE, color = plotColor, linewidth = 3)  
-  
-// Moving this statement to the bottom of the code makes `median` *inaccessible* to all code above.  
-// This change causes an error, because `isUptrend` and the `plot()` call both require the variable's value.  
-float median = ta.median(hl2, length = lengthInput)  
-```
-NoteThe for loop structure uses a single-variable declaration in its header to declare a local counter variable. Likewise, the for…in structure can declare a single local variable in its header to store items from a collection. These types of declarations use a different syntax than that of the declarations described above. See the Loops page to learn more.
-## Tuple declarations
-Some conditional structures, loops, and function or method calls return tuples containing _multiple_ values or references. To use the data returned from such expressions and structures, programmers must write _tuple declarations_ , which are single statements that declare multiple variables using a tuple format.
-The syntax for a tuple declaration is as follows:
-
-```
-
-<tuple_of_identifiers> = <function_call>|<structure>
-
-```
-
-Where:
-  * The `|` character represents _OR_ , and all parts enclosed in angle brackets (`<>`) represent required syntax.
-  * `tuple_of_identifiers` represents a comma-separated list of variable names enclosed in square brackets (e.g., `[x, y, z]`). The tuple must contain _one_ new identifier for _each_ returned value or reference.
-  * = is the assignment operator. The `function_call` or `structure` part to the right of the operator determines the initial data that it assigns to each new variable. `function_call` refers to a call to a built-in function or user-defined function, or method, that returns a tuple. Likewise, `structure` refers to a loop or conditional structure that returns a tuple.
-
-Some built-in functions in the `ta` namespace return a tuple instead of a single value. Therefore, scripts must use tuple declarations to create variables that store the data from calls to those functions. For example, the ta.bb() function returns a tuple containing all _three_ values of the Bollinger Bands indicator in the following order: the basis moving average, the upper band, and the lower band. Therefore, a script must use a tuple declaration, such as the following, to declare one new variable for _each_ returned value:
-`// Declares three variables named `bbMiddle`, `bbUpper`, and `bbLower` to hold the values returned by `ta.bb()`.  
-// `bbMiddle` stores the middle band (SMA), `bbUpper` stores the upper band, and `bbLower` stores the lower band.  
-[bbMiddle, bbUpper, bbLower] = ta.bb(close, 5, 4)  
 `
-TipFunction signatures displayed by the Pine Editor’s autosuggest feature or the Reference Manual list return types in square brackets if the function returns a tuple. For instance, the signature for ta.bb() shows the return type `[series float, series float, series float]`, indicating that a call to the function returns a tuple of three “series float” values.
-Programmers often use tuples in user-defined functions and methods to return multiple values for use later in a script’s calculations. A user-defined function returns a tuple only if the _final code_ in its body is a tuple of expressions.
-For example, the code block below defines a `calcWidthAndColor()` function that returns a two-item tuple. The tuple contains a “float” value representing the width between two bands, and a “color” value based on the width value. The code then calls that function using variables from the previous example declaration as arguments, and uses a tuple declaration to declare two new variables to store the returned values:
-```pine
-//@function Calculates the width between two bands, and a gradient color based on the normalized width over a
-//          specified length.  
-calcWidthAndGradient(float upper, float lower, int length, color upperColor, color lowerColor) =>  
-    float width = upper - lower  
-    float normWidth = width / ta.highest(width, length)  
-    color gradient = color.from_gradient(normWidth, 0, 1, lowerColor, upperColor)  
-    // Return a tuple containing the values of `width` ("series float") and `gradient` ("series color").  
-    [width, gradient]  
-  
-[bbMiddle, bbUpper, bbLower] = ta.bb(close, 5, 4)  
-  
-// Declares two variables named `bandWidth` and `widthColor` to store the values returned by `calcWidthAndGradient()`.  
-// `bandWidth` stores the returned `width` value, and `widthColor` stores the returned `gradient` value.  
-[bandWidth, widthColor] = calcWidthAndGradient(bbUpper, bbLower, 5, color.orange, color.purple)  
+NoticeAll the above statements use the = _assignment_ operator because they are **variable declarations**. When you see similar lines containing the := operator, the code assigns a _new value_ to a **declared variable**. Those lines define **variable reassignments**. Ensure you understand the distinction, as it is a common stumbling block for new Pine Script® programmers. Refer to the Variable reassignment section below for more information.
+The formal syntax of a variable declaration is:
 ```
-Note that:
-  * The `upper`, `lower`, `length`, `upperColor`, and `lowerColor` identifiers in the function definition represent _parameters_ , which determine the types of _arguments_ that a call to the function requires.
-  * The function definition uses single-variable declarations in its body to create variables that store the necessary data for the function’s calculations. Those variables are available only inside the function definition; a script _cannot_ access them in any other scope.
 
-Programmers often use tuple declarations to declare multiple variables that store results returned by conditional structures. Similar to a function, a conditional structure returns a tuple if the final code in _each local block_ is a tuple of expressions.
-For example, the following code block declares two variables, `lowColor` and `highColor`, to hold “color” values returned by a switch structure based on the value of a string input:
-```pine
-//@variable Holds a string to specify a colorful or grayscale style.
-string styleInput = input.string("Color", "Style", ["Color", "Grayscale"])  
-  
-// Declares two variables named `lowColor` and `highColor` to hold the two values returned by the `switch` structure.  
-// The value of `lowColor` is `color.purple` or `#606060`, and the value of `highColor` is `color.orange` or `#b1b1b1`.  
-[lowColor, highColor] = switch styleInput  
-    "Color" => [color.purple, color.orange]  
-    =>         [#606060, #b1b1b1]  
-```
-The following script combines all three examples above to calculate a set of Bollinger Bands, their width, and a gradient color, then plots all the values on the chart:
-```pine
-//@version=6
-indicator("Tuple declarations demo")  
-  
-//@variable Holds a string to specify a colorful or grayscale style.  
-string styleInput = input.string("Color", "Style", ["Color", "Grayscale"])  
-  
-//@function Calculates the width between two bands, and a gradient color based on the normalized width over a  
-//          specified length.  
-calcWidthAndGradient(float upper, float lower, int length, color upperColor, color lowerColor) =>  
-    float width = upper - lower  
-    float normWidth = width / ta.highest(width, length)  
-    color gradient = color.from_gradient(normWidth, 0, 1, lowerColor, upperColor)  
-    // Return a tuple containing the values of `width` ("series float") and `gradient` ("series color").  
-    [width, gradient]  
-  
-// Declares two variables named `lowColor` and `highColor` to hold the two values returned by the `switch` structure.  
-// The value of `lowColor` is `color.purple` or `#606060`, and the value of `highColor` is `color.orange` or `#b1b1b1`.  
-[lowColor, highColor] = switch styleInput  
-    "Color" => [color.purple, color.orange]  
-    =>         [#606060, #b1b1b1]  
-  
-// Declares three variables named `bbMiddle`, `bbUpper`, and `bbLower` to hold the values returned by `ta.bb()`.  
-// `bbMiddle` stores the middle band (SMA), `bbUpper` stores the upper band, and `bbLower` stores the lower band.  
-[bbMiddle, bbUpper, bbLower] = ta.bb(close, 5, 3)  
-  
-// Declares two variables named `bandWidth` and `widthColor` to store the values returned by `calcWidthAndGradient()`.  
-// `bandWidth` stores the returned `width` value, and `widthColor` stores the returned `gradient` value.  
-[bandWidth, widthColor] = calcWidthAndGradient(bbUpper, bbLower, 5, highColor, lowColor)  
-  
-// Plot the `bbMiddle`, `bbUpper`, and `bbLower` series on the main pane, using `widthColor` as each plot's color.  
-plot(bbMiddle, "Average",     widthColor, 3, force_overlay = true)  
-plot(bbUpper,  "Upper band",  widthColor, 3, force_overlay = true)  
-plot(bbLower,  "Lower band",  widthColor, 3, force_overlay = true)  
-// Plot the `bandWidth` series as columns in a separate pane, and color the plot using `widthColor`.  
-plot(bandWidth, "Band width", widthColor, style = plot.style_area)  
-```
-NoteThe for…in loop structure can also use a tuple declaration in its header to declare two local variables for tracking items from a collection and their indices. However, the syntax differs from other tuple declarations described above. See the `for...in` loops section of the Loops page to learn more.
-## Using an underscore as an identifier
-Scripts can declare variables using a _single underscore_ (`_`) as the identifier to mark those variables as _unused_. A script _cannot_ access data from any variables named `_` or use those variables in other expressions or statements after their declaration. Programmers can write any number of `_` variable declarations anywhere in a script, including multiple times in the same scope.
-This behavior is useful in cases where a function call returns a tuple of multiple values, but the script requires only _some_ of those values in its calculations. Rather than specifying unique names for all the unused variables from a tuple declaration, programmers can _discard_ those variables by using `_` as the name for each one.
-For example, the following script calculates the highest and lowest prices across the chart’s visible bars. It imports the VisibleChart library from PineCoders and calls the library’s `ohlcv()` function to perform the calculation. The call returns a tuple of five values: the visible chart range’s open, high, low, close, and cumulative volume. However, our script requires only the high and low. Instead of specifying unique names for all the unused variables, we use `_` as each unused variable’s identifier:
-```pine
-//@version=6
-indicator("Underscores in tuple declarations demo", overlay = true)  
-  
-// Import version 5 of the `VisibleChart` library from PineCoders.  
-import PineCoders/VisibleChart/5 as visChart  
-  
-// Declare a tuple of variables for all values returned by the imported `ohlcv()` function.  
-// This function returns five values in the following order: open, high, low, close, and cumulative volume.  
-// We require only the high and low, so we use `_` to discard the other returned values.  
-[_, visibleHigh, visibleLow, _, _] = visChart.ohlcv()  
-  
-// Plot the values of the `visibleHigh` and `visibleLow` variables on the chart.  
-plot(visibleHigh, "Visible high", color.green, 3)  
-plot(visibleLow,  "Visible low",  color.red,   3)  
-```
-Programmers also occasionally use `_` when writing a loop whose calculations do not require the variables declared in the loop’s header. For example, the script below calculates the sum of 20 pseudorandom values from math.random() calls using a for loop. The calculation does not require the loop’s _counter_ variable, so we used `_` as the variable’s name to mark it as unused:
-```pine
-//@version=6
-indicator("Underscores for loop variables demo")  
-  
-//@variable Stores a pseudorandom value from a Bates distribution.  
-float sample = 0.0  
-  
-// Calculate the sum of 20 `math.random()` values in a `for` loop.  
-// The calculation does not require the counter variable from the loop's header, so we set its identifier to `_`.  
-for _ = 1 to 20  
-    sample += math.random()  
-  
-// Divide by 20 to calculate the final sample.  
-sample /= 20  
-  
-// Plot the resulting value.  
-plot(sample, "Pseudorandom sample")  
-```
-Note that:
-  * The += and /= operators in this script _reassign_ the value of the `sample` variable after initialization. See the Variable reassignment section to learn more.
+<variable_declaration>
 
-## Declaring qualified types
-Every variable has an assigned type and a type qualifier, which together define the variable’s _qualified type_. A variable’s type determines _what kind_ of data the variable represents in the script’s calculations, as well as the types of data that the script can pass to the variable. A variable’s qualifier indicates _when_ the assigned data is available and whether it can _change_ across executions.
-TipProgrammers can inspect a variable’s qualified type by hovering over its identifier in the Pine Editor. The editor displays a pop-up window that shows the variable’s type information below its defined description.
-By default, the Pine Script compiler automatically determines the qualified type of a variable based on its assigned data. However, in single-variable declarations, programmers can override this behavior and specify qualified types directly by prefixing the declared identifiers with type keywords and qualifier keywords.
-The following sections explain how these keywords affect declared variables. For detailed information about Pine’s types and qualifiers, and how they work, refer to the Type system page.
-NoteTuple declarations do not support extra keywords for specifying qualified types. As such, each variable from a tuple declaration automatically inherits the same type as its assigned value or reference, and all the variables inherit the _strongest_ type qualifier used by the function call or structure. See the Tuples section of the Type system page to learn more.
-### Type keywords
-A variable declaration that prefixes the variable’s identifier with a _type keyword_ specifies the type of data that the variable represents in the script’s calculations.
-Programmers can use any of the following as the type keyword in a single-variable declaration to set the variable’s type:
-  * Built-in type keywords: int, float, bool, color, string, line, linefill, box, polyline, label, table, chart.point, footprint, and volume_row.
-  * Collection type identifiers, which contain the array, matrix, or map keyword followed by a _type template_ (e.g., `array<int>`, `matrix<float>`, `map<string, color>`).
-  * The names of enum types or user-defined types.
+    [<declaration_mode>] [<type>] <identifier> = <expression> | <structure>
 
-NoteNot all built-in types have corresponding keywords. For example, there are no keywords for the “plot” and “hline” types, or for the unique value types such as “plot_style”.
-Including a type keyword in a variable declaration is usually _optional_ , because the Pine Script compiler can automatically determine a variable’s type based on its assigned value or reference. However, a variable declaration _requires_ a type keyword if any of the following conditions apply:
-  * The declaration includes a qualifier keyword.
-  * The variable is a constant exported by a library.
-  * The variable’s initial value is na (undefined), and the statement does not cast it to a valid type using the available type-casting functions (e.g., int()). See the `na` value section of the Type system page for more information. 
+    |
 
-TipEven when type keywords are not required, we recommend using them in variable declarations when possible. Type keywords help promote readability, and they help the Pine Editor provide type-specific code suggestions.
-If a variable declaration does _not_ include a type keyword, the variable automatically inherits the _same type_ as the data that the script uses to initialize it.
-For example, the script below declares a variable named `myVar` without using a type keyword. It initializes the variable using the result of the expression `last_bar_index - bar_index`, which returns an “int” value. Therefore, the variable automatically inherits the “int” type:
-```pine
-//@version=6
-indicator("Type inheritance demo")  
-  
-//@variable Counts the number of bars remaining until the script reaches the latest bar.  
-//          The expression returns a "series int" value. Therefore, the variable automatically inherits the "int" type.  
-//          You can hover over the `myVar` identifier to confirm the type.  
-myVar = last_bar_index - bar_index  
-  
-// Plot the value on the chart.  
-plot(myVar, "Bars remaining", color.purple, 3)  
-```
-Note that:
-  * The variable’s _qualified type_ is “series int”, because the built-in variables in the expression store “series” values that change from bar to bar. See the Qualifiers section of the Type system page and the Qualifier keywords section below to learn more.
+    <tuple_declaration> = <function_call> | <structure>
 
-After a variable inherits a type, the script can assign only data of the inherited type or data that Pine Script can cast to that type, because a variable’s assigned type _cannot change_ after initialization.
-For example, the following script attempts to reassign the `myVar` variable using an expression that returns a “float” value after initializing the variable with an “int” value. This script causes a _compilation error_ , because it cannot automatically cast a “float” value to the “int” type that the `myVar` variable requires:
-```pine
-//@version=6
-indicator("Cannot change an inherited type demo")  
-  
-//@variable The natural logarithm of bars remaining until the script reaches the latest bar.  
-//          The expression returns a "series int" value. Therefore, the variable automatically inherits the "int" type.  
-//          You can hover over the `myVar` identifier to confirm the type.  
-myVar = last_bar_index - bar_index  
-  
-// This line causes a compilation error. The `myVar` variable already inherited the type "int", so the script cannot  
-// later assign it the "float" value returned by `math.log()`.  
-myVar := nz(math.log(myVar))  
-  
-// Plot the value on the chart.  
-plot(myVar, "Log of bars remaining", color.purple, 3)  
-```
-If a variable declaration _does_ include a type keyword, the compiler assigns the specified type directly to the variable instead of using the type of the initial value or reference. The script can then assign the variable only data of the specified type, or data that Pine can cast to that type.
-For example, if we add the float type keyword to the `myVar` declaration in the previous example, no compilation error occurs. The keyword directly sets that variable’s type to “float”. Variables of the “float” type can accept “float” or “int” values without errors, because Pine automatically casts “int” values to the “float” type when necessary:
-```pine
-//@version=6
-indicator("Explicit typing with a type keyword demo")  
-  
-//@variable The natural logarithm of bars remaining until the script reaches the latest bar.  
-//          Although the initial expression returns an "int" value, the `float` keyword directly sets the variable's  
-//          type to "float".  
-float myVar = last_bar_index - bar_index  
-  
-// This line does not cause an error, because the expression's returned type ("float") matches the type of the variable.  
-myVar := nz(math.log(myVar))  
-  
-// Plot the value on the chart.  
-plot(myVar, "Log of bars remaining", color.purple, 3)  
-```
-### Qualifier keywords
-A single-variable declaration that includes a _qualifier keyword_ (const, simple, or series) before the type keyword specifies the variable’s type qualifier. A variable’s type qualifier indicates _when_ the assigned value must be accessible, and whether the value can _change_ during or across script executions. Qualifier keywords are almost always _optional_. The only exception is for a library’s exported variables, which require the const keyword in their declarations.
-Below, we list how each qualifier keyword affects declared variables of value types:
-`const`
-“const” qualifier. It accepts only a “const” value, which is a compile-time constant that never changes at runtime. Additionally, the keyword _prevents_ the script from reassigning the variable. Other code that requires any value of the type specified by the type keyword can use the variable, because the “const” qualifier is the _weakest_ in Pine’s qualifier hierarchy.
-`simple`
-“simple” qualifier. It accepts a “simple” value, which becomes available at _runtime_ , during script executions on the _first bar_ of the dataset, and remains _consistent_ across all subsequent bars. It can also accept a value with a _weaker_ qualifier (“input” or “const”). The script can use the variable in any code that allows “simple” values of the given type, but _not_ in any code that requires values with the “input” or “const” qualifiers.
-`series`
-“series” qualifier. It can accept values with _any_ type qualifier, because “series” is the _strongest_ qualifier in Pine’s qualifier hierarchy. The variable’s value is available at runtime and _can change_ on any bar. The script can use the variable in code that allows “series” values of the given type, but _not_ in any code that requires a value with a weaker qualifier.
-NoteIt is possible to use a qualifier keyword when declaring variables of most reference types. However, in such declarations, the keyword **does not** directly define the variable’s type qualifier. Instances of these types always have the _“series”_ qualifier. Therefore, the variables that store their IDs automatically inherit the “series” qualifier, regardless of any qualifier keyword. See the Type system page to learn more.
-If the declaration of a value-type variable does _not_ include a qualifier keyword, the compiler automatically assigns the variable the _strongest_ type qualifier used by the expressions and structures that determine its value, including those that the script uses to reassign the variable after declaring it.
-NotePine Script does not include a keyword for the “input” qualifier. A variable inherits the “input” qualifier only if its declaration does not use a qualifier keyword and the script uses “input” expressions to determine its value.
-For example, the following script calculates and plots the RMA of the close series with a specified length when it runs on a standard chart. It declares multiple variables of value types without using qualifier keywords. Therefore, each variable automatically inherits a qualifier based on its assigned data:
-```pine
-//@version=6
-indicator("Qualifier inheritance demo", overlay = true)  
-  
-//@variable Holds a string for use as the `title` argument in `input.int()`.  
-//          The assigned literal string has the "const string" qualified type.  
-//          Therefore, this variable automatically inherits the "const" qualifier.  
-string INPUT_TITLE = "Length"  
-  
-//@variable Holds an integer for calculating the `length` argument for the `ta.rma()` call.  
-//          All `input*()` functions except for `input.source()` return a value qualified as "input".  
-//          Therefore, this variable inherits the "input" qualifier.  
-int lengthInput = input.int(10, title = INPUT_TITLE, minval = 1)  
-  
-//@variable Holds the value of `lengthInput` if the chart is a standard type, and 1 otherwise.  
-//          The `chart.is_standard` variable has the "simple" qualifier, because it depends on data that does not change  
-//          but is available only at runtime. The other parts of the expression have weaker qualifiers.  
-//          Therefore, the expression returns a "simple" value, and the variable inherits the "simple" qualifier.  
-int lengthVal = chart.is_standard ? lengthInput : 1  
-  
-//@variable Stores the RMA of `close` calculated using `lengthVal` as the `length` argument.  
-//          The `close` variable is of the type "series float", and `ta.rma()` always returns a "series" result.  
-//          Therefore, this variable inherits the "series" qualifier.  
-float rma = ta.rma(close, length = lengthVal)  
-  
-//@variable Stores a "color" value for the plot.  
-//          The variable is initialized using the value of `color.gray`, which is of the type "const color".  
-//          However, the variable does **not** inherit the "const" qualifier, because the script *reassigns* the  
-//          variable later in an `if` structure with logic that depends on a "series" value.  
-//          Therefore, this variable's qualifier is "series".  
-color plotColor = color.gray  
-  
-// If we remove this structure from the code, the `plotColor` variable's qualified type becomes "const color".  
-if ta.change(rma) > 0  
-    plotColor := color.green  
-else  
-    plotColor := color.red  
-  
-// Plot the `rma` series.  
-plot(rma, "RMA", plotColor, 3)  
-```
-Note that:
-  * If a reassignment or compound assignment operation modifies any variable declared without a qualifier keyword, and the operation depends on a value with a stronger type qualifier than that of the variable’s initial value, the variable automatically _inherits_ that stronger qualifier. For instance, the `plotColor` variable has the _“series”_ qualifier, even though the script initializes it using a “const color” value, because the if structure where the script reassigns the value depends on a _“series bool”_ expression (`ta.change(rma) > 0`).
+<declaration_mode>
 
-If a value-type variable declaration _does_ include a qualifier keyword, the compiler assigns the specified qualifier directly to the variable. The variable can accept a value of the specified type with the given qualifier or a _weaker_ one, but it _cannot_ accept a value with a _stronger_ qualifier.
-Below, we modified the previous example from this section to demonstrate how qualifier keywords restrict assigned values. Each declaration after the first includes a qualifier keyword that represents a _weaker_ qualifier than that of the variable’s assigned value, causing a _compilation error_ :
-```pine
-//@version=6
-indicator("Invalid qualifier keywords demo", overlay = true)  
-  
-// The `const` keyword sets the variable's qualifier to "const", which matches the qualifier of the assigned value.  
-// Therefore, no error occurs here.  
-const string INPUT_TITLE = "Length"  
-  
-// The `const` keyword causes a compilation error here. A "const" variable cannot accept a value qualified as "input".  
-const int lengthInput = input.int(10, title = INPUT_TITLE, minval = 1)  
-  
-// The `const` keyword also causes an error in this declaration, as a "const" variable cannot hold a "simple" value.  
-const int lengthVal = chart.is_standard ? lengthInput : 1  
-  
-// Using `simple` in this declaration causes an error, because "series" values cannot be stored by "simple" variables.  
-simple float rma = ta.rma(close, length = lengthVal)  
-  
-// Using `simple` in this declaration causes compilation errors in the `if` structure below, because that structure  
-// depends on a "series" value.  
-simple color plotColor = color.gray  
-  
-// The reassignment operations here attempt to assign a "series" value to a "simple" variable. Such operations are not  
-// allowed.  
-if ta.change(rma) > 0  
-    plotColor := color.green  
-else  
-    plotColor := color.red  
-  
-// Plot the `rma` series.  
-plot(rma, "RMA", plotColor, 3)  
+    var | varip
+
+<type>
+
+    int | float | bool | color | string | line | linefill | label | box | table | polyline | chart.point | array<type> | matrix<type> | map<keyType, valueType> | UDT | Enum
+
 ```
-In addition to restricting when a variable’s value must be available and whether it can change, a qualifier keyword restricts _how_ the script can use the variable. Scripts can pass a variable only to code that accepts the variable’s qualified type, or to code that allows a value of the same type with a _stronger_ qualifier. If a script attempts to use the variable in code that requires a value with a _weaker_ qualifier, a compilation error occurs.
-For example, the script version below uses the simple keyword for the `INPUT_TITLE` declaration. This change causes an error in the input.int() call. The simple keyword sets the `INPUT_TITLE` variable’s type to “simple string”, but the `title` parameter of the input.int() function _requires_ an argument of the type “const string”. The parameter cannot accept “string” arguments with any other type qualifier:
+
+### Initialization with ​`na`​
+In most cases, an explicit type declaration is redundant because type is automatically inferred from the value on the right of the `=` at compile time, so the decision to use them is often a matter of preference. For example:
+`baseLine0 = na          // compile time error!  
+float baseLine1 = na    // OK  
+baseLine2 = float(na)   // OK  
+`
+In the first line of the example, the compiler cannot determine the type of the `baseLine0` variable because na is a generic value of no particular type. The declaration of the `baseLine1` variable is correct because its float type is declared explicitly. The declaration of the `baseLine2` variable is also correct because its type can be derived from the expression `float(na)`, which is an explicit cast of the na value to the float type. The declarations of `baseLine1` and `baseLine2` are equivalent.
+### Tuple declarations
+Function calls or structures are allowed to return multiple values. When we call them and want to store the values they return, a _tuple declaration_ must be used, which is a comma-separated set of one or more values enclosed in brackets. This allows us to declare multiple variables simultaneously. As an example, the ta.bb() built-in function for Bollinger bands returns three values:
+`[bbMiddle, bbUpper, bbLower] = ta.bb(close, 5, 4)  
+`
+### Using an underscore (​`_`​) as an identifier
+When declaring a variable, it is possible to use a single underscore (`_`) as its identifier. A value assigned to such a variable cannot be accessed. You can assign any number of values to a `_` identifier anywhere in the script, even if the current scope already has such an assignment.
+This is particularly useful when a tuple returns unneeded values. Let’s write another Bollinger Bands script. Here, we only need the bands themselves, without the center line:
 ```pine
 //@version=6
-indicator("Invalid argument qualifier demo", overlay = true)  
+indicator("Underscore demo")  
   
-// The `simple` keyword explicitly sets the variable's qualifier to "simple".  
-simple string INPUT_TITLE = "Length"  
+// We do not need the middle Bollinger Bands value, and do not use it.  
+// To make this clear, we assign it to the `_` identifier.  
+[_, bbUpper, bbLower] = ta.bb(close, 5, 4)  
   
-// The `input.int()` call causes a compilation error. The `title` parameter requires a "const" argument. It cannot  
-// accept an argument with a stronger qualifier such as "simple".  
-int lengthInput = input.int(10, title = INPUT_TITLE, minval = 1)  
+// We can continue to use `_` in the same code without causing compilation errors:  
+[bbMiddleLong, _, _] = ta.bb(close, 20, 2)  
   
-int lengthVal = chart.is_standard ? lengthInput : 1  
-float rma = ta.rma(close, length = lengthVal)  
-color plotColor = color.gray  
-  
-if ta.change(rma) > 0  
-    plotColor := color.green  
-else  
-    plotColor := color.red  
-  
-// Plot the `rma` series.  
-plot(rma, "RMA", plotColor, 3)  
+plot(bbUpper)  
 ```
 ## Variable reassignment
-In Pine Script, most variables declared by a script are _mutable_ , meaning that the script can _change (reassign)_ their assigned values or references (IDs) after their declarations. The only exception is for variables that a script declares using the const keyword, because that keyword explicitly _prevents_ the script from reassigning those variables.
-Scripts can reassign custom variables of most available types by using the reassignment operator (:=). The operator directly _replaces_ the variable’s assigned value or reference with the one returned by the specified expression or structure.
-For example, the following script declares a variable named `myVar` with an initial value of 0. Then, it uses the := operator to reassign the variable a value of 10 and plots the result. The script plots a consistent value of 10, not 0, because the := operation _overwrites_ the variable’s initial value:
+A variable reassignment is done using the := reassignment operator. It can only be done after a variable has been first declared and given an initial value. Reassigning a new value to a variable is often necessary in calculations, and it is always necessary when a variable from the global scope must be assigned a new value from within a structure’s local block, e.g.:
 ```pine
 //@version=6
-indicator("Variable reassignment demo")  
+indicator("", "", true)  
+sensitivityInput = input.int(2, "Sensitivity", minval = 1, tooltip = "Higher values make color changes less sensitive.")  
+ma = ta.sma(close, 20)  
+maUp = ta.rising(ma, sensitivityInput)  
+maDn = ta.falling(ma, sensitivityInput)  
   
-//@variable Stores an initial value of 0.  
-int myVar = 0  
+// On first bar only, initialize color to gray  
+var maColor = color.gray  
+if maUp  
+    // MA has risen for two bars in a row; make it lime.  
+    maColor := color.lime  
+else if maDn  
+    // MA has fallen for two bars in a row; make it fuchsia.  
+    maColor := color.fuchsia  
   
-// This operation changes the variable's value to 10. The previous value of 0 is no longer stored by the variable.  
-myVar := 10  
-  
-// This call plots a consistent value of 10, not 0.  
-plot(myVar, "Plotted value", color.teal, 4)  
-```
-Note that scripts cannot reassign variables _before_ declaring those variables. Similarly, they cannot reassign _local_ variables while executing code in an outer scope or a separate local scope. See the Scopes section below for more information.
-For example, a compilation error occurs if we move the := operation _above_ the `myVar` declaration in the previous script, because the variable is _not available_ at that point in the global scope:
-```pine
-//@version=6
-indicator("Invalid reassignment of undeclared variable demo")  
-  
-// This operation causes a compilation error.  
-// The `myVar` identifier does not refer to a valid variable in this part of the code.  
-myVar := 10  
-  
-// The reassignment operation must occur *after* this declaration.  
-int myVar = 0  
-  
-plot(myVar, "Plotted value", color.teal, 4)  
-```
-Scripts can also reassign variables of specific value types by using the compound assignment operators. These operators perform an _arithmetic_ operation using the value of a variable and another specified value, and then reassign the result directly to the original variable:
-  * Addition/concatenation assignment (+=)
-  * Subtraction assignment (-=)
-  * Multiplication assignment (*=)
-  * Division assignment (/=)
-  * Modulo (remainder) assignment (%=)
-
-NoteMost compound assignment operators are compatible with variables or fields of only the “int” and “float” types. However, the += operator is also compatible with variables of the “string” type. Additionally, scripts can use the += and -= operators to modify variables that store “plot_display” values from expressions that use the built-in `display.*` constants.
-The following example calculates an EMA of the close series with a user-specified length using reassignment and compound assignment operations. It declares a variable named `ema` and initializes it with a value of 0, and then reassigns the variable to store the value of `nz(ema[1], close)`. Afterward, the script uses the *= operator to multiply the variable’s value by the value of `(1.0 - alpha)`, and then calculates the final value by using the += operator to add the result of `alpha * close`:
-```pine
-//@version=6
-indicator("Reassigning with compound assignment operators demo", overlay = true)  
-  
-//@variable Stores the length for the smoothing factor of the EMA (`alpha`).  
-int lengthInput = input.int(20, "Length", 1)  
-  
-//@variable The EMA's smoothing factor.  
-float alpha = 2.0 / (lengthInput + 1.0)  
-  
-//@variable Stores an initial value of 0, and is modified through reassignment.  
-float ema = 0.0  
-  
-// Reassign the `ema` variable the previous bar's `ema` value, or the `close` value if the previous value is `na`.  
-// The variable no longer stores a value of 0.  
-ema := nz(ema[1], close)  
-  
-// Multiply and reassign the `ema` variable's value.  
-// After this operation, the value equals the result of `nz(ema[1], close) * (1.0 - alpha)`.  
-ema *= (1.0 - alpha)  
-  
-// Add and reassign the variable's value.  
-// After this operation, the value equals the result of `nz(ema[1], close) * (1.0 - alpha) + alpha * close`.  
-// This result on the current bar is what the `ema[1]` operation retrieves on the next bar.  
-ema += alpha * close  
-  
-// Plot the final value of the `ema` variable for the current bar.  
-plot(ema, "EMA", color.blue, 3)  
+plot(ma, "MA", maColor, 2)  
 ```
 Note that:
-  * This script uses compound assignment operators for demonstration purposes. An equivalent way to calculate the `ema` value with _fewer_ lines of code is to use a single := operation to reassign the variable the result of `(1.0 - alpha) * nz(ema[1], close) + alpha * close`.
-  * Reassigning a variable can affect its type qualifier. For example, although the script initializes the `ema` variable using a “const” value, it also reassigns the variable using _“series”_ expressions. Therefore, the variable inherits the “series” qualifier, because that qualifier is _stronger_ than “const”.
+  * We initialize `maColor` on the first bar only, so it preserves its value across bars.
+  * On every bar, the if statement checks if the MA has been rising or falling for the user-specified number of bars (the default is 2). When that happens, the value of `maColor` must be reassigned a new value from within the if local blocks. To do this, we use the := reassignment operator.
+  * If we did not use the := reassignment operator, the effect would be to initialize a new `maColor` local variable which would have the same name as that of the global scope, but actually be a very confusing independent entity that would persist only for the length of the local block, and then disappear without a trace.
 
-Variables declared in tuple declarations are also compatible with reassignment or compound assignment operators. For example, the script below uses a tuple declaration to declare three variables that hold the result of a ta.macd() call, and then uses the := operator on the declared `macd` variable to assign it a new value. It plots the value of the variable before _and_ after the operation for comparison:
-```pine
-//@version=6
-indicator("Reassigning tuple variables demo")  
-  
-//@variable Stores a multiplier to apply to the histogram value while modifying the `macd` variable.  
-float factorInput = input.float(2.0, "Factor")  
-  
-// Declare three variables to store the MACD, signal, and histogram values from `ta.macd()`.  
-[macd, sig, hist] = ta.macd(close, 12, 26, 9)  
-  
-// Plot the initial value of the `macd` variable. The reassignment operation below does not affect this plot.  
-plot(macd, "Initial `macd` value", color.blue, 2)  
-  
-// Reassign the `macd` variable a new value.  
-macd := sig + hist * factorInput  
-  
-// Plot the new value of the `macd` variable.  
-plot(macd, "Modified `macd` value", color.orange, 2)  
-```
-Note that:
-  * A reassignment or compound assignment operation does not apply to a variable in any code before that operation in the script. The two plot() calls demonstrate this behavior. Although both calls use the `macd` variable, they show different results because the first call uses the variable’s _initial_ value, and the second uses the variable’s value _after_ executing the := operation.
-
-##  Scopes
-The _scope_ of a variable refers to the region of a script in which the script can use the declared identifier to access that variable and its data. Every script has one _global_ scope and zero or more _local_ scopes.
-The location of a variable declaration in a source code determines the resulting variable’s scope:
-  * A variable declared _inside_ the code block of a conditional structure, a loop, or a user-defined function or method definition belongs to a unique local scope.
-  * All variables declared outside these structures, as signified by _non-indented_ lines of code, belong to the script’s global scope.
-
-The global scope is the _outermost_ scope; it encloses all parts of the script defined in the source code. Every local scope is an _inner_ scope, nested into an outer scope, that encloses only the parts of the script defined within a specific _structure_. In general, declared variables that belong to a given outer scope are _accessible_ to the inner scopes defined within that scope, but only if the structures that create those scopes are _below_ the variable declarations in the code. However, variables that belong to an inner scope are **not** accessible to any outer scope.
-For example, the following script declares a variable named `counter` and increments its assigned value inside the scope of an if structure, then attempts to use that local variable’s identifier for the `series` argument of a plot() call in the global scope. This script causes a compilation error, because only the if structure can use the `counter` identifier to access the variable declared within it. In the global scope, the identifier _does not_ refer to a valid variable:
-```pine
-//@version=6
-indicator("Visibility of inner scopes demo")  
-  
-if close > open  
-    //@variable A persistent *local* variable that tracks the number of upward bars.  
-    //          Only the `if` structure's scope can access this variable. The variable is inaccessible to other scopes.  
-    var int counter = 0  
-    // Increment the variable's value by 1 in this scope.  
-    counter += 1  
-  
-// The use of `counter` in this `plot()` call causes a compilation error.  
-// No variable with that name exists in this scope, and the outermost (global) scope cannot access local variables.  
-plot(counter, "Up bar count", color.teal, 3)  
-```
-By contrast, if we move the `counter` variable declaration _above_ the if structure in the previous code, the variable then belongs to the _global scope_. With this change, the plot() call can now use the variable. Additionally, the script can still use the identifier in the if structure’s += operation to reassign the variable without causing an error, because a global variable _is accessible_ to the local scopes of the structures defined after its declaration:
-```pine
-//@version=6
-indicator("Visibility of outer scopes demo")  
-  
-//@variable A persistent *global* variable that tracks the number of upward bars.  
-//          The global scope encloses all parts of the script. Therefore, the `if` structure below can access  
-//          this variable.  
-var int counter = 0  
-  
-if close > open  
-    // Increment the variable's value by 1 in this scope. This does not cause an error, as `counter` refers to the  
-    // global variable declared above.  
-    counter += 1  
-  
-// Plot the global `counter` series.  
-plot(counter, "Up bar count", color.teal, 3)  
-```
-Note that:
-  * The script uses the var keyword to enable the `counter` variable and its value to _persist_ across bars. To learn more about this keyword, see the Declaration modes section below.
-
-Each variable in a script is a _unique container_ that stores a specific value or reference (ID). As such, every variable that belongs to the _same_ scope must have a _unique_ identifier, because using two variables with identical names in the same scope causes ambiguity. The only exception is for variables that have a single underscore (`_`) as their identifier, because the identifier makes those variables _unusable_.
-However, variables that belong to _different_ scopes can have the _same_ identifier, even if they differ in their qualified types or declaration modes, because the identifier refers to only one specific variable while the script executes the scope where each variable declaration occurs.
-For example, the script below calculates the percentage difference between the total number of rising and falling bars. It declares three variables named `counter` for its calculations. The script declares the first two inside the separate if structures, and the last one _below_ those structures in the global scope. Although multiple variables share the `counter` identifier, each exists in a _different_ scope, and the identifier refers to only _one_ of those variables at a time. Therefore, the script compiles successfully:
-```pine
-//@version=6
-indicator("Identical variable names in different scopes demo")  
-  
-//@variable Stores the total number of up bars if `close > open`, and `na` otherwise.  
-int risingCount = if close > close[1]  
-    // Declare a local variable named `counter` and increment its value.  
-    // This variable is a unique entity that exists only in this `if` structure's scope. No other scopes can access it.  
-    var int counter = 0  
-    counter += 1 // Modifies the variable declared on line 8.  
-  
-//@variable Stores the total number of down bars if `close < open`, and `na` otherwise.  
-int fallingCount = if close < close[1]  
-    // Declare another variable named `counter` and increment its value.  
-    // Although it has the same name as the variable in the `if` block above, it exists only in this structure's scope.  
-    var int counter = 0  
-    counter += 1 // Modifies the variable declared on line 15. Does not affect the variable on line 8.  
-  
-// Declare a global variable named `counter` and increment its value. The identifier here does not refer to either of  
-// the local variables above, because this declaration is in the outermost scope.  
-var int counter = 0  
-counter += 1 // Modifies the variable declared on line 20. Does not affect the ones on lines 8 and 15.  
-  
-//@variable The percentage difference between the total number of up bars and down bars.  
-//          The `counter` identifier in the expression refers to the variable declared on line 20.  
-float diff = 100 * (fixnan(risingCount) - fixnan(fallingCount)) / counter  
-  
-// Plot the `diff` series as a color-coded line.  
-plot(diff, "Up bars - down bars %", diff > 0 ? color.teal : color.maroon, 3)  
-```
-Note that:
-  * The script declares the global `risingCount` and `fallingCount` variables to store the values returned by the if structures, because the local `counter` variables are not accessible to the expressions outside their local scopes. When either structure executes its scope, it returns the result of its `counter += 1` statement. Otherwise, it returns na.
-  * If we move the variable declaration on line 20 in this script _above_ the two if statements, a _compiler warning_ occurs because the local variables named `counter` _shadow_ the global variable. See the Shadowing section below to learn more.
-
-###  Shadowing
-_Variable shadowing_ refers to the behavior in which a variable in a specific scope _prevents access_ to a variable with the _same name_ in an outer scope. If a script declares a variable within an inner scope and assigns it the same identifier as a variable declared before it in an outer scope, the script **cannot** use the identifier to access the outer variable while executing the rest of the inner scope. In other words, the inner variable _shadows_ the outer variable.
-In most cases, variable shadowing is _unintentional_. It typically occurs in parts of a script where the programmer intends to reassign a variable instead of creating a new one. Therefore, the compiler displays a _warning_ in the Pine Editor to inform the programmer when it detects a local variable that shadows an outer-scope variable.
-Consider the following script, which checks for engulfing candlestick patterns on the chart. It declares a global variable named `isEngulf` with an initial conditional value of `true` or `false`. Then, the script uses the `isEngulf` identifier in an if structure to filter the condition using criteria based on inputs, and draws a diamond label if the filtered condition remains true. Lastly, the script uses the identifier in a barcolor() call to highlight bars in yellow or orange if the global variable’s value is `true`.
-A newcomer to Pine might expect the script to color the same bars for which it also draws a label, and not others. However, the script colors _every_ bar where the expression on line 16 returns `true`, and the inputs intended to filter the condition do not affect that output:
-```pine
-//@version=6
-indicator("Shadowing demo", overlay = true, max_labels_count = 500)  
-  
-// Declare "input" variables specifying allowed directions, and whether only strong patterns appear in the result.  
-bool bullInput       = input.bool(true,  "Include bullish patterns")  
-bool bearInput       = input.bool(false, "Include bearish patterns")  
-bool showStrongInput = input.bool(true,  "Show strong patterns only")  
-  
-// Declare variables to store candle body information for pattern detection.  
-float bodyLow   = math.min(close, open)  
-float bodyHigh  = math.max(close, open)  
-float bodyDir   = math.sign(close - open)  
-float bodyRange = bodyHigh - bodyLow  
-  
-//@variable Holds a "bool" value indicating whether an engulfing pattern is detected on the current bar.  
-bool isEngulf = (  
-    bodyDir != bodyDir[1] and bodyLow <= bodyLow[1] and bodyHigh >= bodyHigh[1] and bodyRange > bodyRange[1]  
-)  
-  
-if isEngulf  
-    // The following statement *does not* modify the variable declared on line 16.  
-    // Instead, it declares a *new local variable* named `isEngulf`, causing a compiler warning. After the  
-    // declaration, the local variable *shadows* the global variable with the same name, making that variable  
-    // *inaccessible* to all code that follows in the enclosing `if` structure's local block.  
-    isEngulf = switch bodyDir  
-        1  => bullInput and (showStrongInput ? bodyHigh >= high[1] : true)  
-        -1 => bearInput and (showStrongInput ? bodyLow  <= low[1] : true)  
-    // `isEngulf` in this nested `if` statement refers to the *local* variable above, **not** the one from line 16.  
-    if isEngulf  
-        label.new(bar_index, bodyDir == 1 ? low : high, style = label.style_diamond, size = size.small)  
-  
-// This call colors *all* bars with an engulfing pattern, regardless of the specified inputs,  
-// because the `isEngulf` identifier here refers to the *global* variable, and that variable is *not* affected by  
-// the `if` structure's logic.  
-barcolor(isEngulf ? (bodyDir == 1 ? color.yellow : color.orange) : na, title = "Engulfing bar color")  
-```
-This behavior occurs because the script uses the = operator with the `isEngulf` identifier inside the if structure, then uses the identifier further in the local block to specify the condition that controls the label drawings. That = operation declares a new, _local_ variable named `isEngulf`, and the new variable _shadows_ the global variable declared on line 16. Consequently, the logic of the structure does not affect the value of the global `isEngulf` variable. The compiler also displays a warning on line 25 in the code, where the local `isEngulf` declaration occurs.
-We can align the script’s visuals and resolve the compiler warning by replacing the = operator with the reassignment operator (:=) in the if structure. This simple change causes the script to _reassign_ the global `isEngulf` variable using the switch statement’s result rather than creating a new local variable. Because the script directly changes the value of the global variable in the if structure and uses that variable to control both the label and the bar color, both outputs now occur on the same recent bars:
-```pine
-//@version=6
-indicator("Avoiding shadowing demo", overlay = true, max_labels_count = 500)  
-  
-// Declare "input" variables specifying allowed directions, and whether only strong patterns appear in the result.  
-bool bullInput       = input.bool(true,  "Include bullish patterns")  
-bool bearInput       = input.bool(false, "Include bearish patterns")  
-bool showStrongInput = input.bool(true,  "Show strong patterns only")  
-  
-// Declare variables to store candle body information for pattern detection.  
-float bodyLow   = math.min(close, open)  
-float bodyHigh  = math.max(close, open)  
-float bodyDir   = math.sign(close - open)  
-float bodyRange = bodyHigh - bodyLow  
-  
-//@variable Holds a "bool" value indicating whether an engulfing pattern is detected on the current bar.  
-bool isEngulf = (  
-    bodyDir != bodyDir[1] and bodyLow <= bodyLow[1] and bodyHigh >= bodyHigh[1] and bodyRange > bodyRange[1]  
-)  
-  
-if isEngulf  
-    // This statement uses the `:=` operator instead of the `=` operator. Now, the script directly modifies the  
-    // global variable from line 16 instead of creating a new variable that shadows it.  
-    isEngulf := switch bodyDir  
-        1  => bullInput and (showStrongInput ? bodyHigh >= high[1] : true)  
-        -1 => bearInput and (showStrongInput ? bodyLow  <= low[1] : true)  
-    // `isEngulf` in this nested statement now refers to the global variable.  
-    if isEngulf  
-        label.new(bar_index, bodyDir == 1 ? low : high, style = label.style_diamond, size = size.small)  
-  
-// Now that the `if` structure modifies the global `isEngulf` variable, this call colors the same recent bars where  
-// a label drawing occurs.  
-barcolor(isEngulf ? (bodyDir == 1 ? color.yellow : color.orange) : na, title = "Engulfing bar color")  
-```
-It is also possible for custom variables in a script to shadow some built-in variables. If a script declares a variable with the same identifier as a built-in variable, the identifier refers exclusively to that variable for the remainder of the scope. As with custom variables, shadowing a built-in variable causes a compiler warning.
-For example, the script below declares a variable named `close` and assigns it the value of the built-in open variable, then plots the values associated with the two identifiers. Both plots show the _same_ values, because the variable declaration makes the built-in close variable _inaccessible_ to the script:
-```pine
-//@version=6
-indicator("Shadowing a built-in demo", overlay = true)  
-  
-//@variable Stores the value of the `open` variable.  
-float close = open  
-  
-// Plot the values associated with the `close` and `open` identifiers.  
-// Both plots show the *same* value, because the script *cannot access* the built-in `close` variable in this part of  
-// the global scope.  
-plot(close, "`close` value", color.purple, 5)  
-plot(open, "`open` value", color.orange, 2)  
-```
-However, shadowing a built-in variable is possible only if the script does not use the identifier to represent the built-in anywhere in the code. If a script already uses the built-in variable, creating a custom variable that shadows it causes a _compilation error_. For example:
-```pine
-//@version=6
-indicator("Cannot use and shadow a built-in demo", overlay = true)  
-  
-// The `switch` structure for this declaration uses `close` to refer to the *built-in* variable.  
-float ma = switch  
-    chart.is_standard => ta.sma(close, 20)  
-    => close  
-  
-// This declaration now causes a compilation error. A script cannot use the identifier of a built-in to access that  
-// built-in and then use the identifier for a custom variable later. This applies regardless of the scope where the  
-// script accesses the built-in.  
-float close = open  
-  
-plot(close, "`close` value", color.purple, 5)  
-plot(open,  "`open` value",  color.orange, 2)  
-plot(ma)  
-```
-Some variables can also have the same names as _namespaces_. This naming does not typically result in shadowing. For example, a script can name a variable `barstate` and still access variables from the `barstate` namespace. However, if a variable is of a user-defined type (UDT), a compilation error occurs if its name matches a namespace. Such an identifier is _not_ allowed for the type because it can cause _obscuring_ , where the namespace becomes inaccessible or the use of the name becomes ambiguous. For example:
-```pine
-//@version=6
-indicator("Cannot obscure namespaces demo")  
-  
-//@type A custom type with a single "int" field named `tickerid`.  
-type myType  
-    int tickerid = 1  
-  
-// This declaration causes an error.  
-// A UDT variable with the name `syminfo` can obscure the `syminfo` namespace.  
-myType syminfo = myType.new()  
-  
-log.info(str.tostring(syminfo.tickerid))  
-```
-TipRegardless of errors or warnings, we recommend declaring variables with names that do not conflict with identifiers for built-ins of any kind or custom variables from outer scopes. In addition to preventing shadowing and obscuring, using unique identifiers often helps promote readability and makes code simpler to maintain.
+All user-defined variables in Pine Script are _mutable_ , which means their value can be changed using the := reassignment operator. Assigning a new value to a variable may change its _type qualifier_ (see the page on Pine Script’s type system for more information). A variable can be assigned a new value as many times as needed during the script’s execution on one bar, so a script can contain any number of reassignments of one variable. A variable’s declaration mode determines how new values assigned to a variable will be saved.
 ## Declaration modes
-A variable’s _declaration mode_ defines whether and how the variable and its data _persist_ across script executions. By default, declared variables _do not_ persist beyond a single execution; the script declares and initializes them anew during _every_ execution of their scopes.
-Programmers can override this behavior and specify an alternative mode in a single-variable declaration by including the var or varip keyword in the statement:
-  * If the declaration includes the var keyword, the resulting variable persists _across bars_ after the first execution of its scope on a bar’s closing tick. After initialization on a closing tick, the variable remains initialized and preserves any data changes that occur on the close of each subsequent bar. However, it does _not_ preserve any changes that occur on a bar _before_ the bar’s closing tick.
-  * If the declaration includes the varip keyword, the resulting variable persists _across every execution_. The variable remains initialized after the _first execution_ of its scope, even if that execution occurs _before_ the bar’s closing tick. After initialization, the variable preserves all changes that occur on _any_ execution, including on those for the incoming ticks of open realtime bars.
+Understanding the impact that declaration modes have on the behavior of variables requires prior knowledge of Pine Script’s execution model.
+When you declare a variable, if a declaration mode is specified, it must come first. Three modes can be used:
+  * “On each bar”, when none is specified
+  * var
+  * varip
 
-TipThe sections below provide detailed explanations of the default, `var`, and `varip` declaration modes. Understanding this information requires some prior knowledge of Pine’s Execution model and Type system. Therefore, we recommend reviewing the basics of the execution model, reading about the available types, and then coming back to this part to learn more about each declaration mode.
-###  Default
-If a script declares a variable without using the var or varip keyword, it declares and initializes that variable anew during _every_ execution of the variable’s scope. In other words, the variable _resets_ and holds a new value or reference on each new execution, without preserving the data stored during the scope executions on previous bars or ticks.
-NoteTuple declarations do not support extra keywords. Therefore, all variables created by a tuple declaration _always_ use the default declaration mode.
-The following example demonstrates the default declaration behavior. The script declares a variable named `count` with an initial value of 0, then uses the += operator to increase its value by one and plots the result. Because the variable declaration does not include the var or varip keyword, the script _reinitializes_ the variable with a value of 0 on every execution. Therefore, the += operation reassigns a constant value of 1 to the variable across the entire dataset:
-```pine
-//@version=6
-indicator("Default declaration mode demo")  
-  
-// This declaration does not use `var` or `varip`.  
-// Therefore, the script reinitializes the variable to 0 on every execution.  
-int count = 0  
-  
-// Increment the `count` variable by one. Because the variable resets to 0, this operation consistently reassigns it  
-// a value of 1.  
-count += 1  
-  
-// Plot the variable's final value.  
-plot(count, "Constant value", color.blue, 3)  
-```
-Although a variable that uses the default declaration mode does not persist across executions, Pine’s runtime system _commits (saves)_ a script’s calculated data from each execution on a bar’s _closing tick_ , including the data for all the script’s variables, to internal time series structures. Scripts can access a variable’s _previous_ saved values or references (IDs) by using the history-referencing operator or the built-in functions that retrieve history internally.
-For example, the script version below retrieves the last saved value of the `count` variable from _one bar back_ using the expression `nz(count[1])`, then increments that value by one and reassigns the result to the `count` variable on the current bar using the := operator. The plot now shows a value that _increases_ by one on each bar rather than remaining at a constant value, because the final value of the `count` variable on each bar is one greater than the retrieved value for the previous bar:
-```pine
-//@version=6
-indicator("Using past values of a variable demo")  
-  
-// This declaration does not use `var` or `varip`.  
-// Therefore, the script reinitializes the variable to 0 on every execution.  
-int count = 0  
-  
-// Retrieve the value of the `count` variable from the previous bar, or 0 if it is not available, add 1 to that value,  
-// then reassign the result to the `count` variable on the current bar. The script accesses this result with  
-// the `count[1]` operation while executing on the next bar.  
-// Therefore, the current value of the variable is always one greater than the value on the previous bar.  
-count := nz(count[1]) + 1  
-  
-// Plot the variable's final value.  
-plot(count, "Bar counter", color.blue, 3)  
-```
-Note that:
-  * The expression `count[1]` returns na on the _first_ bar of the dataset, because there is no previous bar for the script to access at that point. Therefore, we use the nz() function to replace na with 0 in the calculation. See the `na` value section of the Type system page to learn more.
-  * A simpler way to achieve the same plotted result is to add var to the `counter` variable declaration in the previous example script. See the `var` section to learn more.
-
-NoteAlthough the [[]]() operator can retrieve reference-type IDs for previous bars, scripts cannot _modify_ all types of historical objects. For example, a script cannot modify a collection that it accesses using an ID retrieved for a previous bar. To maintain and update collections across bars, the simplest approach is to declare _persistent_ variables to store their IDs. The `var` section below includes a basic example.
-### ​`var`​
-A variable declaration that includes the var keyword creates a variable that persists _across bars_. The variable _remains initialized_ after the _first_ execution of its scope on a bar’s _closing tick_. From that bar onward, the variable automatically preserves its assigned value or reference until the script explicitly reassigns it.
-In the following example, we modified the first example from the Default section above by adding the var keyword to the `count` variable declaration. With this change, the script no longer reinitializes the variable on every bar. Instead, the variable becomes _permanently_ initialized as of the closing tick of the dataset’s _first bar_. On each subsequent bar, the += operation increases the variable’s value by one, and that new value persists into the next execution. The script now plots a value that changes to 1 on the first bar, then to 2 on the second, and so on:
-```pine
-//@version=6
-indicator("Persistence across bars demo")  
-  
-//@variable A persistent variable initialized to 0 on the first bar, and then modified on each bar.  
-//          The script does not reinitialize this variable after the first bar.  
-var int count = 0  
-  
-// Increment the `count` variable by one. Because the `count` variable persists, it preserves the result of this  
-// operation on the close of each bar. Therefore, on each bar, the variable's current value is one greater than the  
-// value on the previous bar.  
-count += 1  
-  
-// Plot the variable's final value.  
-plot(count, "Bar counter", color.teal, 3)  
-```
-Scripts can use the var keyword to declare persistent variables of most available types, including reference types. If a variable declared with var stores the reference (ID) of an _object_ , such as a collection, changes to that object’s saved data also persist across bars.
-For example, the script below declares a variable named `myArray` using var and initializes it with the ID of an empty array created from a call to `array.new<float>()`. Then, it uses the variable in a call to array.push() to add a _new element_ to the array once every five bars, and plots the array’s size on the chart. The plotted size increases by one on every fifth bar without resetting to zero, because assigning an array’s ID to a var variable causes that array to persist while the variable continues to reference it:
-```pine
-//@version=6
-indicator("Persistent collection demo")  
-  
-//@variable A persistent variable that stores the ID of an array created on the first bar.  
-var array<float> myArray = array.new<float>()  
-  
-// Push the current `close` value into the end of the array once every five bars.  
-if bar_index % 5 == 0  
-    array.push(myArray, close)  
-  
-// Plot the size of the array referenced by `myArray`.  
-plot(array.size(myArray), "Persistent array's size", linewidth = 3)  
-```
-Note
-The data associated with a variable declared using var can change during executions that occur _before_ a bar’s closing tick, including those on the ticks of an open _realtime bar_. However, such changes are **temporary**. Pine’s _rollback_ process _reverts_ the variable and its data to their last _confirmed_ states, as of the previous bar’s close, before executing on the current bar again. Only the _final_ changes to the variable’s data on the bar’s _closing tick_ persist across subsequent bars. See the Realtime bars section of the Execution model page to learn more.
-  
-
-To create a variable that preserves changes across _every_ tick, not just every closing tick, use the varip keyword instead of var in the declaration. See the `varip` section below for more information.
-The var keyword is often helpful when working with instances of drawing types, such as lines. Drawing objects automatically persist across bars until deleted by the runtime system or calls to the built-in `*.delete()` functions, even if a script does not assign their IDs to variables. However, using var variables to directly store drawing IDs, or the data that the drawings require, often makes them simpler to manage across bars. Additionally, it helps promote runtime efficiency.
-For example, the script below draws a line from the open to the close of each daily period on the chart. It uses ta.valuewhen() calls to calculate the opening time and price values for the current period, and assigns those values to variables. On historical bars, the script creates a new line using line.new() and initializes a `currLine` variable with the returned ID when a new period starts. On realtime bars where the current period is open, the script retrieves the last line ID saved by the variable (`currLine[1]`), deletes the referenced line with a call to line.delete(), and then creates a new line to follow the latest price.
-This code is not the most efficient way to achieve the intended result, because it uses ta.valuewhen() to calculate values that the script does _not_ require on every bar, and it deletes and redraws lines on the last bar rather than using `line.set*()` functions to _modify_ the latest line:
-```pine
-//@version=6
-indicator("Inefficient line management demo", overlay = true)  
-  
-//@variable Holds `true` on the first bar in a "1D" period, and `false` on all other bars.  
-bool newPeriod = timeframe.change("1D")  
-  
-// Retrieve the `time` and `open` values from the last bar where the `newPeriod` value was `true`,  
-// and assign the results to variables.  
-int   openTime  = ta.valuewhen(newPeriod, time, 0)  
-float openPrice = ta.valuewhen(newPeriod, open, 0)  
-  
-// Declare a variable to reference the latest line.  
-line currLine = na  
-  
-if barstate.islast  
-    // Create a new `line` object and assign its ID to the `currLine` variable.  
-    currLine := line.new(openTime, openPrice, time, close, xloc.bar_time)  
-    // Delete the line drawn on the previous bar if the `newPeriod` value is `false`.  
-    if not newPeriod  
-        line.delete(currLine[1])  
-// On historical bars where a new period starts, draw a line connecting the period's final values.  
-else if newPeriod  
-    currLine := line.new(openTime[1], openPrice[1], time[1], close[1], xloc.bar_time)  
-```
-The following script version demonstrates a simpler and more efficient way to achieve the same result. It uses the var keyword in the `currLine` variable declaration to initialize the variable on only the first bar. On historical bars where a new period starts, the script calls line.set_xy2() to update the end coordinates of the current line referenced by the `currLine` variable, and then creates a new line for the current bar and reassigns the variable to store that line’s ID. On the latest bar where the current period is open, the script passes the variable to a line.set_xy2() call to update the current line instead of deleting that line and creating a new one:
-```pine
-//@version=6
-indicator("Efficient line management demo", overlay = true)  
-  
-//@variable Holds `true` on the first bar in a "1D" period, and `false` on all other bars.  
-bool newPeriod = timeframe.change("1D")  
-  
-// Declare a variable that persistently stores a `line` ID or `na` across bars until reassigned.  
-var line currLine = na  
-  
-if barstate.islast  
-    // At the start of a new period, create a new `line` object with coordinates for the current bar, and reassign  
-    // the `currLine` variable. The variable stores the new `line` ID until the `newPeriod` value is `true` again.  
-    if newPeriod  
-        currLine := line.new(time, open, time, close, xloc.bar_time, color = color.purple)  
-    // Set the `x2` and `y2` (end) coordinates of the current line to the current bar's `time` and `close` values  
-    // while the period is open.  
-    currLine.set_xy2(time, close)  
-else if newPeriod  
-    // Update the end coordinates of the latest line on historical bars to the final value of the previous period.  
-    currLine.set_xy2(time[1], close[1])  
-    // Create a new `line` object and assign its ID to the `currLine` variable. On the next historical bar where  
-    // a new period starts, the script modifies the new line.  
-    currLine := line.new(time, open, time, close, xloc.bar_time, color = color.purple)  
-```
-Note that:
-  * Programmers can observe the performance difference between these scripts by analyzing them with the Pine Profiler on the historical and realtime bars of an intraday chart.
-  * It is possible to search the built-in line.all array to access the last drawn line instead of using a persistent variable. However, that approach requires checking the array’s size with the array.size() function and using the array.get() or array.last() function to retrieve the latest line ID. These extra steps require _more_ resources than maintaining a persistent ID with a var variable and updating the referenced line’s data across specific bars.
-
-Scripts can use the var keyword to declare variables in global or local scopes. If a var variable declaration is in a local scope, such as within a conditional structure, that variable persists across each execution of the scope and preserves changes that occur on a bar’s closing tick. The variable does not reset to its initial state on bars where the scope does not execute.
-For example, the script below declares a persistent local variable named `localVar` with an initial value of -1 inside the scope of an if structure. The structure’s local code executes once every 10 bars. After initializing the persistent variable, the structure uses the *= operator to multiply the variable’s current value by -1 and reassign it. The script assigns the local variable’s value to a variable in the global scope named `globalVar` and plots the result on the chart. Because the `localVar` variable persists without resetting to its initial value, the plotted results on each 10th bar alternate between -1 and 1:
-```pine
-//@version=6
-indicator("Persistent local variable demo")  
-  
-//@variable Stores the value of the `localVar` variable on each 10th bar, and `na` on other bars.  
-int globalVar = if bar_index % 10 == 0  
-    //@variable A persistent local variable initialized to -1 and then modified across bars.  
-    //          This variable persists across bars after initialization, even when the scope does not execute.  
-    var int localVar = -1  
-    // Multiply the local variable's value by -1 and reassign it using the result.  
-    // If the current value is -1, it changes to 1. If 1, it changes to -1.  
-    // The structure returns the result of this operation only on bars where the scope executes.  
-    localVar *= -1  
-  
-// Plot the value of the `globalVar` variable.  
-plot(globalVar, "Alternating value from local scope", color.teal, 3)  
-```
-Note that:
-  * The if structure returns na on each bar where the local scope does not execute. Therefore, the `globalVar` variable stores a value other than na only on each 10th bar.
-  * If we remove var from the `localVar` variable declaration, causing it to use the default declaration mode, the script plots a consistent value of 1 on each 10th bar, and na on other bars. The result changes because each execution of the scope reinitializes the value to -1, and multiplying that value by -1 results in a value of 1.
-
-It’s important to note that local variables declared using var inside loops behave very differently from those declared using the default declaration mode. If a local variable in a loop uses the default mode, the script reinitializes it on _every iteration_. By contrast, if the local declaration uses var, the variable remains initialized after the _first_ loop iteration on a bar’s closing tick. From that point onward, it persists and preserves changes to its data from each iteration on the closing ticks of subsequent bars.
-For example, the following script declares two local variables inside the body of a for loop that performs five iterations. The `local1` variable declaration uses the default declaration mode, and the `local2` declaration uses the var keyword. The loop reassigns a value of 0 to the `local2` variable on the first iteration, then increments the values of both variables by one on every iteration. The loop _returns_ a tuple containing both values when it ends, and the script uses a tuple declaration to create global variables that store the returned values for its plots:
-```pine
-//@version=6
-indicator("Persistent loop variable demo")  
-  
-// Declare two global variables to store the values of the `local1` and `local2` variables returned  
-// after the loop's final iteration.  
-[global1, global2] = for i = 1 to 5  
-    //@variable A local variable declared using the default mode.  
-    //          The script reinitializes this variable to 0 on *every* loop iteration.  
-    int local1 = 0  
-    //@variable A local variable declared using `varip`.  
-    //          This variable remains initialized after the first loop iteration.  
-    var int local2 = 0  
-    // On the first iteration, reset the `local2` variable's value to 0. Without this statement, the value would  
-    // continue to increase across bars.  
-    if i == 1  
-        local2 := 0  
-    // Because the `local1` variable consistently resets to 0 before this operation,  
-    // its final value is 1 on each iteration.  
-    local1 += 1  
-    // By contrast, the `local2` variable does not reset to its previous state on each iteration. The operation on the  
-    // first iteration changes the value to 1, the operation on the second changes the value to 2, and so on.  
-    local2 += 1  
-    // Return both variables' values in a tuple for plotting.  
-    [local1, local2]  
-  
-// Plot the values saved to `global1` and `global2`, which equal those of `local1` and `local2`, on the chart.  
-plot(global1, "Non-persistent", color.blue,   3)  
-plot(global2, "Persistent",     color.orange, 3)  
-```
-As shown below, the final value of the `local1` variable on each bar is 1, whereas the value of the `local2` variable is 5. This difference occurs because the script reinitializes the `local1` variable to hold 0 on every loop iteration, so the += operation on that variable consistently sets the value to 1. In contrast, the `local2` variable remains initialized after the first loop iteration. Therefore, the += operation on that variable consistently increases the assigned value. The variable stores a value of 1 on the first iteration, 2 on the second iteration, and so on until it reaches the final value of 5 on the last iteration:
-Note that:
-  * As demonstrated by the previous example, even local variables declared with var persist across bars. Therefore, if we remove the if statement that reassigns 0 to the `local2` variable, that variable’s value consistently increases by five on each bar.
-
-### ​`varip`​
-A variable declaration that includes the varip keyword creates a variable that persists across _every tick_. The variable becomes permanently initialized after the _first_ execution of its scope, even if that execution occurs _before_ a bar’s closing tick. From that point onward, all changes to the variable’s data persist, even those that occur during script executions on an _open_ bar. The “ip” in the keyword stands for _“intrabar persist”_ , as the value or reference stored by the variable persists across every update within each bar until the script explicitly reassigns the variable.
-The varip keyword is compatible with variables that store only specific types of data, including the following:
-  * Values of any fundamental type (“int”, “float”, “bool”, “color”, or “string”).
-  * Members of enum types.
-  * IDs of the chart.point, footprint, or volume_row type.
-  * The IDs for objects of user-defined types (UDTs).
-
-The keyword is also compatible with variables that store the IDs of collections, but only if those collections store the following types of data:
-  * Values of a fundamental type.
-  * IDs of the chart.point, footprint, or volume_row type.
-  * IDs for objects of a user-defined type with fields for storing data of only the above types or the IDs of other collections that contain elements of only these types.
-
-A variable declared with varip typically behaves the same as a variable declared with var on _historical bars_ (where the value of the barstate.ishistory variable is `true`), because by default, all scripts execute _once per bar_ on that part of the dataset. However, on realtime bars, which form over time as new ticks become available from the data feed, indicator and library scripts execute _once per tick_ instead of once per bar. Variables declared with var and varip typically behave differently on these bars.
-As noted in the previous section, if a script modifies a var variable while executing on an open bar, those modifications **do not** persist. Pine’s _rollback_ process _reverts_ the variable to its last confirmed state as of the previous bar’s close before the script executes on the bar again. This process ensures that the variable stores only _confirmed_ data at the start of each execution, and not any _temporary_ data from ticks that arrive before the bar closes.
-By contrast, a variable declared with varip is _not_ affected by rollback. If a script modifies a variable declared with varip while executing on an open bar, the variable preserves its new value or reference without reverting to a previous state after the execution ends. The variable’s new data persists across every subsequent execution on that bar and the bars that follow until the script explicitly changes it again.
-TipFor _advanced_ details about the rollback process, refer to the Executions on realtime bars section of the Execution model page.
-The following indicator script demonstrates how varip variables behave differently from var variables on realtime bars. The script declares two global variables named `counter1` and `counter2`. The first declaration uses the var keyword, and the second uses varip. On each execution, the script uses the += operator to increment the values of both variables by one, and then plots the resulting values on the chart. The script also colors the background when the value of barstate.isrealtime is `true` to emphasize realtime bars:
-```pine
-//@version=6
-indicator("Persistence across ticks demo")  
-  
-//@variable A persistent variable whose value increases by one on each bar.  
-var int counter1 = 0  
-//@variable A persistent variable whose value increases by one on each execution.  
-varip int counter2 = 0  
-  
-// Increase the `counter1` variable's value by one on each execution. If the current bar is open, the  
-// system resets the variable to its previous state before the next execution.  
-// Regardless of how many times the script executes on a realtime bar, the variable's final value for that bar is  
-// only one greater than the value on the previous bar.  
-counter1 += 1  
-  
-// Increase the `counter2` variable's value by one on each execution. Unlike the `counter1` variable, the `counter2
-```
-// variable does not reset. If the bar is open, the new value persists into the next execution.  
-// Therefore, if five executions occur on a realtime bar, the variable's final value for that bar is five greater  
-// than the value on the previous bar.  
-counter2 += 1  
-  
-// Plot the values of the two variables on the chart. Both plots show the same value on historical bars,  
-// but they can differ on realtime bars when the script executes more than once per bar.  
-plot(counter2, "`varip` counter", color.purple, 5)  
-plot(counter1, "`var` counter",   color.teal,   2)  
-// Highlight the background of realtime bars for visual reference.  
-bgcolor(barstate.isrealtime ? color.new(color.orange, 80) : na, title = "Realtime bar highlight")  
-`
-While running on historical bars, the script executes once on each bar’s closing tick. Therefore, the values of both variables consistently increase by one on each bar in that part of the dataset, and the plots for the two variables show the same results. Then, when the script reaches realtime bars, the two plots begin to diverge.
-The script executes _multiple times_ on each realtime bar — once for each new tick — to calculate the bar’s results using the latest available data. The += operations on each execution increase the values of both variables by one. However, while the current bar is open, the change to the `counter1` variable _resets_ before each new execution. The variable preserves only the change that occurs on the bar’s _closing tick_. Therefore, the variable’s final value increases by only one on each realtime bar, just like it does on historical bars.
-By contrast, the `counter2` variable, declared using varip, does _not_ revert to a previous state on any execution. With each new tick in an open realtime bar, the += operation increases the variable’s value by one, and the new value for the variable persists into the execution on the next tick. Therefore, the variable’s final value for each realtime bar increases by the number of ticks that are available for that bar:
-When using the varip keyword to declare variables that access _objects_ of built-in reference types, including chart points or collections of value types, changes to the values stored by those objects also persist across each tick without resetting to a previous state.
-For example, the script below uses varip to declare a variable named `testPoint` that stores a persistent reference to a chart.point object. Then, it uses the += operator to increase the value of the object’s `price` field by one on each execution and plots the field’s final value for each bar. The plot increments by one across all historical bars, where the script executes only once per bar. On realtime bars, the plot increments by the number of ticks available for each bar, because the chart point’s `price` field does _not_ reset to a previous state after each += operation while a bar is open:
-```pine
-//@version=6
-indicator("Persistent built-in object demo")  
-  
-//@variable Stores a persistent reference to a `chart.point` object. The object's fields persist across ticks.  
-varip chart.point testPoint = chart.point.now(0)  
-  
-// Increment the `price` field of the persistent chart point.  
-testPoint.price += 1  
-  
-// Plot the field's value on the chart.  
-plot(testPoint.price, "Persistent `price` field value", linewidth = 3)  
-// Highlight the background of realtime bars for visual reference.  
-bgcolor(barstate.isrealtime ? color.new(color.orange, 80) : na, title = "Realtime bar highlight")  
-```
-Note that:
-  * The same persistent behavior applies to built-in objects whose IDs are stored in collections referenced by varip variables. For example, if a script declares a varip variable that references an array of chart.point IDs, changes to the chart points referenced by the array, and their fields, persist across ticks.
-
-NoteIn contrast to objects of _built-in_ reference types, objects of user-defined types **do not** automatically apply varip behaviors to their _fields_ when referenced by variables declared using the varip keyword. To enable these behaviors for the fields of a UDT, prefix the identifier of each field with the varip keyword in the UDT declaration. See the Objects page for an example.
-It’s crucial to note that strategies execute _differently_ from indicators. By default, a strategy executes strictly _once per bar_ , even on realtime bars. Therefore, varip variables in a strategy behave the same as var variables by default. However, users can change a strategy’s calculation behavior to enable additional executions on each new tick or after order fills. These settings can cause a strategy’s varip variables to behave differently on both realtime and historical bars.
-For example, the simple strategy below alternates between creating a long and short market order on each execution. It also declares two persistent variables named `counter1` and `counter2` and increments their values by one with the += operator. The first declaration uses var, and the second uses varip. The script also colors the background of all realtime bars for visual reference:
-```pine
-//@version=6
-strategy("`varip` vs. `var` in strategies demo")  
-  
-// This logic creates a new market order on each execution for demonstration purposes.  
-if strategy.position_size <= 0  
-    strategy.entry("Long", strategy.long)  
+### On each bar
+When no explicit declaration mode is specified, i.e. no var or varip keyword is used, the variable is declared and initialized on each bar, e.g., the following declarations from our first set of examples in this page’s introduction:
+`BULL_COLOR = color.lime  
+i = 1  
+len = input(20, "Length")  
+float f = 10.5  
+closeRoundedToTick = math.round_to_mintick(close)  
+[macdLine, signalLine, histLine] = ta.macd(close, 12, 26, 9)  
+plotColor = if close > open  
+    color.green  
 else  
-    strategy.entry("Short", strategy.short)  
-  
-//@variable A persistent variable whose value increases by one on each bar.  
-var int counter1 = 0  
-//@variable A persistent variable whose value increases by one on each execution.  
-varip int counter2 = 0  
-  
-// The result of this operation does not vary with the strategy's calculation behavior.  
-// The variable's value consistently increases by one on each bar.  
-counter1 += 1  
-  
-// By contrast, this operation's result does depend on the specified calculation behavior:  
-// - If the default behavior is used, the value increases by one on each bar, just like the value of `counter1`.  
-// - If recalculation on each tick is enabled, the value can increase by more than one on each realtime bar.  
-// - If recalculation after order fills is enabled, the value increases by four on each historical bar by default,  
-//   and by the number of new ticks on each realtime bar.  
-counter2 += 1  
-  
-// Plot the values of the `counter1` and `counter2` variables for comparison.  
-plot(counter2, "`varip` counter", color.purple, 5)  
-plot(counter1, "`var` counter",   color.teal,   2)  
-// Highlight the background of realtime bars.  
-bgcolor(barstate.isrealtime ? color.new(color.orange, 80) : na, title = "Realtime bar highlight")  
+    color.red  
+`
+### ​`var`​
+When the var keyword is used, the variable is only initialized once, on the first bar if the declaration is in the global scope, or the first time the local block is executed if the declaration is inside a local block. After that, it will preserve its last value on successive bars, until we reassign a new value to it. This behavior is very useful in many cases where a variable’s value must persist through the iterations of a script across successive bars. For example, suppose we’d like to count the number of green bars on the chart:
+```pine
+//@version=6
+indicator("Green Bars Count")  
+var count = 0  
+isGreen = close >= open  
+if isGreen  
+    count := count + 1  
+plot(count)  
 ```
-If we run the script with the default calculation behavior, the strategy executes only once on every closed bar. On realtime bars, it waits for each bar to close before performing a new execution. As such, the values of both variables consistently increment by the same amount across all bars and do not diverge:
-If we select the “On every tick” checkbox in the strategy’s “Properties” tab, the script executes on _each new tick_ in a realtime bar, similar to an indicator. With this change, the plot for the `counter2` variable diverges from that of the `counter1` variable on realtime bars:
-If we select the “After an order is filled” checkbox, the script executes again on _any_ bar where the broker emulator fills an order. By default, the emulator assumes that the open, high, low, and close of historical bars are all valid ticks for filling orders, and our script creates a new order on every available tick. With this change, in addition to incrementing by the number of ticks on each realtime bar, the value of the `counter2` variable increments by _four_ instead of one on each _historical bar_ after the first:
-For more detailed information about this historical behavior, see the Executions on historical bars section of the Execution model page.
-Notice
-Saving data to varip variables is often helpful for various types of calculations that require information from realtime intrabar updates, such as tracking the temporary states of a metric, analyzing value fluctuations within a bar, counting script executions, and more. However, we recommend exercising caution and inspecting your scripts carefully when using the varip keyword in variable declarations, because it can easily cause _repainting_.
-  
+Without the `var` modifier, variable `count` would be reset to zero (thus losing its value) every time a new bar update triggered a script recalculation.
+Declaring variables on the first bar only is often useful to manage drawings more efficiently. Suppose we want to extend the last bar’s close line to the right of the right chart. We could write:
+```pine
+//@version=6
+indicator("Inefficient version", "", true)  
+closeLine = line.new(bar_index - 1, close, bar_index, close, extend = extend.right, width = 3)  
+line.delete(closeLine[1])  
+```
+but this is inefficient because we are creating and deleting the line on each historical bar and on each update in the realtime bar. It is more efficient to use:
+```pine
+//@version=6
+indicator("Efficient version", "", true)  
+var closeLine = line.new(bar_index - 1, close, bar_index, close, extend = extend.right, width = 3)  
+if barstate.islast  
+    line.set_xy1(closeLine, bar_index - 1, close)  
+    line.set_xy2(closeLine, bar_index, close)  
+```
+Note that:
+  * We initialize `closeLine` on the first bar only, using the var declaration mode
+  * We restrict the execution of the rest of our code to the chart’s last bar by enclosing our code that updates the line in an if barstate.islast structure.
 
-After a script reloads across a dataset, all _elapsed realtime bars_ from the former script run become _historical bars_ , which **do not** contain any of the _temporary_ data from past realtime ticks. Therefore, a script that uses a variable declared using varip might yield different results after reloading, especially if the variable’s associated data changes while a realtime bar is open. Depending on how the script uses the variable, this behavior can impact the script’s alerts, strategy reports, visuals, or overall logic. To see this behavior in action, reload any of the above scripts in this section after running them on realtime bars.
+There is a very slight penalty performance for using the var declaration mode. For that reason, when declaring constants, it is preferable not to use var if performance is a concern, unless the initialization involves calculations that take longer than the maintenance penalty, e.g., functions with complex code or string manipulations.
+### ​`varip`​
+Understanding the behavior of variables using the varip declaration mode requires prior knowledge of Pine Script’s execution model and bar states.
+The varip keyword can be used to declare variables that escape the _rollback process_ , which is explained in the page on Pine Script’s execution model.
+Whereas scripts only execute once at the close of historical bars, when a script is running in realtime, it executes every time the chart’s feed detects a price or volume update. At every realtime update, Pine Script’s runtime normally resets the values of a script’s variables to their last committed value, i.e., the value they held when the previous bar closed. This is generally handy, as each realtime script execution starts from a known state, which simplifies script logic.
+Sometimes, however, script logic requires code to be able to save variable values **between different executions** in the realtime bar. Declaring variables with varip makes that possible. The “ip” in varip stands for _intrabar persist_.
+Let’s look at the following code, which does not use varip:
+```pine
+//@version=6
+indicator("")  
+int updateNo = na  
+if barstate.isnew  
+    updateNo := 1  
+else  
+    updateNo := updateNo + 1  
   
-
-For advanced details about this behavior, as well as the events that cause a script to reload, refer to the Events that trigger script executions section of the Execution model page. For general information about the different types of repainting behaviors in Pine and their causes, refer to the Repainting page.
+plot(updateNo, style = plot.style_circles)  
+```
+On historical bars, barstate.isnew is always true, so the plot shows a value of “1” because the `else` part of the if structure is never executed. On realtime bars, barstate.isnew is only true when the script first executes on the bar’s “open”. The plot will then briefly display “1” until subsequent executions occur. On the next executions during the realtime bar, the second branch of the if statement is executed because barstate.isnew is no longer true. Since `updateNo` is initialized to na at each execution, the `updateNo + 1` expression yields na, so nothing is plotted on further realtime executions of the script.
+If we now use varip to declare the `updateNo` variable, the script behaves very differently:
+```pine
+//@version=6
+indicator("")  
+varip int updateNo = na  
+if barstate.isnew  
+    updateNo := 1  
+else  
+    updateNo := updateNo + 1  
+  
+plot(updateNo, style = plot.style_circles)  
+```
+The difference now is that `updateNo` tracks the number of realtime updates that occur on each realtime bar. This can happen because the varip declaration allows the value of `updateNo` to be preserved between realtime updates; it is no longer rolled back at each realtime execution of the script. The test on barstate.isnew allows us to reset the update count when a new realtime bar comes in.
+Because varip only affects the behavior of your code in the realtime bar, it follows that backtest results on strategies designed using logic based on varip variables will not be able to reproduce that behavior on historical bars, which will invalidate test results on them. This also entails that plots on historical bars will not be able to reproduce the script’s behavior in realtime.
 
   * Introduction
-  * Single-variable declarations
+  * Initialization with `na` 
   * Tuple declarations
-  * Using an underscore as an identifier
-  * Declaring qualified types
-  * Type keywords
-  * Qualifier keywords
+  * Using an underscore (`_`) as an identifier
   * Variable reassignment
-  * Scopes
-  * Shadowing
   * Declaration modes
-  * Default
+  * On each bar
   * `var`
   * `varip`
 
@@ -4251,14 +2709,14 @@ The solution to our conundrum requires:
   * Not using a calculation producing a “series int” value for our length.
 
 ## Arithmetic operators
-There are five arithmetic operators in Pine Script®:  
-| Operator  | Meaning  |  
-| --- | --- |  
-| `+`  | Addition and string concatenation  |  
-| `-`  | Subtraction  |  
-| `*`  | Multiplication  |  
-| `/`  | Division  |  
-| `%`  | Modulo (remainder after division)  |  
+There are five arithmetic operators in Pine Script®:
+Operator | Meaning  
+---|---  
+`+` | Addition and string concatenation  
+`-` | Subtraction  
+`*` | Multiplication  
+`/` | Division  
+`%` | Modulo (remainder after division)  
 The arithmetic operators above are all _binary_ , meaning they need two _operands_ — or values — to work on, as in the example operation `1 + 2`. The `+` and `-` can also be _unary_ operators, which means they work on one operand, as in the example values `-1` or `+1`.
 If both operands are numbers but at least one of these is of float type, the result will also be a float. If both operands are of int type, the result will also be an int. If at least one operand is na, the result is also na.
 Note that when using the division operator with “int” operands, if the two “int” values are not evenly divisible, the result of the division is always a number with a fractional value, e.g., `5/2 = 2.5`. To discard the fractional remainder, wrap the division with the int() function, or round the result using math.round(), math.floor(), or math.ceil().
@@ -4272,15 +2730,15 @@ modulo(series int a, series int b) =>
 plot(modulo(-1, 100))  
 ```
 ## Comparison operators
-There are six comparison operators in Pine Script:  
-| Operator  | Meaning  |  
-| --- | --- |  
-| `<`  | Less Than  |  
-| `<=`  | Less Than or Equal To  |  
-| `!=`  | Not Equal  |  
-| `==`  | Equal  |  
-| `>`  | Greater Than  |  
-| `>=`  | Greater Than or Equal To  |  
+There are six comparison operators in Pine Script:
+Operator | Meaning  
+---|---  
+`<` | Less Than  
+`<=` | Less Than or Equal To  
+`!=` | Not Equal  
+`==` | Equal  
+`>` | Greater Than  
+`>=` | Greater Than or Equal To  
 Comparison operations are binary, and return a result of type “bool”, i.e., true or false. The `==` equal and `!=` not equal operators can work with operands of any fundamental type, such as colors and strings, while the other comparison operators are only applicable to numerical values. Therefore, `"a" != "b"` is a valid comparison, but `"a" > "b"` is invalid.
 Examples:
 `1 > 2  // false  
@@ -4288,27 +2746,27 @@ Examples:
 close >= open  // Depends on values of `close` and `open`  
 `
 ## Logical operators
-There are three logical operators in Pine Script:  
-| Operator  | Meaning  |  
-| --- | --- |  
-| `not`  | Negation  |  
-| `and`  | Logical Conjunction  |  
-| `or`  | Logical Disjunction  |  
+There are three logical operators in Pine Script:
+Operator | Meaning  
+---|---  
+`not` | Negation  
+`and` | Logical Conjunction  
+`or` | Logical Disjunction  
 The operator `not` is unary. When applied to a `true`, operand the result will be `false`, and vice versa.
-`and` operator truth table:  
-| a  | b  | a and b  |  
-| --- | --- | --- |  
-| true  | true  | true  |  
-| true  | false  | false  |  
-| false  | true  | false  |  
-| false  | false  | false  |  
-`or` operator truth table:  
-| a  | b  | a or b  |  
-| --- | --- | --- |  
-| true  | true  | true  |  
-| true  | false  | true  |  
-| false  | true  | true  |  
-| false  | false  | false  |  
+`and` operator truth table:
+a | b | a and b  
+---|---|---  
+true | true | true  
+true | false | false  
+false | true | false  
+false | false | false  
+`or` operator truth table:
+a | b | a or b  
+---|---|---  
+true | true | true  
+true | false | true  
+false | true | true  
+false | false | false  
 ## ​`?:`​ ternary operator
 The ?: ternary operator is used to create expressions of the form:
 `condition ? valueWhenConditionIsTrue : valueWhenConditionIsFalse  
@@ -4342,18 +2800,18 @@ Note that the [[]]() operator can only be used once on the same value. This is n
 `close[1][2] // Error: incorrect use of [] operator  
 `
 ## Operator precedence
-The order of calculations is determined by the operators’ precedence. Operators with greater precedence are calculated first. Below is a list of operators sorted by decreasing precedence:  
-| Precedence  | Operator  |  
-| --- | --- |  
-| 9  | `[]`  |  
-| 8  | unary `+`, unary `-`, `not`  |  
-| 7  |  `*`, `/`, `%`  |  
-| 6  |  `+`, `-`  |  
-| 5  |  `>`, `<`, `>=`, `<=`  |  
-| 4  |  `==`, `!=`  |  
-| 3  | `and`  |  
-| 2  | `or`  |  
-| 1  | `?:`  |  
+The order of calculations is determined by the operators’ precedence. Operators with greater precedence are calculated first. Below is a list of operators sorted by decreasing precedence:
+Precedence | Operator  
+---|---  
+9 | `[]`  
+8 | unary `+`, unary `-`, `not`  
+7 |  `*`, `/`, `%`  
+6 |  `+`, `-`  
+5 |  `>`, `<`, `>=`, `<=`  
+4 |  `==`, `!=`  
+3 | `and`  
+2 | `or`  
+1 | `?:`  
 If in one expression there are several operators with the same precedence, then they are calculated left to right.
 If the expression must be calculated in a different order than precedence would dictate, then parts of the expression can be grouped together with parentheses.
 ## ​`=`​ assignment operator
@@ -4392,14 +2850,14 @@ See the Variable reassignment section for more information on how to reassign va
 ## Compound assignment operators
 A _compound assignment operator_ combines an arithmetic operator with the reassignment operator. It provides a shorthand way to perform an arithmetic calculation on a variable and then assign the result back to that same variable.
 For example, `counter += 1` adds 1 to the current value of a `counter` variable and assigns the new incremented value back to `counter`. This operation is equivalent to `counter := counter + 1`. Note that a variable must be declared before a script can use a compound assignment operator on it.
-There are five compound assignment operators in Pine Script:  
-| Operator  | Meaning  |  
-| --- | --- |  
-| `+=`  | Addition assignment and string concatenation  |  
-| `-=`  | Subtraction assignment  |  
-| `*=`  | Multiplication assignment  |  
-| `/=`  | Division assignment  |  
-| `%=`  | Modulo (remainder after division) assignment  |  
+There are five compound assignment operators in Pine Script:
+Operator | Meaning  
+---|---  
+`+=` | Addition assignment and string concatenation  
+`-=` | Subtraction assignment  
+`*=` | Multiplication assignment  
+`/=` | Division assignment  
+`%=` | Modulo (remainder after division) assignment  
 This example executes various compound assignment operations on one “float” variable, `x`, and traces how each operation changes the variable’s stored value. The script draws a table to show each operation and its resulting value of `x` after reassignment. A float input can change the initial value assigned to `x`, which in turn changes the result of each row’s calculation:
 ```pine
 //@version=6
@@ -4474,7 +2932,6 @@ The local blocks in conditional structures must be indented by four spaces or a 
 ## ​`if`​ structure
 ### ​`if`​ used for its side effects
 An if structure used for its side effects has the following syntax:
-
 ```
 
 if <expression>
@@ -4528,7 +2985,6 @@ Note that:
 
 ### ​`if`​ used to return a value
 An if structure used to return one or more values has the following syntax:
-
 ```
 
 [<declaration_mode>] [<type>] <identifier> = if <expression>
@@ -4589,7 +3045,6 @@ However, nesting these structures is not recommended from a performance perspect
 `
 ## ​`switch`​ structure
 The switch structure exists in two forms. One switches on the different values of a key expression:
-
 ```
 
 [[<declaration_mode>] [<type>] <identifier> = ]switch <expression>
@@ -4601,7 +3056,6 @@ The switch structure exists in two forms. One switches on the different values o
 ```
 
 The other form does not use an expression as a key; it switches on the evaluation of different expressions:
-
 ```
 
 [[<declaration_mode>] [<type>] <identifier> = ]switch
@@ -4793,7 +3247,6 @@ The for, while, and for…in loop statements all have similarities in their stru
 In any loop statement, programmers define the criteria under which a script remains in a loop and performs _iterations_ , where an iteration refers to _one execution_ of the code within the loop’s local block (_body_). These criteria are part of the _loop header_. A script evaluates the header’s criteria _before_ each iteration, only allowing new iterations to occur while they remain valid. When the header’s criteria are no longer valid, the script _exits_ the loop and skips over its body.
 The specific header syntax varies with each loop statement (for, while, or for…in) because each uses _distinct_ criteria to control its iterations. Effective use of loops entails choosing the structure with control criteria best suited for a script’s required tasks. See the `for` loops, `while` loops, and `for…in` loops sections below for more information on each loop statement and its control criteria.
 All loop statements in Pine Script follow the same general syntax:
-
 ```
 
 [variables = | :=] loop_header
@@ -4905,7 +3358,6 @@ Note that:
 ## ​`for`​ loops
 The for loop statement creates a _count-controlled_ loop, which uses a _counter_ variable to manage the iterative executions of its local code block. The counter starts at a predefined initial value, and the loop increments or decrements the counter by a fixed amount after each iteration. The loop stops its iterations after the counter reaches a specified final value.
 Pine Script uses the following syntax to define a for loop:
-
 ```
 
 [variables = | :=] for counter = from_num to to_num [by step_num]
@@ -5075,7 +3527,6 @@ Note that:
 ## ​`while`​ loops
 The while loop statement creates a _condition-controlled_ loop, which uses a _conditional expression_ to control the executions of its local block. The loop continues its iterations as long as the specified condition remains `true`.
 Pine Script uses the following syntax to define a while loop:
-
 ```
 
 [variables = | :=] while condition
@@ -5170,7 +3621,6 @@ Note that:
 The for…in loop statement creates a _collection-controlled_ loop, which uses the _contents_ of a collection to control its iterations. This loop structure is often the preferred approach for looping through arrays, matrices, and maps.
 A for…in loop traverses a collection _in order_ , retrieving one of its stored items on each iteration. Therefore, the loop’s boundaries depend directly on the number of _items_ (array _elements_ , matrix _rows_ , or map _key-value pairs_).
 Pine Script features _two_ general forms of the for…in loop statement. The _first form_ uses the following syntax:
-
 ```
 
 [variables = | :=] for item in collection_id
@@ -5183,7 +3633,6 @@ Pine Script features _two_ general forms of the for…in loop statement. The _fi
 
 Where `item` is a _variable_ that holds sequential values or references from the specified `collection_id`. The variable starts with the collection’s _first item_ and takes on successive items in order after each iteration. This form is convenient when a script must access values from an array or matrix iteratively but does not require the item’s _index_ in its calculations.
 The _second form_ has a slightly different syntax that includes a tuple in its _header_ :
-
 ```
 
 [variables = | :=] for [index, item] in collection_id
@@ -5626,7 +4075,6 @@ Regardless of format, location, or use, several common characteristics and limit
 ## Structure and syntax
 A function definition can occupy a single line of code or multiple lines, depending on the expressions and statements that the function requires. The single-line and multiline formats are similar, with the key difference being the placement of the function’s _body_.
 Single-line functions define their header and body on the same line of code:
-
 ```
 
 <functionHeader> => <functionBody>
@@ -5634,7 +4082,6 @@ Single-line functions define their header and body on the same line of code:
 ```
 
 In contrast, multiline functions define the body on separate lines of code following the header. The code block following the header line has an indentation of _four spaces_ or a single tab:
-
 ```
 
 <functionHeader> =>
@@ -5644,7 +4091,6 @@ In contrast, multiline functions define the body on separate lines of code follo
 ```
 
 Both formats use the following syntax for defining the function’s _header_ :
-
 ```
 
 [export ]<functionName>([[[paramQualifier ]<paramType> ]<paramName>[ = defaultValue], …]) =>
@@ -5670,7 +4116,6 @@ Note that:
 The following two sections explain the body structure of single-line and multiline functions.
 ### Single-line functions
 A single-line function’s body begins and ends on the _same_ line of code as the header. This format is convenient for defining compact functions that execute only simple statements and do not use conditional structures or loops. The syntax to define a single-line function is as follows:
-
 ```
 
 <functionHeader> => {statement, }<returnExpression>
@@ -5727,7 +4172,6 @@ Note that:
 TipAlthough it is possible to write single-line functions containing multiple statements, as shown above, using the multiline format is often preferred for readability. Programmers can list the statements on separate lines and add comments for each one.
 ### Multiline functions
 A multiline function defines its body using a _block_ of code following the header line. The general syntax is as follows:
-
 ```
 
 <functionHeader> =>
@@ -6859,7 +5303,6 @@ TipThis page contains _advanced_ material. If you’re new to Pine Script®, sta
 Pine Script Enums, otherwise known as _enumerations_ , _enumerated types_ , or enum types, are unique data types with all possible values (_members_) explicitly defined by the programmer in advance. They provide a human-readable, expressive way to declare distinct sets of _predefined values_ that variables, conditional expressions, and collections can accept, allowing more strict control over the values used in a script’s logic.
 ## Declaring an enum
 To declare an enum, use the enum keyword with the following syntax:
-
 ```
 
 [export ]enum <enumName>
@@ -7126,7 +5569,6 @@ Pine Script methods are specialized functions associated with values of specific
 ## Built-in methods
 Pine Script features built-in methods for most special types, including array, matrix, map, line, linefill, box, polyline, label, table, chart.point, footprint, and volume_row. These methods provide users with a more concise way to call specialized routines for these types within their scripts.
 When using these special types, the expressions:
-
 ```
 
 <namespace>.<functionName>([paramName =] <objectName>, …)
@@ -7134,7 +5576,6 @@ When using these special types, the expressions:
 ```
 
 and:
-
 ```
 
 <objectName>.<functionName>(…)
@@ -7597,7 +6038,6 @@ We often refer to index 0 as the _beginning_ of an array, and the highest index 
 Additionally, for the sake of brevity, we sometimes use the term “array” to mean “array ID”.
 ## Declaring arrays
 Pine Script uses the following syntax for array declarations:
-
 ```
 
 [var/varip ][array<type> ]<identifier> = <expression>
@@ -7646,11 +6086,11 @@ if barstate.islast
     // Display the `labelText`.  
     label.new(bar_index, 0, labelText, size = size.large)  
 ```
-The same code without the var keyword would _reinitialize_ the `a` variable with the ID of a new, empty array on every execution. In that case, after execution of the array.push() call, the array.size() _method_ call (`a.size()`) would return a value of 1.
+The same code without the var keyword would re-declare the array on each bar. In this case, after execution of the array.push() call, the array.size() _method_ call (`a.size()`) would return a value of 1.
 Notice
 Array variables declared using varip behave similarly to those declared using var, with two key differences. Firstly, the arrays that they reference can finalize updates to their elements on _any_ available tick — not only on a bar’s closing tick. Secondly, arrays referenced by varip variables can contain only the following data:
   * Values of any fundamental type.
-  * IDs of the chart.point, footprint, or volume_row type.
+  * The IDs of chart points.
   * References to objects of a user-defined type that have fields for storing only data of either of the above types or the IDs of other collections containing only these types.
 
 ## Reading and writing array elements
@@ -7869,59 +6309,37 @@ Stacks are LIFO (last in, first out) constructions. They behave somewhat like a 
 See how the functions are used here to track successive lows in rallies:
 ```pine
 //@version=6
-indicator("Sorting UDT arrays demo")  
+indicator("Lows from new highs", "", true)  
+var lows = array.new<float>(0)  
+flushLows = false  
   
-//@type  A custom type for creating objects that store "float", "string", and "int" values.  
-type myType  
-    float  field0 // This field's index is 0.  
-    string field1 // This field's index is 1.  
-    int    field2 // This field's index is 2.  
+//@function Removes the last element from the `id` stack when `cond` is `true`.  
+array_pop(id, cond) => cond and array.size(id) > 0 ? array.pop(id) : float(na)  
   
-//@variable A string to indicate whether the script specifies sorting fields by index or name.  
-string specifyInput = input.string("Index", "Specify a field using its", ["Index", "Name"])  
-//@variable The index of the field to use for sorting if the `specifyInput` value is `"Index"`.  
-int indexInput = input.int(0, "Field index", 0, 2, active = specifyInput == "Index")  
-//@variable The name of the field to use for sorting if the `specifyInput` value is `"Name"`.  
-string nameInput = input.string("field0", "Field name", ["field0", "field1", "field2"], active = specifyInput == "Name")  
+if ta.rising(high, 1)  
+    // Rising highs; push a new low on the stack.  
+    lows.push(low)  
+    // Force the return type of this `if` block to be the same as that of the next block.  
+    bool(na)  
+else if lows.size() >= 4 or low < array.min(lows)  
+    // We have at least 4 lows or price has breached the lowest low;  
+    // sort lows and set flag indicating we will plot and flush the levels.  
+    array.sort(lows, order.ascending)  
+    flushLows := true  
   
-if barstate.islastconfirmedhistory  
-    //@variable References an array that stores the IDs of `myType` objects.  
-    array<myType> udtArray = array.from(  
-        myType.new(field0 = 2.0, field1 = "D", field2 = 1), myType.new(field0 = 1.0, field1 = "E", field2 = 2),  
-        myType.new(field0 = 3.0, field1 = "C", field2 = 3), myType.new(field0 = 5.0, field1 = "A", field2 = 4),  
-        myType.new(field0 = 4.0, field1 = "B", field2 = 5)  
-    )  
-    // Sort the array in ascending order. Use the field at the specified index if the `specifyInput` value is `"Index"`.  
-    if specifyInput == "Index"  
-        switch indexInput  
-            0 => udtArray.sort(sort_field = 0)  
-            1 => udtArray.sort(sort_field = 1)  
-            2 => udtArray.sort(sort_field = 2)  
-    // Otherwise, sort using the field with the specified name.  
-    else  
-        switch nameInput  
-            "field0"  => udtArray.sort(sort_field = "field0")  
-            "field1"  => udtArray.sort(sort_field = "field1")  
-            "field2"  => udtArray.sort(sort_field = "field2")  
-      
-    //@variable A string representing the structure of the sorted array.  
-    string displayStr = switch specifyInput  
-        "Index" => str.format("Sorted using field at index {0}\n\n[", indexInput)  
-        =>         str.format("Sorted using field named ''{0}''\n\n[",    nameInput)  
-      
-    // Concatenate formatted strings to represent the array's structure.  
-    for [i, id] in udtArray  
-        displayStr += str.format(  
-            " (field0: {0,number,0.0}, field1: {1}, field2: {2}),\n",  
-            id.field0, id.field1, id.field2  
-        )  
-    // Adjust the final result to align enclosing brackets.  
-    displayStr := str.replace(str.substring(displayStr, 0, str.length(displayStr) - 2), "[ ", "[") + "]"   
-    // Display the final string's text in a label.   
-    label.new(  
-        bar_index, 0, displayStr, style = label.style_label_center, size = 30,   
-        textalign = text.align_left, text_font_family = font.family_monospace  
-    )  
+// If needed, plot and flush lows.  
+lowLevel = array_pop(lows, flushLows)  
+plot(lowLevel, "Low 1", low > lowLevel ? color.silver : color.purple, 2, plot.style_linebr)  
+lowLevel := array_pop(lows, flushLows)  
+plot(lowLevel, "Low 2", low > lowLevel ? color.silver : color.purple, 3, plot.style_linebr)  
+lowLevel := array_pop(lows, flushLows)  
+plot(lowLevel, "Low 3", low > lowLevel ? color.silver : color.purple, 4, plot.style_linebr)  
+lowLevel := array_pop(lows, flushLows)  
+plot(lowLevel, "Low 4", low > lowLevel ? color.silver : color.purple, 5, plot.style_linebr)  
+  
+if flushLows  
+    // Clear remaining levels after the last 4 have been plotted.  
+    lows.clear()  
 ```
 ### Using an array as a queue
 Queues are FIFO (first in, first out) constructions. They behave somewhat like cars arriving at a red light. New cars are queued at the end of the line, and the first car to leave will be the first one that arrived to the red light.
@@ -8098,318 +6516,68 @@ Note that:
   * Calls to array.join() cannot directly convert elements of “bool”, “color”, or other types to strings. Scripts must convert data of these types separately.
 
 ###  Sorting
-Scripts can _sort_ arrays containing values of the “int”, “float”, or “string” type by using the array.sort() function. The function’s `order` parameter accepts one of the two `order.*` constants to specify the sorting order. If the argument is order.ascending (the default), a call to the function rearranges the specified array’s elements in ascending order by value. If the argument is order.descending, the call rearranges the elements in descending order instead.
-If an array contains “int” or “float” elements, the array.sort() function sorts the array using each element’s numeric value. If it uses ascending order, the element with the _lowest_ value becomes the array’s _first_ element (at index 0), and the one with the _highest_ value becomes the _last_ element. If it sorts in descending order, the element with the _highest_ value becomes the first element, and the one with the _lowest_ value becomes the last.
-The following example script uses the array.from() function to create an array of arbitrary “float” values on the last historical bar. It then sorts the array in ascending order, and then in descending order, using two array.sort() calls. The script creates a string representation of the array after each step, then formats those representations into a single string and displays the result in a label:
+Scripts can sort arrays containing “int”, “float”, or “string” elements in ascending or descending order using the array.sort() function. The direction in which the function sorts the array’s elements depends on its `order` parameter, which accepts the order.ascending or order.descending constants. The default argument is order.ascending, meaning the function sorts the elements in ascending order of value.
+The function sorts arrays of “int” and “float” elements based on their _numeric_ values.
+The example below declares two arrays with references assigned to the `a` and `b` variables, and it concatenates those arrays to form a combined `c` array. The script creates Pine Logs showing formatted text representing the unsorted arrays, and the results of using array.sort() to sort all three arrays in ascending and descending order:
 ```pine
 //@version=6
 indicator("Sorting numeric arrays demo")  
   
-if barstate.islastconfirmedhistory  
-    //@variable References an array of arbitrary "float" values.  
-    array<float> numbers = array.from(2.1, 0.5, 1.2, 0.1, 1.4, 0.6)  
-    //@variable A string representing the array's unsorted, ascending, and descending order.  
-    string displayStr = "Unsorted:   " + str.tostring(numbers) + "\n"  
+if barstate.isfirst  
+    //@variable A formatting string.  
+    string formatString = "\n{0}:\n{1}\n{2}\n{3}"  
   
-    // Sort the array in ascending order.  
-    // The `order` argument is optional; `order.ascending` is the default.  
-    array.sort(numbers, order = order.ascending)  
-    // Concatenate a string representation of the sorted array with the `displayStr` value.  
-    displayStr += "Ascending:  " + str.tostring(numbers) + "\n"  
+    // Create two three-element arrays.  
+    array<float> a = array.from(2.1, 0.5, 1.2)  
+    array<float> b = array.from(0.1, 1.4, 0.6)  
+    //@variable A combined array containing the elements from `a` and `b`.   
+    array<float> c = array.copy(a).concat(b)  
   
-    // Sort the `numbers` array again, this time in descending order.   
-    numbers.sort(order = order.descending)  
-    // Concatenate another string representation of the sorted result.  
-    displayStr += "Descending: " + str.tostring(numbers)  
+    // Log formatted text showing the unsorted `a`, `b`, and `c` arrays.   
+    log.info(formatString, "Unsorted", a, b, c)  
   
-    // Display the final string's text in a label.  
-    label.new(  
-        bar_index, 0, displayStr, style = label.style_label_center, size = 30,   
-        textalign = text.align_left, text_font_family = font.family_monospace  
-    )  
+    // Sort the `a`, `b`, and `c` arrays in ascending order (default).  
+    array.sort(a)  
+    array.sort(b)  
+    c.sort()  
+  
+    // Log formatted text showing the `a`, `b`, and `c` arrays sorted in ascending order.   
+    log.info(formatString, "Ascending", a, b, c)  
+  
+    // Sort the `a`, `b`, and `c` arrays in descending order.  
+    a.sort(order.descending)  
+    b.sort(order.descending)  
+    c.sort(order.descending)  
+  
+    // Log formatted text showing the `a`, `b`, and `c` arrays sorted in descending order.   
+    log.info(formatString, "Descending", a, b, c)  
 ```
-If an array contains “string” elements, the array.sort() function sorts the elements based on the Unicode values of the strings’ _individual characters_. The sorting algorithm initially compares the _first_ character in each string, then compares subsequent characters as necessary if multiple strings have matching characters at the same position. The strings that have leading characters with the lowest Unicode values move to the beginning of the array if the order is ascending, or to the end of the array if the order is descending.
-The example script below defines an arbitrary literal string, then uses the str.split() function to split the string and construct an array of substrings. Afterward, the script calls the array.sort() function to sort the array’s elements in ascending order. The script displays formatted text representing the original string, and the array’s structure before and after sorting, in a label on the last historical bar:
+Note that:
+  * Each array.sort() call directly _modifies_ the order of the elements in the original array. To get sorted elements _without_ reorganizing the original array, use the array.sort_indices() function. This function returns a new array of “int” values representing the _indices_ of the elements sorted in ascending or descending order.
+
+The array.sort() function sorts arrays of “string” values based on the _Unicode values_ of their characters. The sorting algorithm starts with each element’s _first_ character position, then successively uses additional characters if multiple elements have matching characters at the same position.
+This example creates an array of arbitrary strings on the first bar, then sorts the array’s contents in ascending order with an array.sort() call. The script logs formatted representations of the array in the Pine Logs pane before and after calling the array.sort() function:
 ```pine
 //@version=6
 indicator("Sorting string arrays demo")  
   
-if barstate.islastconfirmedhistory  
-    //@variable A literal string to split at each `,` character.  
-    string originalStr = "abc,abC,Abc,ABC,{ABC},!,123,12.3, "  
-  
-    //@variable References an array of substrings formed by splitting the original string at each comma.  
-    array<string> splitStrArray = str.split(originalStr, ",")  
-  
-    //@variable A string to represent the original string and the array of substrings.  
-    string displayStr = str.format("Original string: ''{0}''\n\nSubstring array: {1}\n", originalStr, splitStrArray)  
-  
-    // Sort the array in ascending order, based on the Unicode values of characters in each string.  
-    splitStrArray.sort()  
-    // Concatenate a string representing the sorted result.  
-    displayStr += str.format("Sorted array:    {0}\n", splitStrArray)  
-  
-    // Display the final `displayStr` value's text in a label.  
-    label.new(  
-        bar_index, 0, displayStr, style = label.style_label_center, size = 30,   
-        textalign = text.align_left, text_font_family = font.family_monospace  
-    )  
-```
-Note that:
-  * The `" "` string appears first in the sorted array because standard whitespace and control characters have the _lowest_ Unicode values (U+0000 - U+0020). The space character’s Unicode value is U+0020.
-  * ASCII _digits_ (U+0030 - U+0039) have _lower_ Unicode values than all _letter_ characters. Therefore, the sorted array lists all strings that start with digits before those that start with letters.
-  * _Uppercase_ ASCII letters (U+0041 - U+005A) have lower Unicode values than _lowercase_ ASCII letters (U+0061 - U+007A). Therefore, strings that start with `A` appear _before_ those that start with `a` in the sorted array.
-  * Some ASCII punctuation marks and symbols have lower Unicode values than ASCII letters or digits, and some others have Unicode values that are between or higher than those of such characters. For instance, the sorted array lists the `"!"` string before other strings except for `" "` because the Unicode value of `!` is U+0021. By contrast, it lists the `"{ABC}"` string at the end because the `{` character’s Unicode value is U+007B.
-
-Every array.sort() call directly _changes_ the positions of elements in the original array, as demonstrated above. However, in some cases, a programmer might need to access an array’s elements in a sorted order _without_ rearranging the array itself.
-To access an array’s sorted elements without modifying the array, programmers can use the array.sort_indices() function. This function creates a _separate_ “int” array containing the _indices_ of the original array’s elements, organized in the _sorted order_ for those elements. Scripts can use the indices in the resulting array to read the original array’s elements in the specified order (order.ascending by default) while also preserving the original array’s unsorted order for other calculations.
-The following example script queues close values into a persistent array across the chart. It calls the array.sort_indices() function on the last historical bar to get the ID of an array containing sorted indices, and constructs a string representation of both arrays. Then, it loops through the array of indices using a for…in loop. On each iteration, the script concatenates the string with another string representing a value from the `prices` array, that value’s index in the array, and the value’s sorted position. It then displays the final string in a label:
-```pine
-//@version=6
-indicator("Getting sorted indices demo")  
-  
-//@variable References a persistent array that stores the last 10 `close` values.  
-var array<float> prices = array.new<float>(10)  
-// Push a new value to the end of the array, and remove the oldest (first) element.  
-prices.push(close)  
-prices.shift()  
-  
-if barstate.islastconfirmedhistory  
-    //@variable References an "int" array containing the `prices` array indices in ascending order by element value.   
-    //          The `array.sort_indices()` call maps sorted positions in the array without modifying it.  
-    array<int> indices = prices.sort_indices()  
-    //@variable A formatted string to display in a label.  
-    string displayStr = str.format("Prices: {0}\n\nSorted indices: {1}\n\nSort results:", prices, indices)  
-  
-    // Loop through the `indices` array.  
-    // The `i` variable stores the current index of the `indices` array's element.  
-    // The `index` variable stores that element's value (the index for one of the `prices` array's elements).  
-    // Using `index` to retrieve `prices` array's elements accesses those elements in ascending order.  
-    for [i, index] in indices  
-        // Concatenate the `displayStr` value with a string representing the sorted `prices` array element,   
-        // the original position (index) of the element, and the sorted position of that element.   
-        displayStr += str.format(  
-            "\nPrice: {0,number,0.000}, Original position: {1} -> Sorted position: {2}",   
-            prices.get(index), index, i  
-        )  
-    // Display the final string's text in a label.  
-    label.new(  
-        bar_index, 0, displayStr, style = label.style_label_center, size = 20,   
-        textalign = text.align_left, text_font_family = font.family_monospace  
-    )  
-```
-NoteIf an “int”, “float”, or “string” array contains elements with `na` values or empty strings (e.g., `""`), an array.sort() call moves those elements to the _end_ of the array if the `order` argument is order.ascending, or to the _beginning_ of the array if the argument is order.descending. Likewise, the array constructed by an array.sort_indices() call stores the indices for na values or empty strings as its _first_ or _last_ elements, depending on the `order` argument.
-#### Sorting arrays of user-defined types
-The array.sort() and array.sort_indices() functions can also sort arrays whose elements refer to objects of user-defined types (UDTs). For such arrays, the functions compare values from one of the “int”, “float”, or “string” _fields_ of each object referenced by the array’s elements, using the sorting rules described in the Sorting section above.
-The `sort_field` parameter of these functions specifies _which_ object field they analyze to sort a UDT array’s elements. The parameter can specify a field using either a _“const int”_ or _“const string”_ argument:
-  * A “const int” argument specifies a field by its _field index_ , where a value of 0 refers to the _first_ field listed in the type declaration, 1 refers to the _second_ field, and so on. The value can be any non-negative, non-na number up to one less than the total number of fields.
-  * A “const string” argument specifies a field by its _identifier (name)_. The string must literally match one of the field names listed in the type declaration.
-
-The default `sort_field` value is 0, meaning that an array.sort() or array.sort_indices() call attempts to compare values from the first field of each object referenced by the specified array if no argument is specified.
-The following example script demonstrates the sorting behavior for arrays of UDT elements. The script declares a custom type named `myType` with three fields: `field0`, `field1`, and `field2`. On the last historical bar, it creates five `myType` objects, stores their IDs in an array, then executes an array.sort() call to sort the array in ascending order using each object’s first, second, or third field, depending on the selected inputs. The script loops through the sorted array using a for…in loop to create a custom string representation of its structure, then displays the resulting string’s text in a label:
-```pine
-//@version=6
-indicator("Sorting UDT arrays demo")  
-  
-//@type  A custom type for creating objects that store "float", "string", and "int" values.  
-type myType  
-    float  field0 // This field's index is 0.  
-    string field1 // This field's index is 1.  
-    int    field2 // This field's index is 2.  
-  
-//@variable A string to indicate whether the script specifies sorting fields by index or name.  
-string specifyInput = input.string("Index", "Specify a field using its", ["Index", "Name"])  
-//@variable The index of the field to use for sorting if the `specifyInput` value is `"Index"`.  
-int indexInput = input.int(0, "Field index", 0, 2, active = specifyInput == "Index")  
-//@variable The name of the field to use for sorting if the `specifyInput` value is `"Name"`.  
-string nameInput = input.string("field0", "Field name", ["field0", "field1", "field2"], active = specifyInput == "Name")  
-  
-if barstate.islastconfirmedhistory  
-    //@variable References an array that stores the IDs of `myType` objects.  
-    array<myType> udtArray = array.from(  
-        myType.new(field0 = 2.0, field1 = "D", field2 = 1), myType.new(field0 = 1.0, field1 = "E", field2 = 2),  
-        myType.new(field0 = 3.0, field1 = "C", field2 = 3), myType.new(field0 = 5.0, field1 = "A", field2 = 4),  
-        myType.new(field0 = 4.0, field1 = "B", field2 = 5)  
-    )  
-    // Sort the array in ascending order. Use the field at the specified index if the `specifyInput` value is `"Index"`.  
-    if specifyInput == "Index"  
-        switch indexInput  
-            0 => udtArray.sort(sort_field = 0)  
-            1 => udtArray.sort(sort_field = 1)  
-            2 => udtArray.sort(sort_field = 2)  
-    // Otherwise, sort using the field with the specified name.  
-    else  
-        switch nameInput  
-            "field0"  => udtArray.sort(sort_field = "field0")  
-            "field1"  => udtArray.sort(sort_field = "field1")  
-            "field2"  => udtArray.sort(sort_field = "field2")  
-      
-    //@variable A string representing the structure of the sorted array.  
-    string displayStr = switch specifyInput  
-        "Index" => str.format("Sorted using field at index {0}\n\n[", indexInput)  
-        =>         str.format("Sorted using field named ''{0}''\n\n[",    nameInput)  
-      
-    // Concatenate formatted strings to represent the array's structure.  
-    for [i, id] in udtArray  
-        displayStr += str.format(  
-            " (field0: {0,number,0.0}, field1: {1}, field2: {2}),\n",  
-            id.field0, id.field1, id.field2  
-        )  
-    // Adjust the final result to align enclosing brackets.  
-    displayStr := str.replace(str.substring(displayStr, 0, str.length(displayStr) - 2), "[ ", "[") + "]"   
-    // Display the final string's text in a label.   
-    label.new(  
-        bar_index, 0, displayStr, style = label.style_label_center, size = 30,   
-        textalign = text.align_left, text_font_family = font.family_monospace  
-    )  
-```
-Note that:
-  * The `sort_field` parameter accepts only values that have the _“const”_ qualifier; it cannot accept values qualified as “input”, “simple”, or “series”. Therefore, to sort the array using an input-specified field, this script uses a _separate_ array.sort() call for each input combination.
-
-It’s important to emphasize that the array.sort() and array.sort_indices() functions can sort UDT arrays only by referencing object fields of the type “int”, “float”, or “string”. They cannot sort elements using fields of any other type.
-For example, the following script declares a custom `myColor` type whose first field is of the type “color”. It creates an array of `myColor` IDs, then attempts to sort the array using an array.sort() call. The call does not include a `sort_field` argument, so it references each object’s _first_ field, which is _incompatible_ with the sorting algorithm. Consequently, a _compilation error_ occurs:
-```pine
-//@version=6
-indicator("Incompatible sorting field demo", overlay = true)  
-  
-//@type  A custom type for creating objects that contain color information.  
-type myColor  
-    color c // Index 0.  
-    float r // Index 1.  
-    float g // Index 2.  
-    float b // Index 3.  
-  
-//@function Creates a new `myColor` instance with pseudorandom field values.  
-randColor() =>  
-    color c = color.rgb(math.random(0, 128), math.random(128, 255), math.random(128, 255))  
-    myColor.new(c = c, r = color.r(c), g = color.g(c), b = color.b(c))  
-  
-//@variable References an array of `myColor` IDs.  
-var array<myColor> arr = array.new<myColor>()  
-  
 if barstate.isfirst  
-    // Populate the array with 10 `myColor` IDs.  
-    for i = 1 to 10  
-        arr.push(randColor())  
   
-    // Call `array.sort()` using the default `sort_field` argument (0).  
-    // This call causes a *compilation error*, because the `array.sort()` function cannot sort "color" values.  
-    arr.sort()  
+    //@variable An array of arbitrary "string" values.   
+    array<string> stringArray = array.from("abC", "Abc", "ABc", "ABC", "!", "123", "12.3", " ")  
   
-//@variable The index of the array element to retrieve.  
-int ind = nz(int(math.round(9 * (close - low) / (high - low))))  
+    // Log the original `stringArray`.  
+    log.info("Unsorted: {0}", stringArray)  
   
-//@variable The `myColor` ID stored at index `ind`.   
-myColor id = arr.get(ind)  
-  
-// Color the bar using the `id.c` value.  
-barcolor(id.c)  
-```
-To resolve the error, we can either rearrange the type declaration to list one of the type’s “float” fields as the _first_ one, or include a `sort_field` argument in the array.sort() call to specify one of those fields. For example:
-```pine
-//@version=6
-indicator("Changing first field demo", overlay = true)  
-  
-//@type  A custom type for creating objects that contain color information.  
-type myColor  
-    float g // Moved to index 0.  
-    color c // Moved to index 1.  
-    float r // Moved to index 2.  
-    float b // Moved to index 3.  
-  
-//@function Creates a new `myColor` instance with pseudorandom field values.  
-randColor() =>  
-    color c = color.rgb(math.random(0, 128), math.random(128, 255), math.random(128, 255))  
-    myColor.new(c = c, r = color.r(c), g = color.g(c), b = color.b(c))  
-  
-//@variable References an array of `myColor` IDs.  
-var array<myColor> arr = array.new<myColor>()  
-  
-if barstate.isfirst  
-    // Populate the array with 10 `myColor` IDs.  
-    for i = 1 to 10  
-        arr.push(randColor())  
-  
-    // This call does *not* cause an error, because the default `sort_field` argument now refers   
-    // to the type's `g` field ("float").  
-    arr.sort()  
-  
-//@variable The index of the array element to retrieve.  
-int ind = nz(int(math.round(9 * (close - low) / (high - low))))  
-  
-//@variable The `myColor` ID stored at index `ind`.   
-myColor id = arr.get(ind)  
-  
-// Color the bar using the `id.c` value.  
-barcolor(id.c)  
-```
-The array.sort and array.sort_indices functions can sort UDT arrays whose referenced objects have “int”, “float”, or “string” fields that contain `na` values. However, these functions **cannot** sort UDT arrays that contain na _elements_. In a UDT array, an na element represents a _nonexistent ID_ , meaning that there is _no associated object_ that contains the field required for sorting. Consequently, attempting to sort a UDT array with one or more na elements causes a _runtime error_.
-For example, the script below declares a type named `Number` with a single “float” field named `value`. On the last historical bar, it creates an array containing multiple `Number` IDs, two of which are na. Calling array.sort() to rearrange that array causes an error, because the na elements in the array do not refer to valid `Number` objects:
-```pine
-//@version=6
-indicator("Cannot sort `na` IDs demo")  
-  
-//@variable A custom type for creating objects that store a single "float" value.  
-type Number  
-    float value  
-  
-if barstate.islastconfirmedhistory  
-    //@variable References an array of `Number` IDs, two of which are `na`.  
-    array<Number> numbers = array.from(Number.new(1.2), na, Number.new(5.4), na, Number.new(3.14))  
-  
-    // This call causes a runtime error. The `na` elements do not refer to valid `Number` objects, so the function  
-    // cannot access `value` fields for sorting.   
-    numbers.sort()  
-      
-    //@variable A string representing the array's structure.  
-    string displayStr = "["  
-    // Concatenate a string representing the `value` field from each object referenced by the sorted array.  
-    for number in numbers  
-        displayStr += str.tostring(number.value) + ", "  
-    // Remove the final `", "` sequence and add a closing bracket.  
-    displayStr := str.substring(displayStr, 0, str.length(displayStr) - 2) + "]"  
-    // Display the resulting string's text in a label.  
-    label.new(bar_index, 0, displayStr, style = label.style_label_center, size = 40, textalign = text.align_left)  
-```
-To prevent such errors, _remove_ all na IDs from a UDT array before using the array.sort() or array.sort_indices() function on it, or _replace_ them with the IDs of _new_ objects that contain na _fields_ instead.
-For example, the script version below includes a user-defined function named `replaceNa()`, which replaces na `Number` IDs in an array with the IDs of new objects that contain na `value` fields. Using this function before sorting the array with the array.sort() call prevents the runtime error:
-```pine
-//@version=6
-indicator("Replacing `na` IDs for sorting demo")  
-  
-//@variable A custom type for creating objects that store a single "float" value.  
-type Number  
-    float value  
-  
-//@function Replaces `na` instances in a specified `Number` array with the IDs of new `Number` objects with `na` fields.  
-replaceNa(array<Number> arrID) =>  
-    if array.includes(arrID, na)  
-        // Loop through the array referenced by `arrID`.   
-        for [i, objID] in arrID  
-            // If the `objID` variable stores `na`, replace the element at index `i` with a new `Number` ID.  
-            if na(objID)  
-                arrID.set(i, Number.new())  
-  
-if barstate.islastconfirmedhistory  
-    //@variable References an array of `Number` IDs, two of which are `na`.  
-    array<Number> numbers = array.from(Number.new(1.2), na, Number.new(5.4), na, Number.new(3.14))  
-    // If we call `replaceNa()` before sorting the array, no error occurs, because all elements now refer   
-    // to a valid `Number` object.  
-    replaceNa(numbers)  
-    numbers.sort()  
-      
-    //@variable A string representing the array's structure.  
-    string displayStr = "["  
-    // Concatenate a string representing the `value` field from each object referenced by the sorted array.  
-    for number in numbers  
-        displayStr += str.tostring(number.value) + ", "  
-    // Remove the final `", "` sequence and add a closing bracket.  
-    displayStr := str.substring(displayStr, 0, str.length(displayStr) - 2) + "]"  
-    // Display the resulting string's text in a label.  
-    label.new(bar_index, 0, displayStr, style = label.style_label_center, size = 40, textalign = text.align_left)  
+    // Sort the array in ascending order (default) and log the result.  
+    stringArray.sort()  
+    log.info("Ascending: {0}", stringArray)  
 ```
 Note that:
-  * This example moves the IDs of all objects with an na `value` field to the _end_ of the array because the script’s array.sort() call sorts the array’s elements in ascending order. If we use order.descending as the `order` argument, those elements move to the _beginning_ of the array instead.
+  * Whitespace and control characters have lower Unicode values than other characters, which is why the `" "` element appears first in the sorted array.
+  * Some ASCII punctuation marks and symbols have lower Unicode values than digit or letter characters. The `"!"` element comes before the elements with word characters because its Unicode value is U+0021. However, some other ASCII punctuation and symbol characters, such as the Left Curly Bracket `{` (U+007B), have higher Unicode values than ASCII digits and letters.
+  * ASCII digits have lower Unicode values than letter characters. For example, the `1` character’s value is U+0031, and the `A` character’s value is U+0041.
+  * Uppercase ASCII letters come _before_ lowercase characters in the Unicode Standard. For instance, the `a` character has the Unicode value U+0061, which is larger than the value for `A`.
 
 ###  Reversing
 Use array.reverse() to reverse an array:
@@ -8447,7 +6615,7 @@ if barstate.islast
     label.new(bar_index, 0, "AFTER\na: " + str.tostring(a) + "\nsliceOfA: " + str.tostring(sliceOfA), style = label.style_label_up)  
 ```
 ## Searching arrays
-We can test if a value is part of an array with the array.includes() function, which returns true if the element is found. We can find the first occurrence of a value in an array by using the array.indexof() function. The first occurrence is the one with the lowest index. We can also find the last occurrence of a value with array.lastindexof():
+We can test if a value is part of an array with the array.includes() function, which returns true if the element is found. We can find the first occurrence of a value in an array by using the array.indexof() function. The first occurence is the one with the lowest index. We can also find the last occurrence of a value with array.lastindexof():
 ```pine
 //@version=6
 indicator("Searching in arrays")  
@@ -8469,7 +6637,7 @@ We can also perform a binary search on an array but note that performing a binar
 NoticeSearch functions like array.indexof() and array.binary_search() return an array index if the requested element is found, or `-1` if it’s not present. Note that these functions only return _positive indices_ , while other functions like array.get() accept _both_ positive and negative indices. Ensure that scripts do **not** misconstrue a search function’s returned `-1` result as a negative index in their subsequent logic.
 ## Error handling
 Malformed `array.*()` call syntax in Pine scripts will cause the usual **compiler** error messages to appear in Pine Editor’s console, at the bottom of the window, when you save a script. Refer to the Pine Script v6 Reference Manual when in doubt regarding the exact syntax of function calls.
-Scripts using arrays can also throw **runtime** errors, which appear as an exclamation mark next to the indicator’s name on the chart. We discuss some of the most common runtime errors in this section.
+Scripts using arrays can also throw **runtime** errors, which appear as an exclamation mark next to the indicator’s name on the chart. We discuss those runtime errors in this section.
 ### Index xx is out of bounds. Array size is yy
 This error is the most frequent one programmers encounter when using arrays. The error occurs when the script references a _nonexistent_ array index. The “xx” value represents the out-of-bounds index the function tried to use, and “yy” represents the array’s size. Recall that array indices start at zero — not one — and end at the array’s size, minus one. For instance, the last valid index in a three-element array is `2`.
 To avoid this error, you must make provisions in your code logic to prevent using an index value outside the array’s boundaries. This code example generates the error because the last `i` value in the loop’s iterations is beyond the valid index range for the `a` array:
@@ -8562,7 +6730,6 @@ plot(c)
   * Copying
   * Joining
   * Sorting
-  * Sorting arrays of user-defined types
   * Reversing
   * Slicing
   * Searching arrays
@@ -8588,7 +6755,6 @@ Matrices store elements using _two_ separate indices. One index specifies which 
 NoteWe often use the format “MxN matrix” as a shorthand for “M-row, N-column matrix”. For example, the phrase “5x5 matrix” refers to a matrix with five rows and five columns.
 ## Declaring a matrix
 Pine Script uses the following syntax for matrix declarations:
-
 ```
 
 [var/varip ][matrix<type> ]<identifier> = <expression>
@@ -8626,7 +6792,7 @@ plot(m.get(0, 0), linewidth = 3) // Plot the value from the first ro
 Notice
 Matrix variables declared using varip behave similarly to those declared using var, with two key differences. Firstly, the matrices that they reference can finalize updates to their elements on _any_ available tick — not only on a bar’s closing tick. Secondly, matrices referenced by varip variables can contain only the following data:
   * Values of any fundamental type.
-  * IDs of the chart.point, footprint, or volume_row type.
+  * The IDs of chart points.
   * References to objects of a user-defined type that have fields for storing only data of either of the above types or the IDs of other collections containing only these types.
 
 ## Reading and writing matrix elements
@@ -9395,225 +7561,96 @@ if bar_index == last_bar_index - 1
     mt.debugLabel(bar_index + 10, note = "Transpose")  
 ```
 ###  Sorting
-Scripts can sort a matrix containing “int”, “float”, or “string” values by using the matrix.sort() function. This function rearranges the _rows_ of a matrix in a specified order by comparing the elements in a specified _column_.
-The `column` parameter specifies the index of the column to use for sorting. The default value is 0, meaning that a call to the function compares elements in the _first_ column by default.
-The `order` parameter accepts one of the two `order.*` constants. If the argument is order.ascending (the default), a matrix.sort() call sorts the matrix rows in ascending order based on the values from the given column. If the argument is order.descending, it sorts the rows in descending order instead.
-If a matrix contains “int” or “float” elements, a call to the matrix.sort() function sorts the rows in the matrix by comparing a column’s numeric values. If the order is ascending, the row of the column element with the lowest value becomes the first row (at row index 0), and the row of the element with the highest value becomes the last row. The opposite applies when sorting in descending order.
-For example, the following script sorts a 3x3 “int” matrix in ascending and descending order using values from a specified column. After each step, it creates a string representation of the matrix and displays the result in a separate label:
+Scripts can sort the contents of a matrix via matrix.sort(). Unlike array.sort(), which sorts _elements_ , this function organizes all _rows_ in a matrix in a specified `order` (order.ascending by default) based on the values in a specified `column`.
+This script declares a 3x3 `m` matrix, sorts the rows of the `m1` copy in ascending order based on the first column, then sorts the rows of the `m2` copy in descending order based on the second column. It displays the original matrix and sorted copies in labels using our `debugLabel()` method:
 ```pine
 //@version=6
-indicator("Sorting numeric matrix rows demo")  
+indicator("Sorting rows example")  
   
-//@variable The index of the column to use for sorting.  
-int colInput = input.int(0, "Column", 0, 2)  
+//@function Displays the rows of a matrix in a label with a note.  
+//@param    this The matrix to display.  
+//@param    barIndex The `bar_index` to display the label at.  
+//@param    bgColor The background color of the label.  
+//@param    textColor The color of the label's text.  
+//@param    note The text to display above the rows.  
+method debugLabel(  
+     matrix<float> this, int barIndex = bar_index, color bgColor = color.blue,  
+     color textColor = color.white, string note = ""  
+ ) =>  
+    labelText = note + "\n" + str.tostring(this)  
+    if barstate.ishistory  
+        label.new(  
+             barIndex, 0, labelText, color = bgColor, style = label.style_label_center,  
+             textcolor = textColor, size = size.huge  
+         )  
   
-if barstate.islastconfirmedhistory  
-    //@variable References a 3x3 matrix of "int" values.  
-    matrix<int> numbers = matrix.new<int>()  
-    // Insert a row of elements into the matrix, then reshape it to 3x3.  
-    numbers.add_row(0, array.from(3, 2, 4, 1, 9, 6, 7, 8, 9))  
-    numbers.reshape(3, 3)  
-    // Draw a label at the current `bar_index` value to display the original structure of the matrix.  
-    label.new(  
-        bar_index, 0, "Unsorted\norder\n" + str.tostring(numbers), style = label.style_label_center, size = 36   
-    )  
+//@variable A 3x3 matrix.  
+matrix<int> m = matrix.new<int>()  
   
-    // Sort the matrix rows in ascending order (the default) using the column at the `colInput` index.  
-    numbers.sort(colInput)  
-    // Draw a label at `bar_index + 10` to display the updated structure.  
-    label.new(  
-        bar_index + 10, 0, str.format("Ascending\n(column {0})\n{1}", colInput, str.tostring(numbers)),   
-        color = color.green, style = label.style_label_center, size = 36   
-    )  
-      
-    // Sort the matrix rows in *descending* order using the column at the `colInput` index.  
-    numbers.sort(colInput, order.descending)  
-    // Draw a label at `bar_index + 20` to display the updated structure.  
-    label.new(  
-        bar_index + 20, 0, str.format("Descending\n(column {0})\n{1}", colInput, str.tostring(numbers)),   
-        color = color.red, style = label.style_label_center, size = 36   
-    )  
+if bar_index == last_bar_index - 1  
+    // Add rows to `m`.  
+    m.add_row(0, array.from(3, 2, 4))  
+    m.add_row(1, array.from(1, 9, 6))  
+    m.add_row(2, array.from(7, 8, 9))  
+    m.debugLabel(note = "Original")  
+  
+    // Copy `m` and sort rows in ascending order based on the first column (default).  
+    matrix<int> m1 = m.copy()  
+    m1.sort()  
+    m1.debugLabel(bar_index + 10, color.green, note = "Sorted using col 0\n(Ascending)")  
+  
+    // Copy `m` and sort rows in descending order based on the second column.  
+    matrix<int> m2 = m.copy()  
+    m2.sort(1, order.descending)  
+    m2.debugLabel(bar_index + 20, color.red, note = "Sorted using col 1\n(Descending)")  
 ```
-If a matrix contains “string” elements, a matrix.sort() call sorts the rows in the matrix by comparing the Unicode values of _individual characters_ in the strings from the specified column. The sorting algorithm initially compares the _first_ character in each string, then compares subsequent characters as necessary if multiple strings have matching characters at the same position. The rows whose column elements contain leading characters with the lowest Unicode values move to the beginning of the matrix if the order is ascending, or to the end of the matrix if the order is descending.
-For example, the script version below sorts a 3x3 matrix of strings in ascending and descending order using the elements from a specified column. As with the previous example, the script draws three labels to show the structure of the matrix after each step:
+It’s important to note that matrix.sort() does not sort the columns of a matrix. However, one _can_ use this function to sort matrix columns with the help of matrix.transpose().
+As an example, this script contains a `sortColumns()` method that uses the matrix.sort() method to sort the transpose of a matrix using the column corresponding to the `row` of the original matrix. The script uses this method to sort the `m` matrix based on the contents of its first row:
 ```pine
 //@version=6
-indicator("Sorting string matrix rows demo")  
+indicator("Sorting columns example")  
   
-//@variable The index of the column to use for sorting.  
-int colInput = input.int(0, "Column", 0, 2)  
+//@function Displays the rows of a matrix in a label with a note.  
+//@param    this The matrix to display.  
+//@param    barIndex The `bar_index` to display the label at.  
+//@param    bgColor The background color of the label.  
+//@param    textColor The color of the label's text.  
+//@param    note The text to display above the rows.  
+method debugLabel(  
+     matrix<float> this, int barIndex = bar_index, color bgColor = color.blue,  
+     color textColor = color.white, string note = ""  
+ ) =>  
+    labelText = note + "\n" + str.tostring(this)  
+    if barstate.ishistory  
+        label.new(  
+             barIndex, 0, labelText, color = bgColor, style = label.style_label_center,  
+             textcolor = textColor, size = size.huge  
+         )  
   
-if barstate.islastconfirmedhistory  
-    //@variable References a 3x3 matrix of "string" values.  
-    matrix<string> strings = matrix.new<string>()  
-    // Insert a row of elements into the matrix, then reshape it to 3x3.  
-    strings.add_row(0, array.from("A", "E", "H", "C", "D", "I", "B", "F", "G"))  
-    strings.reshape(3, 3)  
-    // Draw a label at the current `bar_index` value to display the original structure of the matrix.  
-    label.new(  
-        bar_index, 0, "Unsorted\norder\n" + str.tostring(strings), style = label.style_label_center,   
-        size = 36, textalign = text.align_left, text_font_family = font.family_monospace   
-    )  
+//@function Sorts the columns of `this` matrix based on the values in the specified `row`.  
+method sortColumns(matrix<int> this, int row = 0, bool ascending = true) =>  
+    //@variable The transpose of `this` matrix.  
+    matrix<int> thisT = this.transpose()  
+    //@variable Is `order.ascending` when `ascending` is `true`, `order.descending` otherwise.  
+    order = ascending ? order.ascending : order.descending  
+    // Sort the rows of `thisT` using the `row` column.  
+    thisT.sort(row, order)  
+    //@variable A copy of `this` matrix with sorted columns.  
+    result = thisT.transpose()  
   
-    // Sort the matrix rows in ascending order (the default) using the column at the `colInput` index.  
-    strings.sort(colInput)  
-    // Draw a label at `bar_index + 10` to display the updated structure.  
-    label.new(  
-        bar_index + 10, 0, str.format("Ascending\n(column {0})\n{1}", colInput, str.tostring(strings)),   
-        color = color.green, style = label.style_label_center, size = 36,  
-        textalign = text.align_left, text_font_family = font.family_monospace    
-    )  
-      
-    // Sort the matrix rows in descending order using the column at the `colInput` index.  
-    strings.sort(colInput, order.descending)  
-    // Draw a label at `bar_index + 20` to display the updated structure.  
-    label.new(  
-        bar_index + 20, 0, str.format("Descending\n(column {0})\n{1}", colInput, str.tostring(strings)),   
-        color = color.red, style = label.style_label_center, size = 36,  
-        textalign = text.align_left, text_font_family = font.family_monospace   
-    )  
+//@variable A 3x3 matrix.  
+matrix<int> m = matrix.new<int>()  
+  
+if bar_index == last_bar_index - 1  
+    // Add rows to `m`.  
+    m.add_row(0, array.from(3, 2, 4))  
+    m.add_row(1, array.from(1, 9, 6))  
+    m.add_row(2, array.from(7, 8, 9))  
+    m.debugLabel(note = "Original")  
+  
+    // Sort the columns of `m` based on the first row and display the result.  
+    m.sortColumns(0).debugLabel(bar_index + 10, note = "Sorted using row 0\n(Ascending)")  
 ```
-Note that:
-  * This example uses strings containing all _uppercase_ ASCII letters. Therefore, the effect of the matrix.sort() calls is the same as sorting column strings in _alphabetical_ order. However, if we add _lowercase_ characters to the start of some strings, the sorting order would _not_ be alphabetical, because all uppercase ASCII letters _precede_ lowercase letters in the Unicode Standard. See the Sorting section of the Arrays page for an example of this behavior.
-
-NoteIf an “int”, “float”, or “string” matrix contains elements with `na` values or empty strings in a column used for sorting, a matrix.sort() call moves the corresponding rows to the _end_ of the matrix if the `order` argument is order.ascending, or to the _beginning_ if the argument is order.descending.
-In some cases, a programmer might need to sort the _columns_ of a matrix rather than sorting its rows. Although the matrix.sort() function does not support column-wise sorting directly, programmers can achieve this effect by sorting the transpose of the specified matrix. The steps are as follows:
-  1. Create a transposed copy of the matrix by calling the matrix.transpose() function. The rows of the original matrix become _columns_ in the copy, and the original columns become rows.
-  2. Sort the rows in the transposed matrix using a matrix.sort() function call.
-  3. Create a transposed copy of the sorted matrix by using a second matrix.transpose() call. This step changes the sorted rows from step 2 back to columns.
-
-The modified example below adds a user-defined function named `sortColumns()` to the first example script in this section, then replaces the script’s matrix.sort() calls with calls to that function. The `sortColumns()` function performs the above steps to create a copy of the matrix with sorted columns. The script displays strings representing the structure of the original matrix and the sorted results in labels on the last historical bar:
-```pine
-//@version=6
-indicator("Sorting matrix columns demo")  
-  
-//@function         Creates a copy of a specified matrix with sorted columns.  
-//@param id         The ID of the matrix to sort.  
-//@param row        The index of the row to use for sorting.  
-//@param ascending  Optional. If `true`, the function sorts the copy in ascending order.   
-//                  If `false`, it sorts in descending order. The default is `true`.  
-//@returns          The ID of the sorted copy.  
-sortColumns(matrix<int> id, int row, bool ascending = true) =>  
-    // Create a transposed copy of the matrix. The rows in the copy correspond to the original columns.  
-    matrix<int> t = id.transpose()  
-    // Sort the rows of the transposed copy.  
-    t.sort(row, ascending ? order.ascending : order.descending)  
-    // Create a transposed copy of the sorted matrix and return its ID.  
-    t.transpose()  
-  
-//@variable The index of the row to use for sorting.  
-int rowInput = input.int(0, "Row", 0, 2)  
-  
-if barstate.islastconfirmedhistory  
-    //@variable References a 3x3 matrix of "int" values.  
-    matrix<int> numbers = matrix.new<int>()  
-    // Insert a row of elements into the matrix, then reshape it to 3x3.  
-    numbers.add_row(0, array.from(3, 2, 4, 1, 9, 6, 7, 8, 9))  
-    numbers.reshape(3, 3)  
-    // Draw a label at the current `bar_index` value to display the original structure of the matrix.  
-    label.new(  
-        bar_index, 0, "Unsorted\norder\n" + str.tostring(numbers), style = label.style_label_center, size = 36   
-    )  
-  
-    // Sort the matrix columns in ascending order using the row at the `rowInput` index.  
-    numbers := sortColumns(numbers, rowInput, true)  
-    // Draw a label at `bar_index + 10` to display the updated structure.  
-    label.new(  
-        bar_index + 10, 0, str.format("Ascending\n(row {0})\n{1}", rowInput, str.tostring(numbers)),   
-        color = color.green, style = label.style_label_center, size = 36   
-    )  
-      
-    // Sort the matrix columns in descending order using the row at the `rowInput` index.  
-    numbers := sortColumns(numbers, rowInput, false)  
-    // Draw a label at `bar_index + 20` to display the updated structure.  
-    label.new(  
-        bar_index + 20, 0, str.format("Descending\n(row {0})\n{1}", rowInput, str.tostring(numbers)),   
-        color = color.red, style = label.style_label_center, size = 36   
-    )  
-```
-TipTo release the original matrix from memory after creating a copy with sorted columns, reassign the copy’s ID to the variable or field that stores the ID of the original matrix.
-#### Sorting matrices of user-defined types
-The matrix.sort() function can also sort matrices whose elements reference objects of user-defined types (UDTs). For such matrices, the function compares values from one of the “int”, “float”, or “string” _fields_ of each object referenced by the elements in a specified column, using the sorting rules described in the Sorting section above.
-The function’s `sort_field` parameter specifies which object field a call to the function uses to sort the rows in the matrix. The parameter can specify a field using either a _“const int”_ or _“const string”_ argument:
-  * A “const int” argument specifies a field by its _field index_ , where a value of 0 refers to the _first_ field listed in the type declaration, 1 refers to the _second_ field, and so on. The value can be any non-negative number up to one less than the total number of fields.
-  * A “const string” argument specifies a field by its _identifier (name)_. The string must literally match one of the field names listed in the type declaration.
-
-The default `sort_field` argument is 0. Therefore, if a matrix.sort() call does not specify a `sort_field` argument, it attempts to sort rows in the matrix by comparing the first field of each object referenced by a given column.
-The following script is a modified form of the _first_ example in the Sorting arrays of user-defined types section of the Arrays page. It sorts a 3x2 matrix of object IDs instead of an array of IDs. The script declares a custom type named `myType` with three fields: `field0`, `field1`, and `field2`. Then, it creates six `myType` objects and stores their IDs in a matrix on the last historical bar. The script executes a matrix.sort() call to sort the rows of the matrix by the first, second, or third field of the objects referenced on a given column, depending on the selected inputs. The script loops through the matrix with a for…in loop to create a concatenated string representing its sorted structure, then displays the resulting string’s text in a label:
-```pine
-//@version=6
-indicator("Sorting UDT matrices demo")  
-  
-//@type  A custom type for creating objects that store "float", "string", and "int" values.  
-type myType  
-    float  field0 // This field's index is 0.  
-    string field1 // This field's index is 1.  
-    int    field2 // This field's index is 2.  
-  
-//@variable A string to indicate whether the script specifies sorting fields by index or name.  
-string specifyInput = input.string("Index", "Specify a field using its", ["Index", "Name"])  
-//@variable The index of the field to use for sorting if the `specifyInput` value is `"Index"`.  
-int indexInput = input.int(0, "Field index", 0, 2, active = specifyInput == "Index")  
-//@variable The name of the field to use for sorting if the `specifyInput` value is `"Name"`.  
-string nameInput = input.string("field0", "Field name", ["field0", "field1", "field2"], active = specifyInput == "Name")  
-//@variable The index of the column to use for sorting.  
-int colInput = input.int(0, "Column to check", 0, 1)  
-  
-if barstate.islastconfirmedhistory  
-    //@variable References an array that stores the IDs of `myType` objects.  
-    array<myType> udtArray = array.from(  
-        myType.new(field0 = 2.0, field1 = "C", field2 = 2), myType.new(field0 = 6.0, field1 = "D", field2 = 4),  
-        myType.new(field0 = 1.0, field1 = "B", field2 = 3), myType.new(field0 = 5.0, field1 = "E", field2 = 6),  
-        myType.new(field0 = 3.0, field1 = "A", field2 = 1), myType.new(field0 = 4.0, field1 = "F", field2 = 5)  
-    )  
-    //@variable References a 3x2 matrix of `myType` IDs retrieved from the array.  
-    matrix<myType> udtMatrix = matrix.new<myType>()  
-    // Populate the matrix using the `udtArray` array, then reshape it using `matrix.reshape()`.  
-    udtMatrix.add_row(0, udtArray)  
-    udtMatrix.reshape(3, 2)  
-  
-    // Sort the rows in ascending order. Use the field at the specified index if the `specifyInput` value is `"Index"`.  
-    if specifyInput == "Index"  
-        switch indexInput  
-            0 => udtMatrix.sort(colInput, sort_field = 0)  
-            1 => udtMatrix.sort(colInput, sort_field = 1)  
-            2 => udtMatrix.sort(colInput, sort_field = 2)  
-    // Otherwise, sort using the field with the specified name.  
-    else  
-        switch nameInput  
-            "field0"  => udtMatrix.sort(colInput, sort_field = "field0")  
-            "field1"  => udtMatrix.sort(colInput, sort_field = "field1")  
-            "field2"  => udtMatrix.sort(colInput, sort_field = "field2")  
-      
-    //@variable A string representing the structure of the sorted matrix.  
-    string displayStr = switch specifyInput  
-        "Index" => str.format("Sorted by column {0} using field at index {1}\n\n",  colInput, indexInput)  
-        =>         str.format("Sorted by column {0} using field named ''{1}''\n\n", colInput, nameInput)  
-      
-    // Concatenate formatted strings to represent the sorted structure.  
-    for [i, row] in udtMatrix  
-        string tempStr = "["  
-        for [j, id] in row  
-            tempStr += str.format(  
-                "(field0: {0,number,0.0}, field1: {1}, field2: {2}), ",  
-                id.field0, id.field1, id.field2  
-            )  
-        displayStr += str.substring(tempStr, 0, str.length(tempStr) - 2) + "]\n"  
-    displayStr := str.substring(displayStr, 0, str.length(displayStr) - 1)  
-    // Display the final string's text in a label.   
-    label.new(  
-        bar_index, 0, displayStr, style = label.style_label_center, size = 24,   
-        textalign = text.align_left, text_font_family = font.family_monospace  
-    )  
-```
-Note that:
-  * The `sort_field` parameter accepts only values that have the _“const”_ qualifier; it cannot accept values qualified as “input”, “simple”, or “series”. Therefore, to sort the matrix using an input-specified field, this script uses a _separate_ matrix.sort() call for each input combination.
-
-When sorting matrices that store IDs of a user-defined type, it’s important to understand the following limitations:
-  * The `sort_field` argument of a matrix.sort() call must refer to an “int”, “float”, or “string” field. Attempting to sort UDT matrices using fields of other types causes a _compilation error_.
-  * While the matrix.sort() function can sort the rows of a matrix using a column containing objects that have _fields_ with na values, it **cannot** sort a matrix using columns that contain na _elements_. Elements that are na represent _nonexistent IDs_ , meaning that there are _no associated objects_ from which to retrieve a field value for sorting. Attempting to sort a UDT matrix using a column with na elements causes a _runtime error_.
-
-Refer to the Sorting arrays of user-defined types section of the Arrays page for examples of errors relating to these limitations and ways to resolve them. The principles explained in those examples also apply to sorting matrices with the matrix.sort() function.
 ###  Concatenating
 Scripts can _concatenate_ two matrices using matrix.concat(). This function appends the rows of an `id2` matrix to the end of an `id1` matrix with the same number of columns.
 To create a matrix with elements representing the _columns_ of a matrix appended to another, transpose both matrices, use matrix.concat() on the transposed matrices, then transpose() the result.
@@ -9820,7 +7857,6 @@ A _determinant_ is a scalar value associated with a square matrix that describes
 Programmers can use determinants to detect similarities between matrices, identify _full-rank_ and _rank-deficient_ matrices, and solve systems of linear equations, among other applications.
 For example, this script uses determinants to solve a system of linear equations with a matching number of unknown values using Cramer’s rule. The user-defined `solve()` function returns the reference of an array containing solutions for each unknown value in the system, where the n-th element of the array is the determinant of the coefficient matrix with the n-th column replaced by the column of constants divided by the determinant of the original coefficients.
 In this script, we’ve defined the matrix `m` that holds coefficients and constants for these three equations:
-
 ```
 
 3 * x0 + 4 * x1 - 1 * x2 = 8
@@ -10123,7 +8159,6 @@ plot(m.det()) // Raises a runtime error. You can't calculate the deter
   * Reversing
   * Transposing
   * Sorting
-  * Sorting matrices of user-defined types
   * Concatenating
   * Matrix calculations
   * Element-wise calculations
@@ -10156,7 +8191,6 @@ A map’s key elements must be of a value type, including any _fundamental type_
 Similar to arrays and matrices, maps can contain up to 100,000 elements in total. However, because each key-value pair in a map consists of _two_ elements (a _unique key_ and associated _value_), the maximum number of key-value pairs that a map can contain is 50,000.
 ## Declaring a map
 Pine Script uses the following syntax for map declarations:
-
 ```
 
 [var/varip ][map<keyType, valueType> ]<identifier> = <expression>
@@ -10204,7 +8238,7 @@ plot(oscillator, "Line", oscColor, 3)
 Notice
 Map variables declared using varip behave similarly to those declared using var, with two key differences. Firstly, the maps that they reference can finalize updates to their key-value pairs on _any_ available tick — not only on a bar’s closing tick. Secondly, maps referenced by varip variables can store only the following types of data:
   * Values of any fundamental type.
-  * IDs of the chart.point, footprint, or volume_row type.
+  * The IDs of chart points.
   * References to objects of a user-defined type that have fields for storing only data of either of the above types or the IDs of other collections containing only these types.
 
 ## Reading and writing
@@ -11250,7 +9284,6 @@ Lastly, a table’s organized format and fixed pane positions also makes it usef
 #  Backgrounds
 The bgcolor() function changes the color of the script’s background. If the script is running in `overlay = true` mode, then it will color the chart’s background.
 The function’s signature is:
-
 ```
 
 bgcolor(color, offset, editable, show_last, title, force_overlay) → void
@@ -11346,7 +9379,6 @@ See the Colors page for more examples of backgrounds.
 # Bar coloring
 The barcolor() function colors bars on the main chart, regardless of whether the script is running in the main chart pane or a separate pane.
 The function’s signature is:
-
 ```
 
 barcolor(color, offset, editable, show_last, title, display) → void
@@ -11379,7 +9411,6 @@ The plotcandle() built-in function is used to plot candles. plotbar() is used to
 Both functions require four arguments that will be used for the OHLC prices (open, high, low, close) of the bars they will be plotting. If one of those is na, no bar is plotted.
 ## Plotting candles with ​`plotcandle()`​
 The signature of plotcandle() is:
-
 ```
 
 plotcandle(open, high, low, close, title, color, wickcolor, editable, show_last, bordercolor, display) → void
@@ -11440,7 +9471,6 @@ Note that:
 
 ## Plotting bars with ​`plotbar()`​
 The signature of plotbar() is:
-
 ```
 
 plotbar(open, high, low, close, title, color, editable, show_last, display, force_overlay) → void
@@ -11481,26 +9511,26 @@ Each color in Pine Script is defined by four values:
 
 The transparency of a color defines how opaque it is: zero is fully opaque, 100 makes the color — whichever it is — invisible. Modulating transparency can be crucial in more involved color visuals or when using backgrounds, to control which colors dominate the others, and how they mix together when superimposed.
 ## Constant colors
-There are 17 built-in colors in Pine Script. This table lists their names, hexadecimal equivalent, and RGB values as arguments to color.rgb():  
-| Name  | Hex  | RGB values  |  
-| --- | --- | --- |  
-| color.aqua  | #00BCD4  | color.rgb(0, 188, 212)  |  
-| color.black  | #363A45  | color.rgb(54, 58, 69)  |  
-| color.blue  | #2196F3  | color.rgb(33, 150, 243)  |  
-| color.fuchsia  | #E040FB  | color.rgb(224, 64, 251)  |  
-| color.gray  | #787B86  | color.rgb(120, 123, 134)  |  
-| color.green  | #4CAF50  | color.rgb(76, 175, 80)  |  
-| color.lime  | #00E676  | color.rgb(0, 230, 118)  |  
-| color.maroon  | #880E4F  | color.rgb(136, 14, 79)  |  
-| color.navy  | #311B92  | color.rgb(49, 27, 146)  |  
-| color.olive  | #808000  | color.rgb(128, 128, 0)  |  
-| color.orange  | #FF9800  | color.rgb(255, 152, 0)  |  
-| color.purple  | #9C27B0  | color.rgb(156, 39, 176)  |  
-| color.red  | #F23645  | color.rgb(242, 54, 69)  |  
-| color.silver  | #B2B5BE  | color.rgb(178, 181, 190)  |  
-| color.teal  | #089981  | color.rgb(8, 153, 129)  |  
-| color.white  | #FFFFFF  | color.rgb(255, 255, 255)  |  
-| color.yellow  | #FDD835  | color.rgb(253, 216, 53)  |  
+There are 17 built-in colors in Pine Script. This table lists their names, hexadecimal equivalent, and RGB values as arguments to color.rgb():
+Name | Hex | RGB values  
+---|---|---  
+color.aqua | #00BCD4 | color.rgb(0, 188, 212)  
+color.black | #363A45 | color.rgb(54, 58, 69)  
+color.blue | #2196F3 | color.rgb(33, 150, 243)  
+color.fuchsia | #E040FB | color.rgb(224, 64, 251)  
+color.gray | #787B86 | color.rgb(120, 123, 134)  
+color.green | #4CAF50 | color.rgb(76, 175, 80)  
+color.lime | #00E676 | color.rgb(0, 230, 118)  
+color.maroon | #880E4F | color.rgb(136, 14, 79)  
+color.navy | #311B92 | color.rgb(49, 27, 146)  
+color.olive | #808000 | color.rgb(128, 128, 0)  
+color.orange | #FF9800 | color.rgb(255, 152, 0)  
+color.purple | #9C27B0 | color.rgb(156, 39, 176)  
+color.red | #F23645 | color.rgb(242, 54, 69)  
+color.silver | #B2B5BE | color.rgb(178, 181, 190)  
+color.teal | #089981 | color.rgb(8, 153, 129)  
+color.white | #FFFFFF | color.rgb(255, 255, 255)  
+color.yellow | #FDD835 | color.rgb(253, 216, 53)  
 The following script shows three different ways to express color.olive with 40% transparency. All three methods are functionally equivalent:
 ```pine
 //@version=6
@@ -11836,7 +9866,6 @@ Some of Pine Script’s visual outputs, including plots, hlines, lines, boxes, a
 
 ## ​`plot()`​ and ​`hline()`​ fills
 The fill() function fills the space between two plots or horizontal lines. It has the following two signatures:
-
 ```
 
 fill(plot1, plot2, color, title, editable, show_last, fillgaps) → void
@@ -11913,7 +9942,6 @@ fill(ma1PlotID, ma2PlotID, fillColor, "SMA plot fill")
 ```
 ## Line fills
 While the fill() function allows a script to fill the space between two plots or hlines, it does not work with line objects. When a script needs to fill the space between lines, it requires a linefill object created by the linefill.new() function. The function has the following signature:
-
 ```
 
 linefill.new(line1, line2, color) → series linefill
@@ -12020,7 +10048,6 @@ See this manual’s Lines and boxes page to learn more about working with these 
 ## ​`hline()`​ levels
 Levels are lines plotted using the hline() function. It is designed to plot **horizontal** levels using a **single color** , i.e., it does not change on different bars. See the Levels section of the page on plot() for alternative ways to plot levels when hline() won’t do what you need.
 The function has the following signature:
-
 ```
 
 hline(price, title, color, linestyle, linewidth, editable, display) → hline
@@ -12117,7 +10144,6 @@ The built-ins in the `line.*` namespace control the creation and management of l
 Scripts can call `line.set_*()`, `line.get_*()`, line.copy(), and line.delete() built-ins as functions or methods.
 ### Creating lines
 The line.new() function creates a new line instance to display on the chart. It has the following signatures:
-
 ```
 
 line.new(first_point, second_point, xloc, extend, color, style, width, force_overlay) → series line
@@ -12268,15 +10294,15 @@ Note that:
   * Each line drawing in this example uses the line.style_arrow_right style. See the Line styles section below for an overview of all available style settings.
 
 ### Line styles
-Users can control the style of their scripts’ line drawings by passing one of the following variables as the `style` argument in their line.new() or line.set_style() function calls:  
-| Argument  | Line  |  
-| --- | --- |  
-| `line.style_solid`  | !line_style_solid  |  
-| `line.style_dotted`  | !line_style_dotted  |  
-| `line.style_dashed`  | !line_style_dashed  |  
-| `line.style_arrow_left`  | !line_style_arrow_left  |  
-| `line.style_arrow_right`  | !line_style_arrow_right  |  
-| `line.style_arrow_both`  | !line_style_arrow_both  |  
+Users can control the style of their scripts’ line drawings by passing one of the following variables as the `style` argument in their line.new() or line.set_style() function calls:
+Argument | Line  
+---|---  
+`line.style_solid` | !line_style_solid  
+`line.style_dotted` | !line_style_dotted  
+`line.style_dashed` | !line_style_dashed  
+`line.style_arrow_left` | !line_style_arrow_left  
+`line.style_arrow_right` | !line_style_arrow_right  
+`line.style_arrow_both` | !line_style_arrow_both  
 Note that:
   * _Polylines_ can also use any of these variables as their `line_style` value. See the Creating polylines section of this page.
 
@@ -12460,7 +10486,6 @@ The built-ins in the `box.*` namespace create and manage box objects:
 As with lines, users can call `box.set_*()`, `box.get_*()`, box.copy(), and box.delete() built-ins as functions or methods.
 ### Creating boxes
 The box.new() function creates a new box object to display on the chart. It has the following signatures:
-
 ```
 
 box.new(top_left, bottom_right, border_color, border_width, border_style, extend, xloc, bgcolor, text, text_size, text_color, text_halign, text_valign, text_wrap, text_font_family, force_overlay, text_formatting) → series box
@@ -12609,12 +10634,12 @@ Note that:
 
 ### Box styles
 Users can include one of the following `line.style_*` variables in their box.new() or box.set_border_style() function calls to set the border styles of boxes drawn by their scripts:
-* * *  
-| Argument  | Box  |  
-| --- | --- |  
-| `line.style_solid`  | !box_style_solid  |  
-| `line.style_dotted`  | !box_style_dotted  |  
-| `line.style_dashed`  | !box_style_dashed  |  
+* * *
+Argument | Box  
+---|---  
+`line.style_solid` | !box_style_solid  
+`line.style_dotted` | !box_style_dotted  
+`line.style_dashed` | !box_style_dashed  
 ### Reading box values
 The `box.*` namespace features _getter_ functions that allow scripts to retrieve coordinate values from a box instance:
   * box.get_left() and box.get_right() respectively get the x-coordinates of the left and right edges of the `id` box. Whether the value returned represents a bar index or time value depends on the box’s `xloc` property.
@@ -12772,7 +10797,6 @@ The `polyline.*` namespace features the following built-ins for creating and man
 Unlike lines or boxes, polylines do not have functions for modification or reading their properties. To redraw a polyline on the chart, one can _delete_ the existing instance and _create_ a new polyline with the desired changes.
 ### Creating polylines
 The polyline.new() function creates a new polyline instance to display on the chart. It has the following signature:
-
 ```
 
 polyline.new(points, curved, closed, xloc, line_color, fill_color, line_style, line_width, force_overlay) → series polyline
@@ -12838,19 +10862,33 @@ Polylines can draw _curves_ that are otherwise impossible to produce with lines 
 For instance, the “Oscillating polyline” script in our previous example uses _straight_ line segments to produce a drawing resembling a triangle wave, meaning a waveform that zig-zags between its peaks and valleys. If we set the `curved` parameter in the polyline.new() call from that example to `true`, the resulting drawing would connect the points using _curved_ segments, producing a smooth, nonlinear shape similar to a sine wave:
 ```pine
 //@version=6
-indicator("Historical buffer demo", overlay = true)  
+indicator("Curved drawings demo", "Smooth oscillating polyline")  
   
-//@variable A `chart.point` at the `bar_index` from 300 bars ago and current `close.  
-firstPoint = chart.point.from_index(bar_index[300], close)  
-//@variable The current bar's `chart.point` containing the current `close`.  
-secondPoint = chart.point.now(close)  
+//@variable The number of bars between each point in the drawing.  
+int length = input.int(20, "Length between points", 2)  
   
-// Explicitly set the historical buffer of the `time` series to 300 bars.  
-max_bars_back(time, 300)  
+//@variable An array of `chart.point` objects to sequentially connect with a polyline.  
+var points = array.new<chart.point>()  
   
-// Draw a new line on realtime bars.  
-if barstate.isrealtime  
-    line.new(firstPoint, secondPoint)  
+//@variable The y-coordinate of each point in the `points`. Alternates between 1 and -1 on each `newPoint`.  
+var int yValue = 1  
+  
+//@variable Is `true` once every `length` bars, `false` otherwise.  
+bool newPoint = bar_index % length == 0  
+  
+if newPoint  
+    // Push a new `chart.point` into the `points`. The new point contains `time` and `index` info.  
+    points.push(chart.point.now(yValue))  
+    // Change the sign of the `yValue`.  
+    yValue *= -1  
+  
+// Draw a new curved `polyline` on the last confirmed historical chart bar.  
+// The polyline uses the `time` field from each `chart.point` in the `points` array as x-coordinates.  
+if barstate.islastconfirmedhistory  
+    polyline.new(points, curved = true, xloc = xloc.bar_time, line_color = #9151A6, line_width = 3)  
+  
+// Highlight the chart background on every `newPoint` condition.  
+bgcolor(newPoint ? color.new(color.gray, 70) : na, title = "New point highlight")  
 ```
 Notice that in this example, the smooth curves have relatively consistent behavior, and no portion of the drawing extends past its defined coordinates, which is not always the case when drawing curved polylines. The data used to construct a polyline heavily impacts the smooth, piecewise function it interpolates between its points. In some cases, the interpolated curve _can_ reach beyond its actual coordinates.
 Let’s add some variation to the chart points in our example’s `points` array to demonstrate this behavior. In the version below, the script multiplies `yValue` by a pseudorandom value in each chart.point.now() call.
@@ -13252,7 +11290,6 @@ A plot() call must always be in the script’s _global_ scope, i.e., at the _beg
 If the plot() call includes `force_overlay = true`, the result always displays on the main chart pane, even if the script is running in a separate pane. Otherwise, the script displays the plot in the same pane in which it runs. By contrast, scripts can only color bars in the main chart pane, regardless of where they run.
 ## ​`plot()`​ parameters
 The plot() function has the following signature:
-
 ```
 
 plot(series, title, color, linewidth, style, trackprice, histbase, offset, join, editable, show_last, display, format, precision, force_overlay, linestyle) → plot
@@ -13754,7 +11791,6 @@ Note that:
 
 ## ​`plotchar()`​
 This function is useful to display a single character on bars. It has the following syntax:
-
 ```
 
 plotchar(series, title, char, location, color, offset, text, textcolor, editable, size, show_last, display, format, precision, force_overlay) → void
@@ -13796,7 +11832,6 @@ plot(longSignal ? low - ta.tr : na, "Long", color.blue, 2, plot.style_
 This method has the inconvenience that, since there is no relative positioning mechanism with plot() one must shift the circles down using something like ta.tr (the bar’s “True Range”):
 ## ​`plotshape()`​
 This function is useful to display pre-defined shapes and/or text on bars. It has the following syntax:
-
 ```
 
 plotshape(series, title, style, location, color, offset, text, textcolor, editable, size, show_last, display, format, precision, force_overlay) → void
@@ -13821,18 +11856,17 @@ plotshape(true, "", shape.arrowup,   location.abovebar, color.lime,   t
 plotshape(true, "", shape.arrowdown, location.belowbar, color.red,    text = "C")  
 plotshape(true, "", shape.arrowdown, location.belowbar, color.maroon, text = "​\nD")  
 ```
-The available shapes you can use with the `style` parameter are:  
-| Argument  | Shape  | With Text  | Argument  | Shape  | With Text  |  
-| --- | --- | --- | --- | --- | --- |  
-| `shape.xcross`  | !Plotshape_xcross  | !Xcross_with_text  | `shape.arrowup`  | !Plotshape_arrowup  | !Arrowup_with_text  |  
-| `shape.cross`  | !Plotshape_cross  | !Cross_with_text  | `shape.arrowdown`  | !Plotshape_arrowdown  | !Arrowdown_with_text  |  
-| `shape.circle`  | !Plotshape_circle  | !Circle_with_text  | `shape.square`  | !Plotshape_square  | !Square_with_text  |  
-| `shape.triangleup`  | !Plotshape_triangleup  | !Triangleup_with_text  | `shape.diamond`  | !Plotshape_diamond  | !Diamond_with_text  |  
-| `shape.triangledown`  | !Plotshape_triangledown  | !Triangledown_with_text  | `shape.labelup`  | !Plotshape_labelup  | !Labelup_with_text  |  
-| `shape.flag`  | !Plotshape_flag  | !Flag_with_text  | `shape.labeldown`  | !Plotshape_labeldown  | !Labeldown_with_text  |  
+The available shapes you can use with the `style` parameter are:
+Argument | Shape | With Text | Argument | Shape | With Text  
+---|---|---|---|---|---  
+`shape.xcross` | !Plotshape_xcross | !Xcross_with_text | `shape.arrowup` | !Plotshape_arrowup | !Arrowup_with_text  
+`shape.cross` | !Plotshape_cross | !Cross_with_text | `shape.arrowdown` | !Plotshape_arrowdown | !Arrowdown_with_text  
+`shape.circle` | !Plotshape_circle | !Circle_with_text | `shape.square` | !Plotshape_square | !Square_with_text  
+`shape.triangleup` | !Plotshape_triangleup | !Triangleup_with_text | `shape.diamond` | !Plotshape_diamond | !Diamond_with_text  
+`shape.triangledown` | !Plotshape_triangledown | !Triangledown_with_text | `shape.labelup` | !Plotshape_labelup | !Labelup_with_text  
+`shape.flag` | !Plotshape_flag | !Flag_with_text | `shape.labeldown` | !Plotshape_labeldown | !Labeldown_with_text  
 ## ​`plotarrow()`​
 The plotarrow() function displays up or down arrows of variable length, based on the relative value of the series used in the function’s first argument. It has the following syntax:
-
 ```
 
 plotarrow(series, title, colorup, colordown, offset, minheight, maxheight, editable, show_last, display, format, precision, force_overlay) → void
@@ -13885,7 +11919,6 @@ Your toolbox of built-ins to manage labels are all in the `label` namespace. The
 
 ### Creating and modifying labels
 The label.new() function creates a new label object on the chart. It has the following signatures:
-
 ```
 
 label.new(point, text, xloc, yloc, color, style, textcolor, size, textalign, tooltip, text_font_family, force_overlay, text_formatting) → series label
@@ -13913,7 +11946,6 @@ The _setter_ functions allowing you to change a label’s properties are:
   * label.set_text_formatting()
 
 They all have a similar signature. The one for label.set_color() is:
-
 ```
 
 label.set_color(id, color) → void
@@ -13992,19 +12024,19 @@ Is the price level where the label is positioned. It is only taken into account 
 Can be yloc.price (the default), yloc.abovebar or yloc.belowbar. The argument used for `y` is only taken into account with yloc.price. The `yloc` value of an existing label can be modified using label.set_yloc().
 `style`
 The argument used has an impact on the visual appearance of the label and on its position relative to the reference point determined by either the `y` value or the top/bottom of the bar when yloc.abovebar or yloc.belowbar are used. The `style` of an existing label can be modified using label.set_style().
-These are the available `style` arguments:  
-| Argument  | Label  | Label with text  | Argument  | Label  | Label with text  |  
-| --- | --- | --- | --- | --- | --- |  
-| `label.style_xcross`  | !label_style_xcross  | !label_style_xcross_t  | `label.style_label_up`  | !label_style_label_up  | !label_style_label_up_t  |  
-| `label.style_cross`  | !label_style_cross  | !label_style_cross_t  | `label.style_label_down`  | !label_style_label_down  | !label_style_label_down_t  |  
-| `label.style_flag`  | !label_style_flag  | !label_style_flag_t  | `label.style_label_left`  | !label_style_label_left  | !label_style_label_left_t  |  
-| `label.style_circle`  | !label_style_circle  | !label_style_circle_t  | `label.style_label_right`  | !label_style_label_right  | !label_style_label_right_t  |  
-| `label.style_square`  | !label_style_square  | !label_style_square_t  | `label.style_label_lower_left`  | !label_style_label_lower_left  | !label_style_label_lower_left_t  |  
-| `label.style_diamond`  | !label_style_diamond  | !label_style_diamond_t  | `label.style_label_lower_right`  | !label_style_label_lower_right  | !label_style_label_lower_right_t  |  
-| `label.style_triangleup`  | !label_style_triangleup  | !label_style_triangleup_t  | `label.style_label_upper_left`  | !label_style_label_upper_left  | !label_style_label_upper_left_t  |  
-| `label.style_triangledown`  | !label_style_triangledown  | !label_style_triangledown_t  | `label.style_label_upper_right`  | !label_style_label_upper_right  | !label_style_label_upper_right_t  |  
-| `label.style_arrowup`  | !label_style_arrowup  | !label_style_arrowup_t  | `label.style_label_center`  | !label_style_label_center  | !label_style_label_center_t  |  
-| `label.style_arrowdown`  | !label_style_arrowdown  | !label_style_arrowdown_t  | `label.style_none`  |   | !label_style_none_t  |  
+These are the available `style` arguments:
+Argument | Label | Label with text | Argument | Label | Label with text  
+---|---|---|---|---|---  
+`label.style_xcross` | !label_style_xcross | !label_style_xcross_t | `label.style_label_up` | !label_style_label_up | !label_style_label_up_t  
+`label.style_cross` | !label_style_cross | !label_style_cross_t | `label.style_label_down` | !label_style_label_down | !label_style_label_down_t  
+`label.style_flag` | !label_style_flag | !label_style_flag_t | `label.style_label_left` | !label_style_label_left | !label_style_label_left_t  
+`label.style_circle` | !label_style_circle | !label_style_circle_t | `label.style_label_right` | !label_style_label_right | !label_style_label_right_t  
+`label.style_square` | !label_style_square | !label_style_square_t | `label.style_label_lower_left` | !label_style_label_lower_left | !label_style_label_lower_left_t  
+`label.style_diamond` | !label_style_diamond | !label_style_diamond_t | `label.style_label_lower_right` | !label_style_label_lower_right | !label_style_label_lower_right_t  
+`label.style_triangleup` | !label_style_triangleup | !label_style_triangleup_t | `label.style_label_upper_left` | !label_style_label_upper_left | !label_style_label_upper_left_t  
+`label.style_triangledown` | !label_style_triangledown | !label_style_triangledown_t | `label.style_label_upper_right` | !label_style_label_upper_right | !label_style_label_upper_right_t  
+`label.style_arrowup` | !label_style_arrowup | !label_style_arrowup_t | `label.style_label_center` | !label_style_label_center | !label_style_label_center_t  
+`label.style_arrowdown` | !label_style_arrowdown | !label_style_arrowdown_t | `label.style_none` |  | !label_style_none_t  
 When using xloc.bar_time, the `x` value must be a UNIX timestamp in milliseconds. See the page on Time for more information. The start time of the current bar can be obtained from the time built-in variable. The bar time of previous bars is `time[1]`, `time[2]` and so on. Time can also be set to an absolute value with the timestamp() function. You may add or subtract periods of time to achieve relative time offset.
 Let’s position a label one day ago from the date on the last bar:
 ```pine
@@ -14029,7 +12061,6 @@ The following _getter_ functions are available for labels:
   * label.get_text()
 
 They all have a similar signature. The one for label.get_text() is:
-
 ```
 
 label.get_text(id) → series string
@@ -14039,7 +12070,6 @@ label.get_text(id) → series string
 where `id` is the label whose text is to be retrieved.
 ### Cloning labels
 The label.copy() function is used to clone labels. Its syntax is:
-
 ```
 
 label.copy(id) → void
@@ -14048,7 +12078,6 @@ label.copy(id) → void
 
 ### Deleting labels
 The label.delete() function is used to delete labels. Its syntax is:
-
 ```
 
 label.delete(id) → void
@@ -14105,15 +12134,15 @@ Drawing objects like labels, tables, and boxes have text-related properties that
 Programmers can set an object’s text properties when initializing it using the label.new(), box.new(), or table.cell() parameters. Alternatively, they can use the corresponding setter functions, e.g., label.set_text_font_family(), table.cell_set_text_color(), box.set_text_halign(), etc.
 All three drawing objects have a `text_formatting` parameter, which sets the typographic emphasis to display **bold** , _italicized_ , or unformatted text. It accepts the constants text.format_bold, text.format_italic, or text.format_none (no special formatting; default value). It also accepts `text.format_bold + text.format_italic` to display text that is both _**bold and italicized**_.
 The `size` parameter in label.new() and the `text_size` parameter in box.new() and table.cell() specify the size of the text displayed in the drawn objects. The parameters accept both “string” `size.*` constants and “int” typographic sizes. A “string” `size.*` constant represents one of six fixed sizing options. An “int” size value can be any positive integer, allowing scripts to replicate the `size.*` values or use other customized sizing.
-This table lists the `size.*` constants and their equivalent “int” sizes for tables, boxes, and labels:  
-| “string” constant  | ”int” `text_size` in tables and boxes  | ”int” `size` in labels  |  
-| --- | --- | --- |  
-| `size.auto`  | 0  | 0  |  
-| `size.tiny`  | 8  | ~7  |  
-| `size.small`  | 10  | ~10  |  
-| `size.normal`  | 14  | 12  |  
-| `size.large`  | 20  | 18  |  
-| `size.huge`  | 36  | 24  |  
+This table lists the `size.*` constants and their equivalent “int” sizes for tables, boxes, and labels:
+“string” constant | ”int” `text_size` in tables and boxes | ”int” `size` in labels  
+---|---|---  
+`size.auto` | 0 | 0  
+`size.tiny` | 8 | ~7  
+`size.small` | 10 | ~10  
+`size.normal` | 14 | 12  
+`size.large` | 20 | 18  
+`size.huge` | 36 | 24  
 The example below creates a label and table on the last available bar. The label displays a string representation of the current close value. The single-cell table displays a string representing the price and percentage difference between the current close and open values. The label’s text size is defined by a string input that returns the value of a built-in `size.*` constant, and the table’s text size is defined by an integer input. Additionally, the script creates a box that visualizes the range from the highest to lowest price over the last 20 bars. The box displays custom text, with a constant `text_size` of 19, to show the distance from the close value to the current highest or lowest price. The two Boolean inputs specify whether all three drawings apply bold and italic text formats to their displayed text:
 ```pine
 //@version=6
@@ -14227,7 +12256,6 @@ A _script alert_ created from an **indicator** will trigger when:
 A _script alert_ created from a **strategy** can trigger on _alert() function calls_ , on _order fill events_ , or both. The script user creating an alert on a strategy decides which type of events he wishes to include in his _script alert_. While users can create a _script alert_ on _order fill events_ without the need for a strategy to include special code, it must contain alert() calls for users to include _alert() function calls_ in their _script alert_.
 ### ​`alert()`​ function events
 The alert() function has the following signature:
-
 ```
 
 alert(message, freq)
@@ -14386,7 +12414,6 @@ While other placeholders can be used in the “Create Alert” dialog box’s �
 The alertcondition() function allows programmers to create individual _alertcondition events_ in their indicators. One indicator may contain more than one alertcondition() call. Each call to alertcondition() in a script will create a corresponding alert selectable in the “Condition” dropdown menu of the “Create Alert” dialog box.
 While the presence of alertcondition() calls in a **strategy** script will not cause a compilation error, alerts cannot be created from them.
 The alertcondition() function has the following signature:
-
 ```
 
 alertcondition(condition, title, message)
@@ -14850,7 +12877,6 @@ The next sections explain what each input function does. As we proceed, we will 
 ### Generic input
 input() is a simple, generic function that supports the fundamental Pine Script types: “int”, “float”, “bool”, “color” and “string”. It also supports “source” inputs, which are price-related values such as close, hl2, hlc3, and hlcc4, or which can be used to receive the output value of another script.
 Its signature is:
-
 ```
 
 input(defval, title, tooltip, inline, group, display, active) → input int/float/bool/color/string | series float
@@ -14871,7 +12897,6 @@ plot(na)
 ```
 ### Integer input
 Two signatures exist for the input.int() function; one when `options` is not used, the other when it is:
-
 ```
 
 input.int(defval, title, minval, maxval, step, tooltip, inline, group, confirm, display, active) → input int
@@ -14899,7 +12924,6 @@ plot(ma)
 The version with the `options` list uses a dropdown menu for its widget. When the `options` parameter is not used, a simple input widget is used to enter the value:
 ### Float input
 Two signatures exist for the input.float() function; one when `options` is not used, the other when it is:
-
 ```
 
 input.float(defval, title, minval, maxval, step, tooltip, inline, group, confirm, display, active) → input int
@@ -15391,7 +13415,6 @@ Exported library functions have the following constraints:
   * They cannot use variables from the library’s global scope except for those with the “const” qualifier, meaning they cannot use global variables initialized from script inputs, for example, or globally declared arrays.
   * They cannot include calls to any `input.*()` functions.
   * They _can_ include `request.*()` calls in their local scopes (if the `dynamic_requests` parameter is not set to `false` in the library declaration statement), but the `expression` arguments of these calls cannot depend on any exported function parameters. See this section of the Other timeframes and data page to learn more about dynamic requests.
-  * They can contain alert() function calls, and a user can create an alert from a script that consumes such a function, but a user _cannot_ create an alert directly from that library running on the chart.
 
 Library functions always return “simple” or “series” results. They do not return values with _weaker_ qualifiers. Consequently, scripts cannot use their returned values in locations requiring “const” or “input” values. For example, a library function cannot calculate an argument for the `show_last` parameter in a plot() call because the parameter requires an “input int” or “const int” value.
 ### Qualified type control
@@ -15586,7 +13609,6 @@ Pine libraries are considered “public domain” code in our House Rules on Scr
 Whether using a library’s functions or reusing its code, you must credit the author in your publication’s description. It is also good form to credit in open-source comments.
 ## Using a library
 Using a library from another script (which can be an indicator, a strategy or another library), is done through the import statement:
-
 ```
 
 import <username>/<libraryName>/<libraryVersion> [as <alias>]
@@ -15744,7 +13766,6 @@ plot(pnfC, "PnF Close", color.red, 4, plot.style_linebr)
 
 NoteThroughout this page, and in other parts of our documentation that discuss `request.*()` functions, we often use the term _“context”_ to describe the symbol, timeframe, and any modifications — such as price adjustments, session settings, and non-standard chart types — that apply to a chart or the data retrieved by a script.
 These are the signatures of the functions in the `request.*` namespace:
-
 ```
 
 request.security(symbol, timeframe, expression, gaps, lookahead, ignore_invalid_symbol, currency, calc_bars_count) → series <type>
@@ -16142,7 +14163,6 @@ The request.security() function allows scripts to request data from other contex
   * Custom contexts, including alternative sessions, price adjustments, chart types, etc. using `ticker.*()` functions
 
 This is the function’s signature:
-
 ```
 
 request.security(symbol, timeframe, expression, gaps, lookahead, ignore_invalid_symbol, currency, calc_bars_count) → series <type>
@@ -16578,7 +14598,6 @@ The request.security_lower_tf() function is an alternative to request.security()
 While request.security() can retrieve data from a _single_ intrabar (LTF bar) in each chart bar, request.security_lower_tf() retrieves data from _all_ available intrabars in each chart bar, which the script can access and use in additional calculations. Each request.security_lower_tf() call can retrieve up to 200,000 intrabars from a lower timeframe, depending on the user’s plan. See this section of our Limitations page for more information.
 TipWorking with the request.security_lower_tf() function involves frequent usage of _arrays_ , because the function always returns array results. Therefore, we recommend reading the Arrays page to make the most of this function and understand how to use its returned data.
 Below is the function’s signature, which is similar to the signature of request.security():
-
 ```
 
 request.security_lower_tf(symbol, timeframe, expression, ignore_invalid_symbol, currency, ignore_invalid_timeframe, calc_bars_count) → array<type>
@@ -16983,7 +15002,6 @@ When a script needs to convert values expressed in one currency to another, one 
 While one can use request.security() to retrieve daily currency rates, its use case is more involved than request.currency_rate(), as one needs to supply a valid _ticker ID_ for a currency pair or spread to request the rate. Additionally, a historical offset and barmerge.lookahead_on are necessary to prevent the results from repainting, as explained in this section.
 The request.currency_rate() function, on the other hand, only requires _currency codes_. No ticker ID is needed when requesting rates with this function, and it ensures non-repainting results without requiring additional specification.
 The function’s signature is as follows:
-
 ```
 
 request.currency_rate(from, to, ignore_invalid_currency) → series float
@@ -17020,7 +15038,6 @@ plot(nonSecurityRequestedRate, "`request.currency_rate()` value", color.yello
 ## ​`request.dividends()`​, ​`request.splits()`​, and ​`request.earnings()`​
 Analyzing a stock’s earnings data and corporate actions provides helpful insights into its underlying financial strength. Pine Script provides the ability to retrieve essential information about applicable stocks via request.dividends(), request.splits(), and request.earnings().
 These are the functions’ signatures:
-
 ```
 
 request.dividends(ticker, field, gaps, lookahead, ignore_invalid_symbol, currency) → series float
@@ -17098,7 +15115,6 @@ Note that:
 ## ​`request.financial()`​
 Financial metrics provide investors with insights about a company’s economic and financial health that are not tangible from solely analyzing its stock prices. TradingView offers a wide variety of financial metrics from FactSet that traders can access via the “Financials” tab in the “Indicators” menu of the chart. Scripts can access available metrics for an instrument directly via the request.financial() function.
 This is the function’s signature:
-
 ```
 
 request.financial(symbol, financial_id, period, gaps, ignore_invalid_symbol, currency) → series float
@@ -17214,250 +15230,245 @@ Each table has the following three columns:
 TipThe tables in these sections are quite lengthy, because there are many `financial_id` arguments available. Use the **“Click to show/hide”** option above each table to toggle its visibility.
 #### Income statements
 This table lists the available metrics that provide information about a company’s income, costs, profits and losses.
-Click to show/hide  
-| Financial  | `period`  | `financial_id`  |  
-| --- | --- | --- |  
-| After tax other income/expense  | FQ, FH, FY, TTM  | AFTER_TAX_OTHER_INCOME  |  
-| Average basic shares outstanding  | FQ, FH, FY  | BASIC_SHARES_OUTSTANDING  |  
-| Basic earnings per share (Basic EPS)  | FQ, FH, FY, TTM  | EARNINGS_PER_SHARE_BASIC  |  
-| Cost of goods sold  | FQ, FH, FY, TTM  | COST_OF_GOODS  |  
-| Deprecation and amortization  | FQ, FH, FY, TTM  | DEP_AMORT_EXP_INCOME_S  |  
-| Diluted earnings per share (Diluted EPS)  | FQ, FH, FY, TTM  | EARNINGS_PER_SHARE_DILUTED  |  
-| Diluted net income available to common stockholders  | FQ, FH, FY, TTM  | DILUTED_NET_INCOME  |  
-| Diluted shares outstanding  | FQ, FH, FY  | DILUTED_SHARES_OUTSTANDING  |  
-| Dilution adjustment  | FQ, FH, FY, TTM  | DILUTION_ADJUSTMENT  |  
-| Discontinued operations  | FQ, FH, FY, TTM  | DISCONTINUED_OPERATIONS  |  
-| EBIT  | FQ, FH, FY, TTM  | EBIT  |  
-| EBITDA  | FQ, FH, FY, TTM  | EBITDA  |  
-| Equity in earnings  | FQ, FH, FY, TTM  | EQUITY_IN_EARNINGS  |  
-| Gross profit  | FQ, FH, FY, TTM  | GROSS_PROFIT  |  
-| Interest capitalized  | FQ, FH, FY, TTM  | INTEREST_CAPITALIZED  |  
-| Interest expense on debt  | FQ, FH, FY, TTM  | INTEREST_EXPENSE_ON_DEBT  |  
-| Interest expense, net of interest capitalized  | FQ, FH, FY, TTM  | NON_OPER_INTEREST_EXP  |  
-| Miscellaneous non-operating expense  | FQ, FH, FY, TTM  | OTHER_INCOME  |  
-| Net income  | FQ, FH, FY, TTM  | NET_INCOME  |  
-| Net income before discontinued operations  | FQ, FH, FY, TTM  | NET_INCOME_BEF_DISC_OPER  |  
-| Non-controlling/minority interest  | FQ, FH, FY, TTM  | MINORITY_INTEREST_EXP  |  
-| Non-operating income, excl. interest expenses  | FQ, FH, FY, TTM  | NON_OPER_INCOME  |  
-| Non-operating income, total  | FQ, FH, FY, TTM  | TOTAL_NON_OPER_INCOME  |  
-| Non-operating interest income  | FQ, FH, FY, TTM  | NON_OPER_INTEREST_INCOME  |  
-| Operating expenses (excl. COGS)  | FQ, FH, FY, TTM  | OPERATING_EXPENSES  |  
-| Operating income  | FQ, FH, FY, TTM  | OPER_INCOME  |  
-| Other cost of goods sold  | FQ, FH, FY, TTM  | COST_OF_GOODS_EXCL_DEP_AMORT  |  
-| Other operating expenses, total  | FQ, FH, FY, TTM  | OTHER_OPER_EXPENSE_TOTAL  |  
-| Preferred dividends  | FQ, FH, FY, TTM  | PREFERRED_DIVIDENDS  |  
-| Pretax equity in earnings  | FQ, FH, FY, TTM  | PRETAX_EQUITY_IN_EARNINGS  |  
-| Pretax income  | FQ, FH, FY, TTM  | PRETAX_INCOME  |  
-| Research & development  | FQ, FH, FY, TTM  | RESEARCH_AND_DEV  |  
-| Selling/general/admin expenses, other  | FQ, FH, FY, TTM  | SELL_GEN_ADMIN_EXP_OTHER  |  
-| Selling/general/admin expenses, total  | FQ, FH, FY, TTM  | SELL_GEN_ADMIN_EXP_TOTAL  |  
-| Taxes  | FQ, FH, FY, TTM  | INCOME_TAX  |  
-| Total operating expenses  | FQ, FH, FY, TTM  | TOTAL_OPER_EXPENSE  |  
-| Total revenue  | FQ, FH, FY, TTM  | TOTAL_REVENUE  |  
-| Unusual income/expense  | FQ, FH, FY, TTM  | UNUSUAL_EXPENSE_INC  |  
+Click to show/hide Financial | `period` | `financial_id`  
+---|---|---  
+After tax other income/expense | FQ, FH, FY, TTM | AFTER_TAX_OTHER_INCOME  
+Average basic shares outstanding | FQ, FH, FY | BASIC_SHARES_OUTSTANDING  
+Basic earnings per share (Basic EPS) | FQ, FH, FY, TTM | EARNINGS_PER_SHARE_BASIC  
+Cost of goods sold | FQ, FH, FY, TTM | COST_OF_GOODS  
+Deprecation and amortization | FQ, FH, FY, TTM | DEP_AMORT_EXP_INCOME_S  
+Diluted earnings per share (Diluted EPS) | FQ, FH, FY, TTM | EARNINGS_PER_SHARE_DILUTED  
+Diluted net income available to common stockholders | FQ, FH, FY, TTM | DILUTED_NET_INCOME  
+Diluted shares outstanding | FQ, FH, FY | DILUTED_SHARES_OUTSTANDING  
+Dilution adjustment | FQ, FH, FY, TTM | DILUTION_ADJUSTMENT  
+Discontinued operations | FQ, FH, FY, TTM | DISCONTINUED_OPERATIONS  
+EBIT | FQ, FH, FY, TTM | EBIT  
+EBITDA | FQ, FH, FY, TTM | EBITDA  
+Equity in earnings | FQ, FH, FY, TTM | EQUITY_IN_EARNINGS  
+Gross profit | FQ, FH, FY, TTM | GROSS_PROFIT  
+Interest capitalized | FQ, FH, FY, TTM | INTEREST_CAPITALIZED  
+Interest expense on debt | FQ, FH, FY, TTM | INTEREST_EXPENSE_ON_DEBT  
+Interest expense, net of interest capitalized | FQ, FH, FY, TTM | NON_OPER_INTEREST_EXP  
+Miscellaneous non-operating expense | FQ, FH, FY, TTM | OTHER_INCOME  
+Net income | FQ, FH, FY, TTM | NET_INCOME  
+Net income before discontinued operations | FQ, FH, FY, TTM | NET_INCOME_BEF_DISC_OPER  
+Non-controlling/minority interest | FQ, FH, FY, TTM | MINORITY_INTEREST_EXP  
+Non-operating income, excl. interest expenses | FQ, FH, FY, TTM | NON_OPER_INCOME  
+Non-operating income, total | FQ, FH, FY, TTM | TOTAL_NON_OPER_INCOME  
+Non-operating interest income | FQ, FH, FY, TTM | NON_OPER_INTEREST_INCOME  
+Operating expenses (excl. COGS) | FQ, FH, FY, TTM | OPERATING_EXPENSES  
+Operating income | FQ, FH, FY, TTM | OPER_INCOME  
+Other cost of goods sold | FQ, FH, FY, TTM | COST_OF_GOODS_EXCL_DEP_AMORT  
+Other operating expenses, total | FQ, FH, FY, TTM | OTHER_OPER_EXPENSE_TOTAL  
+Preferred dividends | FQ, FH, FY, TTM | PREFERRED_DIVIDENDS  
+Pretax equity in earnings | FQ, FH, FY, TTM | PRETAX_EQUITY_IN_EARNINGS  
+Pretax income | FQ, FH, FY, TTM | PRETAX_INCOME  
+Research & development | FQ, FH, FY, TTM | RESEARCH_AND_DEV  
+Selling/general/admin expenses, other | FQ, FH, FY, TTM | SELL_GEN_ADMIN_EXP_OTHER  
+Selling/general/admin expenses, total | FQ, FH, FY, TTM | SELL_GEN_ADMIN_EXP_TOTAL  
+Taxes | FQ, FH, FY, TTM | INCOME_TAX  
+Total operating expenses | FQ, FH, FY, TTM | TOTAL_OPER_EXPENSE  
+Total revenue | FQ, FH, FY, TTM | TOTAL_REVENUE  
+Unusual income/expense | FQ, FH, FY, TTM | UNUSUAL_EXPENSE_INC  
 #### Balance sheet
 This table lists the metrics that provide information about a company’s capital structure.
-Click to show/hide  
-| Financial  | `period`  | `financial_id`  |  
-| --- | --- | --- |  
-| Accounts payable  | FQ, FH, FY  | ACCOUNTS_PAYABLE  |  
-| Accounts receivable - trade, net  | FQ, FH, FY  | ACCOUNTS_RECEIVABLES_NET  |  
-| Accrued payroll  | FQ, FH, FY  | ACCRUED_PAYROLL  |  
-| Accumulated depreciation, total  | FQ, FH, FY  | ACCUM_DEPREC_TOTAL  |  
-| Additional paid-in capital/Capital surplus  | FQ, FH, FY  | ADDITIONAL_PAID_IN_CAPITAL  |  
-| Book value per share  | FQ, FH, FY  | BOOK_VALUE_PER_SHARE  |  
-| Capital and operating lease obligations  | FQ, FH, FY  | CAPITAL_OPERATING_LEASE_OBLIGATIONS  |  
-| Capitalized lease obligations  | FQ, FH, FY  | CAPITAL_LEASE_OBLIGATIONS  |  
-| Cash & equivalents  | FQ, FH, FY  | CASH_N_EQUIVALENTS  |  
-| Cash and short term investments  | FQ, FH, FY  | CASH_N_SHORT_TERM_INVEST  |  
-| Common equity, total  | FQ, FH, FY  | COMMON_EQUITY_TOTAL  |  
-| Common stock par/Carrying value  | FQ, FH, FY  | COMMON_STOCK_PAR  |  
-| Current portion of LT debt and capital leases  | FQ, FH, FY  | CURRENT_PORT_DEBT_CAPITAL_LEASES  |  
-| Deferred income, current  | FQ, FH, FY  | DEFERRED_INCOME_CURRENT  |  
-| Deferred income, non-current  | FQ, FH, FY  | DEFERRED_INCOME_NON_CURRENT  |  
-| Deferred tax assets  | FQ, FH, FY  | DEFERRED_TAX_ASSESTS  |  
-| Deferred tax liabilities  | FQ, FH, FY  | DEFERRED_TAX_LIABILITIES  |  
-| Dividends payable  | FY  | DIVIDENDS_PAYABLE  |  
-| Goodwill, net  | FQ, FH, FY  | GOODWILL  |  
-| Gross property/plant/equipment  | FQ, FH, FY  | PPE_TOTAL_GROSS  |  
-| Income tax payable  | FQ, FH, FY  | INCOME_TAX_PAYABLE  |  
-| Inventories - finished goods  | FQ, FH, FY  | INVENTORY_FINISHED_GOODS  |  
-| Inventories - progress payments & other  | FQ, FH, FY  | INVENTORY_PROGRESS_PAYMENTS  |  
-| Inventories - raw materials  | FQ, FH, FY  | INVENTORY_RAW_MATERIALS  |  
-| Inventories - work in progress  | FQ, FH, FY  | INVENTORY_WORK_IN_PROGRESS  |  
-| Investments in unconsolidated subsidiaries  | FQ, FH, FY  | INVESTMENTS_IN_UNCONCSOLIDATE  |  
-| Long term debt  | FQ, FH, FY  | LONG_TERM_DEBT  |  
-| Long term debt excl. lease liabilities  | FQ, FH, FY  | LONG_TERM_DEBT_EXCL_CAPITAL_LEASE  |  
-| Long term investments  | FQ, FH, FY  | LONG_TERM_INVESTMENTS  |  
-| Minority interest  | FQ, FH, FY  | MINORITY_INTEREST  |  
-| Net debt  | FQ, FH, FY  | NET_DEBT  |  
-| Net intangible assets  | FQ, FH, FY  | INTANGIBLES_NET  |  
-| Net property/plant/equipment  | FQ, FH, FY  | PPE_TOTAL_NET  |  
-| Note receivable - long term  | FQ, FH, FY  | LONG_TERM_NOTE_RECEIVABLE  |  
-| Notes payable  | FY  | NOTES_PAYABLE_SHORT_TERM_DEBT  |  
-| Operating lease liabilities  | FQ, FH, FY  | OPERATING_LEASE_LIABILITIES  |  
-| Other common equity  | FQ, FH, FY  | OTHER_COMMON_EQUITY  |  
-| Other current assets, total  | FQ, FH, FY  | OTHER_CURRENT_ASSETS_TOTAL  |  
-| Other current liabilities  | FQ, FH, FY  | OTHER_CURRENT_LIABILITIES  |  
-| Other intangibles, net  | FQ, FH, FY  | OTHER_INTANGIBLES_NET  |  
-| Other investments  | FQ, FH, FY  | OTHER_INVESTMENTS  |  
-| Other long term assets, total  | FQ, FH, FY  | LONG_TERM_OTHER_ASSETS_TOTAL  |  
-| Other non-current liabilities, total  | FQ, FH, FY  | OTHER_LIABILITIES_TOTAL  |  
-| Other receivables  | FQ, FH, FY  | OTHER_RECEIVABLES  |  
-| Other short term debt  | FY  | OTHER_SHORT_TERM_DEBT  |  
-| Paid in capital  | FQ, FH, FY  | PAID_IN_CAPITAL  |  
-| Preferred stock, carrying value  | FQ, FH, FY  | PREFERRED_STOCK_CARRYING_VALUE  |  
-| Prepaid expenses  | FQ, FH, FY  | PREPAID_EXPENSES  |  
-| Provision for risks & charge  | FQ, FH, FY  | PROVISION_F_RISKS  |  
-| Retained earnings  | FQ, FH, FY  | RETAINED_EARNINGS  |  
-| Shareholders’ equity  | FQ, FH, FY  | SHRHLDRS_EQUITY  |  
-| Short term debt  | FQ, FH, FY  | SHORT_TERM_DEBT  |  
-| Short term debt excl. current portion of LT debt  | FQ, FH, FY  | SHORT_TERM_DEBT_EXCL_CURRENT_PORT  |  
-| Short term investments  | FQ, FH, FY  | SHORT_TERM_INVEST  |  
-| Tangible book value per share  | FQ, FH, FY  | BOOK_TANGIBLE_PER_SHARE  |  
-| Total assets  | FQ, FH, FY  | TOTAL_ASSETS  |  
-| Total current assets  | FQ, FH, FY  | TOTAL_CURRENT_ASSETS  |  
-| Total current liabilities  | FQ, FH, FY  | TOTAL_CURRENT_LIABILITIES  |  
-| Total debt  | FQ, FH, FY  | TOTAL_DEBT  |  
-| Total equity  | FQ, FH, FY  | TOTAL_EQUITY  |  
-| Total inventory  | FQ, FH, FY  | TOTAL_INVENTORY  |  
-| Total liabilities  | FQ, FH, FY  | TOTAL_LIABILITIES  |  
-| Total liabilities & shareholders’ equities  | FQ, FH, FY  | TOTAL_LIABILITIES_SHRHLDRS_EQUITY  |  
-| Total non-current assets  | FQ, FH, FY  | TOTAL_NON_CURRENT_ASSETS  |  
-| Total non-current liabilities  | FQ, FH, FY  | TOTAL_NON_CURRENT_LIABILITIES  |  
-| Total receivables, net  | FQ, FH, FY  | TOTAL_RECEIVABLES_NET  |  
-| Treasury stock - common  | FQ, FH, FY  | TREASURY_STOCK_COMMON  |  
+Click to show/hide Financial | `period` | `financial_id`  
+---|---|---  
+Accounts payable | FQ, FH, FY | ACCOUNTS_PAYABLE  
+Accounts receivable - trade, net | FQ, FH, FY | ACCOUNTS_RECEIVABLES_NET  
+Accrued payroll | FQ, FH, FY | ACCRUED_PAYROLL  
+Accumulated depreciation, total | FQ, FH, FY | ACCUM_DEPREC_TOTAL  
+Additional paid-in capital/Capital surplus | FQ, FH, FY | ADDITIONAL_PAID_IN_CAPITAL  
+Book value per share | FQ, FH, FY | BOOK_VALUE_PER_SHARE  
+Capital and operating lease obligations | FQ, FH, FY | CAPITAL_OPERATING_LEASE_OBLIGATIONS  
+Capitalized lease obligations | FQ, FH, FY | CAPITAL_LEASE_OBLIGATIONS  
+Cash & equivalents | FQ, FH, FY | CASH_N_EQUIVALENTS  
+Cash and short term investments | FQ, FH, FY | CASH_N_SHORT_TERM_INVEST  
+Common equity, total | FQ, FH, FY | COMMON_EQUITY_TOTAL  
+Common stock par/Carrying value | FQ, FH, FY | COMMON_STOCK_PAR  
+Current portion of LT debt and capital leases | FQ, FH, FY | CURRENT_PORT_DEBT_CAPITAL_LEASES  
+Deferred income, current | FQ, FH, FY | DEFERRED_INCOME_CURRENT  
+Deferred income, non-current | FQ, FH, FY | DEFERRED_INCOME_NON_CURRENT  
+Deferred tax assets | FQ, FH, FY | DEFERRED_TAX_ASSESTS  
+Deferred tax liabilities | FQ, FH, FY | DEFERRED_TAX_LIABILITIES  
+Dividends payable | FY | DIVIDENDS_PAYABLE  
+Goodwill, net | FQ, FH, FY | GOODWILL  
+Gross property/plant/equipment | FQ, FH, FY | PPE_TOTAL_GROSS  
+Income tax payable | FQ, FH, FY | INCOME_TAX_PAYABLE  
+Inventories - finished goods | FQ, FH, FY | INVENTORY_FINISHED_GOODS  
+Inventories - progress payments & other | FQ, FH, FY | INVENTORY_PROGRESS_PAYMENTS  
+Inventories - raw materials | FQ, FH, FY | INVENTORY_RAW_MATERIALS  
+Inventories - work in progress | FQ, FH, FY | INVENTORY_WORK_IN_PROGRESS  
+Investments in unconsolidated subsidiaries | FQ, FH, FY | INVESTMENTS_IN_UNCONCSOLIDATE  
+Long term debt | FQ, FH, FY | LONG_TERM_DEBT  
+Long term debt excl. lease liabilities | FQ, FH, FY | LONG_TERM_DEBT_EXCL_CAPITAL_LEASE  
+Long term investments | FQ, FH, FY | LONG_TERM_INVESTMENTS  
+Minority interest | FQ, FH, FY | MINORITY_INTEREST  
+Net debt | FQ, FH, FY | NET_DEBT  
+Net intangible assets | FQ, FH, FY | INTANGIBLES_NET  
+Net property/plant/equipment | FQ, FH, FY | PPE_TOTAL_NET  
+Note receivable - long term | FQ, FH, FY | LONG_TERM_NOTE_RECEIVABLE  
+Notes payable | FY | NOTES_PAYABLE_SHORT_TERM_DEBT  
+Operating lease liabilities | FQ, FH, FY | OPERATING_LEASE_LIABILITIES  
+Other common equity | FQ, FH, FY | OTHER_COMMON_EQUITY  
+Other current assets, total | FQ, FH, FY | OTHER_CURRENT_ASSETS_TOTAL  
+Other current liabilities | FQ, FH, FY | OTHER_CURRENT_LIABILITIES  
+Other intangibles, net | FQ, FH, FY | OTHER_INTANGIBLES_NET  
+Other investments | FQ, FH, FY | OTHER_INVESTMENTS  
+Other long term assets, total | FQ, FH, FY | LONG_TERM_OTHER_ASSETS_TOTAL  
+Other non-current liabilities, total | FQ, FH, FY | OTHER_LIABILITIES_TOTAL  
+Other receivables | FQ, FH, FY | OTHER_RECEIVABLES  
+Other short term debt | FY | OTHER_SHORT_TERM_DEBT  
+Paid in capital | FQ, FH, FY | PAID_IN_CAPITAL  
+Preferred stock, carrying value | FQ, FH, FY | PREFERRED_STOCK_CARRYING_VALUE  
+Prepaid expenses | FQ, FH, FY | PREPAID_EXPENSES  
+Provision for risks & charge | FQ, FH, FY | PROVISION_F_RISKS  
+Retained earnings | FQ, FH, FY | RETAINED_EARNINGS  
+Shareholders’ equity | FQ, FH, FY | SHRHLDRS_EQUITY  
+Short term debt | FQ, FH, FY | SHORT_TERM_DEBT  
+Short term debt excl. current portion of LT debt | FQ, FH, FY | SHORT_TERM_DEBT_EXCL_CURRENT_PORT  
+Short term investments | FQ, FH, FY | SHORT_TERM_INVEST  
+Tangible book value per share | FQ, FH, FY | BOOK_TANGIBLE_PER_SHARE  
+Total assets | FQ, FH, FY | TOTAL_ASSETS  
+Total current assets | FQ, FH, FY | TOTAL_CURRENT_ASSETS  
+Total current liabilities | FQ, FH, FY | TOTAL_CURRENT_LIABILITIES  
+Total debt | FQ, FH, FY | TOTAL_DEBT  
+Total equity | FQ, FH, FY | TOTAL_EQUITY  
+Total inventory | FQ, FH, FY | TOTAL_INVENTORY  
+Total liabilities | FQ, FH, FY | TOTAL_LIABILITIES  
+Total liabilities & shareholders’ equities | FQ, FH, FY | TOTAL_LIABILITIES_SHRHLDRS_EQUITY  
+Total non-current assets | FQ, FH, FY | TOTAL_NON_CURRENT_ASSETS  
+Total non-current liabilities | FQ, FH, FY | TOTAL_NON_CURRENT_LIABILITIES  
+Total receivables, net | FQ, FH, FY | TOTAL_RECEIVABLES_NET  
+Treasury stock - common | FQ, FH, FY | TREASURY_STOCK_COMMON  
 #### Cash flow
 This table lists the available metrics that provide information about how cash flows through a company.
-Click to show/hide  
-| Financial  | `period`  | `financial_id`  |  
-| --- | --- | --- |  
-| Amortization  | FQ, FH, FY, TTM  | AMORTIZATION  |  
-| Capital expenditures  | FQ, FH, FY, TTM  | CAPITAL_EXPENDITURES  |  
-| Capital expenditures - fixed assets  | FQ, FH, FY, TTM  | CAPITAL_EXPENDITURES_FIXED_ASSETS  |  
-| Capital expenditures - other assets  | FQ, FH, FY, TTM  | CAPITAL_EXPENDITURES_OTHER_ASSETS  |  
-| Cash from financing activities  | FQ, FH, FY, TTM  | CASH_F_FINANCING_ACTIVITIES  |  
-| Cash from investing activities  | FQ, FH, FY, TTM  | CASH_F_INVESTING_ACTIVITIES  |  
-| Cash from operating activities  | FQ, FH, FY, TTM  | CASH_F_OPERATING_ACTIVITIES  |  
-| Change in accounts payable  | FQ, FH, FY, TTM  | CHANGE_IN_ACCOUNTS_PAYABLE  |  
-| Change in accounts receivable  | FQ, FH, FY, TTM  | CHANGE_IN_ACCOUNTS_RECEIVABLE  |  
-| Change in accrued expenses  | FQ, FH, FY, TTM  | CHANGE_IN_ACCRUED_EXPENSES  |  
-| Change in inventories  | FQ, FH, FY, TTM  | CHANGE_IN_INVENTORIES  |  
-| Change in other assets/liabilities  | FQ, FH, FY, TTM  | CHANGE_IN_OTHER_ASSETS  |  
-| Change in taxes payable  | FQ, FH, FY, TTM  | CHANGE_IN_TAXES_PAYABLE  |  
-| Changes in working capital  | FQ, FH, FY, TTM  | CHANGES_IN_WORKING_CAPITAL  |  
-| Common dividends paid  | FQ, FH, FY, TTM  | COMMON_DIVIDENDS_CASH_FLOW  |  
-| Deferred taxes (cash flow)  | FQ, FH, FY, TTM  | CASH_FLOW_DEFERRED_TAXES  |  
-| Depreciation & amortization (cash flow)  | FQ, FH, FY, TTM  | CASH_FLOW_DEPRECATION_N_AMORTIZATION  |  
-| Depreciation/depletion  | FQ, FH, FY, TTM  | DEPRECIATION_DEPLETION  |  
-| Financing activities - other sources  | FQ, FH, FY, TTM  | OTHER_FINANCING_CASH_FLOW_SOURCES  |  
-| Financing activities - other uses  | FQ, FH, FY, TTM  | OTHER_FINANCING_CASH_FLOW_USES  |  
-| Free cash flow  | FQ, FH, FY, TTM  | FREE_CASH_FLOW  |  
-| Funds from operations  | FQ, FH, FY, TTM  | FUNDS_F_OPERATIONS  |  
-| Investing activities - other sources  | FQ, FH, FY, TTM  | OTHER_INVESTING_CASH_FLOW_SOURCES  |  
-| Investing activities - other uses  | FQ, FH, FY  | OTHER_INVESTING_CASH_FLOW_USES  |  
-| Issuance of long term debt  | FQ, FH, FY, TTM  | SUPPLYING_OF_LONG_TERM_DEBT  |  
-| Issuance/retirement of debt, net  | FQ, FH, FY, TTM  | ISSUANCE_OF_DEBT_NET  |  
-| Issuance/retirement of long term debt  | FQ, FH, FY, TTM  | ISSUANCE_OF_LONG_TERM_DEBT  |  
-| Issuance/retirement of other debt  | FQ, FH, FY, TTM  | ISSUANCE_OF_OTHER_DEBT  |  
-| Issuance/retirement of short term debt  | FQ, FH, FY, TTM  | ISSUANCE_OF_SHORT_TERM_DEBT  |  
-| Issuance/retirement of stock, net  | FQ, FH, FY, TTM  | ISSUANCE_OF_STOCK_NET  |  
-| Net income (cash flow)  | FQ, FH, FY, TTM  | NET_INCOME_STARTING_LINE  |  
-| Non-cash items  | FQ, FH, FY, TTM  | NON_CASH_ITEMS  |  
-| Other financing cash flow items, total  | FQ, FH, FY, TTM  | OTHER_FINANCING_CASH_FLOW_ITEMS_TOTAL  |  
-| Other investing cash flow items, total  | FQ, FH, FY  | OTHER_INVESTING_CASH_FLOW_ITEMS_TOTAL  |  
-| Preferred dividends paid  | FQ, FH, FY  | PREFERRED_DIVIDENDS_CASH_FLOW  |  
-| Purchase of investments  | FQ, FH, FY, TTM  | PURCHASE_OF_INVESTMENTS  |  
-| Purchase/acquisition of business  | FQ, FH, FY, TTM  | PURCHASE_OF_BUSINESS  |  
-| Purchase/sale of business, net  | FQ, FH, FY  | PURCHASE_SALE_BUSINESS  |  
-| Purchase/sale of investments, net  | FQ, FH, FY, TTM  | PURCHASE_SALE_INVESTMENTS  |  
-| Reduction of long term debt  | FQ, FH, FY, TTM  | REDUCTION_OF_LONG_TERM_DEBT  |  
-| Repurchase of common & preferred stock  | FQ, FH, FY, TTM  | PURCHASE_OF_STOCK  |  
-| Sale of common & preferred stock  | FQ, FH, FY, TTM  | SALE_OF_STOCK  |  
-| Sale of fixed assets & businesses  | FQ, FH, FY, TTM  | SALES_OF_BUSINESS  |  
-| Sale/maturity of investments  | FQ, FH, FY  | SALES_OF_INVESTMENTS  |  
-| Total cash dividends paid  | FQ, FH, FY, TTM  | TOTAL_CASH_DIVIDENDS_PAID  |  
+Click to show/hide Financial | `period` | `financial_id`  
+---|---|---  
+Amortization | FQ, FH, FY, TTM | AMORTIZATION  
+Capital expenditures | FQ, FH, FY, TTM | CAPITAL_EXPENDITURES  
+Capital expenditures - fixed assets | FQ, FH, FY, TTM | CAPITAL_EXPENDITURES_FIXED_ASSETS  
+Capital expenditures - other assets | FQ, FH, FY, TTM | CAPITAL_EXPENDITURES_OTHER_ASSETS  
+Cash from financing activities | FQ, FH, FY, TTM | CASH_F_FINANCING_ACTIVITIES  
+Cash from investing activities | FQ, FH, FY, TTM | CASH_F_INVESTING_ACTIVITIES  
+Cash from operating activities | FQ, FH, FY, TTM | CASH_F_OPERATING_ACTIVITIES  
+Change in accounts payable | FQ, FH, FY, TTM | CHANGE_IN_ACCOUNTS_PAYABLE  
+Change in accounts receivable | FQ, FH, FY, TTM | CHANGE_IN_ACCOUNTS_RECEIVABLE  
+Change in accrued expenses | FQ, FH, FY, TTM | CHANGE_IN_ACCRUED_EXPENSES  
+Change in inventories | FQ, FH, FY, TTM | CHANGE_IN_INVENTORIES  
+Change in other assets/liabilities | FQ, FH, FY, TTM | CHANGE_IN_OTHER_ASSETS  
+Change in taxes payable | FQ, FH, FY, TTM | CHANGE_IN_TAXES_PAYABLE  
+Changes in working capital | FQ, FH, FY, TTM | CHANGES_IN_WORKING_CAPITAL  
+Common dividends paid | FQ, FH, FY, TTM | COMMON_DIVIDENDS_CASH_FLOW  
+Deferred taxes (cash flow) | FQ, FH, FY, TTM | CASH_FLOW_DEFERRED_TAXES  
+Depreciation & amortization (cash flow) | FQ, FH, FY, TTM | CASH_FLOW_DEPRECATION_N_AMORTIZATION  
+Depreciation/depletion | FQ, FH, FY, TTM | DEPRECIATION_DEPLETION  
+Financing activities - other sources | FQ, FH, FY, TTM | OTHER_FINANCING_CASH_FLOW_SOURCES  
+Financing activities - other uses | FQ, FH, FY, TTM | OTHER_FINANCING_CASH_FLOW_USES  
+Free cash flow | FQ, FH, FY, TTM | FREE_CASH_FLOW  
+Funds from operations | FQ, FH, FY, TTM | FUNDS_F_OPERATIONS  
+Investing activities - other sources | FQ, FH, FY, TTM | OTHER_INVESTING_CASH_FLOW_SOURCES  
+Investing activities - other uses | FQ, FH, FY | OTHER_INVESTING_CASH_FLOW_USES  
+Issuance of long term debt | FQ, FH, FY, TTM | SUPPLYING_OF_LONG_TERM_DEBT  
+Issuance/retirement of debt, net | FQ, FH, FY, TTM | ISSUANCE_OF_DEBT_NET  
+Issuance/retirement of long term debt | FQ, FH, FY, TTM | ISSUANCE_OF_LONG_TERM_DEBT  
+Issuance/retirement of other debt | FQ, FH, FY, TTM | ISSUANCE_OF_OTHER_DEBT  
+Issuance/retirement of short term debt | FQ, FH, FY, TTM | ISSUANCE_OF_SHORT_TERM_DEBT  
+Issuance/retirement of stock, net | FQ, FH, FY, TTM | ISSUANCE_OF_STOCK_NET  
+Net income (cash flow) | FQ, FH, FY, TTM | NET_INCOME_STARTING_LINE  
+Non-cash items | FQ, FH, FY, TTM | NON_CASH_ITEMS  
+Other financing cash flow items, total | FQ, FH, FY, TTM | OTHER_FINANCING_CASH_FLOW_ITEMS_TOTAL  
+Other investing cash flow items, total | FQ, FH, FY | OTHER_INVESTING_CASH_FLOW_ITEMS_TOTAL  
+Preferred dividends paid | FQ, FH, FY | PREFERRED_DIVIDENDS_CASH_FLOW  
+Purchase of investments | FQ, FH, FY, TTM | PURCHASE_OF_INVESTMENTS  
+Purchase/acquisition of business | FQ, FH, FY, TTM | PURCHASE_OF_BUSINESS  
+Purchase/sale of business, net | FQ, FH, FY | PURCHASE_SALE_BUSINESS  
+Purchase/sale of investments, net | FQ, FH, FY, TTM | PURCHASE_SALE_INVESTMENTS  
+Reduction of long term debt | FQ, FH, FY, TTM | REDUCTION_OF_LONG_TERM_DEBT  
+Repurchase of common & preferred stock | FQ, FH, FY, TTM | PURCHASE_OF_STOCK  
+Sale of common & preferred stock | FQ, FH, FY, TTM | SALE_OF_STOCK  
+Sale of fixed assets & businesses | FQ, FH, FY, TTM | SALES_OF_BUSINESS  
+Sale/maturity of investments | FQ, FH, FY | SALES_OF_INVESTMENTS  
+Total cash dividends paid | FQ, FH, FY, TTM | TOTAL_CASH_DIVIDENDS_PAID  
 ####  Statistics
 This table contains a variety of statistical metrics, including commonly used financial ratios.
-Click to show/hide  
-| Financial  | `period`  | `financial_id`  |  
-| --- | --- | --- |  
-| Accruals  | FQ, FH, FY  | ACCRUALS_RATIO  |  
-| Altman Z-score  | FQ, FH, FY  | ALTMAN_Z_SCORE  |  
-| Asset turnover  | FQ, FH, FY  | ASSET_TURNOVER  |  
-| Beneish M-score  | FQ, FH, FY  | BENEISH_M_SCORE  |  
-| Buyback yield %  | FQ, FH, FY  | BUYBACK_YIELD  |  
-| COGS to revenue ratio  | FQ, FH, FY  | COGS_TO_REVENUE  |  
-| Cash conversion cycle  | FQ, FY  | CASH_CONVERSION_CYCLE  |  
-| Cash to debt ratio  | FQ, FH, FY  | CASH_TO_DEBT  |  
-| Current ratio  | FQ, FH, FY  | CURRENT_RATIO  |  
-| Days inventory  | FQ, FY  | DAYS_INVENT  |  
-| Days payable  | FQ, FY  | DAYS_PAY  |  
-| Days sales outstanding  | FQ, FY  | DAY_SALES_OUT  |  
-| Debt to EBITDA ratio  | FQ, FH, FY  | DEBT_TO_EBITDA  |  
-| Debt to assets ratio  | FQ, FH, FY  | DEBT_TO_ASSET  |  
-| Debt to equity ratio  | FQ, FH, FY  | DEBT_TO_EQUITY  |  
-| Debt to revenue ratio  | FQ, FH, FY  | DEBT_TO_REVENUE  |  
-| Dividend payout ratio %  | FQ, FH, FY, TTM  | DIVIDEND_PAYOUT_RATIO  |  
-| Dividend yield %  | FQ, FH, FY  | DIVIDENDS_YIELD  |  
-| Dividends per share - common stock primary issue  | FQ, FH, FY, TTM  | DPS_COMMON_STOCK_PRIM_ISSUE  |  
-| EBITDA margin %  | FQ, FH, FY, TTM  | EBITDA_MARGIN  |  
-| EPS basic one year growth  | FQ, FH, FY, TTM  | EARNINGS_PER_SHARE_BASIC_ONE_YEAR_GROWTH  |  
-| EPS diluted one year growth  | FQ, FH, FY  | EARNINGS_PER_SHARE_DILUTED_ONE_YEAR_GROWTH  |  
-| EPS estimates  | FQ, FH, FY  | EARNINGS_ESTIMATE  |  
-| Effective interest rate on debt %  | FQ, FH, FY  | EFFECTIVE_INTEREST_RATE_ON_DEBT  |  
-| Enterprise value  | FQ, FH, FY  | ENTERPRISE_VALUE  |  
-| Enterprise value to EBIT ratio  | FQ, FH, FY  | EV_EBIT  |  
-| Enterprise value to EBITDA ratio  | FQ, FH, FY  | ENTERPRISE_VALUE_EBITDA  |  
-| Enterprise value to revenue ratio  | FQ, FH, FY  | EV_REVENUE  |  
-| Equity to assets ratio  | FQ, FH, FY  | EQUITY_TO_ASSET  |  
-| Float shares outstanding  | FY  | FLOAT_SHARES_OUTSTANDING  |  
-| Free cash flow margin %  | FQ, FH, FY  | FREE_CASH_FLOW_MARGIN  |  
-| Fulmer H factor  | FQ, FY  | FULMER_H_FACTOR  |  
-| Goodwill to assets ratio  | FQ, FH, FY  | GOODWILL_TO_ASSET  |  
-| Graham’s number  | FQ, FY  | GRAHAM_NUMBERS  |  
-| Gross margin %  | FQ, FH, FY, TTM  | GROSS_MARGIN  |  
-| Gross profit to assets ratio  | FQ, FY  | GROSS_PROFIT_TO_ASSET  |  
-| Interest coverage  | FQ, FH, FY  | INTERST_COVER  |  
-| Inventory to revenue ratio  | FQ, FH, FY  | INVENT_TO_REVENUE  |  
-| Inventory turnover  | FQ, FH, FY  | INVENT_TURNOVER  |  
-| KZ index  | FY  | KZ_INDEX  |  
-| Long term debt to total assets ratio  | FQ, FH, FY  | LONG_TERM_DEBT_TO_ASSETS  |  
-| Net current asset value per share  | FQ, FY  | NCAVPS_RATIO  |  
-| Net income per employee  | FY  | NET_INCOME_PER_EMPLOYEE  |  
-| Net margin %  | FQ, FH, FY, TTM  | NET_MARGIN  |  
-| Number of employees  | FY  | NUMBER_OF_EMPLOYEES  |  
-| Operating earnings yield %  | FQ, FH, FY  | OPERATING_EARNINGS_YIELD  |  
-| Operating margin %  | FQ, FH, FY  | OPERATING_MARGIN  |  
-| PEG ratio  | FQ, FY  | PEG_RATIO  |  
-| Piotroski F-score  | FQ, FH, FY  | PIOTROSKI_F_SCORE  |  
-| Price earnings ratio forward  | FQ, FY  | PRICE_EARNINGS_FORWARD  |  
-| Price sales ratio forward  | FQ, FY  | PRICE_SALES_FORWARD  |  
-| Quality ratio  | FQ, FH, FY  | QUALITY_RATIO  |  
-| Quick ratio  | FQ, FH, FY  | QUICK_RATIO  |  
-| Research & development to revenue ratio  | FQ, FH, FY  | RESEARCH_AND_DEVELOP_TO_REVENUE  |  
-| Return on assets %  | FQ, FH, FY  | RETURN_ON_ASSETS  |  
-| Return on common equity %  | FQ, FH, FY  | RETURN_ON_COMMON_EQUITY  |  
-| Return on equity %  | FQ, FH, FY  | RETURN_ON_EQUITY  |  
-| Return on equity adjusted to book value %  | FQ, FH, FY  | RETURN_ON_EQUITY_ADJUST_TO_BOOK  |  
-| Return on invested capital %  | FQ, FH, FY  | RETURN_ON_INVESTED_CAPITAL  |  
-| Return on tangible assets %  | FQ, FH, FY  | RETURN_ON_TANG_ASSETS  |  
-| Return on tangible equity %  | FQ, FH, FY  | RETURN_ON_TANG_EQUITY  |  
-| Revenue estimates  | FQ, FH, FY  | SALES_ESTIMATES  |  
-| Revenue one year growth  | FQ, FH, FY, TTM  | REVENUE_ONE_YEAR_GROWTH  |  
-| Revenue per employee  | FY  | REVENUE_PER_EMPLOYEE  |  
-| Shares buyback ratio %  | FQ, FH, FY  | SHARE_BUYBACK_RATIO  |  
-| Sloan ratio %  | FQ, FH, FY  | SLOAN_RATIO  |  
-| Springate score  | FQ, FY  | SPRINGATE_SCORE  |  
-| Sustainable growth rate  | FQ, FY  | SUSTAINABLE_GROWTH_RATE  |  
-| Tangible common equity ratio  | FQ, FH, FY  | TANGIBLE_COMMON_EQUITY_RATIO  |  
-| Tobin’s Q (approximate)  | FQ, FH, FY  | TOBIN_Q_RATIO  |  
-| Total common shares outstanding  | FQ, FH, FY  | TOTAL_SHARES_OUTSTANDING  |  
-| Zmijewski score  | FQ, FY  | ZMIJEWSKI_SCORE  |  
+Click to show/hide Financial | `period` | `financial_id`  
+---|---|---  
+Accruals | FQ, FH, FY | ACCRUALS_RATIO  
+Altman Z-score | FQ, FH, FY | ALTMAN_Z_SCORE  
+Asset turnover | FQ, FH, FY | ASSET_TURNOVER  
+Beneish M-score | FQ, FH, FY | BENEISH_M_SCORE  
+Buyback yield % | FQ, FH, FY | BUYBACK_YIELD  
+COGS to revenue ratio | FQ, FH, FY | COGS_TO_REVENUE  
+Cash conversion cycle | FQ, FY | CASH_CONVERSION_CYCLE  
+Cash to debt ratio | FQ, FH, FY | CASH_TO_DEBT  
+Current ratio | FQ, FH, FY | CURRENT_RATIO  
+Days inventory | FQ, FY | DAYS_INVENT  
+Days payable | FQ, FY | DAYS_PAY  
+Days sales outstanding | FQ, FY | DAY_SALES_OUT  
+Debt to EBITDA ratio | FQ, FH, FY | DEBT_TO_EBITDA  
+Debt to assets ratio | FQ, FH, FY | DEBT_TO_ASSET  
+Debt to equity ratio | FQ, FH, FY | DEBT_TO_EQUITY  
+Debt to revenue ratio | FQ, FH, FY | DEBT_TO_REVENUE  
+Dividend payout ratio % | FQ, FH, FY, TTM | DIVIDEND_PAYOUT_RATIO  
+Dividend yield % | FQ, FH, FY | DIVIDENDS_YIELD  
+Dividends per share - common stock primary issue | FQ, FH, FY, TTM | DPS_COMMON_STOCK_PRIM_ISSUE  
+EBITDA margin % | FQ, FH, FY, TTM | EBITDA_MARGIN  
+EPS basic one year growth | FQ, FH, FY, TTM | EARNINGS_PER_SHARE_BASIC_ONE_YEAR_GROWTH  
+EPS diluted one year growth | FQ, FH, FY | EARNINGS_PER_SHARE_DILUTED_ONE_YEAR_GROWTH  
+EPS estimates | FQ, FH, FY | EARNINGS_ESTIMATE  
+Effective interest rate on debt % | FQ, FH, FY | EFFECTIVE_INTEREST_RATE_ON_DEBT  
+Enterprise value | FQ, FH, FY | ENTERPRISE_VALUE  
+Enterprise value to EBIT ratio | FQ, FH, FY | EV_EBIT  
+Enterprise value to EBITDA ratio | FQ, FH, FY | ENTERPRISE_VALUE_EBITDA  
+Enterprise value to revenue ratio | FQ, FH, FY | EV_REVENUE  
+Equity to assets ratio | FQ, FH, FY | EQUITY_TO_ASSET  
+Float shares outstanding | FY | FLOAT_SHARES_OUTSTANDING  
+Free cash flow margin % | FQ, FH, FY | FREE_CASH_FLOW_MARGIN  
+Fulmer H factor | FQ, FY | FULMER_H_FACTOR  
+Goodwill to assets ratio | FQ, FH, FY | GOODWILL_TO_ASSET  
+Graham’s number | FQ, FY | GRAHAM_NUMBERS  
+Gross margin % | FQ, FH, FY, TTM | GROSS_MARGIN  
+Gross profit to assets ratio | FQ, FY | GROSS_PROFIT_TO_ASSET  
+Interest coverage | FQ, FH, FY | INTERST_COVER  
+Inventory to revenue ratio | FQ, FH, FY | INVENT_TO_REVENUE  
+Inventory turnover | FQ, FH, FY | INVENT_TURNOVER  
+KZ index | FY | KZ_INDEX  
+Long term debt to total assets ratio | FQ, FH, FY | LONG_TERM_DEBT_TO_ASSETS  
+Net current asset value per share | FQ, FY | NCAVPS_RATIO  
+Net income per employee | FY | NET_INCOME_PER_EMPLOYEE  
+Net margin % | FQ, FH, FY, TTM | NET_MARGIN  
+Number of employees | FY | NUMBER_OF_EMPLOYEES  
+Operating earnings yield % | FQ, FH, FY | OPERATING_EARNINGS_YIELD  
+Operating margin % | FQ, FH, FY | OPERATING_MARGIN  
+PEG ratio | FQ, FY | PEG_RATIO  
+Piotroski F-score | FQ, FH, FY | PIOTROSKI_F_SCORE  
+Price earnings ratio forward | FQ, FY | PRICE_EARNINGS_FORWARD  
+Price sales ratio forward | FQ, FY | PRICE_SALES_FORWARD  
+Quality ratio | FQ, FH, FY | QUALITY_RATIO  
+Quick ratio | FQ, FH, FY | QUICK_RATIO  
+Research & development to revenue ratio | FQ, FH, FY | RESEARCH_AND_DEVELOP_TO_REVENUE  
+Return on assets % | FQ, FH, FY | RETURN_ON_ASSETS  
+Return on common equity % | FQ, FH, FY | RETURN_ON_COMMON_EQUITY  
+Return on equity % | FQ, FH, FY | RETURN_ON_EQUITY  
+Return on equity adjusted to book value % | FQ, FH, FY | RETURN_ON_EQUITY_ADJUST_TO_BOOK  
+Return on invested capital % | FQ, FH, FY | RETURN_ON_INVESTED_CAPITAL  
+Return on tangible assets % | FQ, FH, FY | RETURN_ON_TANG_ASSETS  
+Return on tangible equity % | FQ, FH, FY | RETURN_ON_TANG_EQUITY  
+Revenue estimates | FQ, FH, FY | SALES_ESTIMATES  
+Revenue one year growth | FQ, FH, FY, TTM | REVENUE_ONE_YEAR_GROWTH  
+Revenue per employee | FY | REVENUE_PER_EMPLOYEE  
+Shares buyback ratio % | FQ, FH, FY | SHARE_BUYBACK_RATIO  
+Sloan ratio % | FQ, FH, FY | SLOAN_RATIO  
+Springate score | FQ, FY | SPRINGATE_SCORE  
+Sustainable growth rate | FQ, FY | SUSTAINABLE_GROWTH_RATE  
+Tangible common equity ratio | FQ, FH, FY | TANGIBLE_COMMON_EQUITY_RATIO  
+Tobin’s Q (approximate) | FQ, FH, FY | TOBIN_Q_RATIO  
+Total common shares outstanding | FQ, FH, FY | TOTAL_SHARES_OUTSTANDING  
+Zmijewski score | FQ, FY | ZMIJEWSKI_SCORE  
 ## ​`request.economic()`​
 The request.economic() function provides scripts with the ability to retrieve economic data for a specified country or region, including information about the state of the economy (GDP, inflation rate, etc.) or of a particular industry (steel production, ICU beds, etc.).
 Below is the signature for this function:
-
 ```
 
 request.economic(country_code, field, gaps, ignore_invalid_symbol) → series float
@@ -17495,538 +15506,535 @@ TipThe tables in the sections below are rather large, because there are numerous
 ### Country/region codes
 The table in this section lists all country/region codes available for use with request.economic(). The first column of the table contains the “string” values that represent the country or region code, and the second column contains the corresponding country/region names.
 It’s important to note that the value used as the `country_code` argument determines which field codes are accessible to the function.
-Click to show/hide  
-| `country_code`  | Country/region name  |  
-| --- | --- |  
-| AF  | Afghanistan  |  
-| AL  | Albania  |  
-| DZ  | Algeria  |  
-| AD  | Andorra  |  
-| AO  | Angola  |  
-| AG  | Antigua and Barbuda  |  
-| AR  | Argentina  |  
-| AM  | Armenia  |  
-| AW  | Aruba  |  
-| AU  | Australia  |  
-| AT  | Austria  |  
-| AZ  | Azerbaijan  |  
-| BS  | Bahamas  |  
-| BH  | Bahrain  |  
-| BD  | Bangladesh  |  
-| BB  | Barbados  |  
-| BY  | Belarus  |  
-| BE  | Belgium  |  
-| BZ  | Belize  |  
-| BJ  | Benin  |  
-| BM  | Bermuda  |  
-| BT  | Bhutan  |  
-| BO  | Bolivia  |  
-| BA  | Bosnia and Herzegovina  |  
-| BW  | Botswana  |  
-| BR  | Brazil  |  
-| BN  | Brunei  |  
-| BG  | Bulgaria  |  
-| BF  | Burkina Faso  |  
-| BI  | Burundi  |  
-| KH  | Cambodia  |  
-| CM  | Cameroon  |  
-| CA  | Canada  |  
-| CV  | Cape Verde  |  
-| KY  | Cayman Islands  |  
-| CF  | Central African Republic  |  
-| TD  | Chad  |  
-| CL  | Chile  |  
-| CN  | China  |  
-| CO  | Colombia  |  
-| KM  | Comoros  |  
-| CG  | Congo  |  
-| CR  | Costa Rica  |  
-| HR  | Croatia  |  
-| CU  | Cuba  |  
-| CY  | Cyprus  |  
-| CZ  | Czech Republic  |  
-| DK  | Denmark  |  
-| DJ  | Djibouti  |  
-| DM  | Dominica  |  
-| DO  | Dominican Republic  |  
-| TL  | East Timor  |  
-| EC  | Ecuador  |  
-| EG  | Egypt  |  
-| SV  | El Salvador  |  
-| GQ  | Equatorial Guinea  |  
-| ER  | Eritrea  |  
-| EE  | Estonia  |  
-| ET  | Ethiopia  |  
-| EU  | Euro area  |  
-| FO  | Faroe Islands  |  
-| FJ  | Fiji  |  
-| FI  | Finland  |  
-| FR  | France  |  
-| GA  | Gabon  |  
-| GM  | Gambia  |  
-| GE  | Georgia  |  
-| DE  | Germany  |  
-| GH  | Ghana  |  
-| GR  | Greece  |  
-| GL  | Greenland  |  
-| GD  | Grenada  |  
-| GT  | Guatemala  |  
-| GN  | Guinea  |  
-| GW  | Guinea Bissau  |  
-| GY  | Guyana  |  
-| HT  | Haiti  |  
-| HN  | Honduras  |  
-| HK  | Hong Kong  |  
-| HU  | Hungary  |  
-| IS  | Iceland  |  
-| IN  | India  |  
-| ID  | Indonesia  |  
-| IR  | Iran  |  
-| IQ  | Iraq  |  
-| IE  | Ireland  |  
-| IM  | Isle of Man  |  
-| IL  | Israel  |  
-| IT  | Italy  |  
-| CI  | Ivory Coast  |  
-| JM  | Jamaica  |  
-| JP  | Japan  |  
-| JO  | Jordan  |  
-| KZ  | Kazakhstan  |  
-| KE  | Kenya  |  
-| KI  | Kiribati  |  
-| XK  | Kosovo  |  
-| KW  | Kuwait  |  
-| KG  | Kyrgyzstan  |  
-| LA  | Laos  |  
-| LV  | Latvia  |  
-| LB  | Lebanon  |  
-| LS  | Lesotho  |  
-| LR  | Liberia  |  
-| LY  | Libya  |  
-| LI  | Liechtenstein  |  
-| LT  | Lithuania  |  
-| LU  | Luxembourg  |  
-| MO  | Macau  |  
-| MK  | Macedonia  |  
-| MG  | Madagascar  |  
-| MW  | Malawi  |  
-| MY  | Malaysia  |  
-| MV  | Maldives  |  
-| ML  | Mali  |  
-| MT  | Malta  |  
-| MR  | Mauritania  |  
-| MU  | Mauritius  |  
-| MX  | Mexico  |  
-| MD  | Moldova  |  
-| MC  | Monaco  |  
-| MN  | Mongolia  |  
-| ME  | Montenegro  |  
-| MA  | Morocco  |  
-| MZ  | Mozambique  |  
-| MM  | Myanmar  |  
-| NA  | Namibia  |  
-| NP  | Nepal  |  
-| NL  | Netherlands  |  
-| NC  | New Caledonia  |  
-| NZ  | New Zealand  |  
-| NI  | Nicaragua  |  
-| NE  | Niger  |  
-| NG  | Nigeria  |  
-| KP  | North Korea  |  
-| NO  | Norway  |  
-| OM  | Oman  |  
-| PK  | Pakistan  |  
-| PS  | Palestine  |  
-| PA  | Panama  |  
-| PG  | Papua New Guinea  |  
-| PY  | Paraguay  |  
-| PE  | Peru  |  
-| PH  | Philippines  |  
-| PL  | Poland  |  
-| PT  | Portugal  |  
-| PR  | Puerto Rico  |  
-| QA  | Qatar  |  
-| CD  | Republic of the Congo  |  
-| RO  | Romania  |  
-| RU  | Russia  |  
-| RW  | Rwanda  |  
-| WS  | Samoa  |  
-| SM  | San Marino  |  
-| ST  | Sao Tome and Principe  |  
-| SA  | Saudi Arabia  |  
-| SN  | Senegal  |  
-| RS  | Serbia  |  
-| SC  | Seychelles  |  
-| SL  | Sierra Leone  |  
-| SG  | Singapore  |  
-| SK  | Slovakia  |  
-| SI  | Slovenia  |  
-| SB  | Solomon Islands  |  
-| SO  | Somalia  |  
-| ZA  | South Africa  |  
-| KR  | South Korea  |  
-| SS  | South Sudan  |  
-| ES  | Spain  |  
-| LK  | Sri Lanka  |  
-| LC  | St Lucia  |  
-| VC  | St Vincent and the Grenadines  |  
-| SD  | Sudan  |  
-| SR  | Suriname  |  
-| SZ  | Swaziland  |  
-| SE  | Sweden  |  
-| CH  | Switzerland  |  
-| SY  | Syria  |  
-| TW  | Taiwan  |  
-| TJ  | Tajikistan  |  
-| TZ  | Tanzania  |  
-| TH  | Thailand  |  
-| TG  | Togo  |  
-| TO  | Tonga  |  
-| TT  | Trinidad and Tobago  |  
-| TN  | Tunisia  |  
-| TR  | Turkey  |  
-| TM  | Turkmenistan  |  
-| UG  | Uganda  |  
-| UA  | Ukraine  |  
-| AE  | United Arab Emirates  |  
-| GB  | United Kingdom  |  
-| US  | United States  |  
-| UY  | Uruguay  |  
-| UZ  | Uzbekistan  |  
-| VU  | Vanuatu  |  
-| VE  | Venezuela  |  
-| VN  | Vietnam  |  
-| YE  | Yemen  |  
-| ZM  | Zambia  |  
-| ZW  | Zimbabwe  |  
+Click to show/hide `country_code` | Country/region name  
+---|---  
+AF | Afghanistan  
+AL | Albania  
+DZ | Algeria  
+AD | Andorra  
+AO | Angola  
+AG | Antigua and Barbuda  
+AR | Argentina  
+AM | Armenia  
+AW | Aruba  
+AU | Australia  
+AT | Austria  
+AZ | Azerbaijan  
+BS | Bahamas  
+BH | Bahrain  
+BD | Bangladesh  
+BB | Barbados  
+BY | Belarus  
+BE | Belgium  
+BZ | Belize  
+BJ | Benin  
+BM | Bermuda  
+BT | Bhutan  
+BO | Bolivia  
+BA | Bosnia and Herzegovina  
+BW | Botswana  
+BR | Brazil  
+BN | Brunei  
+BG | Bulgaria  
+BF | Burkina Faso  
+BI | Burundi  
+KH | Cambodia  
+CM | Cameroon  
+CA | Canada  
+CV | Cape Verde  
+KY | Cayman Islands  
+CF | Central African Republic  
+TD | Chad  
+CL | Chile  
+CN | China  
+CO | Colombia  
+KM | Comoros  
+CG | Congo  
+CR | Costa Rica  
+HR | Croatia  
+CU | Cuba  
+CY | Cyprus  
+CZ | Czech Republic  
+DK | Denmark  
+DJ | Djibouti  
+DM | Dominica  
+DO | Dominican Republic  
+TL | East Timor  
+EC | Ecuador  
+EG | Egypt  
+SV | El Salvador  
+GQ | Equatorial Guinea  
+ER | Eritrea  
+EE | Estonia  
+ET | Ethiopia  
+EU | Euro area  
+FO | Faroe Islands  
+FJ | Fiji  
+FI | Finland  
+FR | France  
+GA | Gabon  
+GM | Gambia  
+GE | Georgia  
+DE | Germany  
+GH | Ghana  
+GR | Greece  
+GL | Greenland  
+GD | Grenada  
+GT | Guatemala  
+GN | Guinea  
+GW | Guinea Bissau  
+GY | Guyana  
+HT | Haiti  
+HN | Honduras  
+HK | Hong Kong  
+HU | Hungary  
+IS | Iceland  
+IN | India  
+ID | Indonesia  
+IR | Iran  
+IQ | Iraq  
+IE | Ireland  
+IM | Isle of Man  
+IL | Israel  
+IT | Italy  
+CI | Ivory Coast  
+JM | Jamaica  
+JP | Japan  
+JO | Jordan  
+KZ | Kazakhstan  
+KE | Kenya  
+KI | Kiribati  
+XK | Kosovo  
+KW | Kuwait  
+KG | Kyrgyzstan  
+LA | Laos  
+LV | Latvia  
+LB | Lebanon  
+LS | Lesotho  
+LR | Liberia  
+LY | Libya  
+LI | Liechtenstein  
+LT | Lithuania  
+LU | Luxembourg  
+MO | Macau  
+MK | Macedonia  
+MG | Madagascar  
+MW | Malawi  
+MY | Malaysia  
+MV | Maldives  
+ML | Mali  
+MT | Malta  
+MR | Mauritania  
+MU | Mauritius  
+MX | Mexico  
+MD | Moldova  
+MC | Monaco  
+MN | Mongolia  
+ME | Montenegro  
+MA | Morocco  
+MZ | Mozambique  
+MM | Myanmar  
+NA | Namibia  
+NP | Nepal  
+NL | Netherlands  
+NC | New Caledonia  
+NZ | New Zealand  
+NI | Nicaragua  
+NE | Niger  
+NG | Nigeria  
+KP | North Korea  
+NO | Norway  
+OM | Oman  
+PK | Pakistan  
+PS | Palestine  
+PA | Panama  
+PG | Papua New Guinea  
+PY | Paraguay  
+PE | Peru  
+PH | Philippines  
+PL | Poland  
+PT | Portugal  
+PR | Puerto Rico  
+QA | Qatar  
+CD | Republic of the Congo  
+RO | Romania  
+RU | Russia  
+RW | Rwanda  
+WS | Samoa  
+SM | San Marino  
+ST | Sao Tome and Principe  
+SA | Saudi Arabia  
+SN | Senegal  
+RS | Serbia  
+SC | Seychelles  
+SL | Sierra Leone  
+SG | Singapore  
+SK | Slovakia  
+SI | Slovenia  
+SB | Solomon Islands  
+SO | Somalia  
+ZA | South Africa  
+KR | South Korea  
+SS | South Sudan  
+ES | Spain  
+LK | Sri Lanka  
+LC | St Lucia  
+VC | St Vincent and the Grenadines  
+SD | Sudan  
+SR | Suriname  
+SZ | Swaziland  
+SE | Sweden  
+CH | Switzerland  
+SY | Syria  
+TW | Taiwan  
+TJ | Tajikistan  
+TZ | Tanzania  
+TH | Thailand  
+TG | Togo  
+TO | Tonga  
+TT | Trinidad and Tobago  
+TN | Tunisia  
+TR | Turkey  
+TM | Turkmenistan  
+UG | Uganda  
+UA | Ukraine  
+AE | United Arab Emirates  
+GB | United Kingdom  
+US | United States  
+UY | Uruguay  
+UZ | Uzbekistan  
+VU | Vanuatu  
+VE | Venezuela  
+VN | Vietnam  
+YE | Yemen  
+ZM | Zambia  
+ZW | Zimbabwe  
 ### Field codes
 The table in this section lists the field codes available for use with request.economic(). The first column contains the “string” values used as the `field` argument, and the second column contains names of each metric and links to our Help Center with additional information, including the countries/regions they’re available for.
-Click to show/hide  
-| `field`  | Metric  |  
-| --- | --- |  
-| AA  | Asylum Applications  |  
-| ACR  | API Crude Runs  |  
-| AE  | Auto Exports  |  
-| AHE  | Average Hourly Earnings  |  
-| AHO  | API Heating Oil  |  
-| AWH  | Average Weekly Hours  |  
-| BBS  | Banks Balance Sheet  |  
-| BCLI  | Business Climate Indicator  |  
-| BCOI  | Business Confidence Index  |  
-| BI  | Business Inventories  |  
-| BLR  | Bank Lending Rate  |  
-| BOI  | NFIB Business Optimism Index  |  
-| BOT  | Balance Of Trade  |  
-| BP  | Building Permits  |  
-| BR  | Bankruptcies  |  
-| CA  | Current Account  |  
-| CAG  | Current Account To GDP  |  
-| CAP  | Car Production  |  
-| CAR  | Car Registrations  |  
-| CBBS  | Central Bank Balance Sheet  |  
-| CCC  | Claimant Count Change  |  
-| CCI  | Consumer Confidence Index  |  
-| CCOS  | Cushing Crude Oil Stocks  |  
-| CCP  | Core Consumer Prices  |  
-| CCPI  | Core CPI  |  
-| CCPT  | Consumer Confidence Price Trends  |  
-| CCR  | Consumer Credit  |  
-| CCS  | Credit Card Spending  |  
-| CEP  | Cement Production  |  
-| CF  | Capital Flows  |  
-| CFNAI  | Chicago Fed National Activity Index  |  
-| CI  | API Crude Imports  |  
-| CIND  | Coincident Index  |  
-| CIR  | Core Inflation Rate, YoY  |  
-| CJC  | Continuing Jobless Claims  |  
-| CN  | API Cushing Number  |  
-| COI  | Crude Oil Imports  |  
-| COIR  | Crude Oil Imports from Russia  |  
-| CONSTS  | Construction Spending  |  
-| COP  | Crude Oil Production  |  
-| COR  | Crude Oil Rigs  |  
-| CORD  | Construction Orders, YoY  |  
-| CORPI  | Corruption Index  |  
-| CORR  | Corruption Rank  |  
-| COSC  | Crude Oil Stocks Change  |  
-| COUT  | Construction Output, YoY  |  
-| CP  | Copper Production  |  
-| CPCEPI  | Core PCE Price Index  |  
-| CPI  | Consumer Price Index  |  
-| CPIHU  | CPI Housing Utilities  |  
-| CPIM  | CPI Median  |  
-| CPIT  | CPI Transportation  |  
-| CPITM  | CPI Trimmed Mean  |  
-| CPMI  | Chicago PMI  |  
-| CPPI  | Core Producer Price Index  |  
-| CPR  | Corporate Profits  |  
-| CRLPI  | Cereals Price Index  |  
-| CRR  | Cash Reserve Ratio  |  
-| CS  | Consumer Spending  |  
-| CSC  | API Crude Oil Stock Change  |  
-| CSHPI  | Case Shiller Home Price Index  |  
-| CSHPIMM  | Case Shiller Home Price Index, MoM  |  
-| CSHPIYY  | Case Shiller Home Price Index, YoY  |  
-| CSS  | Chain Store Sales  |  
-| CTR  | Corporate Tax Rate  |  
-| CU  | Capacity Utilization  |  
-| DFMI  | Dallas Fed Manufacturing Index  |  
-| DFP  | Distillate Fuel Production  |  
-| DFS  | Distillate Stocks  |  
-| DFSI  | Dallas Fed Services Index  |  
-| DFSRI  | Dallas Fed Services Revenues Index  |  
-| DG  | Deposit Growth  |  
-| DGO  | Durable Goods Orders  |  
-| DGOED  | Durable Goods Orders Excluding Defense  |  
-| DGOET  | Durable Goods Orders Excluding Transportation  |  
-| DIR  | Deposit Interest Rate  |  
-| DPI  | Disposable Personal Income  |  
-| DRPI  | Dairy Price Index  |  
-| DS  | API Distillate Stocks  |  
-| DT  | CBI Distributive Trades  |  
-| EC  | ADP Employment Change  |  
-| ED  | External Debt  |  
-| EDBR  | Ease Of Doing Business Ranking  |  
-| EHS  | Existing Home Sales  |  
-| ELP  | Electricity Production  |  
-| EMC  | Employment Change  |  
-| EMCI  | Employment Cost Index  |  
-| EMP  | Employed Persons  |  
-| EMR  | Employment Rate  |  
-| EOI  | Economic Optimism Index  |  
-| EP  | Export Prices  |  
-| ESI  | ZEW Economic Sentiment Index  |  
-| EWS  | Economy Watchers Survey  |  
-| EXP  | Exports  |  
-| EXPYY  | Exports, YoY  |  
-| FAI  | Fixed Asset Investment  |  
-| FBI  | Foreign Bond Investment  |  
-| FDI  | Foreign Direct Investment  |  
-| FE  | Fiscal Expenditure  |  
-| FER  | Foreign Exchange Reserves  |  
-| FI  | Food Inflation, YoY  |  
-| FO  | Factory Orders  |  
-| FOET  | Factory Orders Excluding Transportation  |  
-| FPI  | Food Price Index  |  
-| FSI  | Foreign Stock Investment  |  
-| FTE  | Full Time Employment  |  
-| FYGDPG  | Full Year GDP Growth  |  
-| GASP  | Gasoline Prices  |  
-| GBP  | Government Budget  |  
-| GBV  | Government Budget Value  |  
-| GCI  | Competitiveness Index  |  
-| GCR  | Competitiveness Rank  |  
-| GD  | Government Debt  |  
-| GDG  | Government Debt To GDP  |  
-| GDP  | Gross Domestic Product  |  
-| GDPA  | GDP From Agriculture  |  
-| GDPC  | GDP From Construction  |  
-| GDPCP  | GDP Constant Prices  |  
-| GDPD  | GDP Deflator  |  
-| GDPGA  | GDP Growth Annualized  |  
-| GDPMAN  | GDP From Manufacturing  |  
-| GDPMIN  | GDP From Mining  |  
-| GDPPA  | GDP From Public Administration  |  
-| GDPPC  | GDP Per Capita  |  
-| GDPPCP  | GDP Per Capita, PPP  |  
-| GDPQQ  | GDP Growth Rate  |  
-| GDPS  | GDP From Services  |  
-| GDPSA  | GDP Sales  |  
-| GDPT  | GDP From Transport  |  
-| GDPU  | GDP From Utilities  |  
-| GDPYY  | GDP, YoY  |  
-| GDTPI  | Global Dairy Trade Price Index  |  
-| GFCF  | Gross Fixed Capital Formation  |  
-| GNP  | Gross National Product  |  
-| GP  | Gold Production  |  
-| GPA  | Government Payrolls  |  
-| GPRO  | Gasoline Production  |  
-| GR  | Government Revenues  |  
-| GRES  | Gold Reserves  |  
-| GS  | API Gasoline Stocks  |  
-| GSC  | Grain Stocks Corn  |  
-| GSCH  | Gasoline Stocks Change  |  
-| GSG  | Government Spending To GDP  |  
-| GSP  | Government Spending  |  
-| GSS  | Grain Stocks Soy  |  
-| GSW  | Grain Stocks Wheat  |  
-| GTB  | Goods Trade Balance  |  
-| HB  | Hospital Beds  |  
-| HDG  | Households Debt To GDP  |  
-| HDI  | Households Debt To Income  |  
-| HICP  | Harmonised Index of Consumer Prices  |  
-| HIRMM  | Harmonised Inflation Rate, MoM  |  
-| HIRYY  | Harmonised Inflation Rate, YoY  |  
-| HMI  | NAHB Housing Market Index  |  
-| HOR  | Home Ownership Rate  |  
-| HOS  | Heating Oil Stocks  |  
-| HOSP  | Hospitals  |  
-| HPI  | House Price Index  |  
-| HPIMM  | House Price Index, MoM  |  
-| HPIYY  | House Price Index, YoY  |  
-| HS  | Home Loans  |  
-| HSP  | Household Spending  |  
-| HST  | Housing Starts  |  
-| IC  | Changes In Inventories  |  
-| ICUB  | ICU Beds  |  
-| IE  | Inflation Expectations  |  
-| IFOCC  | IFO Assessment Of The Business Situation  |  
-| IFOE  | IFO Business Developments Expectations  |  
-| IJC  | Initial Jobless Claims  |  
-| IMP  | Imports  |  
-| IMPYY  | Imports, YoY  |  
-| INBR  | Interbank Rate  |  
-| INTR  | Interest Rate  |  
-| IPA  | IP Addresses  |  
-| IPMM  | Industrial Production, MoM  |  
-| IPRI  | Import Prices  |  
-| IPYY  | Industrial Production, YoY  |  
-| IRMM  | Inflation Rate, MoM  |  
-| IRYY  | Inflation Rate, YoY  |  
-| IS  | Industrial Sentiment  |  
-| ISP  | Internet Speed  |  
-| JA  | Job Advertisements  |  
-| JAR  | Jobs To Applications Ratio  |  
-| JC  | Challenger Job Cuts  |  
-| JC4W  | Jobless Claims, 4-Week Average  |  
-| JO  | Job Offers  |  
-| JV  | Job Vacancies  |  
-| KFMI  | Kansas Fed Manufacturing Index  |  
-| LB  | Loans To Banks  |  
-| LC  | Labor Costs  |  
-| LEI  | Leading Economic Index  |  
-| LFPR  | Labor Force Participation Rate  |  
-| LG  | Loan Growth, YoY  |  
-| LIVRR  | Liquidity Injections Via Reverse Repo  |  
-| LMIC  | LMI Logistics Managers Index Current  |  
-| LMICI  | LMI Inventory Costs  |  
-| LMIF  | LMI Logistics Managers Index Future  |  
-| LMITP  | LMI Transportation Prices  |  
-| LMIWP  | LMI Warehouse Prices  |  
-| LPS  | Loans To Private Sector  |  
-| LR  | Central Bank Lending Rate  |  
-| LTUR  | Long Term Unemployment Rate  |  
-| LWF  | Living Wage Family  |  
-| LWI  | Living Wage Individual  |  
-| M0  | Money Supply M0  |  
-| M1  | Money Supply M1  |  
-| M2  | Money Supply M2  |  
-| M3  | Money Supply M3  |  
-| MA  | Mortgage Approvals  |  
-| MAPL  | Mortgage Applications  |  
-| MCE  | Michigan Consumer Expectations  |  
-| MCEC  | Michigan Current Economic Conditions  |  
-| MD  | Medical Doctors  |  
-| ME  | Military Expenditure  |  
-| MGDPYY  | Monthly GDP, YoY  |  
-| MIE1Y  | Michigan Inflation Expectations  |  
-| MIE5Y  | Michigan 5 Year Inflation Expectations  |  
-| MIP  | Mining Production, YoY  |  
-| MMI  | MBA Mortgage Market Index  |  
-| MO  | Machinery Orders  |  
-| MP  | Manufacturing Payrolls  |  
-| MPI  | Meat Price Index  |  
-| MPRMM  | Manufacturing Production, MoM  |  
-| MPRYY  | Manufacturing Production, YoY  |  
-| MR  | Mortgage Rate  |  
-| MRI  | MBA Mortgage Refinance Index  |  
-| MS  | Manufacturing Sales  |  
-| MTO  | Machine Tool Orders  |  
-| MW  | Minimum Wages  |  
-| NDCGOEA  | Orders For Non-defense Capital Goods Excluding Aircraft  |  
-| NEGTB  | Goods Trade Deficit With Non-EU Countries  |  
-| NFP  | Nonfarm Payrolls  |  
-| NGI  | Natural Gas Imports  |  
-| NGIR  | Natural Gas Imports from Russia  |  
-| NGSC  | Natural Gas Stocks Change  |  
-| NHPI  | Nationwide House Price Index  |  
-| NHS  | New Home Sales  |  
-| NHSMM  | New Home Sales, MoM  |  
-| NMPMI  | Non-Manufacturing PMI  |  
-| NO  | New Orders  |  
-| NODXMM  | Non-Oil Domestic Exports, MoM  |  
-| NODXYY  | Non-Oil Domestic Exports, YoY  |  
-| NOE  | Non-Oil Exports  |  
-| NPP  | Nonfarm Payrolls Private  |  
-| NURS  | Nurses  |  
-| NYESMI  | NY Empire State Manufacturing Index  |  
-| OE  | Oil Exports  |  
-| OPI  | Oils Price Index  |  
-| PCEPI  | PCE Price Index  |  
-| PDG  | Private Debt To GDP  |  
-| PFMI  | Philadelphia Fed Manufacturing Index  |  
-| PHSIMM  | Pending Home Sales Index, MoM  |  
-| PHSIYY  | Pending Home Sales Index, YoY  |  
-| PI  | Personal Income  |  
-| PIN  | Private Investment  |  
-| PIND  | MBA Purchase Index  |  
-| PITR  | Personal Income Tax Rate  |  
-| POP  | Population  |  
-| PPI  | Producer Price Index  |  
-| PPII  | Producer Price Index Input  |  
-| PPIMM  | Producer Price Inflation, MoM  |  
-| PPIYY  | Producer Prices Index, YoY  |  
-| PRI  | API Product Imports  |  
-| PROD  | Productivity  |  
-| PS  | Personal Savings  |  
-| PSC  | Private Sector Credit  |  
-| PSP  | Personal Spending  |  
-| PTE  | Part Time Employment  |  
-| PUAC  | Pandemic Unemployment Assistance Claims  |  
-| RAM  | Retirement Age Men  |  
-| RAW  | Retirement Age Women  |  
-| RCR  | Refinery Crude Runs  |  
-| REM  | Remittances  |  
-| RFMI  | Richmond Fed Manufacturing Index  |  
-| RFMSI  | Richmond Fed Manufacturing Shipments Index  |  
-| RFSI  | Richmond Fed Services Index  |  
-| RI  | Redbook Index  |  
-| RIEA  | Retail Inventories Excluding Autos  |  
-| RPI  | Retail Price Index  |  
-| RR  | Repo Rate  |  
-| RRR  | Reverse Repo Rate  |  
-| RSEA  | Retail Sales Excluding Autos  |  
-| RSEF  | Retail Sales Excluding Fuel  |  
-| RSMM  | Retail Sales, MoM  |  
-| RSYY  | Retail Sales, YoY  |  
-| RTI  | Reuters Tankan Index  |  
-| SBSI  | Small Business Sentiment Index  |  
-| SFHP  | Single Family Home Prices  |  
-| SP  | Steel Production  |  
-| SPI  | Sugar Price Index  |  
-| SS  | Services Sentiment  |  
-| SSR  | Social Security Rate  |  
-| SSRC  | Social Security Rate For Companies  |  
-| SSRE  | Social Security Rate For Employees  |  
-| STR  | Sales Tax Rate  |  
-| TA  | Tourist Arrivals  |  
-| TAXR  | Tax Revenue  |  
-| TCB  | Treasury Cash Balance  |  
-| TCPI  | Tokyo CPI  |  
-| TI  | Terrorism Index  |  
-| TII  | Tertiary Industry Index  |  
-| TOT  | Terms Of Trade  |  
-| TR  | Tourism Revenues  |  
-| TVS  | Total Vehicle Sales  |  
-| UC  | Unemployment Change  |  
-| UP  | Unemployed Persons  |  
-| UR  | Unemployment Rate  |  
-| WAG  | Wages  |  
-| WES  | Weapons Sales  |  
-| WG  | Wage Growth, YoY  |  
-| WHS  | Wages High Skilled  |  
-| WI  | Wholesale Inventories  |  
-| WLS  | Wages Low Skilled  |  
-| WM  | Wages In Manufacturing  |  
-| WPI  | Wholesale Price Index  |  
-| WS  | Wholesale Sales  |  
-| YUR  | Youth Unemployment Rate  |  
-| ZCC  | ZEW Current Conditions  |  
+Click to show/hide `field` | Metric  
+---|---  
+AA | Asylum Applications  
+ACR | API Crude Runs  
+AE | Auto Exports  
+AHE | Average Hourly Earnings  
+AHO | API Heating Oil  
+AWH | Average Weekly Hours  
+BBS | Banks Balance Sheet  
+BCLI | Business Climate Indicator  
+BCOI | Business Confidence Index  
+BI | Business Inventories  
+BLR | Bank Lending Rate  
+BOI | NFIB Business Optimism Index  
+BOT | Balance Of Trade  
+BP | Building Permits  
+BR | Bankruptcies  
+CA | Current Account  
+CAG | Current Account To GDP  
+CAP | Car Production  
+CAR | Car Registrations  
+CBBS | Central Bank Balance Sheet  
+CCC | Claimant Count Change  
+CCI | Consumer Confidence Index  
+CCOS | Cushing Crude Oil Stocks  
+CCP | Core Consumer Prices  
+CCPI | Core CPI  
+CCPT | Consumer Confidence Price Trends  
+CCR | Consumer Credit  
+CCS | Credit Card Spending  
+CEP | Cement Production  
+CF | Capital Flows  
+CFNAI | Chicago Fed National Activity Index  
+CI | API Crude Imports  
+CIND | Coincident Index  
+CIR | Core Inflation Rate, YoY  
+CJC | Continuing Jobless Claims  
+CN | API Cushing Number  
+COI | Crude Oil Imports  
+COIR | Crude Oil Imports from Russia  
+CONSTS | Construction Spending  
+COP | Crude Oil Production  
+COR | Crude Oil Rigs  
+CORD | Construction Orders, YoY  
+CORPI | Corruption Index  
+CORR | Corruption Rank  
+COSC | Crude Oil Stocks Change  
+COUT | Construction Output, YoY  
+CP | Copper Production  
+CPCEPI | Core PCE Price Index  
+CPI | Consumer Price Index  
+CPIHU | CPI Housing Utilities  
+CPIM | CPI Median  
+CPIT | CPI Transportation  
+CPITM | CPI Trimmed Mean  
+CPMI | Chicago PMI  
+CPPI | Core Producer Price Index  
+CPR | Corporate Profits  
+CRLPI | Cereals Price Index  
+CRR | Cash Reserve Ratio  
+CS | Consumer Spending  
+CSC | API Crude Oil Stock Change  
+CSHPI | Case Shiller Home Price Index  
+CSHPIMM | Case Shiller Home Price Index, MoM  
+CSHPIYY | Case Shiller Home Price Index, YoY  
+CSS | Chain Store Sales  
+CTR | Corporate Tax Rate  
+CU | Capacity Utilization  
+DFMI | Dallas Fed Manufacturing Index  
+DFP | Distillate Fuel Production  
+DFS | Distillate Stocks  
+DFSI | Dallas Fed Services Index  
+DFSRI | Dallas Fed Services Revenues Index  
+DG | Deposit Growth  
+DGO | Durable Goods Orders  
+DGOED | Durable Goods Orders Excluding Defense  
+DGOET | Durable Goods Orders Excluding Transportation  
+DIR | Deposit Interest Rate  
+DPI | Disposable Personal Income  
+DRPI | Dairy Price Index  
+DS | API Distillate Stocks  
+DT | CBI Distributive Trades  
+EC | ADP Employment Change  
+ED | External Debt  
+EDBR | Ease Of Doing Business Ranking  
+EHS | Existing Home Sales  
+ELP | Electricity Production  
+EMC | Employment Change  
+EMCI | Employment Cost Index  
+EMP | Employed Persons  
+EMR | Employment Rate  
+EOI | Economic Optimism Index  
+EP | Export Prices  
+ESI | ZEW Economic Sentiment Index  
+EWS | Economy Watchers Survey  
+EXP | Exports  
+EXPYY | Exports, YoY  
+FAI | Fixed Asset Investment  
+FBI | Foreign Bond Investment  
+FDI | Foreign Direct Investment  
+FE | Fiscal Expenditure  
+FER | Foreign Exchange Reserves  
+FI | Food Inflation, YoY  
+FO | Factory Orders  
+FOET | Factory Orders Excluding Transportation  
+FPI | Food Price Index  
+FSI | Foreign Stock Investment  
+FTE | Full Time Employment  
+FYGDPG | Full Year GDP Growth  
+GASP | Gasoline Prices  
+GBP | Government Budget  
+GBV | Government Budget Value  
+GCI | Competitiveness Index  
+GCR | Competitiveness Rank  
+GD | Government Debt  
+GDG | Government Debt To GDP  
+GDP | Gross Domestic Product  
+GDPA | GDP From Agriculture  
+GDPC | GDP From Construction  
+GDPCP | GDP Constant Prices  
+GDPD | GDP Deflator  
+GDPGA | GDP Growth Annualized  
+GDPMAN | GDP From Manufacturing  
+GDPMIN | GDP From Mining  
+GDPPA | GDP From Public Administration  
+GDPPC | GDP Per Capita  
+GDPPCP | GDP Per Capita, PPP  
+GDPQQ | GDP Growth Rate  
+GDPS | GDP From Services  
+GDPSA | GDP Sales  
+GDPT | GDP From Transport  
+GDPU | GDP From Utilities  
+GDPYY | GDP, YoY  
+GDTPI | Global Dairy Trade Price Index  
+GFCF | Gross Fixed Capital Formation  
+GNP | Gross National Product  
+GP | Gold Production  
+GPA | Government Payrolls  
+GPRO | Gasoline Production  
+GR | Government Revenues  
+GRES | Gold Reserves  
+GS | API Gasoline Stocks  
+GSC | Grain Stocks Corn  
+GSCH | Gasoline Stocks Change  
+GSG | Government Spending To GDP  
+GSP | Government Spending  
+GSS | Grain Stocks Soy  
+GSW | Grain Stocks Wheat  
+GTB | Goods Trade Balance  
+HB | Hospital Beds  
+HDG | Households Debt To GDP  
+HDI | Households Debt To Income  
+HICP | Harmonised Index of Consumer Prices  
+HIRMM | Harmonised Inflation Rate, MoM  
+HIRYY | Harmonised Inflation Rate, YoY  
+HMI | NAHB Housing Market Index  
+HOR | Home Ownership Rate  
+HOS | Heating Oil Stocks  
+HOSP | Hospitals  
+HPI | House Price Index  
+HPIMM | House Price Index, MoM  
+HPIYY | House Price Index, YoY  
+HS | Home Loans  
+HSP | Household Spending  
+HST | Housing Starts  
+IC | Changes In Inventories  
+ICUB | ICU Beds  
+IE | Inflation Expectations  
+IFOCC | IFO Assessment Of The Business Situation  
+IFOE | IFO Business Developments Expectations  
+IJC | Initial Jobless Claims  
+IMP | Imports  
+IMPYY | Imports, YoY  
+INBR | Interbank Rate  
+INTR | Interest Rate  
+IPA | IP Addresses  
+IPMM | Industrial Production, MoM  
+IPRI | Import Prices  
+IPYY | Industrial Production, YoY  
+IRMM | Inflation Rate, MoM  
+IRYY | Inflation Rate, YoY  
+IS | Industrial Sentiment  
+ISP | Internet Speed  
+JA | Job Advertisements  
+JAR | Jobs To Applications Ratio  
+JC | Challenger Job Cuts  
+JC4W | Jobless Claims, 4-Week Average  
+JO | Job Offers  
+JV | Job Vacancies  
+KFMI | Kansas Fed Manufacturing Index  
+LB | Loans To Banks  
+LC | Labor Costs  
+LEI | Leading Economic Index  
+LFPR | Labor Force Participation Rate  
+LG | Loan Growth, YoY  
+LIVRR | Liquidity Injections Via Reverse Repo  
+LMIC | LMI Logistics Managers Index Current  
+LMICI | LMI Inventory Costs  
+LMIF | LMI Logistics Managers Index Future  
+LMITP | LMI Transportation Prices  
+LMIWP | LMI Warehouse Prices  
+LPS | Loans To Private Sector  
+LR | Central Bank Lending Rate  
+LTUR | Long Term Unemployment Rate  
+LWF | Living Wage Family  
+LWI | Living Wage Individual  
+M0 | Money Supply M0  
+M1 | Money Supply M1  
+M2 | Money Supply M2  
+M3 | Money Supply M3  
+MA | Mortgage Approvals  
+MAPL | Mortgage Applications  
+MCE | Michigan Consumer Expectations  
+MCEC | Michigan Current Economic Conditions  
+MD | Medical Doctors  
+ME | Military Expenditure  
+MGDPYY | Monthly GDP, YoY  
+MIE1Y | Michigan Inflation Expectations  
+MIE5Y | Michigan 5 Year Inflation Expectations  
+MIP | Mining Production, YoY  
+MMI | MBA Mortgage Market Index  
+MO | Machinery Orders  
+MP | Manufacturing Payrolls  
+MPI | Meat Price Index  
+MPRMM | Manufacturing Production, MoM  
+MPRYY | Manufacturing Production, YoY  
+MR | Mortgage Rate  
+MRI | MBA Mortgage Refinance Index  
+MS | Manufacturing Sales  
+MTO | Machine Tool Orders  
+MW | Minimum Wages  
+NDCGOEA | Orders For Non-defense Capital Goods Excluding Aircraft  
+NEGTB | Goods Trade Deficit With Non-EU Countries  
+NFP | Nonfarm Payrolls  
+NGI | Natural Gas Imports  
+NGIR | Natural Gas Imports from Russia  
+NGSC | Natural Gas Stocks Change  
+NHPI | Nationwide House Price Index  
+NHS | New Home Sales  
+NHSMM | New Home Sales, MoM  
+NMPMI | Non-Manufacturing PMI  
+NO | New Orders  
+NODXMM | Non-Oil Domestic Exports, MoM  
+NODXYY | Non-Oil Domestic Exports, YoY  
+NOE | Non-Oil Exports  
+NPP | Nonfarm Payrolls Private  
+NURS | Nurses  
+NYESMI | NY Empire State Manufacturing Index  
+OE | Oil Exports  
+OPI | Oils Price Index  
+PCEPI | PCE Price Index  
+PDG | Private Debt To GDP  
+PFMI | Philadelphia Fed Manufacturing Index  
+PHSIMM | Pending Home Sales Index, MoM  
+PHSIYY | Pending Home Sales Index, YoY  
+PI | Personal Income  
+PIN | Private Investment  
+PIND | MBA Purchase Index  
+PITR | Personal Income Tax Rate  
+POP | Population  
+PPI | Producer Price Index  
+PPII | Producer Price Index Input  
+PPIMM | Producer Price Inflation, MoM  
+PPIYY | Producer Prices Index, YoY  
+PRI | API Product Imports  
+PROD | Productivity  
+PS | Personal Savings  
+PSC | Private Sector Credit  
+PSP | Personal Spending  
+PTE | Part Time Employment  
+PUAC | Pandemic Unemployment Assistance Claims  
+RAM | Retirement Age Men  
+RAW | Retirement Age Women  
+RCR | Refinery Crude Runs  
+REM | Remittances  
+RFMI | Richmond Fed Manufacturing Index  
+RFMSI | Richmond Fed Manufacturing Shipments Index  
+RFSI | Richmond Fed Services Index  
+RI | Redbook Index  
+RIEA | Retail Inventories Excluding Autos  
+RPI | Retail Price Index  
+RR | Repo Rate  
+RRR | Reverse Repo Rate  
+RSEA | Retail Sales Excluding Autos  
+RSEF | Retail Sales Excluding Fuel  
+RSMM | Retail Sales, MoM  
+RSYY | Retail Sales, YoY  
+RTI | Reuters Tankan Index  
+SBSI | Small Business Sentiment Index  
+SFHP | Single Family Home Prices  
+SP | Steel Production  
+SPI | Sugar Price Index  
+SS | Services Sentiment  
+SSR | Social Security Rate  
+SSRC | Social Security Rate For Companies  
+SSRE | Social Security Rate For Employees  
+STR | Sales Tax Rate  
+TA | Tourist Arrivals  
+TAXR | Tax Revenue  
+TCB | Treasury Cash Balance  
+TCPI | Tokyo CPI  
+TI | Terrorism Index  
+TII | Tertiary Industry Index  
+TOT | Terms Of Trade  
+TR | Tourism Revenues  
+TVS | Total Vehicle Sales  
+UC | Unemployment Change  
+UP | Unemployed Persons  
+UR | Unemployment Rate  
+WAG | Wages  
+WES | Weapons Sales  
+WG | Wage Growth, YoY  
+WHS | Wages High Skilled  
+WI | Wholesale Inventories  
+WLS | Wages Low Skilled  
+WM | Wages In Manufacturing  
+WPI | Wholesale Price Index  
+WS | Wholesale Sales  
+YUR | Youth Unemployment Rate  
+ZCC | ZEW Current Conditions  
 ## ​`request.footprint()`​
 The request.footprint() function enables scripts to retrieve volume footprint data for the bars in the datasets on which they run. For a given bar, a volume footprint categorizes volume values from lower timeframes as “buy” (upward) or “sell” (downward) based on intrabar price action, then collects the categorized volume data into equally sized rows that cover the bar’s price range. Programmers can use retrieved footprint data to inspect the distribution of “buy”, “sell”, and total volume across the rows for a bar’s range, identify a bar’s Point of Control (POC) and other significant price levels, calculate volume delta information, detect volume imbalances, and more.
 NoteVolume footprints are available exclusively to users who have a Premium or Ultimate plan. Accounts with lower-tier plans **cannot** use scripts that request volume footprint data with the request.footprint() function.
 The function’s signature is as follows:
-
 ```
 
 request.footprint(ticks_per_row, va_percent, imbalance_percent) → series footprint
@@ -18152,8 +16160,8 @@ footprint reqFootprint = request.footprint(numTicksInput, imbalance_percent�
 // Plot the retrieved POC and VA levels on the main chart pane.  
 plot(pocHigh, "POC top",    chart.fg_color,  5, plot.style_circles, force_overlay = true)  
 plot(pocLow,  "POC bottom", chart.fg_color,  5, plot.style_circles, force_overlay = true)  
-plot(vaHigh,  "VA top",     color.purple,  3, plot.style_circles, force_overlay = true)  
-plot(vaLow,   "VA bottom",  color.purple,  3, plot.style_circles, force_overlay = true)  
+plot(vaHigh,  "VAH top",    color.purple,  3, plot.style_circles, force_overlay = true)  
+plot(vaLow,   "VAH bottom", color.purple,  3, plot.style_circles, force_overlay = true)  
 ```
 Note that:
   * As with the built-in functions for most other reference types, scripts can call `footprint.*()` and `volume_row.*()` built-ins as functions or methods. This script calls the built-ins using _method syntax_.
@@ -18162,129 +16170,11 @@ Note that:
 
 To learn more about the footprint and volume_row types, and the available functions in their namespaces, refer to the footprint and volume_row section of the Type system page.
 For more information about volume footprints and how they work, refer to the Volume footprint charts article in our Help Center.
-### Requesting footprints on other datasets
-Scripts can request volume footprint data, or the results of calculations that use footprint data, from _other datasets_ by passing an expression that returns or uses IDs of the footprint or volume_row type as the `expression` argument in a request.security() or request.security_lower_tf() function call. If a call to either of these functions requests the result of an expression that relies on volume footprint data, it calculates footprints on the specified dataset rather than the script’s main dataset.
-For example, the following script requests volume footprint data for the last _confirmed_ period on a specified _higher timeframe_ , then uses the data to display boxes across the current period for footprint rows whose total volume equals or exceeds an input percentage of the Point of Control (POC) row’s total volume.
-The script uses a request.security() call with `request.footprint(ticksInput)[1]` as the `expression` argument and barmerge.lookahead_on as the `lookahead` argument to fetch the last confirmed footprint ID for the selected timeframe. If the result is not na at the start of the current HTF period, the script compares each row’s volume to the volume of the POC row in a for…in loop, and draws boxes to project the levels of rows whose volume meets the specified threshold. Each box uses a volume-based gradient color, where blue hues correspond to rows with lower volume, and orange hues correspond to rows with higher volume:
-```pine
-//@version=6
-indicator("Requesting footprints on other datasets demo", overlay = true, behind_chart = false, max_boxes_count = 500)  
-  
-//@variable The higher timeframe for which to request footprint data.  
-string htfInput = input.timeframe("1D", "Higher timeframe")  
-//@variable The size of each footprint row, expressed in ticks.   
-int ticksInput = input.int(100, "Ticks per row", minval = 1)  
-//@variable The minimum percentage of POC volume required to qualify a footprint row as a high-volume node.  
-float hvInput = input.float(50.0, "High-volume threshold (% of POC)", 0.0, 100.0)  
-  
-// Raise an error if the specified timeframe is not higher than the chart's timeframe.  
-if barstate.isfirst and timeframe.in_seconds(htfInput) <= timeframe.in_seconds()  
-    runtime.error("The requested timeframe must be higher than the chart's timeframe.")  
-  
-//@variable The ID of the *last confirmed* `footprint` object from the higher TF, or `na` when new data is not available.  
-//          The `request.security()` call includes `barmerge.gaps_on`, because the script requires the data only on the  
-//          *first bar* of each new HTF period.  
-footprint htfFootprint = request.security(  
-    syminfo.tickerid, htfInput, request.footprint(ticksInput)[1], barmerge.gaps_on, barmerge.lookahead_on  
-)  
-  
-if not na(htfFootprint)  
-    //@variable References the `volume_row` object for the footprint's POC row.  
-    volume_row pocRow = htfFootprint.poc()  
-    //@variable The POC row's total volume.  
-    float pocVol = pocRow.total_volume()  
-    //@variable The minimum volume required for a high-volume row.  
-    float minVol = pocVol * hvInput / 100  
-    // Loop through all `volume_row` IDs stored in the array created by `htfFootprint.rows()`.  
-    for row in htfFootprint.rows()  
-        //@variable The current row's total volume.  
-        float rowVol = row.total_volume()  
-        // Skip the rest of the current iteration if the row's total volume is less than the required volume.  
-        if rowVol < minVol  
-            continue  
-        // Draw a box across the current period at the confirmed row's price levels if its volume meets the threshold,  
-        // and color the box using a volume-based gradient.   
-        color boxColor = color.from_gradient(rowVol, minVol, pocVol, #2196f3, #ff9800)  
-        box.new(  
-            time, row.up_price(), time_close(htfInput), row.down_price(), boxColor,  
-            xloc = xloc.bar_time, bgcolor = color.new(boxColor, 50),   
-            text = str.tostring(rowVol, format.volume), text_color = #000000  
-        )  
-```
-Note that:
-  * The request.security() call includes barmerge.gaps_on as the `gaps` argument to return a non-na footprint ID only on the _first_ chart bar of each new HTF period, because the script does not require new footprint data on _every_ bar. 
-  * The script calls the time() and time_close() functions to retrieve the expected opening and closing timestamps for the current HTF period. The box drawings use these timestamps as their left and right coordinates.
-
-Any request.security() or request.security_lower_tf() call whose expression depends on footprint objects counts toward the total number of request.footprint() calls, because such requests _copy_ all code required to calculate the result on the retrieved dataset. A script raises a _runtime error_ if its outputs depend on data from more than **one** unique request.footprint() call, regardless of whether those requests execute on the script’s main dataset or on the datasets fetched by other `request.*()` calls.
-Consider the following script, which defines a calculation that requests volume footprint data for the current dataset, computes a moving average of the POC row’s median price, then declares a `pocMA` variable to store the average. The script uses the variable as the `expression` argument in a request.security() call to calculate the average POC level on the “1D” timeframe, then assigns the result to the `requestedMA` variable. Lastly, the script attempts to plot both the `pocMA` and `requestedMA` series on the chart, but fails and raises a _runtime error_ :
-```pine
-//@version=6
-indicator("Too many footprint requests demo")  
-  
-//@variable The size of each footprint row, expressed in ticks.  
-int ticksInput = input.int(100, "Ticks per row", 1)  
-  
-//#region  
-// The code in this region is copied into the `request.security()` call's context, because all of it affects   
-// the `pocMA` variable used as the call's `expression` argument.  
-  
-// Request the ID of a `footprint` object.  
-footprint fp = request.footprint(ticksInput)  
-// Get the `volume_row` ID for the POC row if the requested `footprint` ID is not `na`.  
-volume_row poc = na(fp) ? na : fp.poc()  
-// Calculate a moving average of the POC row's midpoint.  
-float pocMA = ta.sma(na(poc) ? na : math.avg(poc.up_price(), poc.down_price()), 5)  
-//#endregion  
-  
-// Retrieve the `pocMA` value calculated on the "1D" timeframe.  
-// This request copies all code in the region above and evaluates it on the requested dataset.  
-// Therefore, it executes its own separate version of the `request.footprint()` call.   
-float requestedMA = request.security(syminfo.tickerid, "1D", pocMA)  
-  
-// Using *both* the `pocMA` and `requestedMA` variables in the script's outputs causes a *runtime error*,   
-// because the variables' values depend on *two* different footprint requests: one for the chart's timeframe,   
-// and the other for the requested timeframe.  
-plot(requestedMA, "Daily POC MA", color.purple, 3)  
-plot(pocMA,       "Chart POC MA", color.blue,   3)  
-```
-The above script raises an error because its _outputs_ (in this case, its plots) depend on both the `pocMA` and `requestedMA` variables, and the values of those variables depend on **two** separate footprint requests — one for the script’s main dataset and the other for the dataset retrieved by the request.security() call. _Both_ of these requests count toward the total number of request.footprint() calls, even though one of those calls is not defined _explicitly_ in the code.
-A simple way to resolve this error is to _remove_ one of the script’s two plot() calls. As explained in the Compiled tokens section of the Limitations page, the Pine Script compiler automatically _discards_ code that a script’s _outputs_ do not depend on, including `request.*()` calls. Therefore, if we remove the plot of the `pocMA` series, for example, the request.footprint() call defined explicitly in the global scope _does not_ execute. Instead, only the request.footprint() call copied into the request.security() call’s context executes, because that is the only one that the script’s outputs now require:
-```pine
-//@version=6
-indicator("Removed footprint request demo")  
-  
-//@variable The size of each footprint row, expressed in ticks.  
-int ticksInput = input.int(100, "Ticks per row", 1)  
-  
-//#region  
-// Although this code is still defined in the global scope, it does *not* execute in this scope, because the script's   
-// outputs no longer depend on the data assigned to the `fp`, `poc`, or `pocMA` variables now that we removed the   
-// `plot(pocMA)` call.  
-  
-footprint  fp    = request.footprint(ticksInput)  
-volume_row poc   = na(fp) ? na : fp.poc()  
-float      pocMA = ta.sma(na(poc) ? na : math.avg(poc.up_price(), poc.down_price()), 5)  
-//#endregion  
-  
-// This request still copies all code in the region above to calculate a POC average on the "1D" timeframe.   
-// The compiler does not discard this request, including the `request.footprint()` call that executes in its context,   
-// because the script still uses the `requestedMA` variable in its outputs.  
-float requestedMA = request.security(syminfo.tickerid, "1D", pocMA)  
-  
-// If we plot only the `requestedMA` series, and *not* the `pocMA` series, the "Too many `request.footprint()` calls"   
-// error no longer occurs, because the script no longer requires two separate footprint requests to determine its outputs.  
-// The only footprint request that it requires now is the one copied into the `request.security()` call's context.  
-plot(requestedMA, "Daily POC MA", color.purple, 3)  
-```
-Note that:
-  * Although the `pocMA` variable declaration and its dependencies no longer execute directly, the Pine Profiler displays performance details next to that code in the Pine Editor. Those details represent the performance of the _copied_ calculations that execute within the request.security() call’s context in this case, as the profiler cannot display that information elsewhere. See the When requesting other contexts section of the Profiling and optimization page to learn more about this behavior.
-
 ## ​`request.seed()`​
 TradingView aggregates a vast amount of data from its many providers, including price and volume information on tradable instruments, financials, economic data, and more, which users can retrieve in Pine Script using the functions discussed in the sections above, as well as multiple built-in variables.
 To further expand the horizons of possible data one can analyze on TradingView, we have Pine Seeds, which allows users to supply custom _user-maintained_ EOD data feeds via GitHub for use on TradingView charts and within Pine Script code.
 NoticeThe creation of _new_ Pine Seeds repositories is currently **unavailable**. However, the data feeds from _existing_ repositories are still accessible to charts and scripts. The Pine Seeds documentation on GitHub provides in-depth information about Pine Seeds functionality and instructions for requesting the return of full Pine Seeds support.
 To retrieve data from a Pine Seeds data feed within a script, use the request.seed() function. Below is the function’s signature:
-
 ```
 
 request.seed(source, symbol, expression, ignore_invalid_symbol, calc_bars_count) → series <type>
@@ -18361,7 +16251,6 @@ Note that:
   * Country/region codes
   * Field codes
   * `request.footprint()`
-  * Requesting footprints on other datasets
   * `request.seed()`
 
 ---
@@ -18618,7 +16507,6 @@ Programmers can use built-in functions and variables to define custom sessions, 
 A script can define a custom session by encoding the start time, end time, and, optionally, days of the week of the session into a _session string_. Scripts often use time-based session strings to check whether a bar belongs to certain time period.
 ### Creating time-based sessions
 Time-based session strings have the following syntax:
-
 ```
 
 <time_period>:<days>
@@ -18629,17 +16517,17 @@ Where:
   * `<time_period>` specifies the session’s start and end times in `"HHmm-HHmm"` format, where `"HH"` represents the _hour_ in 24-hour format (`"00"` to `"23"`) and `"mm"` represents the _minute_ (`"00"` to `"59"`) — for example, `"1700"` for 5PM. A comma can separate multiple time periods to specify combinations of discrete periods for the session, e.g., `"0800-0900,1230-1630"`.
   * `<days>` specifies the _days of the week_ that the session applies to, using a set of digits from 1 to 7 to represent each day. The digits use `"1"` to represent Sunday, and count up through the week, ending with `"7"` to represent Saturday. `"0"` is not a valid day. If unspecified, the session applies every day.
 
-The following table shows some examples of session strings:  
-| Example  | Description  |  
-| --- | --- |  
-| `"0000-0000:1234567"`  | The normal format for a 7-day, 24-hour session beginning at midnight.  |  
-| `"0000-0000"`  | Equivalent to the previous example, because the default days are `"1234567"`.  |  
-| `"0000-0000:23456"`  | A 24-hour session beginning at midnight, but only Monday to Friday.  |  
-| `"2000-1630:1234567"`  | An overnight session that begins at 20:00 and ends at 16:30 the next day. It applies on all days of the week.  |  
-| `"0930-1700:146"`  | A session that begins at 9:30 and ends at 17:00 on Sundays (1), Wednesdays (4), and Fridays (6).  |  
-| `"1700-1700:23456"`  | An _overnight session_. The Monday session starts Sunday at 17:00 and ends Monday at 17:00 . It applies Monday through Friday.  |  
-| `"1000-1001:26"`  | An unusual session that lasts only one minute on Mondays (2) and Fridays (6).  |  
-| `"0900-1600,1700-2000"`  | A session that begins at 9:00 , breaks from 16:00 to 17:00 , and continues until 20:00 . Applies to every day of the week.  |  
+The following table shows some examples of session strings:
+Example | Description  
+---|---  
+`"0000-0000:1234567"` | The normal format for a 7-day, 24-hour session beginning at midnight.  
+`"0000-0000"` | Equivalent to the previous example, because the default days are `"1234567"`.  
+`"0000-0000:23456"` | A 24-hour session beginning at midnight, but only Monday to Friday.  
+`"2000-1630:1234567"` | An overnight session that begins at 20:00 and ends at 16:30 the next day. It applies on all days of the week.  
+`"0930-1700:146"` | A session that begins at 9:30 and ends at 17:00 on Sundays (1), Wednesdays (4), and Fridays (6).  
+`"1700-1700:23456"` | An _overnight session_. The Monday session starts Sunday at 17:00 and ends Monday at 17:00. It applies Monday through Friday.  
+`"1000-1001:26"` | An unusual session that lasts only one minute on Mondays (2) and Fridays (6).  
+`"0900-1600,1700-2000"` | A session that begins at 9:00, breaks from 16:00 to 17:00, and continues until 20:00. Applies to every day of the week.  
 Note that a special format exists to represent a 7-day, 24-hour session beginning at midnight: `"24x7"` — this session string is equivalent to the first two examples in the table above.
 ### Using time-based sessions
 The `time()` and `time_close()` functions can accept time-based session strings as their `session` parameter arguments:
@@ -18673,7 +16561,7 @@ if isBarCloseInSession
       sessionInput, color = color.red, style=label.style_label_up, textcolor = chart.fg_color, size = size.large)  
 ```
 Note that:
-  * The script draws labels for the opening and closing times of _all_ bars that start within the session, even though the closing time of the last chart bar is _outside_ the session. This is because the time() and time_close() functions create their own bar representations according to their parameters. In the image above, which is of an hourly chart, the session ends at 11:30 , so the final calculated bar representation in the session starts at 11:00 and ends at 11:30 . Therefore, the last bar’s end time is reported as being within the session, even though the chart bar ends at 12:00 .
+  * The script draws labels for the opening and closing times of _all_ bars that start within the session, even though the closing time of the last chart bar is _outside_ the session. This is because the time() and time_close() functions create their own bar representations according to their parameters. In the image above, which is of an hourly chart, the session ends at 11:30, so the final calculated bar representation in the session starts at 11:00 and ends at 11:30. Therefore, the last bar’s end time is reported as being within the session, even though the chart bar ends at 12:00.
 
 NoticeTo avoid unexpected results, align the start and end times of time-based sessions with the start and end times of chart bars at the expected timeframe.
 Scripts can create _dynamic_ sessions, whose values can change during script execution, by calculating a “series string” argument for the `session` parameter of the time() or time_close() functions. The following example script creates a dynamic time-based session string that differs on weekdays and weekends. The script uses the time() function to determine whether the current bar is within this dynamic session, and colors the background green if so:
@@ -18893,30 +16781,30 @@ NoteIf a script attempts to retrieve data using a named session that does not ex
 ## Session variables reference
 Programmers can use several built-in variables for session-related data.
 ### Market states
-The following Boolean variables track whether the current bar belongs to the pre-market or post-market session:  
-| Variable  | Description  |  
-| --- | --- |  
-| session.ismarket  | Is `true` when the bar belongs to _regular_ trading hours. On “1D” and above timeframes, this variable is always `true`.  |  
-| session.ispremarket  | Is `true` when the bar belongs to the extended session _preceding_ regular trading hours. Extended hours data is only shown on intraday timeframes; on “1D” and above, this variable is always `false`.  |  
-| session.ispostmarket  | Is `true` when the bar belongs to the extended session _following_ regular trading hours. Extended hours data is only shown on intraday timeframes; on “1D” and above, this variable is always `false`.  |  
+The following Boolean variables track whether the current bar belongs to the pre-market or post-market session:
+Variable | Description  
+---|---  
+session.ismarket | Is `true` when the bar belongs to _regular_ trading hours. On “1D” and above timeframes, this variable is always `true`.  
+session.ispremarket | Is `true` when the bar belongs to the extended session _preceding_ regular trading hours. Extended hours data is only shown on intraday timeframes; on “1D” and above, this variable is always `false`.  
+session.ispostmarket | Is `true` when the bar belongs to the extended session _following_ regular trading hours. Extended hours data is only shown on intraday timeframes; on “1D” and above, this variable is always `false`.  
 For tickers without pre-market and post-market sessions, such as “BTCUSD”, session.ismarket is always `true` and session.ispremarket and session.ispostmarket are always `false`.
 For many futures symbols, Electronic trading hours (ETH) are considered the default session and use the named session `"regular"`, so during those hours session.ismarket is `true` and session.ispremarket and session.ispostmarket are both `false`.
 ### First and last bars
-The following Boolean variables track whether the current bar is the first or last in different sessions:  
-| Variable  | Description  |  
-| --- | --- |  
-| session.isfirstbar  | Is `true` if the current bar is the first bar of the day’s session, and `false` otherwise. If extended session information is used, it is only `true` on the first bar of the pre-market bars. Is `true` once for every session on the chart.  |  
-| session.isfirstbar_regular  | Is `true` on the first regular session bar of the day, `false` otherwise. It is `true` only once per session. The result is the same whether extended session information is used or not. For futures, the “Electronic trading hours” session _is_ the regular session. This variable is always `false` when the ticker is configured to use a subsession.  |  
-| session.islastbar  | Is `true` if the current bar is the last bar of the day’s session, and `false` otherwise. If extended session information is used, it is only `true` on the last bar of the post-market bars.  |  
-| session.islastbar_regular  | Is `true` on the last regular session bar of the day, `false` otherwise. The result is the same whether extended session information is used or not.  |  
+The following Boolean variables track whether the current bar is the first or last in different sessions:
+Variable | Description  
+---|---  
+session.isfirstbar | Is `true` if the current bar is the first bar of the day’s session, and `false` otherwise. If extended session information is used, it is only `true` on the first bar of the pre-market bars. Is `true` once for every session on the chart.  
+session.isfirstbar_regular | Is `true` on the first regular session bar of the day, `false` otherwise. It is `true` only once per session. The result is the same whether extended session information is used or not. For futures, the “Electronic trading hours” session _is_ the regular session. This variable is always `false` when the ticker is configured to use a subsession.  
+session.islastbar | Is `true` if the current bar is the last bar of the day’s session, and `false` otherwise. If extended session information is used, it is only `true` on the last bar of the post-market bars.  
+session.islastbar_regular | Is `true` on the last regular session bar of the day, `false` otherwise. The result is the same whether extended session information is used or not.  
 The session.islastbar and session.islastbar_regular variables might not be `true` for any bar in a session if no price or volume updates occur during the time period of the last bar. This is more likely at lower timeframes for thinly traded symbols. In contrast, session.isfirstbar and session.isfirstbar_regular are always `true` once for any session.
 ### Named session variables
-Scripts can use the following “string” variables to work with named sessions. The Retrieving named sessions section of this page discusses the use of these variables.  
-| Variable  | Description  |  
-| --- | --- |  
-| syminfo.session  | Holds the current symbol’s session information.  |  
-| session.regular  | Represents the regular trading session.  |  
-| session.extended  | Represents the extended trading session.  |  
+Scripts can use the following “string” variables to work with named sessions. The Retrieving named sessions section of this page discusses the use of these variables.
+Variable | Description  
+---|---  
+syminfo.session | Holds the current symbol’s session information.  
+session.regular | Represents the regular trading session.  
+session.extended | Represents the extended trading session.  
 
   * Introduction
   * Time-based sessions
@@ -19275,8 +17163,7 @@ Note that:
   * The strategy.risk.allow_entry_in() function _overrides_ the allowed direction for the strategy.entry() command. When a script specifies a trade direction with this risk management command, orders from strategy.entry() in the opposite direction _close_ the open position without allowing a reversal.
 
 ####  Pyramiding
-Another unique characteristic of the strategy.entry() command is its connection to a strategy’s _pyramiding_ property. Pyramiding specifies the maximum number of open trades, from the orders created by strategy.entry() calls, that a strategy allows for a single position. After this limit, the script does not execute new orders from subsequent calls to the command until at least one of the existing trades closes.
-Users can set this property by including a `pyramiding` argument in the strategy() declaration statement or by adjusting the “Pyramiding” input in the script’s “Settings/Properties” tab. The default value is 1, meaning the strategy can open new positions but cannot add to them using orders from strategy.entry() calls.
+Another unique characteristic of the strategy.entry() command is its connection to a strategy’s _pyramiding_ property. Pyramiding specifies the maximum number of _successive entries_ a strategy allows in the same direction. Users can set this property by including a `pyramiding` argument in the strategy() declaration statement or by adjusting the “Pyramiding” input in the script’s “Settings/Properties” tab. The default value is 1, meaning the strategy can open new positions but cannot add to them using orders from strategy.entry() calls.
 The following example uses strategy.entry() to place a market order when the `entryCondition` occurs on every 25th bar. The direction of the orders changes once every 100 bars, meaning every 100-bar cycle includes _four_ strategy.entry() calls with the same direction. For visual reference of the conditions, the script highlights the chart’s background based on the current direction each time the `entryCondition` occurs:
 ```pine
 //@version=6
@@ -20281,7 +18168,7 @@ strategy(
   
 int length = input.int(5, "Length")  
   
-//@variable Exponential Moving Average with an input `length`.  
+//@variable Exponential moving average with an input `length`.  
 float ma = ta.ema(close, length)  
   
 //@variable Is `true` when `ma` has increased and `close` is above it, `false` otherwise.  
@@ -20392,7 +18279,6 @@ If a strategy’s simulated funds cannot cover the losses from a margin trade, t
 
 To examine this calculation in detail, let’s add the built-in Supertrend Strategy to the NASDAQ:TSLA chart on the “1D” timeframe and set the “Order size” to 300% of equity and the “Margin for long positions” to 25% in the “Properties” tab of the strategy settings:
 The first entry happened at the bar’s opening price on 16 Sep 2010. The strategy bought 682,438 shares (Position Size) at 4.43 USD (Entry Price). Then, on 23 Sep 2010, when the price dipped to 3.9 (Current Price), the emulator forcibly liquidated 111,052 shares with a margin call. The calculations below show how the broker emulator determined this amount for the margin call event:
-
 ```
 
 Money spent: 682438 * 4.43 = 3023200.34
@@ -20725,145 +18611,37 @@ The strategy.closedtrades.first_index variable holds the index of the oldest _un
 #  Strings
 ##  Introduction
 Pine Script® strings are immutable values containing sequences of up to 40,960 encoded characters, such as letters, digits, symbols, spaces, control characters, or other Unicode characters and code points. Strings allow scripts to represent a wide range of data as character patterns and human-readable text.
-Scripts written in Pine use strings for several purposes, such as defining titles, expressing symbol and timeframe information, setting the contexts of data requests, creating alert and debug messages, and displaying text on the chart. The specialized functions in the `str` namespace provide convenient ways to construct strings, create modified copies of other strings, and inspect or extract substrings.
+Pine scripts use strings for several purposes, such as defining titles, expressing symbol and timeframe information, setting the contexts of data requests, creating alert and debug messages, and displaying text on the chart. The specialized functions in the `str.*` namespace provide convenient ways to construct strings, create modified copies of other strings, and inspect or extract substrings.
 This page explains how Pine strings work, and how to construct, inspect, and modify strings using the available `str.*()` functions.
 NoteWe use the format _“U+XXXX”_ throughout our documentation when referring to characters and code points in the Unicode Standard.
 ## Literal strings
-Literal strings are constant “string” values whose character sequences are defined literally in the source code. In Pine Script, programmers can define literal strings using single-line or multiline syntax.
-### Single-line strings
-A single-line string is a literal character sequence enclosed by a single pair of ASCII quotation marks (`"`) or apostrophes (`'`). All parts of the string’s definition, including the enclosing characters, occupy a _single_ line of code.
-For example, the following code snippet declares two variables that store equivalent single-line strings containing the text `Hello world!`:
+Literal strings in Pine are character sequences enclosed by two _ASCII_ quotation marks (`"`) or apostrophes (`'`). For example, this code snippet declares two variables with equivalent literal strings containing the text `Hello world!`:
 ```pine
 //@variable A literal string containing `Hello world!`. Uses the `"` character as the enclosing delimiter.
 string hello1 = "Hello world!"  
 //@variable A literal string containing `Hello world!`. Uses the `'` character as the enclosing delimiter.   
 string hello2 = 'Hello world!'  
 ```
-The `"` or `'` enclosing delimiters in a single-line string definition are _not_ parts of the specified character sequence. They only mark the start and end of the string in the code. These characters _do not_ appear in outputs that display text from strings, such as Pine Logs or various drawings.
+The `"` or `'` enclosing delimiters in a literal string definition are _not_ parts of the specified character sequence. They only mark the sequence’s start and end boundaries in the code. These characters _do not_ appear in outputs of Pine Logs or drawing objects that display “string” values.
 This example calls the log.info() function on the first bar to display the contents of the literal value `"Hello world!"` in the Pine Logs pane. The message in the pane displays the `Hello world!` text only, without the `"` characters:
 ```pine
 //@version=6
-indicator("Single-line strings demo") // The script's displayed title does not include the quotation marks.  
+indicator("Literal strings demo") // The script's displayed title does not include the quotation marks.  
   
 if barstate.isfirst  
-    // Log `Hello world!` on the first bar. The logged text does not include `"` characters.   
+    // Log "Hello world!" on the first bar. The logged text does not include `"` characters.   
     log.info("Hello world!")  
 ```
 Note that:
-  * The script also uses a single-line literal string to specify the `title` argument of the indicator() declaration statement.
-  * Only the `"` and `'` _ASCII_ characters are valid enclosing characters for literal strings. Other Unicode characters, such as U+FF02 (Fullwidth Quotation Mark), are not allowed in enclosing delimiters.
+  * The script also uses a literal string to define the `title` argument of the indicator() declaration statement.
+  * Only the `"` and `'` ASCII characters are valid enclosing delimiters for literal strings. Other Unicode characters, such as U+FF02 (Fullwidth Quotation Mark), are not allowed as enclosing delimiters.
   * The timestamp in square brackets (`[` and `]`) at the start of the logged message is an _automatic prefix_ showing the log’s time in the chart’s time zone. For more information, refer to the Pine Logs section of the Debugging page.
 
-A single-line string definition can also use the enclosing `"` or `'` character within its character sequence, but only if it includes a single backslash (`\`) before each instance of the character to mark it as a _literal_ character instead of a string boundary.
-For example, the following script version logs the text `"Hello world!"` in the Pine Logs pane, with quotation marks included, because the string definition uses `\"` to insert literal quotation marks:
-```pine
-//@version=6
-indicator("Quotes in single-line strings demo")  
-  
-if barstate.isfirst  
-    // Log `"Hello world!"` on the first bar.  
-    // The `\"` sequences in the defined string insert literal `"` characters.   
-    log.info("\"Hello world!\"")  
-```
-See the Escape sequences section below to learn more about the behavior of the `\` character in literal strings.
 Notice
-In Pine v6, programmers can use _line wrapping_ to define single-line literal strings across multiple code lines, where each wrapped line has an indentation of one or more spaces. However, the resulting character sequence adds only **one** space to the start of the wrapped lines, and it does _not_ automatically add line terminators.
+In Pine v6, programmers can use _line wrapping_ to define a single literal string across multiple code lines. Each new wrapped line within the string can be indented by _any_ number of spaces, including multiples of four. Regardless of the indentation length, each wrapped line adds exactly **one** space to the beginning of its character sequence.
   
 
-This line-wrapping behavior is _deprecated_ ; future versions of Pine Script will not support it. Therefore, rather than defining a single-line string across multiple code lines, we recommend either of the following:
-  * Splitting the string into smaller strings, then concatenating those strings using line-wrapped + operations. See the Line wrapping section of our Style guide for an example.
-  * Defining a multiline string instead. See the next section to learn more.
-
-### Multiline strings
-A multiline string is a literal character sequence enclosed by _three_ pairs of ASCII quotation marks (e.g. `"""..."""`) or apostrophes (e.g., `'''...'''`). This syntax offers convenience for defining literal strings that represent _multiline text_. All parts of a multiline string definition between the enclosing `"""` or `'''` delimiters can occupy _separate_ code lines and use _any_ amount of indentation. The definition automatically adds the _newline_ control character (U+000A) before each new line to insert a line terminator into the resulting string’s sequence.
-NoteAlthough a multiline string can occupy multiple visible code lines in the Pine Editor, it is still considered part of a _single-line_ expression, similar to other types of line-wrapped code.
-For example, the following script defines a multiline string representing the text `Hello` and `world!` on separate text lines, then displays the result in a label on the last historical bar. The string automatically includes _three_ newline characters — one before `Hello`, one before `world!`, and one before the end — because those parts of the sequence occupy _separate lines_ in the string’s definition:
-```pine
-//@version=6
-indicator("Multiline strings demo", overlay = true)  
-  
-//@variable A string representing the text `Hello` and `world!` on separate text lines.  
-//          This multiline string is equivalent to the single-line string `"\nHello\nworld!\n"
-```
-string helloStr = """  
-Hello  
-world!  
-"""  
-  
-// Create a label to display the string's text on the last historical bar.   
-if barstate.islastconfirmedhistory  
-    label.new(  
-        bar_index + 10, close, helloStr,   
-        style = label.style_label_center,   
-        size = 30, textalign = text.align_left  
-    )  
-`
-Note that:
-  * The enclosing characters of a multiline string cannot contain any other characters between them. For instance, changing the enclosing `"""` delimiter to `" " "` in this example causes a _compilation error_.
-  * Single-line strings can also represent multiline text if their definitions explicitly insert newline characters with the `\n` escape sequence. For example, the single-line string `"\nHello\nworld!\n"` is equivalent to the multiline string defined in this code.
-
-Multiline string definitions treat _all_ code between the enclosing `"""` or `'''` delimiters, including any space characters used for indentation, as _literal text_. If the separate lines in a multiline string definition contain leading spaces, the lines of text represented by the string include those spaces as well.
-For example, the script below defines a multiline literal string with different numbers of leading spaces on each line, then displays the result in a label on the last historical bar. As shown below, the displayed lines of text preserve all the leading spaces included in the string definition:
-```pine
-//@version=6
-indicator("Indentation in multiline strings demo")  
-  
-//@variable A string representing multiline text indented by spaces.  
-//          This multiline string is equivalent to the following single-line string:  
-//          `"\n0 leading spaces\n 1 leading space\n    4 leading spaces\n        8 leading spaces\n"
-```
-string indentedText = """  
-0 leading spaces  
- 1 leading space  
-    4 leading spaces  
-        8 leading spaces  
-"""  
-  
-// Create a label to display the string's text on the last historical bar.  
-if barstate.islastconfirmedhistory  
-    label.new(  
-        bar_index, 0, indentedText,   
-        style = label.style_label_center,   
-        size = 30, textalign = text.align_left  
-    )  
-`
-This same behavior also applies when defining multiline strings within indented code blocks or line-wrapped expressions. All lines in a multiline string definition after the first include _every_ leading space, starting from _column 0_ in the Pine Editor. They do _not_ include only the spaces starting from the indentation level of the enclosing code.
-For example, the following script defines a multiline string _inside_ an if structure and displays the string’s text in a label. Each new line in the string definition starts with four leading spaces to align with the indentation of the structure’s local block. The string definition treats these leading spaces as _literal characters_ , not as syntax to indicate the local block. Therefore, the text in the label includes four-space indentation for all lines after the first:
-```pine
-//@version=6
-indicator("Multiline strings in local blocks demo")  
-  
-if barstate.islastconfirmedhistory  
-    //@variable A multiline string defined in a local block.  
-    //          The string does not exclude the spaces used for block indentation.  
-    //          Consequently, each subseqent text line in the string starts with four spaces.   
-    string localMultiStr = """This line is not indented.  
-    This line has four leading spaces.  
-        This line has four additional leading spaces."""  
-      
-    // Draw a label to display the string's defined text.   
-    label.new(  
-        bar_index, 0, localMultiStr,   
-        style = label.style_label_center,   
-        size = 30, textalign = text.align_left  
-    )  
-```
-Multiline string definitions can include the same characters as those that define the enclosing delimiters (`"""` or `'''`) directly in their character sequences. Unlike a single-line string definition, which must prefix the `"` or `'` character with a backslash (`\`) to include it literally if it matches the enclosing characters, a multiline string definition does _not_ require a backslash to include the `"` or `'` character if:
-  * The character does not occur three consecutive times in the string’s sequence without other characters separating the occurrences.
-  * There is at least one other character or line break between the last `"` or `'` character and the end of the string.
-
-For example, the following code block demonstrates equivalent literal strings that represent quoted text. The first string uses single-line syntax, and the second uses multiline syntax. The single-line syntax requires a backslash before each `"` character because it also uses that character for its enclosing delimiters. By contrast, the multiline syntax does not require a backslash before each `"` character in this example, because no part of the defined character sequence literally matches the enclosing `"""` delimiters:
-```pine
-//@variable A literal string, with quotes, defined using single-line syntax.
-//          This example requires `\"` to include `"` in the string,   
-//          because that character matches the enclosing delimiters.  
-string quoted1 = " \"Some quoted text\" "  
-  
-//@variable An equivalent literal string defined using multiline syntax.  
-//          Although the definition uses `"` characters in the enclosing delimiters, using `\"` is *optional*,   
-//          because a single `"` in the string does not match the enclosing `"""` sequences.   
-string quoted2 = """ "Some quoted text" """  
-```
+However, this behavior is _deprecated_ ; future versions of Pine Script might not support it. Instead of wrapping a single literal string across multiple lines, programmers can split that string into smaller strings, then concatenate them in a line-wrapped expression using the + operator. See the Line wrapping section of our Style guide for an example.
 ## Escape sequences
 The backslash character (`\`), also known as the Reverse Solidus in Unicode (U+005C), is an _escape character_ in Pine strings. This character forms an _escape sequence_ when it precedes another character, signaling that the following character has a potentially _different_ meaning than usual.
 Characters with a special meaning in “string” value definitions, such as quotation marks and backslashes, become _literal_ characters when prefixed by a backslash (e.g., `\\` includes a single `\` in the character sequence).
@@ -20932,7 +18710,6 @@ Programmers can use strings to represent data of virtually any type as human-rea
 
 ### Converting values to strings
 The simplest way to convert data to strings is to call the str.tostring() function. The function can represent values of several types as strings, based on predefined or custom formats. It has the following two signatures:
-
 ```
 
 str.tostring(value) → string
@@ -21033,7 +18810,6 @@ Note that:
 TipScripts can convert a numeric “string” value back to a “float” value with str.tonumber(). When converting strings to numbers with this function, the value’s character sequence can include only ASCII digits, a sign symbol at the beginning (`+` or `-`), and a single period for the decimal point (`.`). If the specified “string” value does not represent a number with this format, the function returns na. For example, the function can convert `"1234.50"` to a “float” value, but it cannot convert strings such as `"$1,234.50"`.
 ### Formatting strings
 The str.format() function can combine multiple “int”, “float”, “bool”, “string”, or array arguments into one output string in a specified format. Using this function is a simpler alternative to creating multiple separate strings and combining them with repeated concatenation operations. Below is the function’s signature:
-
 ```
 
 str.format(formatString, arg0, arg1, ...) → string
@@ -21213,7 +18989,6 @@ Programmers can use these functions to create copies of strings with replaced ch
 The str.replace() function searches a specified `source` string for the nth _non-overlapping_ occurrence of a given substring, then returns a copy of the original string containing a specified replacement at that substring’s position.
 The str.replace_all() function searches the `source` for _every_ non-overlapping occurrence of the substring and replaces each one in its returned value.
 Below are the functions’ signatures:
-
 ```
 
 str.replace(source, target, replacement, occurrence) → string
@@ -21275,7 +19050,6 @@ Note that:
 TipWhen using str.replace(), knowing the precise number of substrings within the `source` value helps ensure correct results. A simple way to count substrings is to remove them with str.replace_all(), then measure the difference in length relative to the length of the removed substring. See the Counting characters and substrings section to learn more.
 ### Changing case
 The str.upper() and str.lower() functions create a copy of a `source` string with all ASCII letter characters converted to _uppercase_ or _lowercase_ variants, providing a convenient alternative to replacing specific characters with several `str.replace*()` calls. The str.upper() function replaces all lowercase characters with uppercase characters, and str.lower() does the opposite. These are the functions’ signatures:
-
 ```
 
 str.upper(source) → string
@@ -21321,7 +19095,6 @@ if barstate.isfirst
 ```
 ### Trimming whitespaces
 The str.trim() function copies a `source` string and removes leading and trailing whitespace characters, including the standard space (`\n`), and tab space (`\t`). Below is the function’s signature:
-
 ```
 
 str.trim(source) → string
@@ -21384,7 +19157,6 @@ label.new(bar_index, high, style = label.style_label_down, tooltip = disp
 ```
 ### Repeating sequences
 The str.repeat() function creates a “string” value that _repeats_ a `source` string’s character sequence a specified number of times, providing a convenient way to construct strings with repetitive character patterns. Below is the function’s signature:
-
 ```
 
 str.repeat(source, repeat, separator) → string
@@ -21484,7 +19256,6 @@ Several built-in `str.*()` functions allow scripts to measure a “string” val
 The sections below explain these functions and some helpful techniques to use them effectively.
 ### Counting characters and substrings
 The str.length() function measures the length of a specified “string” value, returning an “int” value representing the number of characters in the argument’s character sequence. It has the following signature:
-
 ```
 
 str.length(string) → int
@@ -21558,7 +19329,6 @@ Note that:
 ### Checking for substrings
 The str.contains() function searches a `source` string for a specified substring, returning a “bool” value representing whether it found the substring. Two similar functions, str.startswith() and str.endswith(), check whether the `source` _starts_ and _ends_ with a specified substring.
 These functions have the following signatures:
-
 ```
 
 str.contains(source, str) → bool
@@ -21610,7 +19380,6 @@ Note that:
 
 ### Splitting strings
 The str.split() function splits a single “string” value into one or more substrings based on a `separator` substring in the value’s character sequence, then collects the results in an array. Below is the function’s signature:
-
 ```
 
 str.split(string, separator) → array<string>
@@ -21659,7 +19428,6 @@ Note that:
 
 ### Locating and retrieving substrings
 The str.pos() function searches a `source` string for the _first_ occurrence of a specified substring and returns an “int” value representing the _position_ of its initial character boundary. The function’s signature is as follows:
-
 ```
 
 str.pos(source, str) → int
@@ -21671,7 +19439,6 @@ Where:
   * `str` is a “string” value representing the substring to locate in the `source`. If the argument is na or an empty “string” value, the function returns 0 (the first possible position).
 
 The str.substring() function retrieves a substring from a `source` value at specified character positions. This function has the following signatures:
-
 ```
 
 str.substring(source, begin_pos) → string
@@ -21783,7 +19550,6 @@ Note that:
 
 ### Matching patterns
 Pine scripts can dynamically match and retrieve substrings using the str.match() function. In contrast to the other `str.*()` functions, which only match sequences of literal characters, the str.match() function uses regular expressions (regex) to match variable _character patterns_. The function’s signature is as follows:
-
 ```
 
 str.match(source, regex) → string
@@ -21827,7 +19593,6 @@ float requestedData = if supportedSymbol
 plot(requestedData, "Short Sale Volume", color.teal, 1, plot.style_columns)  
 `
 In the script version below, we replaced the multiple str.startswith() calls with an expression containing a str.match() call. The call matches one of the supported exchange prefixes at the start of the string using the following regular expression:
-
 ```
 
 ^(?:BATS|NASDAQ|NYSE|AMEX):
@@ -21835,7 +19600,6 @@ In the script version below, we replaced the multiple str.startswith() calls wit
 ```
 
 We also replaced the str.pos() and str.substring() calls with a str.match() call. The call calculates the `noPrefix` value with a regex that matches all characters after the input value’s colon (`:`):
-
 ```
 
 (?<=:).+
@@ -21886,7 +19650,6 @@ Note that:
 The flexibility of regular expressions also allows str.match() to perform advanced matching tasks that are impractical or infeasible with other `str.*()` functions.
 For instance, suppose we want to create a script that executes dynamic requests for a list of symbols specified in a text area input, and we require a specific input format consisting of only valid ticker patterns, comma separators with optional space characters, and no empty items. This validation is difficult to achieve with the other `str.*()` functions because they rely on _literal_ character sequences. However, with str.match(), we can define a single regular expression that matches the input only if it meets our required formatting criteria.
 The script below demonstrates a single str.match() function call that validates the format of an input list of symbols. The user-defined `processList()` function combines strings to form the following regex for matching the `list` value:
-
 ```
 
 ^ *(?:(?:\w+:)?\w+(?:\.\w+){0,2}!? *, *)*(?:\w+:)?\w+(?:\.\w+){0,2}!? *$
@@ -21975,224 +19738,215 @@ Note that:
 Every programming language’s regex engine has unique characteristics and syntax. Some regex syntax is universal across engines, while other patterns and modifiers are engine-specific.
 The tables below provide a categorized overview of the syntax patterns supported by Pine’s regex engine along with descriptions, remarks, and examples to explain how they work.
 **Escapes and character references**
-Click to show/hide  
-| Token/syntax  | Description and remarks  |  
-| --- | --- |  
-| `\`  | Changes the meaning of the next character.  
+Click to show/hide Token/syntax | Description and remarks  
+---|---  
+`\` | Changes the meaning of the next character.  
   
 Because Pine strings natively use `\` as an escape character, regex strings containing it must include an _additional_ `\` to use the token in the pattern. For example, `"\\"` represents a single `\` (escape token) in the regex, and `"\\\\"` represents `\\` (literal backslash).  
   
 Some other characters always or conditionally represent regex syntax, including `.`, `^`, `$`, `*`, `+`, `?`, `(`, `)`, `[`, `]`, `{`, `}`, `|`, and `-`.  
 To match a special character literally, include `"\\"` immediately before it in the string (e.g., `"\\+"` matches the literal `+` character).  
   
-Note that some sequences of otherwise literal characters can also have syntactical meaning. See below for examples.  |  
-| `\Q...\E`  | Matches everything between `\Q` and `\E` _literally_ , ignoring the syntactical meaning of special characters and sequences.  
+Note that some sequences of otherwise literal characters can also have syntactical meaning. See below for examples.  
+`\Q...\E` | Matches everything between `\Q` and `\E` _literally_ , ignoring the syntactical meaning of special characters and sequences.  
   
-For example, the regex string `"\\Q[^abc]\\E"` matches the literal sequence of `[`, `^`, `a`, `b`, `c`, and `]` characters instead of creating a _character class_.  |  
-| `a`  | Matches the literal character `a` (U+0061).  
+For example, the regex string `"\\Q[^abc]\\E"` matches the literal sequence of `[`, `^`, `a`, `b`, `c`, and `]` characters instead of creating a _character class_.  
+`a` | Matches the literal character `a` (U+0061).  
   
-By default, the regex engine is _case-sensitive_. If the string includes the `(?i)` modifier _before_ the token, the match becomes _case-insensitive_. For example, the regex string `"(?i)a"` matches the `a` or `A` character.  |  
-| `\t`  | Matches the _tab space_ character (U+0009).  |  
-| `\n`  | Matches the _newline_ character (U+000A).  |  
-| `\x61`  | A _two-digit_ Unicode reference that matches the hexadecimal point U+0061 (the `a` character).  
+By default, the regex engine is _case-sensitive_. If the string includes the `(?i)` modifier _before_ the token, the match becomes _case-insensitive_. For example, the regex string `"(?i)a"` matches the `a` or `A` character.  
+`\t` | Matches the _tab space_ character (U+0009).  
+`\n` | Matches the _newline_ character (U+000A).  
+`\x61` | A _two-digit_ Unicode reference that matches the hexadecimal point U+0061 (the `a` character).  
   
-This shorthand syntax works only for codes with leading zeros and up to **two** nonzero end digits. It cannot reference other Unicode points. For example, the regex string `"\\x2014"` matches U+0020 (the _space_ character) followed by U+0031 (the `1` character) and U+0034 (the `4` character). It **does not** match U+2014 (the `—` character).  |  
-| `\u2014`  | A _four-digit_ Unicode reference that matches the hexadecimal point U+2014 (`—`, Em Dash).  
+This shorthand syntax works only for codes with leading zeros and up to **two** nonzero end digits. It cannot reference other Unicode points. For example, the regex string `"\\x2014"` matches U+0020 (the _space_ character) followed by U+0031 (the `1` character) and U+0034 (the `4` character). It **does not** match U+2014 (the `—` character).  
+`\u2014` | A _four-digit_ Unicode reference that matches the hexadecimal point U+2014 (`—`, Em Dash).  
   
-This syntax works only for codes with leading zeros and up to **four** nonzero end digits. It cannot reference larger Unicode points. For example, the regex string `"\\u1F5E0"` matches U+1F5E (unassigned) followed by U+0030 (the `0` character), resulting in no match. It **does not** match U+1F5E0 (the Stock Chart character).  |  
-| `\x{...}`  | The _full-range_ Unicode reference syntax. The hexadecimal digits enclosed in the brackets can refer to _any_ Unicode point.  
+This syntax works only for codes with leading zeros and up to **four** nonzero end digits. It cannot reference larger Unicode points. For example, the regex string `"\\u1F5E0"` matches U+1F5E (unassigned) followed by U+0030 (the `0` character), resulting in no match. It **does not** match U+1F5E0 (the Stock Chart character).  
+`\x{...}` | The _full-range_ Unicode reference syntax. The hexadecimal digits enclosed in the brackets can refer to _any_ Unicode point.  
   
-Leading zeros in the digits _do not_ affect the matched Unicode point. For example, the regex strings `"\\x{61}"`, `"\\x{061}"`, `"\\x{0061}"`, and `"\\x{000061}"` all match U+0061 (the `a` character).  |  
+Leading zeros in the digits _do not_ affect the matched Unicode point. For example, the regex strings `"\\x{61}"`, `"\\x{061}"`, `"\\x{0061}"`, and `"\\x{000061}"` all match U+0061 (the `a` character).  
 **Character class and logical constructions**
-Click to show/hide  
-| Token/syntax  | Description and remarks  |  
-| --- | --- |  
-| `[abc]`  | A character class that matches only _one_ of the characters listed (`a`, `b`, or `c`). It does **not** match the _entire_ `abc` sequence.  
+Click to show/hide Token/syntax | Description and remarks  
+---|---  
+`[abc]` | A character class that matches only _one_ of the characters listed (`a`, `b`, or `c`). It does **not** match the _entire_ `abc` sequence.  
   
 Each listed character, range, or nested class between two `[]` brackets represents a specific possible match.  
   
-Note that several special characters have a _literal_ meaning inside classes (e.g., the regex string `"[.+$]"` matches `.`, `+`, or `$` literally). However, regex strings must still escape the following characters to treat them literally because they maintain a special meaning in most cases: `\`, `[`, `]`, `^`, `-`.  |  
-| `[a-z]`  | A class that matches a single character in the _range_ from `a` (U+0061) to `z` (U+007A). It is equivalent to `[\x{61}-\x{7A}]`.  
+Note that several special characters have a _literal_ meaning inside classes (e.g., the regex string `"[.+$]"` matches `.`, `+`, or `$` literally). However, regex strings should still escape the following characters to treat them literally because they maintain a special meaning in most cases: `\`, `[`, `]`, `^`, `-`.  
+`[a-z]` | A class that matches a single character in the _range_ from `a` (U+0061) to `z` (U+007A). It is equivalent to `[\x{61}-\x{7A}]`.  
   
 Note that the left side of the `-` character must have a _smaller_ Unicode value than the right.  
 For example, the regex string `"[f-a]"` is _invalid_ because `f` has the Unicode value U+0066, which is _larger_ than the value of `a`.  
   
-If the dash (`-`) is at the start or end of the enclosed text, the regex treats it as a _literal_ character instead of a character range marker (e.g., `"[-abc]"` matches `-`, `a`, `b`, or `c` literally).  |  
-| `[a-zA-Z]`  | A class containing a _list_ of character _ranges_. It matches any character from `a` (U+0061) to `z` (U+007A) or `A` (U+0041) to `Z` (U+005A) only.  
+If the dash (`-`) is at the start or end of the enclosed text, the regex treats it as a _literal_ character instead of a character range marker (e.g., `"[-abc]"` matches `-`, `a`, `b`, or `c` literally).  
+`[a-zA-Z]` | A class containing a _list_ of character _ranges_. It matches any character from `a` (U+0061) to `z` (U+007A) or `A` (U+0041) to `Z` (U+005A) only.  
   
 It is equivalent to `[\x{61}-\x{7A}\x{41}-\x{5A}]`.  
-The syntax `[a-z[A-Z]]` also produces the same match.  |  
-| `[^...]`  | The syntax for a class that matches any character _except_ for the ones specified.  
+The syntax `[a-z[A-Z]]` also produces the same match.  
+`[^...]` | The syntax for a class that matches any character _except_ for the ones specified.  
   
 For example, the regex string `"[^abc\\n ]"` matches any character except for `a`, `b`, `c`, `\n` (newline), or   
   
-Note that only a caret (`^`) at the _start_ of the enclosed text signifies _negation_. If the character comes after that point, the regex considers it a possible _literal_ match (e.g., `"[ab^c]"` matches the `a`, `b`, `^`, or `c` character literally).  |  
-| `[...&&[...]]`  | The syntax for a nested class structure that matches any character within the _intersection_ of two character classes.  
+Note that only a caret (`^`) at the _start_ of the enclosed text signifies _negation_. If the character comes after that point, the regex considers it a possible _literal_ match (e.g., `"[ab^c]"` matches the `a`, `b`, `^`, or `c` character literally).  
+`[...&&[...]]` | The syntax for a nested class structure that matches any character within the _intersection_ of two character classes.  
   
 Example 1: The regex string `"[abc&&[cde]]"` matches `c` exclusively because it is the only character common to both lists.  
   
-Example 2: The regex string `"[a-z&&[^def]]"` matches any character from lowercase `a` to `z` except for `d`, `e`, or `f`.  |  
-| `expr1|expr2`  | An OR operation that matches either the `expr1` or `expr2` substring. It does _not_ include both in the match.  |  
+Example 2: The regex string `"[a-z&&[^def]]"` matches any character from lowercase `a` to `z` except for `d`, `e`, or `f`.  
+`expr1|expr2` | An OR operation that matches either the `expr1` or `expr2` substring. It does _not_ include both in the match.  
 **Predefined classes**
-Click to show/hide  
-| Token/syntax  | Description and remarks  |  
-| --- | --- |  
-| `.`  | Matches any character on the line.  
+Click to show/hide Token/syntax | Description and remarks  
+---|---  
+`.` | Matches any character on the line.  
   
-By default, it _excludes_ line terminators (e.g., `\n`). To include line terminators in the match, add the `(?s)` modifier _before_ the token in the regex string (e.g., `"(?s)."`).  |  
-| `\d`  | Matches a decimal digit character.  
+By default, it _excludes_ line terminators (e.g., `\n`). To include line terminators in the match, add the `(?s)` modifier _before_ the token in the regex string (e.g., `"(?s)."`).  
+`\d` | Matches a decimal digit character.  
   
 By default, it is equivalent to `[0-9]`. However, if the regex string includes the `"(?U)"` modifier before the token, it can match _other_ Unicode characters with the “Digit” property.  
   
-For example, the string `"(?U)\\d"` can match characters such as U+FF11 (Fullwidth Digit One). In contrast, the only “Digit One” character matched by the `[0-9]` class, even with the `(?U)` modifier, is U+0031 (the `1` character).  |  
-| `\D`  | Matches a _non-digit_ character.  
+For example, the string `"(?U)\\d"` can match characters such as U+FF11 (Fullwidth Digit One). In contrast, the only “Digit One” character matched by the `[0-9]` class, even with the `(?U)` modifier, is U+0031 (the `1` character).  
+`\D` | Matches a _non-digit_ character.  
   
-By default, it is equivalent to `[^0-9]`, which does _not_ negate other Unicode digits. To exclude other Unicode digits from the match, include the `(?U)` modifier before the token in the regex string (e.g., `"(?U)\\D"`).  |  
-| `\w`  | Matches a _word character_ (letter, digit, or low line).  
+By default, it is equivalent to `[^0-9]`, which does _not_ negate other Unicode digits. To exclude other Unicode digits from the match, include the `(?U)` modifier before the token in the regex string (e.g., `"(?U)\\D"`).  
+`\w` | Matches a _word character_ (letter, digit, or low line).  
   
 By default, it is equivalent to `[a-zA-Z0-9_]`, which excludes other Unicode characters. To include other Unicode letters, digits, or low lines in the match, add the `(?U)` modifier before the token in the regex string.  
-For example, `"(?U)\\w"` can match characters such as U+FE4F (Wavy Low Line), whereas the only low line character the `[a-zA-Z0-9_]` class matches is U+005F (`_`).  |  
-| `\W`  | Matches a _non-word_ character.  
+For example, `"(?U)\\w"` can match characters such as U+FE4F (Wavy Low Line), whereas the only low line character the `[a-zA-Z0-9_]` class matches is U+005F (`_`).  
+`\W` | Matches a _non-word_ character.  
   
-By default, it is equivalent to `[^a-zA-Z0-9_]`, which does not negate other Unicode characters. To exclude other Unicode word characters from the match, include the `(?U)` modifier before the token (e.g., `"(?U)\\W"`).  |  
-| `\h`  | Matches a _horizontal whitespace_ character, such as the tab space (`\t`), standard space, and other characters such as U+2003 (Em Space).  
+By default, it is equivalent to `[^a-zA-Z0-9_]`, which does not negate other Unicode characters. To exclude other Unicode word characters from the match, include the `(?U)` modifier before the token (e.g., `"(?U)\\W"`).  
+`\h` | Matches a _horizontal whitespace_ character, such as the tab space (`\t`), standard space, and other characters such as U+2003 (Em Space).  
   
-The token matches other Unicode characters, even if the regex string includes the `(?-U)` modifier.  |  
-| `\H`  | Matches a character that is _not_ a horizontal whitespace. It also excludes other Unicode spaces, even if the regex string includes the `(?-U)` modifier  |  
-| `\s`  | Matches a _whitespace_ or other _control character_. In contrast to `\h`, this token covers a broader range of characters, including _vertical_ spaces such as `\n`.  |  
-| `\S`  | Matches a _non-whitespace_ character. In contrast to `\H`, this token excludes a broader character range of characters from the match.  |  
+The token matches other Unicode characters, even if the regex string includes the `(?-U)` modifier.  
+`\H` | Matches a character that is _not_ a horizontal whitespace. It also excludes other Unicode spaces, even if the regex string includes the `(?-U)` modifier  
+`\s` | Matches a _whitespace_ or other _control character_. In contrast to `\h`, this token covers a broader range of characters, including _vertical_ spaces such as `\n`.  
+`\S` | Matches a _non-whitespace_ character. In contrast to `\H`, this token excludes a broader character range of characters from the match.  
 **Unicode property classes**
-Click to show/hide  
-| Token/syntax  | Description and remarks  |  
-| --- | --- |  
-| `\p{...}`  | The syntax to match a Unicode point that has a specific property, such as script type), block, general category, etc. See the following rows to learn the required syntax for different common Unicode property references.  
+Click to show/hide Token/syntax | Description and remarks  
+---|---  
+`\p{...}` | The syntax to match a Unicode point that has a specific property, such as script type), block, general category, etc. See the following rows to learn the required syntax for different common Unicode property references.  
   
-To match any character that does _not_ have a specific Unicode property, use the _uppercase_ `P` in the syntax (`\P{...}`)  |  
-|  `\p{IsScriptName}` or  
-`\p{Script=ScriptName}`  |  Unicode script#List_of_encoded_scripts) reference syntax. Matches any code point belonging to the `ScriptName` Unicode script. The specified name must not contain spaces.  
+To match any character that does _not_ have a specific Unicode property, use the _uppercase_ `P` in the syntax (`\P{...}`)  
+`\p{IsScriptName}` or  
+`\p{Script=ScriptName}` |  Unicode script#List_of_encoded_scripts) reference syntax. Matches any code point belonging to the `ScriptName` Unicode script. The specified name should not contain spaces.  
   
-For example, the regex strings `"\\p{IsLatin}"` and `"\\p{Script=Latin}"` both match any Unicode point that is part of the Latin script.  |  
-|  `\p{InBlockName}` or  
-`\p{Block=BlockName}`  |  Unicode block reference syntax. Matches any code point belonging to the `BlockName` Unicode block. The specified name must not contain spaces.  
+For example, the regex strings `"\\p{IsLatin}"` and `"\\p{Script=Latin}"` both match any Unicode point that is part of the Latin script.  
+`\p{InBlockName}` or  
+`\p{Block=BlockName}` |  Unicode block reference syntax. Matches any code point belonging to the `BlockName` Unicode block. The specified name should not contain spaces.  
   
-For example, the regex string `"\\p{InBasicLatin}"` matches any Unicode point that is part of the Basic Latin) block, and `"\\p{Block=Latin-1Supplement}"` matches any point belonging to the Latin-1 Supplement block.  |  
-|  `\p{category}` or  
-`\p{gc=category}`  | Unicode general category reference syntax. Matches any Unicode point with the assigned `category` _abbreviation_.  
+For example, the regex string `"\\p{InBasicLatin}"` matches any Unicode point that is part of the Basic Latin) block, and `"\\p{Block=Latin-1Supplement}"` matches any point belonging to the Latin-1 Supplement block.  
+`\p{category}` or  
+`\p{gc=category}` | Unicode general category reference syntax. Matches any Unicode point with the assigned `category` _abbreviation_.  
   
 For example, the regex string `"\\p{L}"` or `"\\p{gc=L}"` matches any Unicode point in the _Letter (L)_ category, and `"\\p{N}"` matches any point in the _Number (N)_ category.  
   
-Note that, unlike some regex engines, Pine’s regex engine does not support the _long form_ of a category name, (e.g., `"Letter"` instead of `"L"`).  |  
-| `\p{ClassName}`  | The syntax for referencing the Unicode mapping of a POSIX character class, in Java notation.  
+Note that, unlike some regex engines, Pine’s regex engine does not support the _long form_ of a category name, (e.g., `"Letter"` instead of `"L"`).  
+`\p{ClassName}` | The syntax for referencing the Unicode mapping of a POSIX character class, in Java notation.  
   
 For example, the regex string `"\\p{XDigit}"` matches a _hexadecimal_ digit. By default, it is equivalent to `"[A-Fa-f0-9]"`.  
   
-Note that the default behavior for POSIX classes matches only _ASCII_ characters. To allow other Unicode matches for a POSIX class, use the `(?U)` modifier. For instance, `"(?U)\\p{XDigit}"` can match non-ASCII characters that represent hexadecimal digits, such as U+1D7D9 (the `𝟙` character).  |  
+Note that the default behavior for POSIX classes matches only _ASCII_ characters. To allow other Unicode matches for a POSIX class, use the `(?U)` modifier. For instance, `"(?U)\\p{XDigit}"` can match non-ASCII characters that represent hexadecimal digits, such as U+1D7D9 (the `𝟙` character).  
 **Group constructions**
-Click to show/hide  
-| Token/syntax  | Description and remarks  |  
-| --- | --- |  
-| `(...)`  | A _capturing group_ that matches the enclosed sequence and stores the matched substring for later reference.  
+Click to show/hide Token/syntax | Description and remarks  
+---|---  
+`(...)` | A _capturing group_ that matches the enclosed sequence and stores the matched substring for later reference.  
   
 Each capturing group construction has an assigned _group number_ starting from 1. The regex can reference a capturing group’s match with the `\#` syntax, where `#` represents the group number.  
   
 For example, the regex string `"(a|b)cde\\1"` matches `a` or `b`, followed by `cde`, and then another occurrence of the `(a|b)` group’s initial match. If the group matched `a`, the `\1` reference also matches `a`. If it matched `b`, the reference also matches `b`.  
   
-If the regex does not need to use a group’s match later, using a _non-capturing_ group is the more efficient choice, e.g., `(?:...)`.  |  
-| `(?<name>...)`  | A _named_ capturing group that matches the enclosed sequence and stores the matched substring with an assigned _identifier_.  
+If the regex does not need to use a group’s match later, using a _non-capturing_ group is the more efficient choice, e.g., `(?:...)`.  
+`(?<name>...)` | A _named_ capturing group that matches the enclosed sequence and stores the matched substring with an assigned _identifier_.  
   
 The regex can use the `\k<name>` syntax to reference the group’s match, where `name` is the assigned _identifier_. For example, the string `"(?<myGroup>a|b)cde\\k<myGroup>"` matches `a` or `b`, followed by `cde`, and then another instance of the substring (`a` or `b`) matched by the capturing group.  
   
-As with a standard capturing group, a named capturing group contributes to the group count and has a _group number_ , meaning the regex can also reference a named group with the `\#` syntax, for example, `"(?<myGroup>a|b)cde\\1"`.  |  
-| `(?:...)`  | A _non-capturing_ group that matches the enclosed sequence _without_ storing the matched substring. Unlike a capturing group, the regex string _cannot_ reference a previous non-capturing group’s match.  
+As with a standard capturing group, a named capturing group contributes to the group count and has a _group number_ , meaning the regex can also reference a named group with the `\#` syntax, for example, `"(?<myGroup>a|b)cde\\1"`.  
+`(?:...)` | A _non-capturing_ group that matches the enclosed sequence _without_ storing the matched substring. Unlike a capturing group, the regex string _cannot_ reference a previous non-capturing group’s match.  
   
 For example, the regex string `"(?:a|b)\\1"` matches `a` or `b`, then references an _unassigned_ group match, resulting in _no match_.  
   
 In contrast to all other group constructions, standard non-capturing groups can contain _pattern modifiers_ that apply exclusively to their scopes. For example, `"(?i)(?-i:a|b)c"` matches `a` or `b` followed by lowercase `c` or uppercase `C`. The `(?i)` part of the regex activates case-insensitive matching globally, but the `-i` token _deactivates_ the behavior for the group’s scope only.  
   
-Note that non-capturing groups typically have a _lower_ computational cost than capturing groups.  |  
-| `(?>...)`  | An _independent_ non-capturing group (_atomic group_). Unlike a standard non-capturing group, an atomic group consumes as many characters as possible _without_ allowing other parts of the pattern to use them.  
+Note that non-capturing groups typically have a _lower_ computational cost than capturing groups.  
+`(?>...)` | An _independent_ non-capturing group (_atomic group_). Unlike a standard non-capturing group, an atomic group consumes as many characters as possible _without_ allowing other parts of the pattern to use them.  
   
 For example, the regex string `"(?s)(?>.+).+"` fails to produce a match because the atomic group `(?>.+)` consumes _every_ available character, leaving _nothing_ for the following `.+` portion to match.  
   
-In contrast, the regex string `"(?s)(?:.+).+"` matches the entire source string because the standard non-capturing group `(?:.+)` _releases_ characters from its match as needed, allowing `.+` to match _at least one_ character.  |  
+In contrast, the regex string `"(?s)(?:.+).+"` matches the entire source string because the standard non-capturing group `(?:.+)` _releases_ characters from its match as needed, allowing `.+` to match _at least one_ character.  
 **Quantifiers**
-Click to show/hide  
-| Token/syntax  | Description and remarks  |  
-| --- | --- |  
-| `?`  | Appending `?` to a character, group, or class specifies that the matched substring must contain the pattern _once_ or _not at all_.  
+Click to show/hide Token/syntax | Description and remarks  
+---|---  
+`?` | Appending `?` to a character, group, or class specifies that the matched substring must contain the pattern _once_ or _not at all_.  
   
 For example, the regex string `"a?bc?"` matches `abc`, `ab`, `bc`, or `b` because `a` and `c` are _optional_.  
   
 By default, regex quantifiers are _greedy_ , meaning they match as many characters as possible, releasing some as necessary. Adding `?` to another quantifier makes it _lazy_ , meaning it matches the _fewest_ characters possible, expanding its match only when required.  
   
-For example, with a source string of `"a12b34b"`, the regex string `"a.*b"` matches the entire sequence, whereas `"a.*?b"` matches the _smallest_ valid substring with the pattern, which is `a12b`.  |  
-| `*`  | Appending `*` to a character, group, or class specifies that the matched substring must contain the pattern _zero_ or _more_ times consecutively.  
+For example, with a source string of `"a12b34b"`, the regex string `"a.*b"` matches the entire sequence, whereas `"a.*?b"` matches the _smallest_ valid substring with the pattern, which is `a12b`.  
+`*` | Appending `*` to a character, group, or class specifies that the matched substring must contain the pattern _zero_ or _more_ times consecutively.  
   
-For example, the regex string `"a*b"` matches zero or more consecutive `a` characters followed by a single `b` character.  |  
-| `+`  | Appending `+` to a character, group, or class specifies that the matched substring must contain the pattern _one_ or _more_ times consecutively.  
+For example, the regex string `"a*b"` matches zero or more consecutive `a` characters followed by a single `b` character.  
+`+` | Appending `+` to a character, group, or class specifies that the matched substring must contain the pattern _one_ or _more_ times consecutively.  
   
 For example, the regex string `"\\w+abc"` matches one or more consecutive word characters followed by `abc`.  
   
 Adding `+` to another quantifier makes it _possessive_. Unlike a greedy quantifier (default), which _releases_ characters from the match as necessary, a possessive quantifier consumes as many characters as possible _without_ releasing them for use in other parts of the pattern.  
   
-For instance, the regex string `"\\w++abc"` fails to produce a match because `\w++` consumes _all_ word characters in the pattern, including `a`, `b`, and `c`, leaving none for the `abc` portion to match.  |  
-| `{n}`  | Appending `{n}` to a character, group, or class specifies that the matched substring must contain the pattern exactly `n` times consecutively, where `n` >= 0.  
+For instance, the regex string `"\\w++abc"` fails to produce a match because `\w++` consumes _all_ word characters in the pattern, including `a`, `b`, and `c`, leaving none for the `abc` portion to match.  
+`{n}` | Appending `{n}` to a character, group, or class specifies that the matched substring must contain the pattern exactly `n` times consecutively, where `n` >= 0.  
   
-For example, the regex string `"[abc]{2}"` matches two consecutive characters from the `[abc]` class, meaning the possible substrings are `aa`, `ab`, `ac`, `ba`, `bb`, `bc`, `ca`, `cb`, or `cc`.  |  
-| `{n,}`  | Appending `{n,}` to a character, group, or class specifies that the matched substring must contain the pattern _at least_ `n` times consecutively, where `n` >= 0.  
+For example, the regex string `"[abc]{2}"` matches two consecutive characters from the `[abc]` class, meaning the possible substrings are `aa`, `ab`, `ac`, `ba`, `bb`, `bc`, `ca`, `cb`, or `cc`.  
+`{n,}` | Appending `{n,}` to a character, group, or class specifies that the matched substring must contain the pattern _at least_ `n` times consecutively, where `n` >= 0.  
   
-For example, the regex string `"a{1,}b{2,}"` matches one or more consecutive `a` characters followed by two or more consecutive `b` characters.  |  
-| `{n, m}`  | Appending `{n, m}` to a character, group, or class specifies that the matched substring must contain the pattern at least `n` times but no more than `m` times, where `n` >= 0, `m` >= 0, and `m` >= `n`.  
+For example, the regex string `"a{1,}b{2,}"` matches one or more consecutive `a` characters followed by two or more consecutive `b` characters.  
+`{n, m}` | Appending `{n, m}` to a character, group, or class specifies that the matched substring must contain the pattern at least `n` times but no more than `m` times, where `n` >= 0, `m` >= 0, and `m` >= `n`.  
   
-For example, the regex string `"\\w{1,5}b{2,4}"` matches one to five consecutive word characters followed by two to four repeated `b` characters.  |  
+For example, the regex string `"\\w{1,5}b{2,4}"` matches one to five consecutive word characters followed by two to four repeated `b` characters.  
 **Boundary assertions**
-Click to show/hide  
-| Token/syntax  | Description and remarks  |  
-| --- | --- |  
-| `\A`  | Matches the _starting point_ of the source string without consuming characters. It enables the regex to isolate the initial pattern in a string without allowing matches in other locations.  
+Click to show/hide Token/syntax | Description and remarks  
+---|---  
+`\A` | Matches the _starting point_ of the source string without consuming characters. It enables the regex to isolate the initial pattern in a string without allowing matches in other locations.  
   
-For example, the regex string `"\\A\\w+"` matches a sequence of one or more word characters only if the sequence is at the start of the source string.  |  
-| `^`  | When this character is outside a character class construction (i.e., `[^...]`), it matches the _starting point_ of a _line_ in the source string without consuming characters.  
+For example, the regex string `"\\A\\w+"` matches a sequence of one or more word characters only if the sequence is at the start of the source string.  
+`^` | When this character is outside a character class construction (i.e., `[^...]`), it matches the _starting point_ of a _line_ in the source string without consuming characters.  
   
 By default, the character performs the same match as `\A`. However, if the regex string uses the `(?m)` modifier, it can also match a point immediately after a _newline_ character (`\n`).  
   
-For example, the regex string `"(?m)^[xyz]"` matches `x`, `y`, or `z` if the character is at the start of the source string or immediately after the `\n` character.  |  
-| `\Z`  | Matches the _ending point_ of the source string, or the point immediately before the final character if it is `\n`, without consuming characters. It enables the regex to isolate the final pattern in a string without allowing matches in other locations.  
+For example, the regex string `"(?m)^[xyz]"` matches `x`, `y`, or `z` if the character is at the start of the source string or immediately after the `\n` character.  
+`\Z` | Matches the _ending point_ of the source string, or the point immediately before the final character if it is `\n`, without consuming characters. It enables the regex to isolate the final pattern in a string without allowing matches in other locations.  
   
-For example, the regex string `"\\w+\\Z"` matches a sequence of one or more word characters only if the sequence is at the end of the source string or immediately before the final line terminator.  |  
-| `\z`  | Matches the _absolute_ ending point of the source string without consuming characters. Unlike `\Z` (uppercase), this token does not match the point _before_ any final line terminator.  
+For example, the regex string `"\\w+\\Z"` matches a sequence of one or more word characters only if the sequence is at the end of the source string or immediately before the final line terminator.  
+`\z` | Matches the _absolute_ ending point of the source string without consuming characters. Unlike `\Z` (uppercase), this token does not match the point _before_ any final line terminator.  
   
-For example, the regex string `"(?s)\\w+.*\\z"` matches a sequence of one or more word characters, followed by zero or more extra characters, only if the sequence is at the absolute end of the source string.  |  
-| `$`  | Matches the _ending point_ of a _line_ in the source string without consuming characters.  
+For example, the regex string `"(?s)\\w+.*\\z"` matches a sequence of one or more word characters, followed by zero or more extra characters, only if the sequence is at the absolute end of the source string.  
+`$` | Matches the _ending point_ of a _line_ in the source string without consuming characters.  
   
-By default, it performs the same match as `\Z` (uppercase). However, if the regex string uses the `(?m)` modifier, it can match any point immediately before a newline (`\n`) character. For example, the regex string `"(?m)[123]$"` matches `1`, `2`, or `3` only if the character is at the end of the source string or immediately before the `\n` character.  |  
-| `\b`  | Matches a _word boundary_ , which is the point immediately before or after a sequence of word characters (members of the `\w` class).  
+By default, it performs the same match as `\Z` (uppercase). However, if the regex string uses the `(?m)` modifier, it can match any point immediately before a newline (`\n`) character. For example, the regex string `"(?m)[123]$"` matches `1`, `2`, or `3` only if the character is at the end of the source string or immediately before the `\n` character.  
+`\b` | Matches a _word boundary_ , which is the point immediately before or after a sequence of word characters (members of the `\w` class).  
   
-For example, the regex string `"\\babc"` matches `abc` only if it is at the starting point of a word character sequence.  |  
-| `\B`  | Matches a _non-word_ boundary, which is any point between characters that is _not_ the start or end of a word character sequence.  
+For example, the regex string `"\\babc"` matches `abc` only if it is at the starting point of a word character sequence.  
+`\B` | Matches a _non-word_ boundary, which is any point between characters that is _not_ the start or end of a word character sequence.  
   
-For example, the regex string `"\\Babc"` matches `abc` only if it is not at the start of a word character sequence.  |  
+For example, the regex string `"\\Babc"` matches `abc` only if it is not at the start of a word character sequence.  
 **Lookahead and lookbehind assertions**
-Click to show/hide  
-| Token/syntax  | Description and remarks  |  
-| --- | --- |  
-| `(?=...)`  | A _positive lookahead_ assertion that checks whether the specified sequence immediately _follows_ the current match location, without consuming characters.  
+Click to show/hide Token/syntax | Description and remarks  
+---|---  
+`(?=...)` | A _positive lookahead_ assertion that checks whether the specified sequence immediately _follows_ the current match location, without consuming characters.  
   
-For example, the regex string `"a(?=b)"` matches the `a` character only if `b` occurs immediately after that point, and it does not include `b` in the matched substring.  |  
-| `(?!...)`  | A _negative lookahead_ assertion that checks whether the specified sequence _does not_ immediately follow the current match location, without consuming characters.  
+For example, the regex string `"a(?=b)"` matches the `a` character only if `b` occurs immediately after that point, and it does not include `b` in the matched substring.  
+`(?!...)` | A _negative lookahead_ assertion that checks whether the specified sequence _does not_ immediately follow the current match location, without consuming characters.  
   
-For example, the regex string `"a(?!b)"` matches the `a` character only if the `b` character does not immediately follow it.  |  
-| `(?<=...)`  | A _positive lookbehind_ assertion that checks whether the specified sequence immediately _precedes_ the current match location, without consuming characters.  
+For example, the regex string `"a(?!b)"` matches the `a` character only if the `b` character does not immediately follow it.  
+`(?<=...)` | A _positive lookbehind_ assertion that checks whether the specified sequence immediately _precedes_ the current match location, without consuming characters.  
   
-For example, the regex string `"(?<=a)b"` matches the `b` character only if the `a` character occurs immediately before that point, and it does not include `a` in the matched substring.  |  
-| `(?<!...)`  | A _negative lookbehind_ assertion that checks whether the specified sequence _does not_ immediately precede the current match location, without consuming characters.  
+For example, the regex string `"(?<=a)b"` matches the `b` character only if the `a` character occurs immediately before that point, and it does not include `a` in the matched substring.  
+`(?<!...)` | A _negative lookbehind_ assertion that checks whether the specified sequence _does not_ immediately precede the current match location, without consuming characters.  
   
-For example, the regex string `"(?<!a)b"` matches the `b` character only if the `a` character does not immediately precede it.  |  
+For example, the regex string `"(?<!a)b"` matches the `b` character only if the `a` character does not immediately precede it.  
 **Pattern modifiers**
-Click to show/hide  
-| Token/syntax  | Description and remarks  |  
-| --- | --- |  
-| `(?...)`  | This syntax applies a global list of inline _pattern modifiers_ (flags) to the regex string. Pattern modifiers change the matching behaviors of the regex engine. All parts of the regex string that come after this syntax update their behaviors based on the specified modifiers, and those behaviors persist from that point until explicitly overridden.  
+Click to show/hide Token/syntax | Description and remarks  
+---|---  
+`(?...)` | This syntax applies a global list of inline _pattern modifiers_ (flags) to the regex string. Pattern modifiers change the matching behaviors of the regex engine. All parts of the regex string that come after this syntax update their behaviors based on the specified modifiers, and those behaviors persist from that point until explicitly overridden.  
   
 For example, `"(?mi)"` activates _multiline_ and _case-insensitive_ modes for the rest of the regex string.  
   
@@ -22202,28 +19956,28 @@ Standard _non-capturing groups_ can also utilize modifiers _locally_ , allowing 
   
 For example, `"(?U:\\d)123"` activates _Unicode-aware_ matching only for the specific group. The modifier does not apply globally, meaning the remaining `123` part of the regex string can only match _ASCII_ characters.  
   
-See the rows below for details about the most common, useful pattern modifiers for Pine regex strings.  |  
-| `i`  | The `i` character represents _case-insensitive_ mode when used as a global modifier (`(?i)`) or group modifier (`(?i:...)`).  
+See the rows below for details about the most common, useful pattern modifiers for Pine regex strings.  
+`i` | The `i` character represents _case-insensitive_ mode when used as a global modifier (`(?i)`) or group modifier (`(?i:...)`).  
   
 For example, the regex string `"a(?i)b(?-i)c"` matches lowercase `a`, uppercase `B` or lowercase `b`, and then lowercase `c`.  
   
-Note that case-insensitive mode only applies to ASCII characters unless Unicode-aware mode is active.  |  
-| `m`  | The m character represents multiline mode when used as a global modifier (`(?m)`) or group modifier (`(?m:...)`).  
+Note that case-insensitive mode only applies to ASCII characters unless Unicode-aware mode is active.  
+`m` | The m character represents multiline mode when used as a global modifier (`(?m)`) or group modifier (`(?m:...)`).  
   
 By default, the `^` and `$` boundary assertions match the start and end of the source string, excluding final line terminators. With multiline mode enabled, they match the start and end boundaries of any _separate line_ in the string.  
   
-For example, the regex string `"^abc"` matches `abc` only if the source string starts with that sequence, whereas `"(?m)^abc"` matches `abc` if it is at the start of the string or immediately follows a _newline character_ (`\n`).  |  
-| `s`  | The lowercase `s` character represents _single-line mode_ (_dotall mode_) when used as a global modifier (`(?s)`) or group modifier (`(?s:...)`).  
+For example, the regex string `"^abc"` matches `abc` only if the source string starts with that sequence, whereas `"(?m)^abc"` matches `abc` if it is at the start of the string or immediately follows a _newline character_ (`\n`).  
+`s` | The lowercase `s` character represents _single-line mode_ (_dotall mode_) when used as a global modifier (`(?s)`) or group modifier (`(?s:...)`).  
   
 By default, the `.` character matches any character except for line terminators such as `\n`. With single-line mode enabled, the regex treats the source string as _one line_ , allowing the character to match line terminators.  
   
-For example, using the regex string `".+"` on the source string `"ab\nc"` matches `ab` only, whereas `"(?m).+"` matches the _entire_ source string.  |  
-| `U`  | The uppercase `U` character represents _Unicode-aware_ mode when used as a global modifier (`(?U)`) or group modifier (`(?U:...)`).  
+For example, using the regex string `".+"` on the source string `"ab\nc"` matches `ab` only, whereas `"(?m).+"` matches the _entire_ source string.  
+`U` | The uppercase `U` character represents _Unicode-aware_ mode when used as a global modifier (`(?U)`) or group modifier (`(?U:...)`).  
   
 By default, most of the regex engine’s predefined character classes and mapped POSIX classes do not match _non-ASCII_ characters. With Unicode-aware mode enabled, the regex allows these classes, and various ASCII character tokens, to match related Unicode characters.  
   
-For example, the regex string `"\\d(?U)\\d+"` matches a single ASCII digit followed by one or more Unicode digit characters.  |  
-| `x`  | The lowercase `x` character represents _verbose mode_ (_comments mode_) when used as a global modifier (`(?x)`) or group modifier (`(?x:...)`).  
+For example, the regex string `"\\d(?U)\\d+"` matches a single ASCII digit followed by one or more Unicode digit characters.  
+`x` | The lowercase `x` character represents _verbose mode_ (_comments mode_) when used as a global modifier (`(?x)`) or group modifier (`(?x:...)`).  
   
 In this mode, the regex string ignores _whitespace_ characters and treats sequences starting with `#` as _comments_.  
   
@@ -22231,12 +19985,10 @@ For example, the regex string `"(?x)[a-f ] 1 2\n3 # this is a comment!"` produce
   
 Regex strings with this modifier can include multiple comments on _separate lines_ (e.g., `"a #match 'a' \nb #followed by 'b'"` matches `ab`).  
   
-To match whitespaces or the `#` character in this mode, _escape_ them using backslashes or the `\Q...\E` syntax. For instance, `"(?x)\\#\\ \\# #comment"` and `"(?x)\\Q# #\\E #comment"` both literally match the sequence `# #`.  |  
+To match whitespaces or the `#` character in this mode, _escape_ them using backslashes or the `\Q...\E` syntax. For instance, `"(?x)\\#\\ \\# #comment"` and `"(?x)\\Q# #\\E #comment"` both literally match the sequence `# #`.  
 
   * Introduction
   * Literal strings
-  * Single-line strings
-  * Multiline strings
   * Escape sequences
   * Concatenation
   * String conversion and formatting
@@ -22878,7 +20630,6 @@ Pine Script features several built-in functions that scripts can use to retrieve
 
 ### ​`time()`​ and ​`time_close()`​ functions
 The time() and time_close() functions return UNIX timestamps representing the opening and closing times of bars on a specified timeframe. Both functions can _filter_ their returned values based on a given session in a specific time zone. They each have the following signatures:
-
 ```
 
 functionName(timeframe, session, bars_back, timeframe_bars_back) → series int
@@ -23075,7 +20826,6 @@ If we increase the HTF offset to 3, the distance from the purple box to the blue
 ### Calendar-based functions
 The year(), month(), weekofyear(), dayofmonth(), dayofweek(), hour(), minute(), and second() functions calculate _calendar-based_ “int” values from a UNIX timestamp. Unlike the calendar-based variables, which always hold exchange calendar values based on the current bar’s opening timestamp, these functions can return calendar values for any valid timestamp and express them in a chosen time zone.
 Each of these calendar-based functions has the following two signatures:
-
 ```
 
 functionName(time) → series int
@@ -23193,7 +20943,6 @@ Note that:
 
 ### ​`timestamp()`​
 The timestamp() function calculates a UNIX timestamp from a specified calendar date and time. It has the following three signatures:
-
 ```
 
 timestamp(year, month, day, hour, minute, second) → simple/series int
@@ -23273,7 +21022,6 @@ Note that:
 
 ## Formatting dates and times
 Programmers can format UNIX timestamps into human-readable dates and times, expressed in specific time zones, using the str.format_time() function. The function has the following signature:
-
 ```
 
 str.format_time(time, format, timezone) → series string
@@ -23287,51 +21035,51 @@ Where:
 
 The general-purpose str.format() function can also format UNIX timestamps into readable dates and times. However, the function **cannot** express time information in _different_ time zones. It always expresses dates and times in **UTC+0**. In turn, using this function to format timestamps often results in _erroneous_ practices, such as mathematically modifying a timestamp to try and represent the time in another time zone. However, a UNIX timestamp is a unique, **time zone-agnostic** representation of a specific point in time. As such, modifying a UNIX timestamp changes the _absolute time_ it represents rather than expressing the same time in a different time zone.
 The str.format_time() function does not have this limitation, as it can calculate dates and times in _any_ time zone correctly without changing the meaning of a UNIX timestamp. In addition, unlike str.format(), it is optimized specifically for processing time values. Therefore, we recommend that programmers use str.format_time() instead of str.format() to format UNIX timestamps into readable dates and times.
-A str.format_time() call’s `format` argument determines the time information its returned value contains. The function treats characters and sequences in the argument as _formatting tokens_ , which act as _placeholders_ for values in the returned date/time “string”. The following table outlines the most commonly used formatting tokens and explains what each represents:  
-| Token  | Represents  | Remarks and examples  |  
-| --- | --- | --- |  
-| `"y"`  | Year  | Use `"yy"` to include the last two digits of the year (e.g., `"00"`), or `"yyyy"` to include the complete year number (e.g., `"2000"`).  |  
-| `"M"`  | Month  | Uppercase `"M"` for the month, not to be confused with _lowercase_ `"m"` for the minute.   
-Use `"MM"` to include the two-digit month number with a leading zero for single-digit values (e.g., `"01"`), `"MMM"` to include the three-letter abbreviation of month (e.g., `"Jan"`), or `"MMMM"` for the full month name (e.g., `"January"`).  |  
-| `"d"`  | Day of the **month**  | Lowercase `"d"`.   
+A str.format_time() call’s `format` argument determines the time information its returned value contains. The function treats characters and sequences in the argument as _formatting tokens_ , which act as _placeholders_ for values in the returned date/time “string”. The following table outlines the most commonly used formatting tokens and explains what each represents:
+Token | Represents | Remarks and examples  
+---|---|---  
+`"y"` | Year | Use `"yy"` to include the last two digits of the year (e.g., `"00"`), or `"yyyy"` to include the complete year number (e.g., `"2000"`).  
+`"M"` | Month | Uppercase `"M"` for the month, not to be confused with _lowercase_ `"m"` for the minute.   
+Use `"MM"` to include the two-digit month number with a leading zero for single-digit values (e.g., `"01"`), `"MMM"` to include the three-letter abbreviation of month (e.g., `"Jan"`), or `"MMMM"` for the full month name (e.g., `"January"`).  
+`"d"` | Day of the **month** | Lowercase `"d"`.   
 Includes the numeric day of the month (`"1"` to `"31"`).   
 Use `"dd"` for the two-digit day number with a leading zero for single-digit values.   
-It is _not_ a placeholder for the day number of the _week_ (1-7). Use dayofweek() to calculate that value.  |  
-| `"D"`  | Day of the **year**  | Uppercase `"D"`.   
+It is _not_ a placeholder for the day number of the _week_ (1-7). Use dayofweek() to calculate that value.  
+`"D"` | Day of the **year** | Uppercase `"D"`.   
 Includes the numeric day of the year (`"1"` to `"366"`).   
-Use `"DD"` or `"DDD"` for the two-digit or three-digit day number with leading zeros.  |  
-| `"E"`  | Day of the **week**  | Includes the abbreviation of the weekday _name_ (e.g., `"Mon"`).   
-Use `"EEEE"` for the weekday’s full name (e.g., `"Monday"`)  |  
-| `"w"`  | Week of the **year**  | Lowercase `"w"`.   
+Use `"DD"` or `"DDD"` for the two-digit or three-digit day number with leading zeros.  
+`"E"` | Day of the **week** | Includes the abbreviation of the weekday _name_ (e.g., `"Mon"`).   
+Use `"EEEE"` for the weekday’s full name (e.g., `"Monday"`)  
+`"w"` | Week of the **year** | Lowercase `"w"`.   
 Includes the week number of the year (`"1"` to `"53"`).   
-Use `"ww"` for the two-digit week number with a leading zero for single-digit values.  |  
-| `"W"`  | Week of the **month**  | Uppercase `"W"`.   
-Includes the week number of the month (`"1"` to `"5"`).  |  
-| `"a"`  | AM/PM postfix  | Lowercase `"a"`.   
-Includes `"AM"` if the time of day is before noon, `"PM"` otherwise.  |  
-| `"h"`  | Hour in the **12-hour** format  | Lowercase `"h"`.   
+Use `"ww"` for the two-digit week number with a leading zero for single-digit values.  
+`"W"` | Week of the **month** | Uppercase `"W"`.   
+Includes the week number of the month (`"1"` to `"5"`).  
+`"a"` | AM/PM postfix | Lowercase `"a"`.   
+Includes `"AM"` if the time of day is before noon, `"PM"` otherwise.  
+`"h"` | Hour in the **12-hour** format | Lowercase `"h"`.   
 The included hour number from this token ranges from `"0"` to `"11"`.   
-Use `"hh"` for the two-digit hour with a leading zero for single-digit values.  |  
-| `"H"`  | Hour in the **24-hour** format  | Uppercase `"H"`.   
+Use `"hh"` for the two-digit hour with a leading zero for single-digit values.  
+`"H"` | Hour in the **24-hour** format | Uppercase `"H"`.   
 The included hour number from this token ranges from `"0"` to `"23"`.   
-Use `"HH"` for the two-digit hour with a leading zero for single-digit values.  |  
-| `"m"`  | Minute  | Lowercase `"m"` for the minute, not to be confused with _uppercase_ `"M"` for the month.   
-Use `"mm"` for the two-digit minute with a leading zero for single-digit values.  |  
-| `"s"`  | Second  | Lowercase `"s"` for the second, not to be confused with _uppercase_ `"S"` for fractions of a second.   
-Use `"ss"` for the two-digit second with a leading zero for single-digit values.  |  
-| `"S"`  | Fractions of a second  | Uppercase `"S"`.   
+Use `"HH"` for the two-digit hour with a leading zero for single-digit values.  
+`"m"` | Minute | Lowercase `"m"` for the minute, not to be confused with _uppercase_ `"M"` for the month.   
+Use `"mm"` for the two-digit minute with a leading zero for single-digit values.  
+`"s"` | Second | Lowercase `"s"` for the second, not to be confused with _uppercase_ `"S"` for fractions of a second.   
+Use `"ss"` for the two-digit second with a leading zero for single-digit values.  
+`"S"` | Fractions of a second | Uppercase `"S"`.   
 Includes the number of milliseconds in the fractional second (`"0"` to `"999"`).   
-Use `"SS"` or `"SSS"` for the two-digit or three-digit millisecond number with leading zeros.  |  
-| `"Z"`  | Time zone (**UTC offset**)  | Uppercase `"Z"`.   
-Includes the hour and minute UTC offset value in `"HHmm"` format, preceded by its sign (e.g., `"-0400"`).  |  
-| `"z"`  | Time zone (**abbreviation or name**)  | Lowercase `"z"`.   
+Use `"SS"` or `"SSS"` for the two-digit or three-digit millisecond number with leading zeros.  
+`"Z"` | Time zone (**UTC offset**) | Uppercase `"Z"`.   
+Includes the hour and minute UTC offset value in `"HHmm"` format, preceded by its sign (e.g., `"-0400"`).  
+`"z"` | Time zone (**abbreviation or name**) | Lowercase `"z"`.   
 A single `"z"` includes the abbreviation of the time zone (e.g., `"EDT"`).   
 Use `"zzzz"` for the time zone’s name (e.g., `"Eastern Daylight Time"`).   
-It is not a placeholder for the _IANA identifier_. Use syminfo.timezone to retrieve the exchange time zone’s IANA representation.  |  
-|  `":"`, `"/"`, `"-"`, `"."`, `","`, `"("`, `")"`, `" "`  | Separators  | These characters are separators for formatting tokens.   
+It is not a placeholder for the _IANA identifier_. Use syminfo.timezone to retrieve the exchange time zone’s IANA representation.  
+`":"`, `"/"`, `"-"`, `"."`, `","`, `"("`, `")"`, `" "` | Separators | These characters are separators for formatting tokens.   
 They appear as they are in the formatted text. (e.g., `"01/01/24"`, `"12:30:00"`, `"Jan 1, 2024"`).   
-Some other characters can also act as separators. However, the ones listed are the most common.  |  
-| `"'"`  | Escape character  | Characters enclosed within _two single quotes_ appear as they are in the result, even if they otherwise act as formatting tokens. For example, `" 'Day' "` appears as-is in the resulting “string” instead of listing the day of the year, AM/PM postfix, and year.  |  
+Some other characters can also act as separators. However, the ones listed are the most common.  
+`"'"` | Escape character | Characters enclosed within _two single quotes_ appear as they are in the result, even if they otherwise act as formatting tokens. For example, `" 'Day' "` appears as-is in the resulting “string” instead of listing the day of the year, AM/PM postfix, and year.  
 The following example demonstrates how various formatting tokens affect the str.format_time() function’s result. The script calls the function with different `format` arguments to create date/time strings from time, timenow, and time_close timestamps. It displays each `format` value and the corresponding formatted result in a table on the last bar:
 ```pine
 //@version=6
@@ -23717,7 +21465,7 @@ Note that:
 
 ---
 
-## Writing scripts
+## Writing
 
 ### Style guide
 
@@ -23733,7 +21481,6 @@ We recommend the use of:
 
 ## Script organization
 The Pine Script® compiler is quite forgiving of the positioning of specific statements or the version compiler annotation in the script. While other arrangements are syntactically correct, this is how we recommend organizing scripts:
-
 ```
 
 <license>
@@ -23912,16 +21659,16 @@ plot(
         style = plot.style_histogram, format = format.percent        // Indented by eight spaces.  
 )                                                                    // No indentation.  
 ```
-Line wrapping is also useful when working with long single-line strings. For example, instead of defining a lengthy string on a single line of code, programmers can split that string into smaller parts and concatenate them using the + operator to wrap the expression across multiple lines for readability:
+Line wrapping is also useful when working with long strings. For example, instead of defining a lengthy string on a single line of code, programmers can split that string into smaller parts and concatenate them using the + operator to wrap the expression across multiple lines for readability:
 ```pine
 //@version=6
-indicator("Defining a long string across multiple lines demo")  
+indicator("Defining a string across multiple lines demo")  
   
-//@variable A single, long string created by concatenating three smaller single-line strings.  
-// These wrapped lines are indented by five spaces. If enclosed in parentheses, they can use four spaces instead.  
+//@variable A single, long string created by concatenating three smaller literal strings.  
 var string newString = "This is one long string result that is defined "  
      + "across multiple lines of code by concatenating smaller strings. "  
-     + "When output, the text appears without line breaks until we include the \n newline escape sequence."  
+     + "When output, the text appears without line breaks until we include the \n newline character."  
+// These wrapped lines are indented by five spaces. If enclosed in parentheses, they can use four spaces instead.  
   
 if barstate.isfirst  
     // Output the `newString` result in the Pine Logs pane.  
@@ -23948,38 +21695,6 @@ plot(
     linewidth = 3,  
     show_last = lengthInput  
 )  
-```
-Similar line-wrapping behaviors apply to multiline strings, which can span multiple visible lines in the code. All parts of the code between a multiline string’s `"""` or `'''` delimiters, including leading spaces and line breaks, represent _literal text_. Pine treats expressions that use multiline strings as part of a single code line, similar to other types of line-wrapped code. See the Line wrapping section of the Script structure page for an example.
-For readability, it is often helpful to define multiline strings separately in the _global scope_ , or in line-wrapped expressions with _no indentation_. For example:
-```pine
-//@version=6
-indicator("Multiline string style demo")  
-  
-//@variable A string created using multiline syntax.  
-string multilineStr = """  
-This string spans multiple lines in the editor, but it's considered part of a single line of code.  
-  
-All parts of the code here, including line breaks, represent literal text.  
-  
-Starting the definition in non-indented code can help readability, because any indentation,  
-    <- such as this  
-        <- or this  
-is automatically included in the string.  
-"""  
-  
-//@variable References an array of strings created using multiline syntax.  
-var array<string> multiStrArray = array.from(  
-"""When defining multiline strings inside expressions,  
-such as function calls,  
-""",  
-  
-"""starting each string on a separate, non-indented line in the editor can help promote readability."""  
-)  
-  
-// Draw labels to display text from the multiline string and array of strings on the last historical bar.  
-if barstate.islastconfirmedhistory  
-    label.new(bar_index, 0, multilineStr, textalign = text.align_left)  
-    label.new(bar_index, 0, multiStrArray.join(), style = label.style_label_up, textalign = text.align_left)  
 ```
 ## Vertical alignment
 Vertical alignment using tabs or spaces can be useful in code sections containing many similar lines such as constant declarations or inputs. They can make mass edits much easier using the Pine Editor’s multi-cursor feature (`ctrl` + `alt` + `🠅`):
@@ -24091,7 +21806,6 @@ To access the pane, select “Pine Logs” from the Pine Editor’s “More” m
 NoticeOnly _personal_ scripts can generate Pine Logs. A published script **cannot** create logs, even if its source code contains `log.*()` function calls. Published libraries can export functions containing `log.*()` calls for use in personal scripts, but they cannot generate logs directly.
 ### Creating logs
 Scripts create Pine Logs by calling the functions in the `log.*` namespace: log.info(), log.warning(), or log.error(). All these logging functions have the following two signatures:
-
 ```
 
 log.*(message) → void
@@ -24218,7 +21932,6 @@ Note that:
 The “Regex” search option enables advanced, flexible log filtering with regular expressions (regex). In contrast to plain text searches, which only match _literal_ character sequences, regex searches can match variable _text patterns_ based on the rules defined by the query’s syntax.
 With regular expressions, the Pine Logs search filter can isolate logs containing various text structures, simple or complex, such as dates and times with a defined format, alphanumeric sequences with varying digits or letters, sequences of characters within specified Unicode subsets, and more.
 For instance, this regex search query specifies that the displayed logs must contain “average:”, with optional trailing whitespace characters, followed by a sequence of characters representing a number greater than 0.5 and less than or equal to 1.0:
-
 ```
 
 average:\s*(?:0\.5\d*[1-9]\d*|0\.[6-9]\d*|(?:1\.0*|1))
@@ -24226,7 +21939,6 @@ average:\s*(?:0\.5\d*[1-9]\d*|0\.[6-9]\d*|(?:1\.0*|1))
 ```
 
 The more advanced search query below specifies that the logs must contain prefixed timestamps representing any time of day equal to or after 09:30 and before 16:00 in the chart’s time zone:
-
 ```
 
 (?<=^\[\d{4}-\d{2}-\d{2}\x54)(?:09:3\d:[0-5]\d\.\d{3}|1[1-5]:(?:[0-5]\d[:\.]){2}\d{3})
@@ -24403,7 +22115,6 @@ else
 ```
 When drawing labels across successive bars, it’s important to note that the maximum number of labels a script can display is 500. As such, the examples above allow users to inspect information for only the most recent 500 chart bars.
 For successive labels on earlier bars, programmers can create conditional logic that limits the drawings to specific _time ranges_ , e.g.:
-
 ```
 
 if time >= startTime and time <= endTime
@@ -25560,7 +23271,6 @@ Pine Script® is a cloud-based compiled language geared toward efficient repeate
 The Pine Script compiler automatically performs several internal optimizations to accommodate scripts of various sizes and help them run smoothly. However, such optimizations _do not_ prevent performance bottlenecks in script executions. As such, it’s up to programmers to profile a script’s runtime performance and identify ways to modify critical code blocks and lines when they need to improve execution times.
 This page covers how to profile and monitor a script’s runtime and executions with the Pine Profiler and explains some ways programmers can modify their code to optimize runtime performance.
 For a quick introduction, see the following video, where we profile an example script and optimize it step-by-step, examining several common script inefficiencies and explaining how to avoid them along the way:
-Play
 ## Pine Profiler
 Before diving into optimization, it’s prudent to evaluate a script’s runtime and pinpoint _bottlenecks_ , i.e., areas in the code that substantially impact overall performance. With these insights, programmers can ensure they focus on optimizing where it truly matters instead of spending time and effort on low-impact code.
 Enter the _Pine Profiler_ , a powerful utility that analyzes the executions of all significant code lines and blocks in a script and displays helpful performance information next to the lines inside the Pine Editor. By inspecting the Profiler’s results, programmers can gain a clearer perspective on a script’s overall runtime, the distribution of runtime across its significant code regions, and the critical portions that may need extra attention and optimization.
@@ -27397,7 +25107,7 @@ plot(shortCondition ? 1 : 0)
 Scripts can display a maximum of nine tables on the chart, one for each of the possible locations: position.bottom_center, position.bottom_left, position.bottom_right, position.middle_center, position.middle_left, position.middle_right, position.top_center, position.top_left, and position.top_right. When attempting to place two tables in the same location, only the newest instance will show on the chart.
 ## ​`request.*()`​ calls
 ### Number of calls
-A script can use up to 40 _unique_ calls to the functions in the `request.*()` namespace, or up to 64 unique calls if the user has the Ultimate plan. A subsequent call to the same `request.*()` function with the same arguments is not typically unique. This limitation applies when using any of the following `request.*()` functions:
+A script can use up to 40 _unique_ calls to the functions in the `request.*()` namespace, or up to 64 unique calls if the user has the Ultimate plan. A subsequent call to the same `request.*()` function with the same arguments is not typically unique. This limitation applies when using any `request.*()` functions, including:
   * request.security()
   * request.security_lower_tf()
   * request.currency_rate()
@@ -27409,7 +25119,6 @@ A script can use up to 40 _unique_ calls to the functions in the `request.*()` n
   * request.economic()
   * request.seed()
 
-NoteThe request.footprint() function has unique limitations. A script can execute only _one_ unique call to this function. Additionally, only users who have a Premium or Ultimate plan can use scripts that call it. To learn more about this function and how to use it, refer to the `​request.footprint()` section of the Other timeframes and data page.
 When a script executes two or more identical `request.*()` function calls, only the _first_ call usually counts toward this limit. The repeated calls do not count because they _reuse_ the data from the first call rather than executing a redundant request. Note that when a script imports library functions containing `request.*()` calls within their scopes, those calls **do** count toward this limit, even if the script already calls the same `request.*()` function with the same arguments in its main scope.
 The script below calls request.security() with the same arguments 50 times within a for loop. Although the script contains more than 40 `request.*()` calls, it _does not_ raise an error because each call is **identical**. In this case, it reuses the data from the first iteration’s request.security() call for the repeated calls on all subsequent iterations:
 ```pine
@@ -27592,599 +25301,6 @@ When using Deep Backtesting, the order limit is 1,000,000.
   * Maximum bars forward
   * Chart bars
   * Trade orders in backtesting
-
----
-
-## Errors and warnings
-
-### Overview
-
-#  Overview
-##  Introduction
-Pine Script® uses _runtime errors_ , _compilation errors_ , and _compiler warnings_ to help prevent unintended or erroneous script behaviors:
-  * Runtime errors occur under specific conditions as a script runs on a dataset. If a script encounters a runtime error while it executes on the chart, it _stops_ executing and displays a red “exclamation point” icon in the _status line_. The user can click the icon to view the error message and the bar index on which the error occurred. Pine includes built-in runtime errors for invalid arguments in function calls, history-referencing operations with invalid offsets, and various other error conditions. Programmers can also define custom runtime errors for specific conditions in their scripts by using the runtime.error() function.
-  * Compilation errors occur at compile time, _before_ a script begins to run on a dataset. If a script contains _invalid syntax_ or other issues that _prevent_ compilation, the Pine Editor highlights the problematic code in red and displays an error message to indicate the cause. If the script is on the chart, users can also access the error message from the script’s status line.
-  * Compiler warnings also occur before a script begins to run. In contrast to compilation errors, these warnings inform users about syntax that does _not_ prevent compilation but can cause _unintended_ results or behaviors. They can also occur for other reasons, such as using deprecated features or old Pine Script versions. The Pine Editor highlights code that causes a warning in orange, then displays a message outlining the issue and potential solutions. We recommend following the suggestions in compiler warnings to help ensure that a script works as intended.
-
-This page provides an overview of the common runtime errors, compilation errors, and warnings described in the User Manual’s “Errors and warnings” section.
-TipYou can also find information about other errors and warnings for specific features on the pages that describe those features in the User Manual. For example, the sections in the Type system page include details about common type-related errors.
-## Error reference table
-The reference table below lists the current errors and warnings documented in this section of the User Manual. The codes in the “Error/warning code” column link to the pages that contain detailed information about the issues and possible solutions.
-NoteThis list is not exhaustive. New pages for other common errors and warnings will likely be added over time.  
-| Error/warning code  | Message  | Solution  |  
-| --- | --- | --- |  
-| CE10101  | The condition of the “X” statement must evaluate to a “bool” value.  | Use only expressions that return values of the “bool” type as the conditions in if and switch statements.  |  
-| CW10003  | The function “X” should be called on each calculation for consistency. It is recommended to extract the call from this scope.  | The function call might cause _unintended results_ when executing inside a conditional structure or loop because it relies on data from _past bars_. Move the call to the _global scope_ , and outside conditional expressions, to ensure consistent history-based calculations.  |  
-| RE10139  | Memory limits exceeded.  | There are multiple possible causes and solutions. A common cause is using `request.*()` calls to request large collections of data across bars. The usual solution for that case is to optimize the requests to return collection IDs only when **necessary**. Consult the error page to learn more.  |  
-| RE10143  | The requested historical offset (X) is beyond the historical buffer’s limit (Y).  | This error occurs if a script references the history of a variable or expression from _too many_ bars back. A typical solution is to use the max_bars_back() function to specify how many past bars of data to include in the historical buffer for the referenced series.  |  
-
-  * Introduction
-  * Error reference table
-
----
-
-### CE10101
-
-## The condition of the “X” statement must evaluate to a “bool” value
-This compilation error occurs if one or more of the _conditions_ that control the flow of a conditional structure (an if or switch statement) returns a value that is _not_ of the “bool” type. These structures _cannot_ use values other than `true` and `false` as conditions.
-The following sections explain the usual causes of this error and the typical solutions.
-TipA similar restriction also applies to the ternary operator: its _first operand_ must be a “bool” value. Using a value of another type causes a different error, but the solutions to fix that error are the same as those below.
-### Using numeric conditions
-In some programming languages, including earlier versions of Pine Script® up to v5, numeric values of the “int” and “float” types are implicitly converted to `true` or `false` when the script passes them to expressions that require “bool” values. The typical rules for such conversions are as follows:
-  * A value of `0`, `0.0`, or na converts to `false`.
-  * _Any_ other nonzero, non-na value converts to `true`.
-
-Although this logic might offer a marginal amount of convenience for experienced programmers in some rare cases, it can also easily lead to unintended results. Therefore, as of v6, Pine Script no longer implicitly casts numeric values to “bool” values in operations or function calls.
-To work around this limitation, programmers can do either of the following:
-  * Use the bool() function to _explicitly_ cast “int” or “float” values to the “bool” type based on the above rules.
-  * Write conditional expressions that _compare_ numeric values and return “bool” results.
-
-For example, the script below does not compile because it attempts to use the `newMonth` variable, which holds a _“series int”_ value, as the condition in an if statement:
-```pine
-//@version=6
-indicator("Invalid numeric condition demo")  
-  
-//@variable Holds the one-bar change in the value of the `month` variable ("series int").   
-//          The value is nonzero only on bars where the month changed in the exchange time zone.  
-newMonth = ta.change(month)  
-  
-// This code causes the error. The `if` statement requires "bool" conditions for its control criteria.  
-// It cannot accept an "int" value or a value of any other type.  
-if newMonth  
-    label.new(bar_index, high, "New month started")  
-```
-To resolve the error, we can pass the `newMonth` variable to a bool() function call, and then use that call’s “series bool” result as the if statement’s condition. For example:
-```pine
-//@version=6
-indicator("Explicitly casting a numeric condition demo")  
-  
-//@variable Holds the one-bar change in the value of the `month` variable ("series int").   
-//          The value is nonzero only on bars where the month changed in the exchange time zone.  
-newMonth = ta.change(month)  
-  
-// This code does not cause the error. The `bool()` call casts the `newMonth` value to the "bool" type.  
-// The call returns `true` if the variable's value is a nonzero number, and `false` otherwise.   
-if bool(newMonth)  
-    label.new(bar_index, high, "New month started")  
-```
-Note that:
-  * The bool() call casts the _value_ retrieved from the variable to `true` or `false`, but it does _not_ change the _variable’s_ type to “bool”. The script can still use the `newMonth` variable in other code that accepts “series int” values.
-
-### Implicitly testing for ​`na`​ values
-Values or references of most types can be na, which means _undefined_. Programmers sometimes tested for na in Pine v5 and earlier versions by using implicit “bool” casting behaviors in conditional logic. Such logic does not compile in Pine v6. Furthermore, such tests do not distinguish between numeric values that are na or 0.
-Programmers can explicitly test for na instances of most available types and retrieve a “bool” result by using the na() function. A call to the function returns `true` if its argument is na, and `false` otherwise.
-TipIt is often useful for an expression to return `true` instead of `false` if the tested value is _not_ na. To achieve this effect, use the not operator on the na() call’s result.
-Consider the following script, which tries to use the result of a ta.pivothigh() function call to control an if statement. The call returns a “float” price value if it confirms a pivot high point, or na if no pivot high is confirmed. This script does not compile, because the if statement cannot use a “float” value or any na value as a condition:
-```pine
-//@version=6
-indicator("Invalid test for `na` demo", overlay = true)  
-  
-//@variable Holds a non-na price value ("series float") if a pivot high is detected, and `na` otherwise.   
-pivot = ta.pivothigh(10, 10)  
-  
-// This code causes the error. The `if` statement requires a "bool" condition. It can't use a "float" value.   
-// It also cannot use `na` in any case because "bool" values are never `na`.  
-if pivot  
-    label.new(bar_index[10], pivot, "Pivot High")  
-```
-We can resolve the error and achieve our script’s intended result by replacing `pivot` in the if statement with the expression `not na(pivot)`, which returns `true` if the variable’s value is not na, and `false` otherwise. For example:
-```pine
-//@version=6
-indicator("Valid test for `na` demo", overlay = true)  
-  
-//@variable Holds a non-na price value ("series float") if a pivot high is detected, and `na` otherwise.   
-pivot = ta.pivothigh(10, 10)  
-  
-// This code does not cause the error, because the expression used as the condition returns a "bool" result.   
-if not na(pivot)  
-    label.new(bar_index[10], pivot, "Pivot High")  
-```
-
-  * The condition of the “X” statement must evaluate to a “bool” value
-  * Using numeric conditions
-  * Implicitly testing for `na` values
-
----
-
-### CW10003
-
-## The function “X” should be called on each calculation for consistency. It is recommended to extract the call from this scope.
-This compiler warning occurs if a call to a built-in function or user-defined function (or method) inside a conditional structure or loop retrieves data from its calculations on _past bars_ by using the [`[]` history-referencing operator]() or other functions that rely on history internally. History-dependent function calls that execute either conditionally or iteratively can cause **unintended results**. A similar warning also occurs if a ternary or and/or operation executes a history-dependent function call conditionally.
-As a script runs a dataset, Pine’s runtime system successively _commits (saves)_ the data for the script’s variables and expressions on each closed bar to internal time series structures. For the system to save _consistent_ time series data for a function call, the call must execute **once** on **each** bar’s close. If the call does not execute on each bar, or if it executes more than once on some bars, the time series for the call contains an **inconsistent** history of past data.
-This behavior affects the results of history-referencing operations that access the history of a function call’s parameters, variables, or expressions. To ensure consistent historical references in a function call, move the call to the script’s **global scope** and _outside_ conditional expressions.
-NoteReferencing the history of a local variable declared inside conditional structures or loops causes a slightly different compiler warning, but the solution is similar. Move the variable declaration to the _global scope_ to ensure consistent history-referencing operations on that variable.
-For example, the following script defines a `previousValue()` function that uses the [[]]() operator with an offset of 1 to access the last saved value of its `source` parameter as of the previous bar. The script calls the function once every three bars in an if structure to retrieve a past value of the bar_index variable and plots the result on the chart. Because the call executes only on each third bar, its `source` series contains data for only those bars. Consequently, the `source[1]` expression _does not_ retrieve a value from one bar back in this case; it retrieves the `source` value for the last bar on which the call executed — three bars ago:
-```pine
-//@version=6
-indicator("Conditional history-dependent call demo")  
-  
-//@function  Returns the last saved value of the `source` parameter as of the previous bar.  
-//  
-//           This function requires one execution on each bar's close for consistent results, because it uses the   
-//           `[]` operator to access past values from its `source` series.  
-//  
-//           If a written call does not execute on a bar, nothing is saved to the time series, and the `[]
-```
-//           operator cannot consistently retrieve a value corresponding to only one bar back.   
-previousValue(source) => source[1]  
-  
-//@variable Stores the result from calling `previousValue()` once every three bars, and `na` on other bars.  
-float pastValue = na  
-  
-if bar_index % 3 == 0  
-    // The `previousValue()` call below causes the warning.  
-    // The call's `source` series contains only `bar_index` values for each third bar, and not other bars.   
-    // Therefore, the `source[1]` expression executed by the call does not retrieve the `bar_index` value from one bar back.  
-    // Instead, it retrieves the value from *three* bars back, because that's the last bar on which the call executed.  
-    pastValue := previousValue(source = bar_index)      
-  
-// Plot the result alongside the bar index.  
-plot(bar_index, "Bar index")  
-plot(pastValue, "Previous value from local call", chart.fg_color, 5, plot.style_circles)  
-`
-Note that:
-  * This script has the same behaviors we describe below if it uses the statement `float pastValue = bar_index % 3 == 0 ? previousValue(source = bar_index) : na` instead of the if structure.
-  * The compiler displays the warning on line 21, where the local `previousValue()` call occurs, to inform the user that the call might cause inconsistent results.
-
-If the conditions that control the executions of a function call vary, the historical references in the call’s scope access data from a _varying_ number of bars back, even if the specified offset is a constant. This behavior is a common cause of unexpected results. For example, in the following script version, we changed the if structure’s condition to `close > open`. With this change, the plotted results now show the bar_index value from an inconsistent number of bars back, because the `previousValue()` call builds a series of `source` data for only the bars whose closing price exceeds their opening price:
-```pine
-//@version=6
-indicator("History-dependent call across varying intervals demo")  
-  
-//@function  Returns the last saved value of the `source` parameter as of the previous bar.  
-//  
-//           This function requires one execution on each bar's close for consistent results, because it uses the   
-//           `[]` operator to access past values from its `source` series.  
-//  
-//           If a written call does not execute on a bar, nothing is saved to the time series, and the `[]
-```
-//           operator cannot consistently retrieve a value corresponding to only one bar back.   
-previousValue(source) => source[1]  
-  
-//@variable Stores the result from calling `previousValue()` on bars that close above the opening price.   
-float pastValue = na  
-  
-if close > open  
-    // The `previousValue()` call below causes the warning.  
-    // The call's `source` series contains `bar_index` values only for bars whose close exceeds their open.    
-    // The bars back that the `source[1]` expression represents *varies* in this case.   
-    pastValue := previousValue(source = bar_index)  
-  
-// Plot the result alongside the bar index.  
-plot(bar_index, "Bar index")  
-plot(pastValue, "Previous value from local call", chart.fg_color, 5, plot.style_circles)  
-`
-To ensure that the `previousValue()` call consistently returns a value from _one_ bar back, regardless of conditions, we must move the call to the _global_ scope, outside conditional expressions, so that its `source` series stores values for _consecutive bars_.
-For example, this script version executes the `previousValue()` call in the global scope and reassigns the result to the `pastValue` variable inside the if structure. Now, on bars where the plot appears, the result consistently shows the bar_index value from one bar back:
-```pine
-//@version=6
-indicator("Consistent history-dependent call demo")  
-  
-//@function  Returns the last saved value of the `source` parameter as of the previous bar.  
-//  
-//           This function requires one execution on each bar's close for consistent results, because it uses the   
-//           `[]` operator to access past values from its `source` series.  
-//  
-//           If a written call does not execute on a bar, nothing is saved to the time series, and the `[]
-```
-//           operator cannot consistently retrieve a value corresponding to only one bar back.   
-previousValue(source) => source[1]  
-  
-//@variable Stores the previous bar's `bar_index` value if `close > open`, and `na` otherwise.  
-float pastValue = na  
-  
-//@variable Stores the previous bar's `bar_index` value on each bar.  
-//          This call executes on each bar, so its history stores consecutive past values.  
-float globalPrev = previousValue(source = bar_index)  
-  
-if close > open  
-    // This code does not cause a warning.   
-    // Reassigning the call's result to another variable does not change the call's behavior.   
-    pastValue := globalPrev    
-  
-// Plot the result alongside the bar index.  
-plot(bar_index, "Bar index")  
-plot(pastValue, "Previous value from global call", chart.fg_color, 5, plot.style_circles)  
-`
-Inconsistent time series storage can significantly change the results from calls to built-in functions that reference history internally, such as those in the `ta` namespace. For instance, the ta.sma() function calculates the average of a specified number of recent values from a series. If a script does not execute a call to this function once on _every_ bar’s closing tick, the call builds an _inconsistent_ history for its calculations, and its results can change significantly.
-The following example executes two calls to ta.sma() — one in the script’s global scope, and the other inside an if structure — and then plots the result on the chart. As shown below, the two plots display very different values. The _global_ ta.sma() call executes on each bar, so its `source` series records values for _consecutive_ bars to use in the resulting 20-bar average. By contrast, the local call does _not_ use consecutive bars in its average. Instead, the call calculates the average of close values from the latest 20 bars on which it executes:
-```pine
-//@version=6
-indicator("Consistent vs. inconsistent built-in call demo", overlay = true)  
-  
-//@variable The 20-bar average of consecutive values from the `close` series.   
-float consistentSMA = ta.sma(source = close, length = 20)  
-  
-//@variable The average of `close` values over the latest 20 bars where `close > close[1]` returns `true`.  
-//          On bars where the condition is `false`, the value is `na`.  
-float inconsistentSMA = if close > close[1]  
-    // This call causes a warning, and returns a very different result,   
-    // because it uses inconsistent historical references internally.   
-    ta.sma(close, 20)  
-  
-// Plot the two results for comparison.  
-plot(consistentSMA,   "Consistent SMA",   color.blue,   3)  
-plot(inconsistentSMA, "Inconsistent SMA", color.orange, 3)  
-```
-TipFor more _advanced_ details about this behavior, refer to the Time series in scopes section of the Execution model page.
-### Why this behavior?
-This behavior is necessary because forcing a function call to execute once on each bar, regardless of scope, would cause erroneous or unexpected results, especially in functions that produce _side effects_ , such as drawings, alerts, and Pine Logs, or functions that use persistent variable declaration modes.
-For example, forcing calls to the label.new() function inside an if structure to execute on each bar would cause a new label drawing to appear on every bar instead of only when the condition’s value is `true`. Likewise, forcing a local call to a function that modifies var variables to execute once on each bar can cause unintended values to persist in calculations.
-###  Exceptions
-Not all functions use previous values from their scopes in their calculations. Calls to such functions _do not_ require execution on every bar for correct results. For example, the built-in math.max() function returns the maximum value from its specified arguments. It does not use past values from its scope in its calculations. Therefore, calling the function conditionally or iteratively does _not_ affect the function’s behavior.
-If the use of a function call in a local block does not cause a compiler warning, it is typically safe to use the call in that block without affecting the call’s calculations. However, if the warning occurs, move the function call to the global scope and outside ternary or and/or operations to ensure consistency. If you choose to keep a function call within a local block or a conditional expression despite encountering a warning, debug the script carefully to avoid unintended results.
-
-  * The function “X” should be called on each calculation for consistency. It is recommended to extract the call from this scope.
-  * Why this behavior?
-  * Exceptions
-
----
-
-### RE10139
-
-## Memory limits exceeded
-The most common cause of this error is the retrieval of custom objects and collections from `request.*()` functions such as request.security(). Other possible causes include unnecessary drawing updates, excess historical buffer capacity, or inefficient use of max_bars_back().
-The sections below explain these issues and potential solutions to fix them.
-### Requesting collections and other objects with ​`request.*()`​ calls
-The “Memory limits exceeded” error most often occurs when a script calls request.security() or other `request.*()` functions to create custom objects or collections on the dataset for another symbol or timeframe.
-When a script executes a data request, the retrieved data is copied and stored in memory on _each bar_ , enabling the script to reference that data on subsequent bars as it executes across the main dataset. Storing requested results for each bar can consume a lot of memory, depending on the type of data. Requesting the references (IDs) of large collections on each bar can easily lead to excessive memory consumption.
-For example, the script below calls request.security() to request the result of a user-defined function call evaluated on the “1D” timeframe. The custom function (`dataFunction()`) creates a “float” array and assigns its ID to a persistent variable declared using the `var` keyword. On each bar, the function pushes a new balance of power (BOP) value into its array and returns the array’s ID. Each time that the request.security() call evaluates the `dataFunction()` call, it creates a _new copy_ of the array and returns that copy’s ID. Storing a new copy of the array on each bar requires a lot of memory. Consequently, this script can _exceed_ the memory limits when it runs on datasets that have a lengthy history:
-```pine
-//@version=6
-indicator("Request exceeding memory limits demo")  
-  
-//@variable User-input length for calculating average of BOP values.   
-int avgLengthInput = input.int(5, "Average BOP Length", minval = 1)  
-  
-//@function Inserts a BOP value into a persistent array and returns the array's ID.  
-dataFunction() =>  
-    //@variable Stores the ID of a persistent "float" array.  
-    var array<float> dataArray = array.new<float>(0)  
-    // Push a new BOP percentage into the array.  
-    float bop = (close - open) / (high - low) * 100  
-    dataArray.push(bop)  
-    // Return the array's ID.   
-    dataArray  
-  
-// This request executes a `dataFunction()` call on data for the "1D" timeframe and returns the ID of a copied array.  
-// Storing a copy of the requested array for each bar requires a lot of memory. Therefore, this request can easily   
-// cause the script to exceed its memory limit.  
-array<float> reqData = request.security(syminfo.tickerid, "1D", dataFunction())  
-  
-//@variable The latest BOP value from the `reqData` array, or `na` if the requested ID is `na` or the array is empty.  
-float latestValue = na  
-//@variable The average of the latest specified number of BOP values.  
-float avgBOP = na  
-  
-if not na(reqData)  
-    // Assign the last value stored in the `reqData` array to the `latestValue` variable.   
-    latestValue := reqData.last()  
-    //@variable The number of elements in the `reqData` array.  
-    int dataSize = reqData.size()  
-    //@variable References a slice containing the recent BOP values to use in the average.  
-    array<float> lastValues = reqData.slice(math.max(dataSize - avgLengthInput, 0), dataSize)  
-    // Calculate the average of the values accessed by the `lastValues` slice.   
-    avgBOP := lastValues.avg()  
-  
-// Display the latest BOP value and the average in a separate pane.  
-hline(0, "Zero line", color.gray, hline.style_dotted)  
-plot(latestValue, "BOP", latestValue >= 0 ? color.aqua : color.orange, style = plot.style_columns)  
-plot(avgBOP, "Avg BOP", color.purple, linewidth = 3)  
-```
-### How do I fix this?
-Optimize the script’s data requests and limit the data returned by the requests to ensure that only the _minimum required_ data is preserved in memory.
-The typical solution to minimize the saved data from a request depends on the script’s requirements:
-  * If the script must access only the _latest state_ of a requested collection or other object, structure the request to return that object’s ID on the _last bar_ only.
-  * If the script must access a requested object in the main context only when specific conditions occur, structure the request to not return the object’s ID when it is not required.
-  * If the script performs specific calculations on data from a requested collection or other object, and it does _not_ require access to that object in other parts of the main context, structure the request to perform those calculations internally and return the _result_ rather than returning the object’s ID.
-
-The sections below explore these scenarios using the initial example above.
-#### Return the last state only
-If a script requires only the _latest_ state of a requested collection, use a conditional structure or expression with barstate.islast as the condition to limit retrieving a copy of that collection to the _last_ bar where the latest state is available.
-For example, suppose we want our initial script to plot the BOP value and display the current average in a table. Users cannot see the past results displayed by a table as the script loads on historical bars. Only the _final_ result as of the latest bar is visible to users. Therefore, to minimize the script’s memory demands, we can structure the script’s request to return a usable ID on the last bar only.
-Below, we modified the script’s custom function to return a two-item tuple. On the last bar, the function returns the BOP value and the array’s ID. On all previous bars, it returns only the BOP value and an na array ID. The script requests the result of a call to this revised function. It plots the retrieved BOP value on each bar, then calculates and displays the requested array’s average in a table on the last bar if the retrieved array ID is not na:
-```pine
-//@version=6
-indicator("Return the last state only demo")  
-  
-//@variable User-input length for calculating average of BOP values.   
-int avgLengthInput = input.int(5, "Average BOP Length", minval = 1)  
-  
-//@function Inserts a BOP value into a persistent array and returns a tuple. The tuple's second item is the   
-//          ID of a BOP array on the last bar, and `na` on other bars.   
-dataFunction() =>  
-    //@variable Stores the ID of a persistent "float" array.  
-    var array<float> dataArray = array.new<float>(0)  
-    // Push a new BOP percentage into the array.  
-    float bop = (close - open) / (high - low) * 100  
-    dataArray.push(bop)  
-    // Return a tuple. The first item is the BOP value, and the second is the `dataArray` ID on the last bar only.   
-    [bop, barstate.islast ? dataArray : na]  
-  
-// This request returns a valid array ID only when `barstate.islast == true` on the "1D" timeframe. On all previous bars,   
-// the `reqData` ID is `na`, and no copy of the `dataFunction()` call's internal array is stored in the main context.   
-[latestValue, reqData] = request.security(syminfo.tickerid, "1D", dataFunction())  
-  
-// Calculate the average and draw a table on the last chart bar if the `reqData` ID is not `na`.  
-if barstate.islast and not na(reqData)  
-    // Assign the last value stored in the `reqData` array to the `latestValue` variable.   
-    latestValue := reqData.last()  
-    //@variable The number of elements in the `reqData` array.  
-    int dataSize = reqData.size()  
-    //@variable References a slice containing the recent BOP values to use in the average.  
-    array<float> lastValues = reqData.slice(math.max(dataSize - avgLengthInput, 0), dataSize)  
-    // Calculate the average of the values accessed by the `lastValues` slice.   
-    float avgBOP = lastValues.avg()  
-    // Display latest average value in a single-cell table.  
-    var table displayTable = table.new(position.bottom_right, 1, 1, color.purple)  
-    displayTable.cell(  
-        0, 0, "Avg of last " + str.tostring(avgLengthInput) + " BOPs: " + str.tostring(avgBOP, "##.##") + "%",   
-        text_color = color.white  
-    )  
-  
-// Display the latest BOP value and the average in a separate pane.  
-hline(0, "Zero line", color.gray, hline.style_dotted)  
-plot(latestValue, "BOP", latestValue >= 0 ? color.aqua : color.orange, style = plot.style_columns)  
-```
-#### Return IDs on some bars
-If a script needs to access a requested collection or other object in its main context, but _not_ on _every bar_ , structure the request to use conditional structures or expressions that return the object’s ID on only necessary bars, and na on other bars. The logic in the script’s main context can then handle the na gaps in the requested series as necessary.
-Suppose we want to modify our initial script to calculate the average, high, and low daily BOP for each _completed month_. We can structure the script’s request to collect BOP values across the days in each month and return an array ID for the necessary calculations only after a month ends. The `dataFunction()` function in the following script version pushes BOP values for each bar in a month into an array and returns a two-item tuple. The tuple contains the BOP value and the array’s ID only on the first bar of a month. On other bars, the tuple contains the BOP value and an na ID. The script uses a call to this updated function in its data request. On bars where the requested array ID is not na, the script calculates the average, high, and low values from that array, then assigns the results to persistent variables for plotting:
-```pine
-//@version=6
-indicator("Return IDs on some bars demo")  
-  
-//@function Inserts a BOP value into a persistent array and returns a tuple. The tuple's second item is the   
-//          ID of a BOP array on the first bar of each month, and `na` on other bars.   
-dataFunction() =>  
-    //@variable Stores the ID of a persistent "float" array.  
-    var array<float> dataArray = array.new<float>(0)  
-    //@variable Temporarily saves the BOP value from the opening bar of each month.  
-    var float openBOP = na  
-    //@variable Is `true` on the first bar of each month, and `false` on other bars.  
-    bool isNewMonth = timeframe.change("1M")  
-    // Clear the array and push the `openBOP` value into it on the month's second bar.    
-    if isNewMonth[1]  
-        dataArray.clear()  
-        if not na(openBOP)  
-            dataArray.push(openBOP)  
-        openBOP := na  
-    // Push a new BOP percentage into the array.  
-    float bop = (close - open) / (high - low) * 100  
-    // Save the `bop` value to the `openBOP` variable on the month's first bar, and to the array on other bars.   
-    switch  
-        isNewMonth => openBOP := bop  
-        => dataArray.push(bop)  
-    // Return a tuple. The first item is the BOP value. The second is the `dataArray` ID on the first bar of the month.   
-    [bop, isNewMonth ? dataArray : na]  
-  
-// This request returns a valid array ID as its second item only on the first daily bar of each month.  
-// On other bars, the second item is `na`, so no copy of the `dataFunction()` call's array is saved in the main context.  
-[latestValue, reqData] = request.security(syminfo.tickerid, "1D", dataFunction())  
-  
-// Declare persistent variables to store average, high, and low values calculated from the `reqData` array.  
-var float avgBOP = na, var float hiBOP  = na, var float loBOP  = na  
-// Update the variables on each bar where the `reqData` ID is not `na`.  
-if not na(reqData)  
-    avgBOP := reqData.avg(), hiBOP := reqData.max(), loBOP := reqData.min()  
-  
-// Display the latest BOP value alongside the average, high, and low in a separate pane.  
-hline(0, "Zero line", color.gray, hline.style_dotted)  
-plot(latestValue, "BOP", latestValue >= 0 ? color.aqua : color.orange, style = plot.style_columns)  
-plot(avgBOP, "Avg BOP", color.purple, linewidth = 3)  
-plot(hiBOP, "High BOP", color.green)  
-plot(loBOP, "Low BOP", color.red)  
-```
-#### Return calculated results
-If a script requires the _result_ of a calculation involving a collection or other large object, and the script does _not_ need to access that object in its main context, define a function that performs the calculation and returns the result directly rather than returning the underlying object’s ID. Then, use a call to that function as the `expression` argument in the `request.*()` call. Avoiding returning object references from requested contexts altogether when they are unnecessary helps minimize memory demands.
-For example, we can directly resolve the error in our initial script by structuring the custom `dataFunction()` function to perform the average calculation and return the result without returning an array ID on any bar. The function in the script version below returns a tuple containing only the BOP and average value. The script requests the result of a call to the updated function and directly plots the calculated values. With this change, the request does not cause any copies of the `dataFunction()` call’s internal array to persist in memory in the main context:
-```pine
-//@version=6
-indicator("Return calculated results demo")  
-  
-//@variable User-input length for calculating average of BOP values.   
-int avgLengthInput = input.int(5, "Average BOP Length", minval = 1)  
-  
-//@function Calculates and returns the BOP and average BOP values.   
-//          The function uses an array internally but does not return its ID.   
-dataFunction() =>  
-    //@variable Stores the ID of a persistent "float" array.  
-    var array<float> dataArray = array.new<float>(0)  
-    // Push a new BOP percentage into the array.  
-    float bop = (close - open) / (high - low) * 100  
-    dataArray.push(bop)  
-    //@variable The number of elements in the `reqData` array.  
-    int dataSize = dataArray.size()  
-    //@variable References a slice containing the recent BOP values to use in the average.  
-    array<float> lastValues = dataArray.slice(math.max(dataSize - avgLengthInput, 0), dataSize)  
-    // Return a tuple containing only the BOP and average values.  
-    [bop, lastValues.avg()]  
-  
-// This request returns the BOP and average directly. It does not return an array ID.   
-// Therefore, no copies of the `dataFunction()` call's internal array are saved in the main context.  
-[latestValue, avgBOP] = request.security(syminfo.tickerid, "1D", dataFunction())  
-  
-// Display the latest BOP value and the average in a separate pane.  
-hline(0, "Zero line", color.gray, hline.style_dotted)  
-plot(latestValue, "BOP", latestValue >= 0 ? color.aqua : color.orange, style = plot.style_columns)  
-plot(avgBOP, "Avg BOP", color.purple, linewidth = 3)  
-```
-### Other possible error sources and their fixes
-There are a few other factors that can significantly impact a script’s memory demands, including:
-  * An excessive use of `request.*()` function calls.
-  * An unnecessary or improper use of the `max_bars_back` parameter.
-  * Excessive historical buffer calculations.
-  * Inefficient drawing management.
-  * The generation of many strategy orders and trades.
-
-The sections below explain the best practices for reducing these issues to optimize a script’s memory use.
-#### Minimize ​`request.*()`​ calls
-The `request.*()` functions can be computationally expensive to call, because they retrieve data from additional datasets and perform extra calculations on that data. Data requests often require significant runtime and memory resources. Excessive or inefficient data requests can easily cause a script to reach its memory limit.
-This memory consumption is especially substantial for scripts that request data from lower timeframes with request.security_lower_tf(), because the function returns the IDs of arrays that contain intrabar data for _each_ bar in the script’s main dataset. For example, a script that requests one-minute data from a “1D” chart creates a new array containing hundreds of intrabar data points on each bar. The system must allocate sufficient memory to store each of those large arrays so that the script can access them later in the main context. Maintaining that much data in memory requires a significant amount of resources.
-Programmers can reduce the memory requirements of a script’s requests by:
-  * Removing _unnecessary_ `request.*()` function calls from the script.
-  * Changing the timeframe of a request to a higher timeframe to reduce the number of retrieved data points.
-  * Combining multiple requests to the _same_ dataset into a single `request.*()` call.
-  * Using the `request.*()` function’s `calc_bars_count` parameter to limit the number of historical bars in the requested dataset.
-
-See the Minimizing `request.*()` calls section of the Profiling and optimization page to learn more about optimizing data requests.
-#### Use ​`max_bars_back`​ only when necessary
-The `max_bars_back` parameter of an indicator or strategy script sets the size of the historical buffers for _all_ series in a script. Each buffer determines the number of historical data points that the system _maintains in memory_ for the script’s variables and expressions.
-By default, the Pine Script® runtime system attempts to automatically define an appropriate buffer for each variable and expression. Therefore, using the `max_bars_back` parameter or max_bars_back() function is typically necessary only in the rare case where the system _cannot_ determine a sufficient buffer size. See the error page The requested historical offset (X) is beyond the historical buffer’s limit (Y) to learn about the potential causes of this issue.
-If you encounter a buffer error and must manually set the sizes of a script’s historical buffers by using the `max_bars_back` parameter or the max_bars_back() function, choose the _smallest_ buffer sizes that accommodate your script’s historical references. Setting buffer sizes to store _more_ data than necessary causes an _excessive_ use of memory resources.
-#### Minimize historical buffer calculations
-As explained above, the Pine Script runtime system creates _historical buffers_ for all variables and expressions in a script. It determines the size of each buffer based on the _historical references_ that the script performs via the [[] history-referencing operator]() or the functions that reference history internally.
-As a script loads on a dataset, historical references to distant points in the dataset can cause the system to _reload_ the script and _increase_ the size of necessary historical buffers. Each increase to historical buffer sizes leads to increased memory consumption. In some cases, excessive buffer resizing can cause the script to exceed the memory limits. Therefore, ensure a script references only _necessary_ historical data in its calculations. When possible, modify the script’s logic to avoid referencing very distant points in history.
-Specifying a `calc_bars_count` argument in the indicator() or strategy() declaration statement can help reduce memory issues, because it _restricts_ the number of _historical bars_ that the script can use for its calculations. Similarly, using the max_bars_back() function to manually define the appropriate size for a buffer can help reduce buffer calculations. When using this function to specify the size of historical buffers, choose the **smallest** possible size that accommodates the script’s historical references, to avoid unnecessary memory use.
-To learn more about historical buffer calculations and how to optimize them, see the Minimizing historical buffer calculations section of the Profiling and optimization page.
-#### Reduce drawing updates for tables
-Tables display only their _latest state_ as of the last available bar on the chart. The previous states of a table on historical bars are _not_ visible to script users. Therefore, updating and displaying tables across historical bars is typically _unnecessary_. To use the least memory in table drawings, prevent unneccessary updates by defining logic that creates the table object once and then populates it on only the _last bar_.
-To create a table object on only one bar, assign the result of the table.new() call to a variable declared with the var keyword. Then, populate the table on the last bar by placing calls to table.cell() or the `table.cell_set_*()` functions inside a conditional structure that uses barstate.islast as its condition. See the Tables page to learn more.
-#### Do not update drawings on historical bars
-As with tables, all other drawing objects, such as lines and labels, show only their _latest_ states after the script loads on the chart. Users cannot see the visuals update as the script executes across history; users see only the drawing updates that occur on _realtime bars_.
-To help reduce a script’s runtime and memory use, eliminate updates to drawings on historical bars wherever possible. Refer to the Reducing drawing updates section of the Profiling and optimization page for more information.
-#### Minimize the total drawings stored for a chart
-Drawing objects, such as lines and labels, can consume a lot of memory, especially if a script _recreates_ drawings unnecessarily.
-For example, if a script draws a line between two points, and then needs to update the line’s coordinates later, newcomers to Pine might opt to delete the existing line and create a new one with the updated coordinates. However, such an approach is _inefficient_ and leads to unnecessary resource consumption. The more efficient approach is to use the built-in _setter functions_ for the drawing type, such as line.set_x2(), to modify the coordinates of the original drawing without creating a new object.
-In general, to help minimize the resource usage of drawings, optimize them by using any of the following approaches:
-  * Eliminate unnecessary redrawing by assigning a drawing object’s ID to a variable declared with the var keyword and modifying that object with the available setter functions.
-  * Remove unnecessary drawings with the `*.delete()` functions (e.g., line.delete() and label.delete()) to release resources.
-  * Reduce a script’s drawing limits by specifying arguments for the `max_lines_count`, `max_labels_count`, `max_boxes_count`, or `max_polylines_count` parameters of the indicator() or strategy() declaration statement.
-
-#### Filter dates in strategies
-The total number of trades or orders simulated by strategies can impact memory consumption. When running strategy scripts that generate frequent orders on large datasets, reduce the number of unnecessary historical orders and trades that persist in memory by limiting the _starting point_ of the strategy.
-To limit the starting point of a strategy, a simple and effective approach is to use a conditional structure that activates the strategy’s order placement commands only when the bar’s opening or closing time comes after a specified date.
-See the How do I filter trades by a date or time range? portion of our Strategies FAQ page for an example of this technique.
-
-  * Memory limits exceeded
-  * Requesting collections and other objects with `request.*()` calls
-  * How do I fix this?
-  * Return the last state only
-  * Return IDs on some bars
-  * Return calculated results
-  * Other possible error sources and their fixes
-  * Minimize `request.*()` calls
-  * Use `max_bars_back` only when necessary
-  * Minimize historical buffer calculations
-  * Reduce drawing updates for tables
-  * Do not update drawings on historical bars
-  * Minimize the total drawings stored for a chart
-  * Filter dates in strategies
-
----
-
-### RE10143
-
-## The requested historical offset (X) is beyond the historical buffer’s limit (Y)
-In Pine Script®, a single script executes from start to end on each bar of the chart. After each execution on a confirmed bar, Pine’s runtime system _commits (saves)_ data for a script’s variables and expressions on that bar to _fixed-sized_ historical buffers. The script can retrieve past bar values from these buffers by using the [`[]` history-referencing operator]() or the functions that reference history internally. For example, the expression `myVar[500]` retrieves the last saved value of the `myVar` variable as of 500 bars back.
-By default, the runtime system automatically sizes a script’s buffers to store only what the script requires for the historical references that it performs across historical bars:
-  * The system first checks the historical references that the script executes on the first 244 bars of the dataset, then sets an initial buffer size based on those references. If the script uses constant historical offsets, or if the historical offsets used on subsequent bars do not exceed the buffer sizes, the script’s historical references work without issues.
-  * If the script requests data from beyond an initial buffer’s limit while executing across other historical bars, the system _increases_ that buffer’s size and _restarts_ the script. This process repeats as necessary until the system reaches the restart limit or the script loads successfully without exceeding a buffer’s boundaries.
-
-This runtime error can occur in some rare cases if the system fails to determine the appropriate size of a buffer on historical bars after restarting a script several times. However, the error more commonly occurs when a script executes out-of-bounds historical references on realtime bars, because the system _does not_ continue to resize historical buffers after the script loads.
-For example, the following script plots the value of close variable from 500 bars back on historical bars, then attempts to plot the value from _1000_ bars back on realtime bars. The script initially loads successfully across the chart’s history. However, the script halts and raises the runtime error once a _new realtime tick_ becomes available. The error is also reproducible by enabling Bar Replay and pressing “Forward” once. The automatic historical buffer for the close series in this example contains only **500** past values. It does _not_ contain 1000, because the script does not reference values from 1000 bars back on any _historical_ bars, and the system does not resize the buffer on realtime bars. Consequently, the historical offset of 1000 on the first realtime bar is _beyond_ the historical buffer’s limit:
-```pine
-//@version=6
-indicator("Historical buffer error on realtime bars demo")  
-  
-// This code works as expected on historical bars, but it fails with an error on the first *realtime tick*.  
-// On historical bars, the maximum historical offset that the script requires is 500 bars back, so the system sets the   
-// buffer size for the `close` series to include only 500 past values. As such, an offset of 1000 is *out of bounds*.   
-float myVar = close[barstate.ishistory ? 500 : 1000]  
-plot(myVar)  
-```
-To resolve such errors, programmers must ensure that their scripts’ historical buffers have a sufficient size to accommodate historical references on all bars. See below to learn more.
-NoticeThe maximum possible buffer size for most variables is **5000** , and referring further into the past causes a _different_ runtime error. To prevent a script from referencing more than 5000 previous bars of data, use an expression such as `math.min(myOffset, 5000)` as the offset in history-referencing operations.
-### Potential fixes
-The following sections explain the different ways to explicitly define appropriate buffer sizes to accommodate historical references. Using these techniques is necessary only if a script’s historical references cause this runtime error. In most other cases, we typically recommend relying on automatic buffer sizing.
-NoticeWhen defining buffer sizes manually using any of these techniques, ensure that you specify the **smallest** possible buffer sizes that the script requires for its historical references. Buffers that are larger than what a script requires can significantly impact the script’s performance. For example, setting a buffer’s size to include 5000 past values when a script requires only 700 bars back causes an excessive use of memory. In some cases, buffers that are too large can push a script to its memory limit.
-#### Use the ​`max_bars_back()`​ function
-The built-in max_bars_back() function explicitly sets the initial size of the historical buffer for a specified variable. If automatic buffer sizing fails, or if a script references deeper history on only realtime bars, programmers can use this function to specify appropriate buffers for specific series to accommodate historical references for up to 5000 bars back.
-For example, to resolve the error in our initial script above, we can add the call `max_bars_back(close, 1000)` to specify that the buffer for the close series stores at least the latest 1000 past values. With the appropriate buffer size explicitly defined, the script performs its historical references successfully on realtime bars without raising an error:
-```pine
-//@version=6
-indicator("Use `max_bars_back()` demo")  
-  
-//@variable The `close` value from 500 bars back on historical bars, and 1000 bars back on realtime bars.   
-float myVar = close[barstate.ishistory ? 500 : 1000]  
-plot(myVar)  
-  
-// This call prevents the runtime error. It specifies that the buffer for the `close` series stores data for   
-// 1000 previous bars, which is the *minimum* historical depth that the script requires on realtime bars.  
-max_bars_back(close, 1000)  
-```
-Note that:
-  * Scripts can include a max_bars_back() function call at any location in the script. In our example above, the call occurs _after_ the historical reference on the close variable.
-
-#### Use the ​`max_bars_back`​ parameter
-The `max_bars_back` parameter of the indicator() and strategy() functions is an alternative to max_bars_back() that defines the initial size of _all_ series in a script if it has a specified argument. This parameter can offer convenience in cases where multiple series require manually defined buffers. However, it’s crucial to understand that increasing the size of every historical buffer in a script can _negatively_ impact its runtime performance and memory consumption. Therefore, for resource efficiency, we typically recommend using the max_bars_back() function to size only specific buffers instead of sizing every buffer with this parameter. The only exception is if _all_ or _most_ of the series in the script actually require historical buffers with a specific size and the runtime system fails to determine that size automatically.
-#### Use the larger historical reference on early bars
-An alternative way to increase the size of a specific historical buffer is to use the _largest_ required offset in historical references on _early bars_ , regardless of whether the script requires that offset on those bars. The runtime system analyzes that historical offset while the script loads and sets the buffer’s size accordingly.
-For example, the script version below includes the offset of 1000 in the history-referencing operation on the _first bar_ , where the barstate.isfirst value is `true`. This change makes no practical difference in the historical output, because the operation returns na for any nonzero offset on the first bar. However, it resolves the error because it causes the script to request data for 1000 bars back on a _historical bar_ , forcing the system to create a buffer that maintains the latest 1000 past close values:
-```pine
-//@version=6
-indicator("Larger historical reference on early bars demo")  
-  
-// This code works as expected on historical and realtime bars.  
-// Setting the offset to 1000 on the first bar forces the system to create a 1000-bar buffer for the `close` series.   
-float myVar = close[barstate.isfirst ? 1000 : barstate.ishistory ? 500 : 1000]  
-plot(myVar)  
-```
-### Historical buffer errors in realtime drawings
-A common cause of the historical offset error is the creation of drawing objects that anchor to the _past_ while the script executes on _realtime bars_. All Pine drawings that rely on chart coordinates convert their x-coordinates into _timestamps_ by referencing the time series internally, even if the programmer defines those coordinates using bar_index values.
-Therefore, if a script draws into the past on realtime bars and raises this error, the typical solution is to set an explicit buffer size for the time variable.
-For example, the script below draws a horizontal line from the bar at `bar_index - 500` to the current bar while executing on realtime bars only. The script loads successfully across historical bars, but it quickly halts and raises the historical offset error on the first _realtime tick_. Although the script does not explicitly use the [[]]() operator, the line drawing itself references the time series internally to convert its `x1` and `x2` coordinates. Converting the `x1` coordinate to a timestamp requires access to the time value from _500 bars back_. However, the default buffer for that series stores fewer than 500 past values, because the script does not request the value from 500 bars back while it _loads_ across the historical dataset:
-```pine
-//@version=6
-indicator("Realtime buffer error from a drawing demo")  
-  
-if barstate.isrealtime  
-    // This call causes an error on the first realtime tick.  
-    // Pine drawings internally convert index-based x-coordinates into *timestamps* by referencing values   
-    // from the `time` series. The coordinate `bar_index - 500` converts to `time[500]` internally, but the default   
-    // buffer in this example stores data for *fewer* than 500 past `time` values.   
-    line.new(x1 = bar_index - 500, y1 = close, x2 = bar_index, y2 = close)  
-```
-To resolve the error, programmers must use any of the techniques described in the Potential fixes section to explicitly set the size of the historical buffer for the time series. The simplest solution is to use the max_bars_back() function to set the appropriate buffer size.
-In the script version below, we added the call `max_bars_back(time, 500)` to specify that the buffer for the time series stores values for the latest 500 past bars. This change prevents the script from requesting a value that is outside the buffer’s boundaries when converting the `bar_index - 500` coordinate into a timestamp:
-```pine
-//@version=6
-indicator("Preventing time-related buffer errors in realtime drawings demo")  
-  
-if barstate.isrealtime  
-    // Draws a horizontal line from the bar 500 bars back to the current bar.   
-    line.new(x1 = bar_index - 500, y1 = close, x2 = bar_index, y2 = close)  
-  
-// This call ensures that the buffer for the `time` series contains a sufficient history for the line drawing to convert   
-// its `x1` coordinate into a timestamp. With an appropriate buffer size defined, no error occurs.   
-max_bars_back(time, 500)  
-```
-
-  * The requested historical offset (X) is beyond the historical buffer’s limit (Y)
-  * Potential fixes
-  * Use the `max_bars_back()` function
-  * Use the `max_bars_back` parameter
-  * Use the larger historical reference on early bars
-  * Historical buffer errors in realtime drawings
 
 ---
 
@@ -29824,11 +26940,11 @@ TipThe bottom margin of the chart must be set to zero in order for the lines to 
 indicator("Dynamically scaled volume", overlay=true, max_lines_count=500)  
   
 // Import the PineCoders' VisibleChart library  
-import PineCoders/VisibleChart/5 as visibleChart  
+import PineCoders/VisibleChart/4 as visibleChart  
   
-const float    RELATIVE_HEIGHT    = 0.3 // 30% matches the built-in volume indicator.  
-const string   BOTTOM_TTIP = ("Copy the bottom margin % from your chart settings to here, and then set the bottom"  
-  + " margin to *zero* on the chart settings.")  
+const float RELATIVE_HEIGHT = 0.3 // 30% matches the built-in volume indicator.  
+const string BOTTOM_TTIP = "Copy the bottom margin % from your chart settings to here, and then set "  
+     + "the bottom margin to *zero* on the chart settings."  
   
 int bottomInput = input.int(title = "Bottom Margin %", defval = 10, minval = 0, maxval = 100, tooltip = BOTTOM_TTIP)  
   
@@ -31022,21 +28138,21 @@ Each Pine Script strategy runs on one symbol at a time. To evaluate a strategy a
 
 ### What does Bar Magnifier do?
 The Bar Magnifier feature, available for TradingView Premium and Ultimate account holders, significantly enhances the accuracy of order fills in strategy backtests. This tool uses data from lower timeframes to obtain more detailed price movement within a bar, which can result in more precise order fills. When selected, Bar Magnifier mode replaces the assumptions that the broker emulator must make about price movement using only a single set of OHLC values for each historical bar.
-The Bar Magnifier chooses the lower timeframe based on the chart timeframe:  
-| Chart Timeframe  | Intrabar Timeframe  |  
-| --- | --- |  
-| 1S  | 1S  |  
-| 30S  | 5S  |  
-| 1  | 10S  |  
-| 5  | 30S  |  
-| 10  | 1  |  
-| 15  | 2  |  
-| 30  | 5  |  
-| 60  | 10  |  
-| 240  | 30  |  
-| 1D  | 60  |  
-| 3D  | 240  |  
-| 1W  | 1D  |  
+The Bar Magnifier chooses the lower timeframe based on the chart timeframe:
+Chart Timeframe | Intrabar Timeframe  
+---|---  
+1S | 1S  
+30S | 5S  
+1 | 10S  
+5 | 30S  
+10 | 1  
+15 | 2  
+30 | 5  
+60 | 10  
+240 | 30  
+1D | 60  
+3D | 240  
+1W | 1D  
 To fully appreciate the effectiveness of Bar Magnifier, refer to the script demonstrations in the section about Bar Magnifier in the User Manual.
 ## Advanced features and integration
 ### Can my strategy script place orders with TradingView brokers?
@@ -31178,8 +28294,7 @@ Note that:
 Trading with _leverage_ means borrowing capital from a broker to control larger position sizes than the amount of capital risked. This amplifies both potential profits and losses, making it a powerful but risky tool. The amount of the trader’s capital that they risk is called the _margin_.
 For example, setting a 20% margin ratio means that the trader’s balance funds only 20% of the position’s value, allowing positions up to five times the account balance. A margin ratio of 20% is therefore the same as 5:1 leverage. With an available balance of $10,000 and a 20% margin setting, a strategy can open positions up to $50,000 in value.
 Pine Script strategies can simulate trading with leverage by specifying margin requirements for long and short positions. Users can adjust the “Margin for long positions” and Margin for short positions” in the strategy’s “Properties” tab. Programmers can set the default margin in the script using the `margin_long` and `margin_short` parameters in the strategy() declaration function.
-NoticeIf a leveraged trade, or even a short trade with 1
-_margin call_ event by liquidating _four times_ the amount required to cover the loss. This behavior helps prevent constant margin calls on subsequent bars.
+NoticeIf a leveraged trade, or even a short trade with 1:1 leverage, incurs significant losses that cause the strategy’s account balance to drop below the required margin, the broker emulator initiates a _margin call_ event by liquidating _four times_ the amount required to cover the loss. This behavior helps prevent constant margin calls on subsequent bars.
 For more information on using leverage in strategies, see the Help Center article How do I simulate trading with leverage?
 ### Can you hedge in a Pine Script strategy?
 When traders offset the risk of one position by opening another position at the same time, this is called _hedging_.
@@ -31574,7 +28689,7 @@ The following example script uses functions from this library to create two hori
 //@version=6
 indicator("Chart's visible high/low", "", true)  
   
-import PineCoders/VisibleChart/5 as PCvc  
+import PineCoders/VisibleChart/4 as PCvc  
   
 // Calculate the chart's visible high and low prices and their corresponding times.  
 int x1 = PCvc.highBarTime()  
@@ -32578,7 +29693,7 @@ The following example script colors the background green when the chart time exa
 indicator("Exact date/time detector", overlay = true)  
 bgcolor(time == input.time(timestamp("2025-03-24 10:00"), "Target Date/Time") ? color.new(color.green, 90) : na)  
 ```
-However, matching an exact date and time is not very useful. If the target time does not coincide with the opening of a candle on the chart timeframe, then that exact time never matches. For example, if the user specifies “2025-03-24 10:01 ” as the target time for the script above, then it never matches on any timeframe above one minute.
+However, matching an exact date and time is not very useful. If the target time does not coincide with the opening of a candle on the chart timeframe, then that exact time never matches. For example, if the user specifies “2025-03-24 10:01” as the target time for the script above, then it never matches on any timeframe above one minute.
 The following script behaves more intuitively, by coloring the background if a target time input by the user falls anywhere within a particular chart bar. The script colors one and only one bar even if the time does not match the open of a bar. The days, hours, and minutes are all tested separately to see if they match the target time, and these boolean conditions must all be true in order for the background to be colored. If the chart timeframe is too high, we set the corresponding lower time conditions to true so that they do not prevent the overall condition from firing. For example, if the timeframe is one day or above, we bypass the `isTargetHour` condition by setting it to true without evaluating the number of hours.
 ```pine
 //@version=6
@@ -33820,136 +30935,473 @@ To color the entire chart background based on a condition detected on the last b
 
 ---
 
-## Release notes
+## Error Messages
+
+### Error messages
+
+# Error messages
+## The if statement is too long
+This error occurs when the indented code (local block) inside an `if` structure is too large for the compiler. Because of how the compiler works, you won’t receive a message telling you exactly how many lines of code you are over the limit. The only solution now is to split the structure into smaller parts (functions or smaller if statements). The example below shows a reasonably lengthy if statement; theoretically, this would throw `line 4: if statement is too long`:
+```pine
+//@version=6
+indicator("My script")  
+  
+var e = 0  
+if barstate.islast  
+    a = 1  
+    b = 2  
+    c = 3  
+    d = 4  
+    e := a + b + c + d  
+  
+plot(e)  
+```
+To fix this code, you could move these lines into their own function:
+```pine
+//@version=6
+indicator("My script")  
+  
+var e = 0  
+doSomeWork() =>  
+    a = 1  
+    b = 2  
+    c = 3  
+    d = 4  
+  
+    result = a + b + c + d  
+  
+if barstate.islast  
+    e := doSomeWork()  
+  
+plot(e)  
+```
+## Script requesting too many securities
+The maximum number of securities in script is limited to 40. If you declare a variable as a `request.security` function call and then use that variable as input for other variables and calculations, it will not result in multiple `request.security` calls. But if you will declare a function that calls `request.security` --- every call to this function will count as a `request.security` call.
+It is not easy to say how many securities will be called looking at the source code. Following example have exactly 3 calls to `request.security` after compilation:
+```pine
+//@version=6
+indicator("Securities count")  
+a = request.security(syminfo.tickerid, '42', close)  // (1) first unique security call  
+b = request.security(syminfo.tickerid, '42', close)  // same call as above, will not produce new security call after optimizations  
+  
+plot(a)  
+plot(a + 2)  
+plot(b)  
+  
+sym(p) =>  // no security call on this line  
+    request.security(syminfo.tickerid, p, close)  
+plot(sym('D'))  // (2) one indirect call to security  
+plot(sym('W'))  // (3) another indirect call to security  
+  
+c = request.security(syminfo.tickerid, timeframe.period, open)  // result of this line is never used, and will be optimized out  
+```
+## Script could not be translated from: null
+`study($)  
+`
+Usually this error occurs in version 1 Pine scripts, and means that code is incorrect. Pine Script® of version 2 (and higher) is better at explaining errors of this kind. So you can try to switch to version 2 by adding a special attribute in the first line. You’ll get `line 2: no viable alternative at character '$'`:
+`// @version=2  
+study($)  
+`
+## line 2: no viable alternative at character ’$’
+This error message gives a hint on what is wrong. `$` stands in place of string with script title. For example:
+`// @version=2  
+study("title")  
+`
+## Mismatched input <…> expecting <???>
+Same as `no viable alternative`, but it is known what should be at that place. Example:
+```pine
+//@version=6
+indicator("My Script")  
+    plot(1)  
+```
+`line 3: mismatched input 'plot' expecting 'end of line without line continuation'`
+To fix this you should start line with `plot` on a new line without an indent:
+```pine
+//@version=6
+indicator("My Script")  
+plot(1)  
+```
+## Loop is too long (> 500 ms)
+We limit the computation time of loop on every historical bar and realtime tick to protect our servers from infinite or very long loops. This limit also fail-fast indicators that will take too long to compute. For example, if you’ll have 5000 bars, and indicator takes 500 milliseconds to compute on each of bars, it would have result in more than 16 minutes of loading:
+```pine
+//@version=6
+indicator("Loop is too long", max_bars_back = 101)  
+s = 0  
+for i = 1 to 1e3  // to make it longer  
+    for j = 0 to 100  
+        if timestamp(2017, 02, 23, 00, 00) <= time[j] and time[j] < timestamp(2017, 02, 23, 23, 59)  
+            s := s + 1  
+plot(s)  
+```
+It might be possible to optimize algorithm to overcome this error. In this case, algorithm may be optimized like this:
+```pine
+//@version=6
+indicator("Loop is too long", max_bars_back = 101)  
+bar_back_at(t) =>  
+    i = 0  
+    step = 51  
+    for j = 1 to 100  
+        if i < 0  
+            i := 0  
+            break  
+        if step == 0  
+            break  
+        if time[i] >= t  
+            i := i + step  
+            i  
+        else  
+            i := i - step  
+            i  
+        step := step / 2  
+        step  
+    i  
+  
+s = 0  
+for i = 1 to 1e3  // to make it longer  
+    s := s - bar_back_at(timestamp(2017, 02, 23, 23, 59)) +  
+         bar_back_at(timestamp(2017, 02, 23, 00, 00))  
+    s  
+plot(s)  
+```
+## Script has too many local variables
+This error appears if the script is too large to be compiled. A statement `var=expression` creates a local variable for `var`. Apart from this, it is important to note, that auxiliary variables can be implicitly created during the process of a script compilation. The limit applies to variables created both explicitly and implicitly. The limitation of 1000 variables is applied to each function individually. In fact, the code placed in a _global_ scope of a script also implicitly wrapped up into the main function and the limit of 1000 variables becomes applicable to it. There are few refactorings you can try to avoid this issue:
+`var1 = expr1  
+var2 = expr2  
+var3 = var1 + var2  
+`
+can be converted into:
+`var3 = expr1 + expr2  
+`
+## The requested historical offset (X) is beyond the historical buffer’s limit (Y)
+Pine scripts calculate on every bar on the chart, sequentially, left to right, maintaining a historical buffer of values. When a script needs to use a value from a previous bar, it takes that value from the buffer. If a script tries to access a value from a bar further back than the historical buffer extends, it throws this error.
+As a simple example, if your code includes a line like `plot(myVar[500])`, the script keeps a buffer of the last 500 historical values of the `myVar` variable. This buffer ensures that on every execution, the `myVar` variable has access to its value 500 bars before the current one.
+Pine creates the historical buffer in a way that minimizes issues:
+  * Initially, the script calculates the historical buffers based on the data from the first several hundred bars. If historical offsets are constant, or if future offsets are not greater than the offsets found during this calculation, the script works without issues. The example above does not cause any issues because the variable is called in the global scope with a constant offset of 500. On the first iteration of the script, it is clear that the buffer size needs to be 500.
+  * If the script requests a value outside the buffer during calculation on historical data, the script tries to adjust the buffer to a proper length automatically. The script increases the buffer and restarts. This can happen several times until either the re-run limit is reached or the script calculates without the error.
+
+The error can still appear on historical data, but is more likely to occur on realtime data, which is not covered by automatic buffer detection. For example, the following script works when the user first adds it to the chart, but fails with an error when the first realtime tick arrives. This behaviour can be replicated consistently by turning on the Bar Replay feature and pressing Step Forward once. This happens because on historical data, we request `close[500]`, which establishes the size of the historical buffer as 500. When we request `close[1000]` on the first realtime bar, the script returns an error because the requested value is outside the buffer:
+```pine
+//@version=6
+indicator("Error on realtime bars")  
+myVar = close[barstate.ishistory ? 500 : 1000]  
+plot(myVar)  
+```
+To fix this, we need to ensure the historical buffer of our variable (in this case, close) is always large enough.
+NoticeThe maximum possible buffer size for most variables is 5000, and referring further into the past causes a different runtime error. To avoid that error, programmers can limit the requested offsets by using expressions such as `math.min(myVar, 5000)`.
+The following sections describe different methods to ensure that the historical buffer is of a sufficient size.
+### Potential fixes
+#### Use the ​`max_bars_back()`​ function
+The max_bars_back() function sets the size of the historical buffer for a particular variable. To fix the issue in the example script above, we need to ensure the buffer for close is at least 1000:
+```pine
+//@version=6
+indicator("Error on realtime bars")  
+myVar = close[barstate.ishistory ? 500 : 1000]  
+max_bars_back(close, 1000)  
+plot(myVar)  
+```
+#### Use the ​`max_bars_back`​ parameter of the ​`indicator()`​ or ​`strategy()`​ function
+The `max_bars_back` parameter of the indicator() and strategy() functions provides a handy way to increase the historical buffer for _all_ the variables inside of the script. However, increasing the historical buffer for all variables without a specific need for it negatively impacts performance. Using the max_bars_back() function is preferable because it is more precise and more performant.
+NoticeWhen using `max_bars_back`, choose the **minimum** default buffer size that accommodates all the script’s historical references. Buffer sizes that are larger than what a script requires can significantly impact its performance. For example, using `max_bars_back = 5000` in a script that references up to only 700 bars back causes an excessive use of resources.
+#### Use the maximum value manually on history to force a proper buffer size
+Another way to set a specific historical buffer is to call the variable on historical data with the maximum buffer required, regardless of whether it’s needed or not at the moment. For example, the script below assigns the `myVar` variable a `close[1000]` value on the very first bar of the dataset. It makes no practical difference — on the first bar, all past values are na — but because of this change, the script sets the variable’s buffer to 1000 and can then work on realtime bars without issues:
+```pine
+//@version=6
+indicator("Error on realtime bars")  
+myVar = close[barstate.isfirst ? 1000 : barstate.ishistory ? 500 : 1000]  
+plot(myVar)  
+```
+### Max bars back with Pine drawings
+A common reason for the historical offset error is creating drawings that are drawn on realtime data, but extend into the past. For example, the code below runs into the runtime error as soon as the first realtime tick arrives:
+```pine
+//@version=6
+indicator("Realtime error with drawings")  
+  
+if barstate.isrealtime  
+    line.new(bar_index[500], close, bar_index, close)  
+```
+NoteAll Pine drawings that anchor to the chart convert their horizontal coordinates into time values internally, even if the programmer defines those coordinates using bar_index values.
+When the example indicator above is calculating on historical data, it does not draw any lines, and so does not call the time series at all. In this case, the time series takes the default buffer size of 300. On realtime bars, we then request the `bar_index[500]` value, which is converted into `time[500]` by the function. But the script doesn’t have a large enough historical buffer, which causes the error to appear.
+In these cases, the historical buffer for the time series must be enlarged, even if the drawing functions use bar_index exclusively. The easiest fix is to call the max_bars_back() function on the time series, to ensure that its buffer is large enough:
+```pine
+//@version=6
+indicator("Realtime error with drawings")  
+  
+max_bars_back(time, 500)  
+  
+if barstate.isrealtime  
+    line.new(bar_index[500], close, bar_index, close)  
+```
+## Memory limits exceeded
+The most common cause of this error is the retrieval of objects and collections from `request.*()` functions such as request.security(). Other possible causes include unnecessary drawing updates, excess historical buffer capacity, or inefficient use of max_bars_back().
+### Returning collections from ​`request.*()`​ functions
+The “Memory limits exceeded” error most often occurs when a script uses `request.*()` functions to retrieve objects or collections from another symbol or timeframe.
+When requesting data from other contexts, the data for _each bar_ is copied and stored in memory to allow the script to reference it later in the main context. This can use a lot of memory, depending on the data. Requesting large collections can easily lead to excessive memory consumption.
+The example script below uses request.security() to retrieve the result of a user-defined function evaluated on the “1D” timeframe. The custom function (`dataFunction()`) creates an array and assigns its reference to a persistent variable declared using the `var` keyword, then pushes a new balance of power (BOP) value into the array and returns the collection’s reference on each bar. Each time that request.security() evaluates the `dataFunction()` call on the “1D” timeframe, the result references a _new copy_ of that array. Retrieving a new array from a requested context on each bar consumes a lot of memory. Therefore, this script can _exceed_ the memory limits when running on symbols with a sufficiently lengthy history:
+```pine
+//@version=6
+indicator("BOP array in higher timeframe context", "Memory limit demo")  
+  
+//@variable User-input length for calculating average of BOP values.   
+int avgLength = input.int(5, "Average BOP Length", minval = 1)  
+  
+//Returns a copy of the `dataArray` on every bar, which uses a lot of memory.  
+dataFunction() =>   
+    //@variable Persistent array containing the "balance of power" (BOP) values for all bars from the higher timeframe.  
+    var array<float> dataArray = array.new<float>(0)  
+  
+    //@variable The "balance of power" percentage calculated for the current bar.  
+    float bop = (close - open) / (high - low) * 100  
+    dataArray.push(bop)  
+  
+    //Return the full collection.  
+    dataArray  
+  
+// Request the full BOP array from the 1D timeframe.  
+array<float> reqData = request.security(syminfo.tickerid, "1D", dataFunction())  
+  
+// Plot zero line.  
+hline(0, "Zero line", color.gray, hline.style_dotted)  
+  
+// Latest BOP value and average BOP are calculated in the main context if `reqData` is not `na`.  
+//@variable The latest BOP value from the `reqData` array.  
+float latestValue = na  
+//@variable The average of the last `avgLength` BOP values.  
+float avgBOP = na  
+  
+if not na(reqData)  
+    // Retrieve BOP value for the current main context bar.  
+    latestValue := reqData.last()  
+  
+    // Calculate the average BOP for the most-recent values from the higher timeframe array.  
+    //@variable Size of the `reqData` array returned from the higher timeframe.  
+    int dataSize = reqData.size()  
+    //@variable A subset of the latest values from the `reqData` array. Its size is determined by the `avgLength` set.  
+    array<float> lastValues = dataSize >= avgLength ? reqData.slice(dataSize - avgLength, dataSize): reqData  
+    avgBOP := lastValues.avg()  
+  
+// Plot the BOP value and average line.  
+color plotColor = latestValue >= 0 ? color.aqua : color.orange  
+plot(latestValue, "BOP", plotColor, style = plot.style_columns)  
+plot(avgBOP, "Avg", color.purple, linewidth = 3)  
+```
+### How do I fix this?
+Optimize requests and limit the data returned to the main context to ensure that only the _minimum necessary_ data is stored in memory.
+If possible, try to return _calculated results_ directly rather than returning the collections themselves, or only return collections _conditionally_ , when they are necessary in the main context.
+Let’s consider a few common scenarios where scripts need specific data in the main context.
+#### Return last state only
+If a script requires only the _latest_ state of a requested collection, use a conditional structure or expression with barstate.islast as the condition to limit retrieving a copy of that collection to the last available bar.
+Here, we modified our script to display only the _latest_ average BOP (a single value), rather than plotting an average line. The updated request function now returns the calculated BOP values directly for each bar, and returns the higher timeframe’s array only on the last bar:
+```pine
+//@version=6
+indicator("BOP array on last bar", "Memory limit demo")  
+  
+//@variable User-input length for calculating average of BOP values.   
+int avgLength = input.int(5, "Average BOP Length", minval = 1)  
+  
+// Returns the calculated `bop` each bar, and a copy of the `dataArray` on the last bar or `na` otherwise.  
+dataFunction() =>   
+    //@variable Persistent array containing the "balance of power" (BOP) values for all higher timeframe bars.  
+    var array<float> dataArray = array.new<float>(0)  
+  
+    //@variable The "balance of power" percentage calculated for the current higher timeframe bar.  
+    float bop = (close - open) / (high - low) * 100  
+    dataArray.push(bop)  
+  
+    // Return the collection on the last bar only.  
+    if barstate.islast  
+        [bop, dataArray]  
+    else   
+        [bop, na]  
+  
+// Request calculated BOP value, and BOPs array if on last bar, from the higher timeframe.  
+[reqValue, reqData] = request.security(syminfo.tickerid, "1D", dataFunction())  
+  
+// Plot zero line.  
+hline(0, "Zero line", color.gray, hline.style_dotted)  
+  
+// Plot the BOP value for each main context bar.  
+color plotColor = reqValue >= 0 ? color.aqua : color.orange  
+plot(reqValue, "BOP", plotColor, style = plot.style_columns)  
+  
+// Calculate the average BOP for most-recent values from the higher timeframe array, and display result in a table cell.  
+if not na(reqData)  
+    //@variable Size of the `reqData` array returned from the higher timeframe.  
+    int dataSize = reqData.size()  
+    //@variable A subset of the latest values from the `reqData` array. Its size is determined by the `avgLength` set.  
+    array<float> lastValues = dataSize >= avgLength ? reqData.slice(dataSize - avgLength, dataSize): reqData  
+    //@variable The average of the last `avgLength` BOP values.  
+    float avgBOP = lastValues.avg()  
+  
+    // Display latest average value in a single-cell table.  
+    var table displayTable = table.new(position.bottom_right, 1, 1, color.purple)  
+    displayTable.cell(0, 0, "Avg of last " + str.tostring(avgLength) + " BOPs: " + str.tostring(avgBOP, "##.##") + "%",   
+         text_color = color.white)  
+```
+#### Return calculated results
+If a script needs the _result_ of a calculation on a collection, but does not need the collection itself in the main context, use a user-defined function as the request expression. The function can calculate on the collection in the _requested_ context and return only the result to the main context.
+For example, we can calculate the average BOP directly within our request function. Therefore, only the calculated values are stored in memory, and the request expression returns a tuple (current BOP and average BOP) to plot the results in the main context:
+```pine
+//@version=6
+indicator("Return BOP results only", "Memory limit demo")  
+  
+//@variable User-input length for calculating average of BOP values.   
+int avgLength = input.int(5, "Average BOP Length", minval = 1)  
+  
+// Returns the calculated `bop` and `avgBOP` values directly.  
+dataFunction() =>   
+    //@variable Persistent array containing the "balance of power" (BOP) values for all higher timeframe bars.  
+    var array<float> dataArray = array.new<float>(0)  
+  
+    //@variable The "balance of power" percentage calculated for the current higher timeframe bar.  
+    float bop = (close - open) / (high - low) * 100  
+    dataArray.push(bop)  
+  
+    // Calculate the average BOP for the `avgLength` most-recent values.  
+    //@variable Size of the `dataArray`.  
+    int dataSize = dataArray.size()  
+    //@variable A subset of the latest values from the `dataArray`. Its size is determined by the `avgLength` set.  
+    array<float> lastValues = dataSize >= avgLength ? dataArray.slice(dataSize - avgLength, dataSize): dataArray  
+    //@variable The average of the last `avgLength` BOP values.  
+    float avgBOP = lastValues.avg()  
+  
+    //Return the calculated results.  
+    [bop, avgBOP]  
+  
+// Request BOP and average BOP values from the higher timeframe.  
+[reqValue, reqAverage] = request.security(syminfo.tickerid, "1D", dataFunction())  
+  
+// Plot zero line.  
+hline(0, "Zero line", color.gray, hline.style_dotted)  
+  
+// Plot the BOP value and average line.  
+color plotColor = reqValue >= 0 ? color.aqua : color.orange  
+plot(reqValue, "BOP", plotColor, style = plot.style_columns)  
+plot(reqAverage, "Avg", color.purple, linewidth = 3)  
+```
+#### Return the collection on some bars
+If a script needs to retrieve a collection in the main context, but _not_ on _every bar_ , use conditional structures or expressions that return collection references only the necessary bars, and na on other bars. The logic in the main context can then handle the na gaps in the series and perform necessary actions on the reduced collections.
+For example, if we want to calculate the average BOP for each _month_ instead of using a user-input length, we can return the array reference from the requested context only when there is a change to a new month; na otherwise. We can then maintain the previous month’s values in the main context to keep a valid array for all intra-month bars:
+```pine
+//@version=6
+indicator("Monthly BOP array", "Memory limit demo")  
+  
+// Returns the calculated `bop`, and a copy of the `dataArray` on a month's first trading day only, or `na` otherwise.  
+dataFunction() =>   
+    //@variable Persistent array containing the "balance of power" (BOP) values for all higher timeframe bars.  
+    var array<float> dataArray = array.new<float>(0)  
+  
+    // When a new month starts, return monthly data array to calculate average BOP for completed month.  
+    //@variable Array is `na` except on first trading day of each month, when it contains completed month's BOP values.   
+    array<float> returnArray = na  
+    //@variable Is `true` on the first bar of each month, `false` otherwise.  
+    bool isNewMonth = timeframe.change("1M")  
+    if isNewMonth  
+        returnArray := dataArray  
+    //Clear persistent array to start storing new month's data.  
+    if isNewMonth[1]  
+        dataArray.clear()  
+  
+    //@variable The "balance of power" percentage calculated for the current higher timeframe bar.  
+    float bop = (close - open) / (high - low) * 100  
+    dataArray.push(bop)  
+  
+    //Return the calculated result and the `returnArray`.  
+    [bop, returnArray]  
+  
+// Request BOP data from the higher timeframe. (Returns calculated BOP and array of BOP values if new month starts)  
+[reqValue, reqData] = request.security(syminfo.tickerid, "1D", dataFunction())  
+  
+// Calculate the average BOP for the most-recent completed month.  
+//@variable Persistent array that holds the BOP values for the most-recent completed month.  
+var array<float> completedMonthBOPs = array.new<float>(0)  
+// If new month starts (i.e., `reqData` is not returned as `na`), then `completedMonthBOPs` is updated with new values.  
+// Otherwise, it persists the last valid values for the rest of the month to adjust for `na` gaps.  
+completedMonthBOPs := na(reqData) ? completedMonthBOPs : reqData  
+//@variable The average BOP for the most-recent completed month.  
+float avgBOP = completedMonthBOPs.avg()  
+  
+// Plot the BOP value and average line.  
+color plotColor = reqValue >= 0 ? color.aqua : color.orange  
+plot(reqValue, "BOP", plotColor, style = plot.style_columns)  
+plot(avgBOP, "Avg", color.purple, linewidth = 3)  
+```
+### Other possible error sources and their fixes
+There are a few other ways to optimize scripts to consume less memory.
+#### Minimize ​`request.*()`​ calls
+The `request.*()` functions can be computationally expensive to call, because they retrieve data from additional datasets. Data requests often require significant usage of runtime and memory resources. Excessive or inefficient requests can easily cause scripts to reach the memory limit.
+This memory consumption is especially substantial for scripts requesting data from lower timeframes, because the request.security_lower_tf() function returns arrays of intrabar data for _each_ bar in the script’s main dataset. For example, requesting data from the “1” (one-minute) timeframe on a “1D” chart returns hundreds of minute bars for each “1D” bar where the request executes. In the process, the script must allocate memory to store each requested array so that it can access them later in the main context. Maintaining that much data in memory requires a significant amount of resources.
+Programmers can reduce the memory requirements of a script’s requests by:
+  * Removing _unnecessary_ `request.*()` function calls.
+  * Changing the timeframe of a request to a higher timeframe, effectively reducing the number of retrieved data points.
+  * Condensing multiple requests to the _same_ context into a single `request.*()` call.
+  * Using the `request.*()` function’s `calc_bars_count` parameter to restrict the historical bars in the requested dataset.
+
+See the Minimizing `request.*()` calls section of the Profiling and optimization page to learn more about optimizing data requests.
+#### Use ​`max_bars_back`​ only when necessary
+The `max_bars_back` parameter of an indicator or strategy sets the size of the _historical buffers_ for all series in a script. Each buffer defines the number of historical data points _maintained in memory_ for the script’s variables and expressions.
+By default, the Pine Script runtime system automatically allocates an appropriate buffer for each variable and expression. Therefore, using the `max_bars_back` parameter or max_bars_back() function is necessary only when Pine cannot determine the referencing length of a series.
+If you encounter the referencing length error and must manually set the size of a historical buffer using the `max_bars_back` parameter or the max_bars_back() function, ensure that you select the _minimum size_ that accommodates your script’s historical references. Historical buffers that contain more data points than a script requires use excessive memory resources. Read up on how to optimize using `max_bars_back` in this Help Center article.
+#### Minimize historical buffer calculations
+The Pine Script runtime system automatically creates historical buffers for all variables and expressions in a script. It determines the size of each buffer based on the _historical references_ that the script performs via the [[] history-referencing operator]() or the functions that reference history internally.
+As a script loads on a dataset, historical references to distant points in the dataset can cause the system to reload the script and increase the size of necessary historical buffers. Each increase to historical buffer sizes leads to increased memory consumption. In some cases, buffer resizing can cause the script to exceed the memory limits. Therefore, ensure a script references only _necessary_ historical data in its calculations. When possible, modify the script’s logic to avoid referencing very distant points in history.
+Specifying a `calc_bars_count` argument in the indicator() or strategy() declaration statement can help reduce memory issues, because it restricts the number of historical bars that the script can use for its calculations. Similarly, using max_bars_back() to manually define the appropriate size for a buffer can help reduce buffer calculations. When using this function to specify the size of historical buffers, choose the **smallest** possible size that accommodates the script’s historical references to avoid unnecessary memory use.
+To learn more about historical buffer calculations and how to optimize them, see the Minimizing historical buffer calculations section of the Profiling and optimization page.
+#### Reduce drawing updates for tables
+Tables only display their _last state_ on a chart. Any updates to a table on historical bars are redundant, because they are not visible. To use the least memory, draw the table _once_ , and fill it on the last bar.
+To create a table object only once, assign the result of the table.new() call to a variable declared with the var keyword. When using table.cell() or the available setter functions to modify the table’s contents, execute those function calls only on the _last_ available bar — where the table’s latest state is visible — by placing the calls in a conditional structure that uses barstate.islast as the condition. See the Tables page to learn more.
+#### Do not update drawings on historical bars
+Similar to tables, any updates to other drawing objects such as lines and labels on historical bars are never visible to the user. The user sees only the drawing updates executed on _realtime_ bars.
+Eliminate updates to historical drawings during executions on historical bars wherever possible. Refer to the Reducing drawing updates section of the Profiling and optimization page for more information.
+#### Minimize total drawings stored for a chart
+Drawing objects such as lines and labels can consume a lot of memory, especially if a script _recreates_ drawings unnecessarily.
+For example, if a script draws a line from point `x1` to `x2`, then needs to update the line’s endpoint (`x2`), it’s more computationally expensive to delete the existing line and redraw a new line from `x1` to `x3`. Instead, using the _setter_ function line.set_x2() to update the existing line’s endpoint is more efficient.
+Look for ways to optimize drawing objects in a script:
+  * Reduce unnecessary redrawing by assigning a single drawing object’s reference to a variable declared with the var keyword, then modifying that object’s properties with the available setter functions.
+  * Remove unnecessary chart drawings with the `*.delete()` functions (e.g., line.delete() and label.delete()).
+  * Reduce a script’s drawing limits by specifying values for the `max_lines_count`, `max_labels_count`, `max_boxes_count`, or `max_polylines_count` parameters of the indicator() or strategy() declaration statement.
+
+#### Filter dates in strategies
+The total number of trades or orders simulated by strategies can impact memory consumption. When running strategy scripts that generate frequent orders on large datasets, reduce the number of unnecessary historical orders stored in memory by limiting the _starting point_ of your strategy.
+To limit the starting point of a strategy, a simple and effective approach is to use a conditional structure that activates the strategy’s order placement commands only when the bar’s opening or closing time comes after a specified date.
+See the How do I filter trades by a date or time range? portion of our Strategies FAQ page for an example of this technique.
+
+  * The if statement is too long
+  * Script requesting too many securities
+  * Script could not be translated from: null
+  * line 2: no viable alternative at character ’$’
+  * Mismatched input <…> expecting <???>
+  * Loop is too long (> 500 ms)
+  * Script has too many local variables
+  * The requested historical offset (X) is beyond the historical buffer’s limit (Y)
+  * Potential fixes
+  * Use the `max_bars_back()` function
+  * Use the `max_bars_back` parameter of the `indicator()` or `strategy()` function
+  * Use the maximum value manually on history to force a proper buffer size
+  * Max bars back with Pine drawings
+  * Memory limits exceeded
+  * Returning collections from `request.*()` functions
+  * How do I fix this?
+  * Return last state only
+  * Return calculated results
+  * Return the collection on some bars
+  * Other possible error sources and their fixes
+  * Minimize `request.*()` calls
+  * Use `max_bars_back` only when necessary
+  * Minimize historical buffer calculations
+  * Reduce drawing updates for tables
+  * Do not update drawings on historical bars
+  * Minimize total drawings stored for a chart
+  * Filter dates in strategies
+
+---
+
+## Release Notes
 
 ### Release notes
 
 # Release notes
 This page contains release notes describing notable changes to the Pine Script® experience.
 ##  2026
-### April 2026
-#### Multiline strings
-We’ve added support for multiline strings. A multiline string is a literal “string” value enclosed by _three_ pairs of quotation marks (e.g., `"""..."""`) or apostrophes (e.g., `'''...'''`). Unlike single-line string syntax (e.g., `"..."`), which typically defines a literal string on a single line of code, the multiline syntax can define a literal string across _multiple_ visible code lines.
-All code between the `"""` or `'''` delimiters in a multiline string definition represents _literal text_. Each code line between the delimiters defines a separate _text line_ for the string. The resulting string automatically includes the _newline_ control character between each separate line; it does _not_ require the `\n` escape sequence to insert the character at those points. For example:
-```pine
-//@version=6
-indicator("Multiline string demo")  
-  
-//@variable A multiline string enclosed by `"""` delimiters.  
-string multilineStr = """This is a multiline string.  
-Each of these code lines literally represents a separate line of text.   
-The newline character is automatically included before each new line.   
-We do not have to manually add the `\\n` escape sequence to separate the lines."""  
-  
-// Log the string's text in the Pine Logs pane on the first bar.  
-if barstate.isfirst  
-    log.info(multilineStr)  
-```
-Likewise, multiline strings automatically include _all spaces_ used for indentation in the code, regardless of the code blocks that include their definitions. For example:
-```pine
-//@version=6
-indicator("Indentation in multiline strings demo")  
-  
-//@variable A multiline string with indentation defined in the global scope.  
-string globalIndentedStr = """No indentation.  
-Also no indentation.  
- Indented by one space.  
-    Indented by four spaces.  
-            Indented by 12 spaces.  
-"""  
-  
-if barstate.islastconfirmedhistory  
-    //@variable A multiline string with indentation defined in a local block.  
-    //          Although the block requires four spaces of intendation for its statements, the string itself does not.  
-    //          Any indentation in the definition is still included literally in the string.  
-    string localIndentedStr = """---  
-No indentation.  
-    Indented by four spaces.   
-    """  
-  
-    // Concatenate both strings and display the result in a label.  
-    label.new(bar_index, 0, globalIndentedStr + localIndentedStr, textalign = text.align_left)  
-```
-Expressions can use multiline strings as operands and arguments, just like single-line strings. Therefore, programmers can use the multiline string syntax to create unique line wrapping formats in their code. For example:
-```pine
-//@version=6
-indicator("Line wrapping expressions with multiline strings demo")  
-  
-//@variable A string formed by concatenating three multiline strings.  
-string concatenated = """String 1  
-""" + """String 2  
-""" + '''String 3  
-'''  
-  
-// Log the resulting string's text in the Pine Logs pane on the first bar.  
-if barstate.isfirst  
-    log.info(concatenated)  
-```
-See the Multiline strings section of the Strings page to learn more about multiline strings and how they differ from single-line strings.
-#### Updated editor settings
-The Pine Editor’s settings include a new “Use word wrap by default” checkbox. If selected, the Pine Editor automatically applies word wrapping when the user creates a new script, opens an existing script, or reopens the editor. The user can deactivate or reactivate word wrap for the current editor session at any time by using the `Alt + Z`/`Option + Z` hotkey or the “Toggle Word Wrap” option in the command palette.
-#### Sorting UDT collections
-The array.sort(), array.sort_indices(), and matrix.sort() functions can now sort arrays and matrices that store IDs of user-defined types (UDTs). These functions sort UDT collections by comparing values from one of the “int”, “float”, or “string” _fields_ in the objects referenced by their elements.
-The new `sort_field` _parameter_ specifies _which_ object field a call to these functions compares to sort a UDT collection. It accepts either a _“const int”_ or _“const string”_ argument:
-  * A “const int” argument specifies a field by its _field index_ , where a value of 0 (the default) refers to the _first_ field in the type declaration.
-  * A “const string” argument specifies a field by its assigned _name_.
-
-For example:
-```pine
-//@version=6
-indicator("Sorting UDT collections demo")  
-  
-//@type  A custom type for creating objects that store "float", "int", and "string" data.  
-type Data  
-    float  price     // Field index 0.  
-    int    timestamp // Field index 1.  
-    string note      // Field index 2.  
-  
-//@function Create a formatted string representation of an array of `Data` IDs.  
-repr(array<Data> this) =>  
-    string result = "\n[\n"  
-    for data in this  
-        result += str.format(  
-            "(price: {0,number,0.000}, timestamp: {1,number,0}, note: {2}),\n",   
-            data.price, data.timestamp, data.note  
-        )  
-    result := str.replace(str.substring(result, 0, str.length(result) - 2), "[ ", "[") + "\n]"  
-  
-if barstate.islastconfirmedhistory  
-    //@variable References an array of `Data` objects representing data from a specific timeframe.  
-    array<Data> reqData = array.new<Data>(1, Data.new(hl2, time, timeframe.period))  
-    //@variable The typical number of seconds in the chart's timeframe.  
-    int tfSeconds = timeframe.in_seconds()  
-    //@variable References an array of timeframe strings.  
-    array<string> timeframes = array.from(  
-        timeframe.from_seconds(tfSeconds * 2), timeframe.from_seconds(tfSeconds * 8),   
-        timeframe.from_seconds(tfSeconds * 4)  
-    )  
-  
-    // Request a `Data` object for each timeframe and push the object's ID into the `reqData` array.  
-    for tf in timeframes  
-        reqData.push(request.security("", tf, Data.new(hl2, time, timeframe.period)))  
-  
-    // Log a message showing the unsorted array's structure.  
-    log.info("Unsorted" + repr(reqData))  
-  
-    //#region Display the structure of the array after sorting it using each field.   
-  
-    // First, let's sort the `reqData` array using the default `sort_field` argument (0) and log the result.  
-    // The default value refers to the *first field* listed in the `Data` type declaration (`price`).   
-    array.sort(reqData)  
-    log.info("Sorted using field 0 ('price')" + repr(reqData))  
-  
-    // Next, let's sort the array using the field named `timestamp` (at index 1) and log the result.  
-    reqData.sort(sort_field = "timestamp")  
-    log.info("Sorted using field named 'timestamp' (index 1)" + repr(reqData))  
-  
-    // Lastly, let's sort the array using the field at index 2 (`note`) and log the result.  
-    reqData.sort(sort_field = 2)  
-    log.info("Sorted using field 2 ('note')" + repr(reqData))  
-    //#endregion  
-```
-Refer to the Sorting arrays of user-defined types section of the Arrays page and the Sorting matrices of user-defined types section of the Matrices page to learn more about sorting UDT collections and the `sort_field` parameter.
 ### January 2026
 #### Footprint requests
 We’ve added a new request.footprint() function and two new _data types_ , footprint and volume_row. These features enable scripts to retrieve and work with volume footprint data for a chart’s dataset:
@@ -35244,10 +32696,6 @@ Pine Script v4 contains built-in functions with side effects ( ``line.
 
   * Overview
   * 2026
-  * April 2026
-  * Multiline strings
-  * Updated editor settings
-  * Sorting UDT collections
   * January 2026
   * Footprint requests
   * 2025
@@ -35387,7 +32835,7 @@ Pine Script v4 contains built-in functions with side effects ( ``line.
 
 ---
 
-## Migration guides
+## Migration Guides
 
 ### Overview
 
@@ -35485,7 +32933,7 @@ In Pine v5, values of “int” and “float” types can be implicitly cast to 
 For example, take a look at this conditional expression:
 `color expr = bar_index ? color.green : color.red  
 `
-It assigns `color.red` to `expr` on the _first_ bar of the chart, because that bar has a `bar_index` of 0, and then assigns `color.green` on _every_ following bar, because any _nonzero_ value is `true`. The ternary operator ?: expects a “bool” expression for its condition, but in v5 it can also accept a numeric value as its conditional expression, which it automatically converts (implicitly casts) to a “bool”.
+It assigns `color.red` to `expr` on the _first_ bar of the chart, because that bar has a `bar_index` of 0, and then assigns `color.green` on _every_ following bar, because any _non-zero_ value is `true`. The ternary operator ?: expects a “bool” expression for its condition, but in v5 it can also accept a numeric value as its conditional expression, which it automatically converts (implicitly casts) to a “bool”.
 In v6, scripts must _explicitly_ cast a numeric value to “bool” to use it where a “bool” type is required.
 **Fix:** Wrap the numeric value with the bool() function to cast it explicitly.
 `color expr = bool(bar_index) ? color.green : color.red  
@@ -35717,12 +33165,12 @@ var seriesLen = 1
 plot(ta.ema(close, seriesLen))  
 ```
 ### Color changes
-The color values behind some of the `color.*` constants have changed in Pine v6 to better reflect the TradingView palette:  
-| Constant name  | Pine v5 color  | Pine v6 color  |  
-| --- | --- | --- |  
-| color.red  | #FF5252  | #F23645  |  
-| color.teal  | #00897B  | #089981  |  
-| color.yellow  | #FFEB3B  | #FDD835  |  
+The color values behind some of the `color.*` constants have changed in Pine v6 to better reflect the TradingView palette:
+Constant name | Pine v5 color | Pine v6 color  
+---|---|---  
+color.red | #FF5252 | #F23645  
+color.teal | #00897B | #089981  
+color.yellow | #FFEB3B | #FDD835  
 Additionally, the default text color for label.new() is now `color.white` in v6 (previously `color.black` in v5) to ensure that the text is more visible against the default `color.blue` label.
 ```pine
 //@version=6
@@ -36514,153 +33962,155 @@ int_input = input.int(1, "Integer", minval = 1)
 `
 See the User Manual’s page on Inputs, and the Some function parameters now require built-in arguments section of this guide for more information.
 ## All variable, function, and parameter name changes
-### Removed functions and variables  
-| v4  | v5  |  
-| --- | --- |  
-|  `input.bool` input  | Replaced by `input.bool()`  |  
-|  `input.color` input  | Replaced by `input.color()`  |  
-|  `input.float` input  | Replaced by `input.float()`  |  
-|  `input.integer` input  | Replaced by `input.int()`  |  
-|  `input.resolution` input  | Replaced by `input.timeframe()`  |  
-|  `input.session` input  | Replaced by `input.session()`  |  
-|  `input.source` input  | Replaced by `input.source()`  |  
-|  `input.string` input  | Replaced by `input.string()`  |  
-|  `input.symbol` input  | Replaced by `input.symbol()`  |  
-|  `input.time` input  | Replaced by `input.time()`  |  
-| `iff()`  | Use the `?:` operator instead  |  
-| `offset()`  | Use the `[]` operator instead  |  
+### Removed functions and variables
+v4 | v5  
+---|---  
+`input.bool` input | Replaced by `input.bool()`  
+`input.color` input | Replaced by `input.color()`  
+`input.float` input | Replaced by `input.float()`  
+`input.integer` input | Replaced by `input.int()`  
+`input.resolution` input | Replaced by `input.timeframe()`  
+`input.session` input | Replaced by `input.session()`  
+`input.source` input | Replaced by `input.source()`  
+`input.string` input | Replaced by `input.string()`  
+`input.symbol` input | Replaced by `input.symbol()`  
+`input.time` input | Replaced by `input.time()`  
+`iff()` | Use the `?:` operator instead  
+`offset()` | Use the `[]` operator instead  
 ### Renamed functions and parameters
-#### No namespace change  
-| v4  | v5  |  
-| --- | --- |  
-| `study(<...>, resolution, resolution_gaps, <...>)`  | `indicator(<...>, timeframe, timeframe_gaps, <...>)`  |  
-| `strategy.entry(long)`  | `strategy.entry(direction)`  |  
-| `strategy.order(long)`  | `strategy.order(direction)`  |  
-| `time(resolution)`  | `time(timeframe)`  |  
-| `time_close(resolution)`  | `time_close(timeframe)`  |  
-| `nz(x, y)`  | `nz(source, replacement)`  |  
+#### No namespace change
+v4 | v5  
+---|---  
+`study(<...>, resolution, resolution_gaps, <...>)` | `indicator(<...>, timeframe, timeframe_gaps, <...>)`  
+```pine
+strategy.entry(long)` | `strategy.entry(direction)`
+`strategy.order(long)` | `strategy.order(direction)
+```
+`time(resolution)` | `time(timeframe)`  
+`time_close(resolution)` | `time_close(timeframe)`  
+`nz(x, y)` | `nz(source, replacement)`  
 #### ”ta” namespace for technical analysis functions and variables
-##### Indicator functions and variables  
-| v4  | v5  |  
-| --- | --- |  
-| `accdist`  | `ta.accdist`  |  
-| `alma()`  | `ta.alma()`  |  
-| `atr()`  | `ta.atr()`  |  
-| `bb()`  | `ta.bb()`  |  
-| `bbw()`  | `ta.bbw()`  |  
-| `cci()`  | `ta.cci()`  |  
-| `cmo()`  | `ta.cmo()`  |  
-| `cog()`  | `ta.cog()`  |  
-| `dmi()`  | `ta.dmi()`  |  
-| `ema()`  | `ta.ema()`  |  
-| `hma()`  | `ta.hma()`  |  
-| `iii`  | `ta.iii`  |  
-| `kc()`  | `ta.kc()`  |  
-| `kcw()`  | `ta.kcw()`  |  
-| `linreg()`  | `ta.linreg()`  |  
-| `macd()`  | `ta.macd()`  |  
-| `mfi()`  | `ta.mfi()`  |  
-| `mom()`  | `ta.mom()`  |  
-| `nvi`  | `ta.nvi`  |  
-| `obv`  | `ta.obv`  |  
-| `pvi`  | `ta.pvi`  |  
-| `pvt`  | `ta.pvt`  |  
-| `rma()`  | `ta.rma()`  |  
-| `roc()`  | `ta.roc()`  |  
-| `rsi(x, y)`  | `ta.rsi(source, length)`  |  
-| `sar()`  | `ta.sar()`  |  
-| `sma()`  | `ta.sma()`  |  
-| `stoch()`  | `ta.stoch()`  |  
-| `supertrend()`  | `ta.supertrend()`  |  
-| `swma(x)`  | `ta.swma(source)`  |  
-| `tr`  | `ta.tr`  |  
-| `tr()`  | `ta.tr()`  |  
-| `tsi()`  | `ta.tsi()`  |  
-| `vwap`  | `ta.vwap`  |  
-| `vwap(x)`  | `ta.vwap(source)`  |  
-| `vwma()`  | `ta.vwma()`  |  
-| `wad`  | `ta.wad`  |  
-| `wma()`  | `ta.wma()`  |  
-| `wpr()`  | `ta.wpr()`  |  
-| `wvad`  | `ta.wvad`  |  
-##### Supporting functions  
-| v4  | v5  |  
-| --- | --- |  
-| `barsince()`  | `ta.barsince()`  |  
-| `change()`  | `ta.change()`  |  
-| `correlation(source_a, source_b, length)`  | `ta.correlation(source1, source2, length)`  |  
-| `cross(x, y)`  | `ta.cross(source1, source2)`  |  
-| `crossover(x, y)`  | `ta.crossover(source1, source2)`  |  
-| `crossunder(x, y)`  | `ta.crossunder(source1, source2)`  |  
-| `cum(x)`  | `ta.cum(source)`  |  
-| `dev()`  | `ta.dev()`  |  
-| `falling()`  | `ta.falling()`  |  
-| `highest()`  | `ta.highest()`  |  
-| `highestbars()`  | `ta.highestbars()`  |  
-| `lowest()`  | `ta.lowest()`  |  
-| `lowestbars()`  | `ta.lowestbars()`  |  
-| `median()`  | `ta.median()`  |  
-| `mode()`  | `ta.mode()`  |  
-| `percentile_linear_interpolation()`  | `ta.percentile_linear_interpolation()`  |  
-| `percentile_nearest_rank()`  | `ta.percentile_nearest_rank()`  |  
-| `percentrank()`  | `ta.percentrank()`  |  
-| `pivothigh()`  | `ta.pivothigh()`  |  
-| `pivotlow()`  | `ta.pivotlow()`  |  
-| `range()`  | `ta.range()`  |  
-| `rising()`  | `ta.rising()`  |  
-| `stdev()`  | `ta.stdev()`  |  
-| `valuewhen()`  | `ta.valuewhen()`  |  
-| `variance()`  | `ta.variance()`  |  
-#### ”math” namespace for math-related functions and variables  
-| v4  | v5  |  
-| --- | --- |  
-| `abs(x)`  | `math.abs(number)`  |  
-| `acos(x)`  | `math.acos(number)`  |  
-| `asin(x)`  | `math.asin(number)`  |  
-| `atan(x)`  | `math.atan(number)`  |  
-| `avg()`  | `math.avg()`  |  
-| `ceil(x)`  | `math.ceil(number)`  |  
-| `cos(x)`  | `math.cos(angle)`  |  
-| `exp(x)`  | `math.exp(number)`  |  
-| `floor(x)`  | `math.floor(number)`  |  
-| `log(x)`  | `math.log(number)`  |  
-| `log10(x)`  | `math.log10(number)`  |  
-| `max()`  | `math.max()`  |  
-| `min()`  | `math.min()`  |  
-| `pow()`  | `math.pow()`  |  
-| `random()`  | `math.random()`  |  
-| `round(x, precision)`  | `math.round(number, precision)`  |  
-| `round_to_mintick(x)`  | `math.round_to_mintick(number)`  |  
-| `sign(x)`  | `math.sign(number)`  |  
-| `sin(x)`  | `math.sin(angle)`  |  
-| `sqrt(x)`  | `math.sqrt(number)`  |  
-| `sum()`  | `math.sum()`  |  
-| `tan(x)`  | `math.tan(angle)`  |  
-| `todegrees()`  | `math.todegrees()`  |  
-| `toradians()`  | `math.toradians()`  |  
-#### ”request” namespace for functions that request external data  
-| v4  | v5  |  
-| --- | --- |  
-| `financial()`  | `request.financial()`  |  
-| `quandl()`  | `request.quandl()`  |  
-| `security(<...>, resolution, <...>)`  | `request.security(<...>, timeframe, <...>)`  |  
-| `splits()`  | `request.splits()`  |  
-| `dividends()`  | `request.dividends()`  |  
-| `earnings()`  | `request.earnings()`  |  
-#### ”ticker” namespace for functions that help create tickers  
-| v4  | v5  |  
-| --- | --- |  
-| `heikinashi()`  | `ticker.heikinashi()`  |  
-| `kagi()`  | `ticker.kagi()`  |  
-| `linebreak()`  | `ticker.linebreak()`  |  
-| `pointfigure()`  | `ticker.pointfigure()`  |  
-| `renko()`  | `ticker.renko()`  |  
-| `tickerid()`  | `ticker.new()`  |  
-#### ”str” namespace for functions that manipulate strings  
-| v4  | v5  |  
-| --- | --- |  
-| `tostring(x, y)`  | `str.tostring(value, format)`  |  
-| `tonumber(x)`  | `str.tonumber(string)`  |  
+##### Indicator functions and variables
+v4 | v5  
+---|---  
+`accdist` | `ta.accdist`  
+`alma()` | `ta.alma()`  
+`atr()` | `ta.atr()`  
+`bb()` | `ta.bb()`  
+`bbw()` | `ta.bbw()`  
+`cci()` | `ta.cci()`  
+`cmo()` | `ta.cmo()`  
+`cog()` | `ta.cog()`  
+`dmi()` | `ta.dmi()`  
+`ema()` | `ta.ema()`  
+`hma()` | `ta.hma()`  
+`iii` | `ta.iii`  
+`kc()` | `ta.kc()`  
+`kcw()` | `ta.kcw()`  
+`linreg()` | `ta.linreg()`  
+`macd()` | `ta.macd()`  
+`mfi()` | `ta.mfi()`  
+`mom()` | `ta.mom()`  
+`nvi` | `ta.nvi`  
+`obv` | `ta.obv`  
+`pvi` | `ta.pvi`  
+`pvt` | `ta.pvt`  
+`rma()` | `ta.rma()`  
+`roc()` | `ta.roc()`  
+`rsi(x, y)` | `ta.rsi(source, length)`  
+`sar()` | `ta.sar()`  
+`sma()` | `ta.sma()`  
+`stoch()` | `ta.stoch()`  
+`supertrend()` | `ta.supertrend()`  
+`swma(x)` | `ta.swma(source)`  
+`tr` | `ta.tr`  
+`tr()` | `ta.tr()`  
+`tsi()` | `ta.tsi()`  
+`vwap` | `ta.vwap`  
+`vwap(x)` | `ta.vwap(source)`  
+`vwma()` | `ta.vwma()`  
+`wad` | `ta.wad`  
+`wma()` | `ta.wma()`  
+`wpr()` | `ta.wpr()`  
+`wvad` | `ta.wvad`  
+##### Supporting functions
+v4 | v5  
+---|---  
+`barsince()` | `ta.barsince()`  
+`change()` | `ta.change()`  
+`correlation(source_a, source_b, length)` | `ta.correlation(source1, source2, length)`  
+`cross(x, y)` | `ta.cross(source1, source2)`  
+`crossover(x, y)` | `ta.crossover(source1, source2)`  
+`crossunder(x, y)` | `ta.crossunder(source1, source2)`  
+`cum(x)` | `ta.cum(source)`  
+`dev()` | `ta.dev()`  
+`falling()` | `ta.falling()`  
+`highest()` | `ta.highest()`  
+`highestbars()` | `ta.highestbars()`  
+`lowest()` | `ta.lowest()`  
+`lowestbars()` | `ta.lowestbars()`  
+`median()` | `ta.median()`  
+`mode()` | `ta.mode()`  
+`percentile_linear_interpolation()` | `ta.percentile_linear_interpolation()`  
+`percentile_nearest_rank()` | `ta.percentile_nearest_rank()`  
+`percentrank()` | `ta.percentrank()`  
+`pivothigh()` | `ta.pivothigh()`  
+`pivotlow()` | `ta.pivotlow()`  
+`range()` | `ta.range()`  
+`rising()` | `ta.rising()`  
+`stdev()` | `ta.stdev()`  
+`valuewhen()` | `ta.valuewhen()`  
+`variance()` | `ta.variance()`  
+#### ”math” namespace for math-related functions and variables
+v4 | v5  
+---|---  
+`abs(x)` | `math.abs(number)`  
+`acos(x)` | `math.acos(number)`  
+`asin(x)` | `math.asin(number)`  
+`atan(x)` | `math.atan(number)`  
+`avg()` | `math.avg()`  
+`ceil(x)` | `math.ceil(number)`  
+`cos(x)` | `math.cos(angle)`  
+`exp(x)` | `math.exp(number)`  
+`floor(x)` | `math.floor(number)`  
+`log(x)` | `math.log(number)`  
+`log10(x)` | `math.log10(number)`  
+`max()` | `math.max()`  
+`min()` | `math.min()`  
+`pow()` | `math.pow()`  
+`random()` | `math.random()`  
+`round(x, precision)` | `math.round(number, precision)`  
+`round_to_mintick(x)` | `math.round_to_mintick(number)`  
+`sign(x)` | `math.sign(number)`  
+`sin(x)` | `math.sin(angle)`  
+`sqrt(x)` | `math.sqrt(number)`  
+`sum()` | `math.sum()`  
+`tan(x)` | `math.tan(angle)`  
+`todegrees()` | `math.todegrees()`  
+`toradians()` | `math.toradians()`  
+#### ”request” namespace for functions that request external data
+v4 | v5  
+---|---  
+`financial()` | `request.financial()`  
+`quandl()` | `request.quandl()`  
+`security(<...>, resolution, <...>)` | `request.security(<...>, timeframe, <...>)`  
+`splits()` | `request.splits()`  
+`dividends()` | `request.dividends()`  
+`earnings()` | `request.earnings()`  
+#### ”ticker” namespace for functions that help create tickers
+v4 | v5  
+---|---  
+`heikinashi()` | `ticker.heikinashi()`  
+`kagi()` | `ticker.kagi()`  
+`linebreak()` | `ticker.linebreak()`  
+`pointfigure()` | `ticker.pointfigure()`  
+`renko()` | `ticker.renko()`  
+`tickerid()` | `ticker.new()`  
+#### ”str” namespace for functions that manipulate strings
+v4 | v5  
+---|---  
+`tostring(x, y)` | `str.tostring(value, format)`  
+`tonumber(x)` | `str.tonumber(string)`  
 
   * Introduction
   * v4 to v5 converter
@@ -36858,7 +34308,7 @@ plot(sma(src, length))
 
 ---
 
-## Where can I get more information?
+## Where Can I Get More Information
 
 ### Where can I get more information?
 

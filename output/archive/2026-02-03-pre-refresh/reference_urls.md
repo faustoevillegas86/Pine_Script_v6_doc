@@ -1,43 +1,20 @@
 # Pine Script V6 Reference - URL Index
 
-Generated: 2026-05-27 13:39
+Generated: 2026-02-03 16:02
 
 ## Table of Contents
 
-- [Types](#types) (20)
 - [Variables](#variables) (161)
 - [Constants](#constants) (239)
 - [Functions](#functions) (475)
 - [Keywords](#keywords) (15)
+- [Types](#types) (20)
 - [Operators](#operators) (21)
 - [Annotations](#annotations) (10)
 
 **Total: 941 items**
 
 ---
-
-## Types
-
-- [array](https://www.tradingview.com/pine-script-reference/v6/#type_array)
-- [bool](https://www.tradingview.com/pine-script-reference/v6/#type_bool)
-- [box](https://www.tradingview.com/pine-script-reference/v6/#type_box)
-- [chart.point](https://www.tradingview.com/pine-script-reference/v6/#type_chart.point)
-- [color](https://www.tradingview.com/pine-script-reference/v6/#type_color)
-- [const](https://www.tradingview.com/pine-script-reference/v6/#type_const)
-- [float](https://www.tradingview.com/pine-script-reference/v6/#type_float)
-- [footprint](https://www.tradingview.com/pine-script-reference/v6/#type_footprint)
-- [int](https://www.tradingview.com/pine-script-reference/v6/#type_int)
-- [label](https://www.tradingview.com/pine-script-reference/v6/#type_label)
-- [line](https://www.tradingview.com/pine-script-reference/v6/#type_line)
-- [linefill](https://www.tradingview.com/pine-script-reference/v6/#type_linefill)
-- [map](https://www.tradingview.com/pine-script-reference/v6/#type_map)
-- [matrix](https://www.tradingview.com/pine-script-reference/v6/#type_matrix)
-- [polyline](https://www.tradingview.com/pine-script-reference/v6/#type_polyline)
-- [series](https://www.tradingview.com/pine-script-reference/v6/#type_series)
-- [simple](https://www.tradingview.com/pine-script-reference/v6/#type_simple)
-- [string](https://www.tradingview.com/pine-script-reference/v6/#type_string)
-- [table](https://www.tradingview.com/pine-script-reference/v6/#type_table)
-- [volume_row](https://www.tradingview.com/pine-script-reference/v6/#type_volume_row)
 
 ## Variables
 
@@ -940,6 +917,29 @@ Generated: 2026-05-27 13:39
 - [var](https://www.tradingview.com/pine-script-reference/v6/#kw_var)
 - [varip](https://www.tradingview.com/pine-script-reference/v6/#kw_varip)
 - [while](https://www.tradingview.com/pine-script-reference/v6/#kw_while)
+
+## Types
+
+- [array](https://www.tradingview.com/pine-script-reference/v6/#type_array)
+- [bool](https://www.tradingview.com/pine-script-reference/v6/#type_bool)
+- [box](https://www.tradingview.com/pine-script-reference/v6/#type_box)
+- [chart.point](https://www.tradingview.com/pine-script-reference/v6/#type_chart.point)
+- [color](https://www.tradingview.com/pine-script-reference/v6/#type_color)
+- [const](https://www.tradingview.com/pine-script-reference/v6/#type_const)
+- [float](https://www.tradingview.com/pine-script-reference/v6/#type_float)
+- [footprint](https://www.tradingview.com/pine-script-reference/v6/#type_footprint)
+- [int](https://www.tradingview.com/pine-script-reference/v6/#type_int)
+- [label](https://www.tradingview.com/pine-script-reference/v6/#type_label)
+- [line](https://www.tradingview.com/pine-script-reference/v6/#type_line)
+- [linefill](https://www.tradingview.com/pine-script-reference/v6/#type_linefill)
+- [map](https://www.tradingview.com/pine-script-reference/v6/#type_map)
+- [matrix](https://www.tradingview.com/pine-script-reference/v6/#type_matrix)
+- [polyline](https://www.tradingview.com/pine-script-reference/v6/#type_polyline)
+- [series](https://www.tradingview.com/pine-script-reference/v6/#type_series)
+- [simple](https://www.tradingview.com/pine-script-reference/v6/#type_simple)
+- [string](https://www.tradingview.com/pine-script-reference/v6/#type_string)
+- [table](https://www.tradingview.com/pine-script-reference/v6/#type_table)
+- [volume_row](https://www.tradingview.com/pine-script-reference/v6/#type_volume_row)
 
 ## Operators
 

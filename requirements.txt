@@ -4,7 +4,6 @@ beautifulsoup4~=4.12
 requests~=2.26
 playwright>=1.49.0
 aiofiles>=24.1.0
-asyncio>=3.4.3
 
 # Processing dependencies
 markdown>=3.4

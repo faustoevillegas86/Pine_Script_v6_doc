@@ -1,30 +1,30 @@
 # Pine Script V6 Documentation - URL Index
 
-Generated: 2026-05-27 18:12
+Generated: 2026-02-03 16:02
 
 ## Table of Contents
 
-- [Welcome to Pine Script® v6](#welcome-to-pine-script®-v6) (1)
-- [Pine Script® primer](#pine-script®-primer) (3)
-- [Language](#language) (17)
+- [Welcome](#welcome) (1)
+- [Primer](#primer) (3)
+- [Language](#language) (16)
 - [Visuals](#visuals) (11)
 - [Concepts](#concepts) (13)
-- [Writing scripts](#writing-scripts) (5)
-- [Errors and warnings](#errors-and-warnings) (5)
+- [Writing](#writing) (5)
 - [FAQ](#faq) (13)
-- [Release notes](#release-notes) (1)
-- [Migration guides](#migration-guides) (6)
-- [Where can I get more information?](#where-can-i-get-more-information?) (1)
+- [Error Messages](#error-messages) (1)
+- [Release Notes](#release-notes) (1)
+- [Migration Guides](#migration-guides) (6)
+- [Where Can I Get More Information](#where-can-i-get-more-information) (1)
 
-**Total: 76 items**
+**Total: 71 items**
 
 ---
 
-## Welcome to Pine Script® v6
+## Welcome
 
 - [Welcome to Pine Script® v6](https://www.tradingview.com/pine-script-docs/welcome)
 
-## Pine Script® primer
+## Primer
 
 - [First steps](https://www.tradingview.com/pine-script-docs/primer/first-steps)
 - [First indicator](https://www.tradingview.com/pine-script-docs/primer/first-indicator)
@@ -36,7 +36,6 @@ Generated: 2026-05-27 18:12
 - [Type system](https://www.tradingview.com/pine-script-docs/language/type-system)
 - [Script structure](https://www.tradingview.com/pine-script-docs/language/script-structure)
 - [Identifiers](https://www.tradingview.com/pine-script-docs/language/identifiers)
-- [Declaration statements](https://www.tradingview.com/pine-script-docs/language/declaration-statements)
 - [Variable declarations](https://www.tradingview.com/pine-script-docs/language/variable-declarations)
 - [Operators](https://www.tradingview.com/pine-script-docs/language/operators)
 - [Conditional structures](https://www.tradingview.com/pine-script-docs/language/conditional-structures)
@@ -80,21 +79,13 @@ Generated: 2026-05-27 18:12
 - [Time](https://www.tradingview.com/pine-script-docs/concepts/time)
 - [Timeframes](https://www.tradingview.com/pine-script-docs/concepts/timeframes)
 
-## Writing scripts
+## Writing
 
 - [Style guide](https://www.tradingview.com/pine-script-docs/writing/style-guide)
 - [Debugging](https://www.tradingview.com/pine-script-docs/writing/debugging)
 - [Profiling and optimization](https://www.tradingview.com/pine-script-docs/writing/profiling-and-optimization)
 - [Publishing scripts](https://www.tradingview.com/pine-script-docs/writing/publishing)
 - [Limitations](https://www.tradingview.com/pine-script-docs/writing/limitations)
-
-## Errors and warnings
-
-- [Overview](https://www.tradingview.com/pine-script-docs/errors/overview)
-- [CE10101](https://www.tradingview.com/pine-script-docs/errors/CE10101)
-- [CW10003](https://www.tradingview.com/pine-script-docs/errors/CW10003)
-- [RE10139](https://www.tradingview.com/pine-script-docs/errors/RE10139)
-- [RE10143](https://www.tradingview.com/pine-script-docs/errors/RE10143)
 
 ## FAQ
 
@@ -112,11 +103,15 @@ Generated: 2026-05-27 18:12
 - [Variables and operators](https://www.tradingview.com/pine-script-docs/faq/variables-and-operators)
 - [Visuals](https://www.tradingview.com/pine-script-docs/faq/visuals)
 
-## Release notes
+## Error Messages
+
+- [Error messages](https://www.tradingview.com/pine-script-docs/error-messages)
+
+## Release Notes
 
 - [Release notes](https://www.tradingview.com/pine-script-docs/release-notes)
 
-## Migration guides
+## Migration Guides
 
 - [Overview](https://www.tradingview.com/pine-script-docs/migration-guides/overview)
 - [To Pine Script® version 6](https://www.tradingview.com/pine-script-docs/migration-guides/to-pine-version-6)
@@ -125,7 +120,7 @@ Generated: 2026-05-27 18:12
 - [To Pine Script® version 3](https://www.tradingview.com/pine-script-docs/migration-guides/to-pine-version-3)
 - [To Pine Script® version 2](https://www.tradingview.com/pine-script-docs/migration-guides/to-pine-version-2)
 
-## Where can I get more information?
+## Where Can I Get More Information
 
 - [Where can I get more information?](https://www.tradingview.com/pine-script-docs/where-can-i-get-more-information)
 

@@ -36,6 +36,41 @@ ALLOWED_PREFIXES = (
     "https://developers.google.com/apps-script/samples",
 )
 
+COLLECTIONS_PROMO_TEXT = (
+    "Organiza tus páginas con colecciones "
+    "Guarda y categoriza el contenido según tus preferencias."
+)
+
+GOOGLE_SITE_SUFFIX = " | Google for Developers"
+GENERIC_LINK_LABELS = {
+    "Ver muestra",
+}
+
+
+def normalize_text(text: str) -> str:
+    text = " ".join(text.split()).strip()
+    text = text.replace(COLLECTIONS_PROMO_TEXT, "").strip()
+    if text.endswith(GOOGLE_SITE_SUFFIX):
+        text = text[: -len(GOOGLE_SITE_SUFFIX)].strip()
+    return text
+
+
+def extract_link_label(link) -> str:
+    """Prefer card headings over generic CTA labels such as 'Ver muestra'."""
+    text = normalize_text(link.get_text(" ", strip=True))
+    if text not in GENERIC_LINK_LABELS:
+        return text
+
+    card = link.find_parent(class_="devsite-landing-row-item")
+    if not card:
+        return text
+
+    heading = card.find(["h2", "h3", "h4", "h5", "h6"])
+    if not heading:
+        return text
+
+    return normalize_text(heading.get_text(" ", strip=True)) or text
+
 
 def get_main_container(soup: BeautifulSoup):
     selectors = ["main", "article", ".devsite-article", ".devsite-article-body"]
@@ -75,9 +110,9 @@ def extract_page_title(main, soup, url: str) -> str:
     if main:
         h1 = main.find("h1")
         if h1 and h1.get_text(strip=True):
-            return h1.get_text(strip=True)
-    title = soup.title.get_text(strip=True) if soup.title else url
-    return title or url
+            return normalize_text(h1.get_text(" ", strip=True))
+    title = soup.title.get_text(" ", strip=True) if soup.title else url
+    return normalize_text(title) or url
 
 
 async def extract_page_urls(page, url: str):
@@ -95,7 +130,7 @@ async def extract_page_urls(page, url: str):
         return title, items
 
     for link in main.find_all("a", href=True):
-        text = link.get_text(strip=True)
+        text = extract_link_label(link)
         href = link.get("href", "").strip()
         if not text or not href:
             continue
@@ -116,6 +151,7 @@ def generate_url_document(sections: dict, output_file: Path):
     doc += "## Table of Contents\n\n"
     total = 0
     for section, items in sections.items():
+        section = normalize_text(section)
         count = len(items)
         total += count
         anchor = section.lower().replace(" ", "-")
@@ -124,9 +160,11 @@ def generate_url_document(sections: dict, output_file: Path):
     doc += "---\n\n"
 
     for section, items in sections.items():
+        section = normalize_text(section)
         doc += f"## {section}\n\n"
         for item in items:
-            doc += f"- [{item['name']}]({item['url']})\n"
+            name = normalize_text(item["name"])
+            doc += f"- [{name}]({item['url']})\n"
         doc += "\n"
 
     output_file.write_text(doc, encoding="utf-8")
