@@ -1,16 +1,957 @@
 # Pine Script V6 Reference - Complete Content
 
-Generated: 2026-05-27 14:32
+Generated: 2026-05-28 20:51
 
 ## Table of Contents
 
 - [Types](#types) (20)
+  - [array](#ref-type-array)
+  - [bool](#ref-type-bool)
+  - [box](#ref-type-box)
+  - [chart.point](#ref-type-chart-point)
+  - [color](#ref-type-color)
+  - [const](#ref-type-const)
+  - [float](#ref-type-float)
+  - [footprint](#ref-type-footprint)
+  - [int](#ref-type-int)
+  - [label](#ref-type-label)
+  - [line](#ref-type-line)
+  - [linefill](#ref-type-linefill)
+  - [map](#ref-type-map)
+  - [matrix](#ref-type-matrix)
+  - [polyline](#ref-type-polyline)
+  - [series](#ref-type-series)
+  - [simple](#ref-type-simple)
+  - [string](#ref-type-string)
+  - [table](#ref-type-table)
+  - [volume_row](#ref-type-volume-row)
 - [Variables](#variables) (161)
+  - [ask](#ref-var-ask)
+  - [bar_index](#ref-var-bar-index)
+  - [barstate.isconfirmed](#ref-var-barstate-isconfirmed)
+  - [barstate.isfirst](#ref-var-barstate-isfirst)
+  - [barstate.ishistory](#ref-var-barstate-ishistory)
+  - [barstate.islast](#ref-var-barstate-islast)
+  - [barstate.islastconfirmedhistory](#ref-var-barstate-islastconfirmedhistory)
+  - [barstate.isnew](#ref-var-barstate-isnew)
+  - [barstate.isrealtime](#ref-var-barstate-isrealtime)
+  - [bid](#ref-var-bid)
+  - [box.all](#ref-var-box-all)
+  - [chart.bg_color](#ref-var-chart-bg-color)
+  - [chart.fg_color](#ref-var-chart-fg-color)
+  - [chart.is_heikinashi](#ref-var-chart-is-heikinashi)
+  - [chart.is_kagi](#ref-var-chart-is-kagi)
+  - [chart.is_linebreak](#ref-var-chart-is-linebreak)
+  - [chart.is_pnf](#ref-var-chart-is-pnf)
+  - [chart.is_range](#ref-var-chart-is-range)
+  - [chart.is_renko](#ref-var-chart-is-renko)
+  - [chart.is_standard](#ref-var-chart-is-standard)
+  - [chart.left_visible_bar_time](#ref-var-chart-left-visible-bar-time)
+  - [chart.right_visible_bar_time](#ref-var-chart-right-visible-bar-time)
+  - [close](#ref-var-close)
+  - [dayofmonth](#ref-var-dayofmonth)
+  - [dayofweek](#ref-var-dayofweek)
+  - [dividends.future_amount](#ref-var-dividends-future-amount)
+  - [dividends.future_ex_date](#ref-var-dividends-future-ex-date)
+  - [dividends.future_pay_date](#ref-var-dividends-future-pay-date)
+  - [earnings.future_eps](#ref-var-earnings-future-eps)
+  - [earnings.future_period_end_time](#ref-var-earnings-future-period-end-time)
+  - [earnings.future_revenue](#ref-var-earnings-future-revenue)
+  - [earnings.future_time](#ref-var-earnings-future-time)
+  - [high](#ref-var-high)
+  - [hl2](#ref-var-hl2)
+  - [hlc3](#ref-var-hlc3)
+  - [hlcc4](#ref-var-hlcc4)
+  - [hour](#ref-var-hour)
+  - [label.all](#ref-var-label-all)
+  - [last_bar_index](#ref-var-last-bar-index)
+  - [last_bar_time](#ref-var-last-bar-time)
+  - [line.all](#ref-var-line-all)
+  - [linefill.all](#ref-var-linefill-all)
+  - [low](#ref-var-low)
+  - [minute](#ref-var-minute)
+  - [month](#ref-var-month)
+  - [na](#ref-var-na)
+  - [ohlc4](#ref-var-ohlc4)
+  - [open](#ref-var-open)
+  - [polyline.all](#ref-var-polyline-all)
+  - [second](#ref-var-second)
+  - [session.isfirstbar](#ref-var-session-isfirstbar)
+  - [session.isfirstbar_regular](#ref-var-session-isfirstbar-regular)
+  - [session.islastbar](#ref-var-session-islastbar)
+  - [session.islastbar_regular](#ref-var-session-islastbar-regular)
+  - [session.ismarket](#ref-var-session-ismarket)
+  - [session.ispostmarket](#ref-var-session-ispostmarket)
+  - [session.ispremarket](#ref-var-session-ispremarket)
+  - [strategy.account_currency](#ref-var-strategy-account-currency)
+  - [strategy.avg_losing_trade](#ref-var-strategy-avg-losing-trade)
+  - [strategy.avg_losing_trade_percent](#ref-var-strategy-avg-losing-trade-percent)
+  - [strategy.avg_trade](#ref-var-strategy-avg-trade)
+  - [strategy.avg_trade_percent](#ref-var-strategy-avg-trade-percent)
+  - [strategy.avg_winning_trade](#ref-var-strategy-avg-winning-trade)
+  - [strategy.avg_winning_trade_percent](#ref-var-strategy-avg-winning-trade-percent)
+  - [strategy.closedtrades](#ref-var-strategy-closedtrades)
+  - [strategy.closedtrades.first_index](#ref-var-strategy-closedtrades-first-index)
+  - [strategy.equity](#ref-var-strategy-equity)
+  - [strategy.eventrades](#ref-var-strategy-eventrades)
+  - [strategy.grossloss](#ref-var-strategy-grossloss)
+  - [strategy.grossloss_percent](#ref-var-strategy-grossloss-percent)
+  - [strategy.grossprofit](#ref-var-strategy-grossprofit)
+  - [strategy.grossprofit_percent](#ref-var-strategy-grossprofit-percent)
+  - [strategy.initial_capital](#ref-var-strategy-initial-capital)
+  - [strategy.losstrades](#ref-var-strategy-losstrades)
+  - [strategy.margin_liquidation_price](#ref-var-strategy-margin-liquidation-price)
+  - [strategy.max_contracts_held_all](#ref-var-strategy-max-contracts-held-all)
+  - [strategy.max_contracts_held_long](#ref-var-strategy-max-contracts-held-long)
+  - [strategy.max_contracts_held_short](#ref-var-strategy-max-contracts-held-short)
+  - [strategy.max_drawdown](#ref-var-strategy-max-drawdown)
+  - [strategy.max_drawdown_percent](#ref-var-strategy-max-drawdown-percent)
+  - [strategy.max_runup](#ref-var-strategy-max-runup)
+  - [strategy.max_runup_percent](#ref-var-strategy-max-runup-percent)
+  - [strategy.netprofit](#ref-var-strategy-netprofit)
+  - [strategy.netprofit_percent](#ref-var-strategy-netprofit-percent)
+  - [strategy.openprofit](#ref-var-strategy-openprofit)
+  - [strategy.openprofit_percent](#ref-var-strategy-openprofit-percent)
+  - [strategy.opentrades](#ref-var-strategy-opentrades)
+  - [strategy.opentrades.capital_held](#ref-var-strategy-opentrades-capital-held)
+  - [strategy.position_avg_price](#ref-var-strategy-position-avg-price)
+  - [strategy.position_entry_name](#ref-var-strategy-position-entry-name)
+  - [strategy.position_size](#ref-var-strategy-position-size)
+  - [strategy.wintrades](#ref-var-strategy-wintrades)
+  - [syminfo.basecurrency](#ref-var-syminfo-basecurrency)
+  - [syminfo.country](#ref-var-syminfo-country)
+  - [syminfo.currency](#ref-var-syminfo-currency)
+  - [syminfo.current_contract](#ref-var-syminfo-current-contract)
+  - [syminfo.description](#ref-var-syminfo-description)
+  - [syminfo.employees](#ref-var-syminfo-employees)
+  - [syminfo.expiration_date](#ref-var-syminfo-expiration-date)
+  - [syminfo.industry](#ref-var-syminfo-industry)
+  - [syminfo.isin](#ref-var-syminfo-isin)
+  - [syminfo.main_tickerid](#ref-var-syminfo-main-tickerid)
+  - [syminfo.mincontract](#ref-var-syminfo-mincontract)
+  - [syminfo.minmove](#ref-var-syminfo-minmove)
+  - [syminfo.mintick](#ref-var-syminfo-mintick)
+  - [syminfo.pointvalue](#ref-var-syminfo-pointvalue)
+  - [syminfo.prefix](#ref-var-syminfo-prefix)
+  - [syminfo.pricescale](#ref-var-syminfo-pricescale)
+  - [syminfo.recommendations_buy](#ref-var-syminfo-recommendations-buy)
+  - [syminfo.recommendations_buy_strong](#ref-var-syminfo-recommendations-buy-strong)
+  - [syminfo.recommendations_date](#ref-var-syminfo-recommendations-date)
+  - [syminfo.recommendations_hold](#ref-var-syminfo-recommendations-hold)
+  - [syminfo.recommendations_sell](#ref-var-syminfo-recommendations-sell)
+  - [syminfo.recommendations_sell_strong](#ref-var-syminfo-recommendations-sell-strong)
+  - [syminfo.recommendations_total](#ref-var-syminfo-recommendations-total)
+  - [syminfo.root](#ref-var-syminfo-root)
+  - [syminfo.sector](#ref-var-syminfo-sector)
+  - [syminfo.session](#ref-var-syminfo-session)
+  - [syminfo.shareholders](#ref-var-syminfo-shareholders)
+  - [syminfo.shares_outstanding_float](#ref-var-syminfo-shares-outstanding-float)
+  - [syminfo.shares_outstanding_total](#ref-var-syminfo-shares-outstanding-total)
+  - [syminfo.target_price_average](#ref-var-syminfo-target-price-average)
+  - [syminfo.target_price_date](#ref-var-syminfo-target-price-date)
+  - [syminfo.target_price_estimates](#ref-var-syminfo-target-price-estimates)
+  - [syminfo.target_price_high](#ref-var-syminfo-target-price-high)
+  - [syminfo.target_price_low](#ref-var-syminfo-target-price-low)
+  - [syminfo.target_price_median](#ref-var-syminfo-target-price-median)
+  - [syminfo.ticker](#ref-var-syminfo-ticker)
+  - [syminfo.tickerid](#ref-var-syminfo-tickerid)
+  - [syminfo.timezone](#ref-var-syminfo-timezone)
+  - [syminfo.type](#ref-var-syminfo-type)
+  - [syminfo.volumetype](#ref-var-syminfo-volumetype)
+  - [ta.accdist](#ref-var-ta-accdist)
+  - [ta.iii](#ref-var-ta-iii)
+  - [ta.nvi](#ref-var-ta-nvi)
+  - [ta.obv](#ref-var-ta-obv)
+  - [ta.pvi](#ref-var-ta-pvi)
+  - [ta.pvt](#ref-var-ta-pvt)
+  - [ta.tr](#ref-var-ta-tr)
+  - [ta.vwap](#ref-var-ta-vwap)
+  - [ta.wad](#ref-var-ta-wad)
+  - [ta.wvad](#ref-var-ta-wvad)
+  - [table.all](#ref-var-table-all)
+  - [time](#ref-var-time)
+  - [time_close](#ref-var-time-close)
+  - [time_tradingday](#ref-var-time-tradingday)
+  - [timeframe.isdaily](#ref-var-timeframe-isdaily)
+  - [timeframe.isdwm](#ref-var-timeframe-isdwm)
+  - [timeframe.isintraday](#ref-var-timeframe-isintraday)
+  - [timeframe.isminutes](#ref-var-timeframe-isminutes)
+  - [timeframe.ismonthly](#ref-var-timeframe-ismonthly)
+  - [timeframe.isseconds](#ref-var-timeframe-isseconds)
+  - [timeframe.isticks](#ref-var-timeframe-isticks)
+  - [timeframe.isweekly](#ref-var-timeframe-isweekly)
+  - [timeframe.main_period](#ref-var-timeframe-main-period)
+  - [timeframe.multiplier](#ref-var-timeframe-multiplier)
+  - [timeframe.period](#ref-var-timeframe-period)
+  - [timenow](#ref-var-timenow)
+  - [volume](#ref-var-volume)
+  - [weekofyear](#ref-var-weekofyear)
+  - [year](#ref-var-year)
 - [Constants](#constants) (239)
+  - [adjustment.dividends](#ref-const-adjustment-dividends)
+  - [adjustment.none](#ref-const-adjustment-none)
+  - [adjustment.splits](#ref-const-adjustment-splits)
+  - [alert.freq_all](#ref-const-alert-freq-all)
+  - [alert.freq_once_per_bar](#ref-const-alert-freq-once-per-bar)
+  - [alert.freq_once_per_bar_close](#ref-const-alert-freq-once-per-bar-close)
+  - [backadjustment.inherit](#ref-const-backadjustment-inherit)
+  - [backadjustment.off](#ref-const-backadjustment-off)
+  - [backadjustment.on](#ref-const-backadjustment-on)
+  - [barmerge.gaps_off](#ref-const-barmerge-gaps-off)
+  - [barmerge.gaps_on](#ref-const-barmerge-gaps-on)
+  - [barmerge.lookahead_off](#ref-const-barmerge-lookahead-off)
+  - [barmerge.lookahead_on](#ref-const-barmerge-lookahead-on)
+  - [color.aqua](#ref-const-color-aqua)
+  - [color.black](#ref-const-color-black)
+  - [color.blue](#ref-const-color-blue)
+  - [color.fuchsia](#ref-const-color-fuchsia)
+  - [color.gray](#ref-const-color-gray)
+  - [color.green](#ref-const-color-green)
+  - [color.lime](#ref-const-color-lime)
+  - [color.maroon](#ref-const-color-maroon)
+  - [color.navy](#ref-const-color-navy)
+  - [color.olive](#ref-const-color-olive)
+  - [color.orange](#ref-const-color-orange)
+  - [color.purple](#ref-const-color-purple)
+  - [color.red](#ref-const-color-red)
+  - [color.silver](#ref-const-color-silver)
+  - [color.teal](#ref-const-color-teal)
+  - [color.white](#ref-const-color-white)
+  - [color.yellow](#ref-const-color-yellow)
+  - [currency.AED](#ref-const-currency-aed)
+  - [currency.ARS](#ref-const-currency-ars)
+  - [currency.AUD](#ref-const-currency-aud)
+  - [currency.BDT](#ref-const-currency-bdt)
+  - [currency.BHD](#ref-const-currency-bhd)
+  - [currency.BRL](#ref-const-currency-brl)
+  - [currency.BTC](#ref-const-currency-btc)
+  - [currency.CAD](#ref-const-currency-cad)
+  - [currency.CHF](#ref-const-currency-chf)
+  - [currency.CLP](#ref-const-currency-clp)
+  - [currency.CNY](#ref-const-currency-cny)
+  - [currency.COP](#ref-const-currency-cop)
+  - [currency.CZK](#ref-const-currency-czk)
+  - [currency.DKK](#ref-const-currency-dkk)
+  - [currency.EGP](#ref-const-currency-egp)
+  - [currency.ETH](#ref-const-currency-eth)
+  - [currency.EUR](#ref-const-currency-eur)
+  - [currency.GBP](#ref-const-currency-gbp)
+  - [currency.HKD](#ref-const-currency-hkd)
+  - [currency.HUF](#ref-const-currency-huf)
+  - [currency.IDR](#ref-const-currency-idr)
+  - [currency.ILS](#ref-const-currency-ils)
+  - [currency.INR](#ref-const-currency-inr)
+  - [currency.ISK](#ref-const-currency-isk)
+  - [currency.JPY](#ref-const-currency-jpy)
+  - [currency.KES](#ref-const-currency-kes)
+  - [currency.KRW](#ref-const-currency-krw)
+  - [currency.KWD](#ref-const-currency-kwd)
+  - [currency.LKR](#ref-const-currency-lkr)
+  - [currency.MAD](#ref-const-currency-mad)
+  - [currency.MXN](#ref-const-currency-mxn)
+  - [currency.MYR](#ref-const-currency-myr)
+  - [currency.NGN](#ref-const-currency-ngn)
+  - [currency.NOK](#ref-const-currency-nok)
+  - [currency.NONE](#ref-const-currency-none)
+  - [currency.NZD](#ref-const-currency-nzd)
+  - [currency.PEN](#ref-const-currency-pen)
+  - [currency.PHP](#ref-const-currency-php)
+  - [currency.PKR](#ref-const-currency-pkr)
+  - [currency.PLN](#ref-const-currency-pln)
+  - [currency.QAR](#ref-const-currency-qar)
+  - [currency.RON](#ref-const-currency-ron)
+  - [currency.RSD](#ref-const-currency-rsd)
+  - [currency.RUB](#ref-const-currency-rub)
+  - [currency.SAR](#ref-const-currency-sar)
+  - [currency.SEK](#ref-const-currency-sek)
+  - [currency.SGD](#ref-const-currency-sgd)
+  - [currency.THB](#ref-const-currency-thb)
+  - [currency.TND](#ref-const-currency-tnd)
+  - [currency.TRY](#ref-const-currency-try)
+  - [currency.TWD](#ref-const-currency-twd)
+  - [currency.USD](#ref-const-currency-usd)
+  - [currency.USDT](#ref-const-currency-usdt)
+  - [currency.VES](#ref-const-currency-ves)
+  - [currency.VND](#ref-const-currency-vnd)
+  - [currency.ZAR](#ref-const-currency-zar)
+  - [dayofweek.friday](#ref-const-dayofweek-friday)
+  - [dayofweek.monday](#ref-const-dayofweek-monday)
+  - [dayofweek.saturday](#ref-const-dayofweek-saturday)
+  - [dayofweek.sunday](#ref-const-dayofweek-sunday)
+  - [dayofweek.thursday](#ref-const-dayofweek-thursday)
+  - [dayofweek.tuesday](#ref-const-dayofweek-tuesday)
+  - [dayofweek.wednesday](#ref-const-dayofweek-wednesday)
+  - [display.all](#ref-const-display-all)
+  - [display.data_window](#ref-const-display-data-window)
+  - [display.none](#ref-const-display-none)
+  - [display.pane](#ref-const-display-pane)
+  - [display.pine_screener](#ref-const-display-pine-screener)
+  - [display.price_scale](#ref-const-display-price-scale)
+  - [display.status_line](#ref-const-display-status-line)
+  - [dividends.gross](#ref-const-dividends-gross)
+  - [dividends.net](#ref-const-dividends-net)
+  - [earnings.actual](#ref-const-earnings-actual)
+  - [earnings.estimate](#ref-const-earnings-estimate)
+  - [earnings.standardized](#ref-const-earnings-standardized)
+  - [extend.both](#ref-const-extend-both)
+  - [extend.left](#ref-const-extend-left)
+  - [extend.none](#ref-const-extend-none)
+  - [extend.right](#ref-const-extend-right)
+  - [false](#ref-const-false)
+  - [font.family_default](#ref-const-font-family-default)
+  - [font.family_monospace](#ref-const-font-family-monospace)
+  - [format.inherit](#ref-const-format-inherit)
+  - [format.mintick](#ref-const-format-mintick)
+  - [format.percent](#ref-const-format-percent)
+  - [format.price](#ref-const-format-price)
+  - [format.volume](#ref-const-format-volume)
+  - [hline.style_dashed](#ref-const-hline-style-dashed)
+  - [hline.style_dotted](#ref-const-hline-style-dotted)
+  - [hline.style_solid](#ref-const-hline-style-solid)
+  - [label.style_arrowdown](#ref-const-label-style-arrowdown)
+  - [label.style_arrowup](#ref-const-label-style-arrowup)
+  - [label.style_circle](#ref-const-label-style-circle)
+  - [label.style_cross](#ref-const-label-style-cross)
+  - [label.style_diamond](#ref-const-label-style-diamond)
+  - [label.style_flag](#ref-const-label-style-flag)
+  - [label.style_label_center](#ref-const-label-style-label-center)
+  - [label.style_label_down](#ref-const-label-style-label-down)
+  - [label.style_label_left](#ref-const-label-style-label-left)
+  - [label.style_label_lower_left](#ref-const-label-style-label-lower-left)
+  - [label.style_label_lower_right](#ref-const-label-style-label-lower-right)
+  - [label.style_label_right](#ref-const-label-style-label-right)
+  - [label.style_label_up](#ref-const-label-style-label-up)
+  - [label.style_label_upper_left](#ref-const-label-style-label-upper-left)
+  - [label.style_label_upper_right](#ref-const-label-style-label-upper-right)
+  - [label.style_none](#ref-const-label-style-none)
+  - [label.style_square](#ref-const-label-style-square)
+  - [label.style_text_outline](#ref-const-label-style-text-outline)
+  - [label.style_triangledown](#ref-const-label-style-triangledown)
+  - [label.style_triangleup](#ref-const-label-style-triangleup)
+  - [label.style_xcross](#ref-const-label-style-xcross)
+  - [line.style_arrow_both](#ref-const-line-style-arrow-both)
+  - [line.style_arrow_left](#ref-const-line-style-arrow-left)
+  - [line.style_arrow_right](#ref-const-line-style-arrow-right)
+  - [line.style_dashed](#ref-const-line-style-dashed)
+  - [line.style_dotted](#ref-const-line-style-dotted)
+  - [line.style_solid](#ref-const-line-style-solid)
+  - [location.abovebar](#ref-const-location-abovebar)
+  - [location.absolute](#ref-const-location-absolute)
+  - [location.belowbar](#ref-const-location-belowbar)
+  - [location.bottom](#ref-const-location-bottom)
+  - [location.top](#ref-const-location-top)
+  - [math.e](#ref-const-math-e)
+  - [math.phi](#ref-const-math-phi)
+  - [math.pi](#ref-const-math-pi)
+  - [math.rphi](#ref-const-math-rphi)
+  - [order.ascending](#ref-const-order-ascending)
+  - [order.descending](#ref-const-order-descending)
+  - [plot.linestyle_dashed](#ref-const-plot-linestyle-dashed)
+  - [plot.linestyle_dotted](#ref-const-plot-linestyle-dotted)
+  - [plot.linestyle_solid](#ref-const-plot-linestyle-solid)
+  - [plot.style_area](#ref-const-plot-style-area)
+  - [plot.style_areabr](#ref-const-plot-style-areabr)
+  - [plot.style_circles](#ref-const-plot-style-circles)
+  - [plot.style_columns](#ref-const-plot-style-columns)
+  - [plot.style_cross](#ref-const-plot-style-cross)
+  - [plot.style_histogram](#ref-const-plot-style-histogram)
+  - [plot.style_line](#ref-const-plot-style-line)
+  - [plot.style_linebr](#ref-const-plot-style-linebr)
+  - [plot.style_stepline](#ref-const-plot-style-stepline)
+  - [plot.style_stepline_diamond](#ref-const-plot-style-stepline-diamond)
+  - [plot.style_steplinebr](#ref-const-plot-style-steplinebr)
+  - [position.bottom_center](#ref-const-position-bottom-center)
+  - [position.bottom_left](#ref-const-position-bottom-left)
+  - [position.bottom_right](#ref-const-position-bottom-right)
+  - [position.middle_center](#ref-const-position-middle-center)
+  - [position.middle_left](#ref-const-position-middle-left)
+  - [position.middle_right](#ref-const-position-middle-right)
+  - [position.top_center](#ref-const-position-top-center)
+  - [position.top_left](#ref-const-position-top-left)
+  - [position.top_right](#ref-const-position-top-right)
+  - [scale.left](#ref-const-scale-left)
+  - [scale.none](#ref-const-scale-none)
+  - [scale.right](#ref-const-scale-right)
+  - [session.extended](#ref-const-session-extended)
+  - [session.regular](#ref-const-session-regular)
+  - [settlement_as_close.inherit](#ref-const-settlement-as-close-inherit)
+  - [settlement_as_close.off](#ref-const-settlement-as-close-off)
+  - [settlement_as_close.on](#ref-const-settlement-as-close-on)
+  - [shape.arrowdown](#ref-const-shape-arrowdown)
+  - [shape.arrowup](#ref-const-shape-arrowup)
+  - [shape.circle](#ref-const-shape-circle)
+  - [shape.cross](#ref-const-shape-cross)
+  - [shape.diamond](#ref-const-shape-diamond)
+  - [shape.flag](#ref-const-shape-flag)
+  - [shape.labeldown](#ref-const-shape-labeldown)
+  - [shape.labelup](#ref-const-shape-labelup)
+  - [shape.square](#ref-const-shape-square)
+  - [shape.triangledown](#ref-const-shape-triangledown)
+  - [shape.triangleup](#ref-const-shape-triangleup)
+  - [shape.xcross](#ref-const-shape-xcross)
+  - [size.auto](#ref-const-size-auto)
+  - [size.huge](#ref-const-size-huge)
+  - [size.large](#ref-const-size-large)
+  - [size.normal](#ref-const-size-normal)
+  - [size.small](#ref-const-size-small)
+  - [size.tiny](#ref-const-size-tiny)
+  - [splits.denominator](#ref-const-splits-denominator)
+  - [splits.numerator](#ref-const-splits-numerator)
+  - [strategy.cash](#ref-const-strategy-cash)
+  - [strategy.commission.cash_per_contract](#ref-const-strategy-commission-cash-per-contract)
+  - [strategy.commission.cash_per_order](#ref-const-strategy-commission-cash-per-order)
+  - [strategy.commission.percent](#ref-const-strategy-commission-percent)
+  - [strategy.direction.all](#ref-const-strategy-direction-all)
+  - [strategy.direction.long](#ref-const-strategy-direction-long)
+  - [strategy.direction.short](#ref-const-strategy-direction-short)
+  - [strategy.fixed](#ref-const-strategy-fixed)
+  - [strategy.long](#ref-const-strategy-long)
+  - [strategy.oca.cancel](#ref-const-strategy-oca-cancel)
+  - [strategy.oca.none](#ref-const-strategy-oca-none)
+  - [strategy.oca.reduce](#ref-const-strategy-oca-reduce)
+  - [strategy.percent_of_equity](#ref-const-strategy-percent-of-equity)
+  - [strategy.short](#ref-const-strategy-short)
+  - [text.align_bottom](#ref-const-text-align-bottom)
+  - [text.align_center](#ref-const-text-align-center)
+  - [text.align_left](#ref-const-text-align-left)
+  - [text.align_right](#ref-const-text-align-right)
+  - [text.align_top](#ref-const-text-align-top)
+  - [text.format_bold](#ref-const-text-format-bold)
+  - [text.format_italic](#ref-const-text-format-italic)
+  - [text.format_none](#ref-const-text-format-none)
+  - [text.wrap_auto](#ref-const-text-wrap-auto)
+  - [text.wrap_none](#ref-const-text-wrap-none)
+  - [true](#ref-const-true)
+  - [xloc.bar_index](#ref-const-xloc-bar-index)
+  - [xloc.bar_time](#ref-const-xloc-bar-time)
+  - [yloc.abovebar](#ref-const-yloc-abovebar)
+  - [yloc.belowbar](#ref-const-yloc-belowbar)
+  - [yloc.price](#ref-const-yloc-price)
 - [Functions](#functions) (475)
+  - [alert()](#ref-fun-alert)
+  - [alertcondition()](#ref-fun-alertcondition)
+  - [array.abs()](#ref-fun-array-abs)
+  - [array.avg()](#ref-fun-array-avg)
+  - [array.binary_search()](#ref-fun-array-binary-search)
+  - [array.binary_search_leftmost()](#ref-fun-array-binary-search-leftmost)
+  - [array.binary_search_rightmost()](#ref-fun-array-binary-search-rightmost)
+  - [array.clear()](#ref-fun-array-clear)
+  - [array.concat()](#ref-fun-array-concat)
+  - [array.copy()](#ref-fun-array-copy)
+  - [array.covariance()](#ref-fun-array-covariance)
+  - [array.every()](#ref-fun-array-every)
+  - [array.fill()](#ref-fun-array-fill)
+  - [array.first()](#ref-fun-array-first)
+  - [array.from()](#ref-fun-array-from)
+  - [array.get()](#ref-fun-array-get)
+  - [array.includes()](#ref-fun-array-includes)
+  - [array.indexof()](#ref-fun-array-indexof)
+  - [array.insert()](#ref-fun-array-insert)
+  - [array.join()](#ref-fun-array-join)
+  - [array.last()](#ref-fun-array-last)
+  - [array.lastindexof()](#ref-fun-array-lastindexof)
+  - [array.max()](#ref-fun-array-max)
+  - [array.median()](#ref-fun-array-median)
+  - [array.min()](#ref-fun-array-min)
+  - [array.mode()](#ref-fun-array-mode)
+  - [array.new_bool()](#ref-fun-array-new-bool)
+  - [array.new_box()](#ref-fun-array-new-box)
+  - [array.new_color()](#ref-fun-array-new-color)
+  - [array.new_float()](#ref-fun-array-new-float)
+  - [array.new_int()](#ref-fun-array-new-int)
+  - [array.new_label()](#ref-fun-array-new-label)
+  - [array.new_line()](#ref-fun-array-new-line)
+  - [array.new_linefill()](#ref-fun-array-new-linefill)
+  - [array.new_string()](#ref-fun-array-new-string)
+  - [array.new_table()](#ref-fun-array-new-table)
+  - [array.new<type>()](#ref-fun-array-new-3c-type-3e)
+  - [array.percentile_linear_interpolation()](#ref-fun-array-percentile-linear-interpolation)
+  - [array.percentile_nearest_rank()](#ref-fun-array-percentile-nearest-rank)
+  - [array.percentrank()](#ref-fun-array-percentrank)
+  - [array.pop()](#ref-fun-array-pop)
+  - [array.push()](#ref-fun-array-push)
+  - [array.range()](#ref-fun-array-range)
+  - [array.remove()](#ref-fun-array-remove)
+  - [array.reverse()](#ref-fun-array-reverse)
+  - [array.set()](#ref-fun-array-set)
+  - [array.shift()](#ref-fun-array-shift)
+  - [array.size()](#ref-fun-array-size)
+  - [array.slice()](#ref-fun-array-slice)
+  - [array.some()](#ref-fun-array-some)
+  - [array.sort()](#ref-fun-array-sort)
+  - [array.sort_indices()](#ref-fun-array-sort-indices)
+  - [array.standardize()](#ref-fun-array-standardize)
+  - [array.stdev()](#ref-fun-array-stdev)
+  - [array.sum()](#ref-fun-array-sum)
+  - [array.unshift()](#ref-fun-array-unshift)
+  - [array.variance()](#ref-fun-array-variance)
+  - [barcolor()](#ref-fun-barcolor)
+  - [bgcolor()](#ref-fun-bgcolor)
+  - [bool()](#ref-fun-bool)
+  - [box()](#ref-fun-box)
+  - [box.copy()](#ref-fun-box-copy)
+  - [box.delete()](#ref-fun-box-delete)
+  - [box.get_bottom()](#ref-fun-box-get-bottom)
+  - [box.get_left()](#ref-fun-box-get-left)
+  - [box.get_right()](#ref-fun-box-get-right)
+  - [box.get_top()](#ref-fun-box-get-top)
+  - [box.new()](#ref-fun-box-new)
+  - [box.set_bgcolor()](#ref-fun-box-set-bgcolor)
+  - [box.set_border_color()](#ref-fun-box-set-border-color)
+  - [box.set_border_style()](#ref-fun-box-set-border-style)
+  - [box.set_border_width()](#ref-fun-box-set-border-width)
+  - [box.set_bottom()](#ref-fun-box-set-bottom)
+  - [box.set_bottom_right_point()](#ref-fun-box-set-bottom-right-point)
+  - [box.set_extend()](#ref-fun-box-set-extend)
+  - [box.set_left()](#ref-fun-box-set-left)
+  - [box.set_lefttop()](#ref-fun-box-set-lefttop)
+  - [box.set_right()](#ref-fun-box-set-right)
+  - [box.set_rightbottom()](#ref-fun-box-set-rightbottom)
+  - [box.set_text()](#ref-fun-box-set-text)
+  - [box.set_text_color()](#ref-fun-box-set-text-color)
+  - [box.set_text_font_family()](#ref-fun-box-set-text-font-family)
+  - [box.set_text_formatting()](#ref-fun-box-set-text-formatting)
+  - [box.set_text_halign()](#ref-fun-box-set-text-halign)
+  - [box.set_text_size()](#ref-fun-box-set-text-size)
+  - [box.set_text_valign()](#ref-fun-box-set-text-valign)
+  - [box.set_text_wrap()](#ref-fun-box-set-text-wrap)
+  - [box.set_top()](#ref-fun-box-set-top)
+  - [box.set_top_left_point()](#ref-fun-box-set-top-left-point)
+  - [box.set_xloc()](#ref-fun-box-set-xloc)
+  - [chart.point.copy()](#ref-fun-chart-point-copy)
+  - [chart.point.from_index()](#ref-fun-chart-point-from-index)
+  - [chart.point.from_time()](#ref-fun-chart-point-from-time)
+  - [chart.point.new()](#ref-fun-chart-point-new)
+  - [chart.point.now()](#ref-fun-chart-point-now)
+  - [color()](#ref-fun-color)
+  - [color.b()](#ref-fun-color-b)
+  - [color.from_gradient()](#ref-fun-color-from-gradient)
+  - [color.g()](#ref-fun-color-g)
+  - [color.new()](#ref-fun-color-new)
+  - [color.r()](#ref-fun-color-r)
+  - [color.rgb()](#ref-fun-color-rgb)
+  - [color.t()](#ref-fun-color-t)
+  - [dayofmonth()](#ref-fun-dayofmonth)
+  - [dayofweek()](#ref-fun-dayofweek)
+  - [fill()](#ref-fun-fill)
+  - [fixnan()](#ref-fun-fixnan)
+  - [float()](#ref-fun-float)
+  - [footprint.buy_volume()](#ref-fun-footprint-buy-volume)
+  - [footprint.delta()](#ref-fun-footprint-delta)
+  - [footprint.get_row_by_price()](#ref-fun-footprint-get-row-by-price)
+  - [footprint.poc()](#ref-fun-footprint-poc)
+  - [footprint.rows()](#ref-fun-footprint-rows)
+  - [footprint.sell_volume()](#ref-fun-footprint-sell-volume)
+  - [footprint.total_volume()](#ref-fun-footprint-total-volume)
+  - [footprint.vah()](#ref-fun-footprint-vah)
+  - [footprint.val()](#ref-fun-footprint-val)
+  - [hline()](#ref-fun-hline)
+  - [hour()](#ref-fun-hour)
+  - [indicator()](#ref-fun-indicator)
+  - [input()](#ref-fun-input)
+  - [input.bool()](#ref-fun-input-bool)
+  - [input.color()](#ref-fun-input-color)
+  - [input.enum()](#ref-fun-input-enum)
+  - [input.float()](#ref-fun-input-float)
+  - [input.int()](#ref-fun-input-int)
+  - [input.price()](#ref-fun-input-price)
+  - [input.session()](#ref-fun-input-session)
+  - [input.source()](#ref-fun-input-source)
+  - [input.string()](#ref-fun-input-string)
+  - [input.symbol()](#ref-fun-input-symbol)
+  - [input.text_area()](#ref-fun-input-text-area)
+  - [input.time()](#ref-fun-input-time)
+  - [input.timeframe()](#ref-fun-input-timeframe)
+  - [int()](#ref-fun-int)
+  - [label()](#ref-fun-label)
+  - [label.copy()](#ref-fun-label-copy)
+  - [label.delete()](#ref-fun-label-delete)
+  - [label.get_text()](#ref-fun-label-get-text)
+  - [label.get_x()](#ref-fun-label-get-x)
+  - [label.get_y()](#ref-fun-label-get-y)
+  - [label.new()](#ref-fun-label-new)
+  - [label.set_color()](#ref-fun-label-set-color)
+  - [label.set_point()](#ref-fun-label-set-point)
+  - [label.set_size()](#ref-fun-label-set-size)
+  - [label.set_style()](#ref-fun-label-set-style)
+  - [label.set_text()](#ref-fun-label-set-text)
+  - [label.set_text_font_family()](#ref-fun-label-set-text-font-family)
+  - [label.set_text_formatting()](#ref-fun-label-set-text-formatting)
+  - [label.set_textalign()](#ref-fun-label-set-textalign)
+  - [label.set_textcolor()](#ref-fun-label-set-textcolor)
+  - [label.set_tooltip()](#ref-fun-label-set-tooltip)
+  - [label.set_x()](#ref-fun-label-set-x)
+  - [label.set_xloc()](#ref-fun-label-set-xloc)
+  - [label.set_xy()](#ref-fun-label-set-xy)
+  - [label.set_y()](#ref-fun-label-set-y)
+  - [label.set_yloc()](#ref-fun-label-set-yloc)
+  - [library()](#ref-fun-library)
+  - [line()](#ref-fun-line)
+  - [line.copy()](#ref-fun-line-copy)
+  - [line.delete()](#ref-fun-line-delete)
+  - [line.get_price()](#ref-fun-line-get-price)
+  - [line.get_x1()](#ref-fun-line-get-x1)
+  - [line.get_x2()](#ref-fun-line-get-x2)
+  - [line.get_y1()](#ref-fun-line-get-y1)
+  - [line.get_y2()](#ref-fun-line-get-y2)
+  - [line.new()](#ref-fun-line-new)
+  - [line.set_color()](#ref-fun-line-set-color)
+  - [line.set_extend()](#ref-fun-line-set-extend)
+  - [line.set_first_point()](#ref-fun-line-set-first-point)
+  - [line.set_second_point()](#ref-fun-line-set-second-point)
+  - [line.set_style()](#ref-fun-line-set-style)
+  - [line.set_width()](#ref-fun-line-set-width)
+  - [line.set_x1()](#ref-fun-line-set-x1)
+  - [line.set_x2()](#ref-fun-line-set-x2)
+  - [line.set_xloc()](#ref-fun-line-set-xloc)
+  - [line.set_xy1()](#ref-fun-line-set-xy1)
+  - [line.set_xy2()](#ref-fun-line-set-xy2)
+  - [line.set_y1()](#ref-fun-line-set-y1)
+  - [line.set_y2()](#ref-fun-line-set-y2)
+  - [linefill()](#ref-fun-linefill)
+  - [linefill.delete()](#ref-fun-linefill-delete)
+  - [linefill.get_line1()](#ref-fun-linefill-get-line1)
+  - [linefill.get_line2()](#ref-fun-linefill-get-line2)
+  - [linefill.new()](#ref-fun-linefill-new)
+  - [linefill.set_color()](#ref-fun-linefill-set-color)
+  - [log.error()](#ref-fun-log-error)
+  - [log.info()](#ref-fun-log-info)
+  - [log.warning()](#ref-fun-log-warning)
+  - [map.clear()](#ref-fun-map-clear)
+  - [map.contains()](#ref-fun-map-contains)
+  - [map.copy()](#ref-fun-map-copy)
+  - [map.get()](#ref-fun-map-get)
+  - [map.keys()](#ref-fun-map-keys)
+  - [map.new<type,type>()](#ref-fun-map-new-3c-type-2c-type-3e)
+  - [map.put()](#ref-fun-map-put)
+  - [map.put_all()](#ref-fun-map-put-all)
+  - [map.remove()](#ref-fun-map-remove)
+  - [map.size()](#ref-fun-map-size)
+  - [map.values()](#ref-fun-map-values)
+  - [math.abs()](#ref-fun-math-abs)
+  - [math.acos()](#ref-fun-math-acos)
+  - [math.asin()](#ref-fun-math-asin)
+  - [math.atan()](#ref-fun-math-atan)
+  - [math.avg()](#ref-fun-math-avg)
+  - [math.ceil()](#ref-fun-math-ceil)
+  - [math.cos()](#ref-fun-math-cos)
+  - [math.exp()](#ref-fun-math-exp)
+  - [math.floor()](#ref-fun-math-floor)
+  - [math.log()](#ref-fun-math-log)
+  - [math.log10()](#ref-fun-math-log10)
+  - [math.max()](#ref-fun-math-max)
+  - [math.min()](#ref-fun-math-min)
+  - [math.pow()](#ref-fun-math-pow)
+  - [math.random()](#ref-fun-math-random)
+  - [math.round()](#ref-fun-math-round)
+  - [math.round_to_mintick()](#ref-fun-math-round-to-mintick)
+  - [math.sign()](#ref-fun-math-sign)
+  - [math.sin()](#ref-fun-math-sin)
+  - [math.sqrt()](#ref-fun-math-sqrt)
+  - [math.sum()](#ref-fun-math-sum)
+  - [math.tan()](#ref-fun-math-tan)
+  - [math.todegrees()](#ref-fun-math-todegrees)
+  - [math.toradians()](#ref-fun-math-toradians)
+  - [matrix.add_col()](#ref-fun-matrix-add-col)
+  - [matrix.add_row()](#ref-fun-matrix-add-row)
+  - [matrix.avg()](#ref-fun-matrix-avg)
+  - [matrix.col()](#ref-fun-matrix-col)
+  - [matrix.columns()](#ref-fun-matrix-columns)
+  - [matrix.concat()](#ref-fun-matrix-concat)
+  - [matrix.copy()](#ref-fun-matrix-copy)
+  - [matrix.det()](#ref-fun-matrix-det)
+  - [matrix.diff()](#ref-fun-matrix-diff)
+  - [matrix.eigenvalues()](#ref-fun-matrix-eigenvalues)
+  - [matrix.eigenvectors()](#ref-fun-matrix-eigenvectors)
+  - [matrix.elements_count()](#ref-fun-matrix-elements-count)
+  - [matrix.fill()](#ref-fun-matrix-fill)
+  - [matrix.get()](#ref-fun-matrix-get)
+  - [matrix.inv()](#ref-fun-matrix-inv)
+  - [matrix.is_antidiagonal()](#ref-fun-matrix-is-antidiagonal)
+  - [matrix.is_antisymmetric()](#ref-fun-matrix-is-antisymmetric)
+  - [matrix.is_binary()](#ref-fun-matrix-is-binary)
+  - [matrix.is_diagonal()](#ref-fun-matrix-is-diagonal)
+  - [matrix.is_identity()](#ref-fun-matrix-is-identity)
+  - [matrix.is_square()](#ref-fun-matrix-is-square)
+  - [matrix.is_stochastic()](#ref-fun-matrix-is-stochastic)
+  - [matrix.is_symmetric()](#ref-fun-matrix-is-symmetric)
+  - [matrix.is_triangular()](#ref-fun-matrix-is-triangular)
+  - [matrix.is_zero()](#ref-fun-matrix-is-zero)
+  - [matrix.kron()](#ref-fun-matrix-kron)
+  - [matrix.max()](#ref-fun-matrix-max)
+  - [matrix.median()](#ref-fun-matrix-median)
+  - [matrix.min()](#ref-fun-matrix-min)
+  - [matrix.mode()](#ref-fun-matrix-mode)
+  - [matrix.mult()](#ref-fun-matrix-mult)
+  - [matrix.new<type>()](#ref-fun-matrix-new-3c-type-3e)
+  - [matrix.pinv()](#ref-fun-matrix-pinv)
+  - [matrix.pow()](#ref-fun-matrix-pow)
+  - [matrix.rank()](#ref-fun-matrix-rank)
+  - [matrix.remove_col()](#ref-fun-matrix-remove-col)
+  - [matrix.remove_row()](#ref-fun-matrix-remove-row)
+  - [matrix.reshape()](#ref-fun-matrix-reshape)
+  - [matrix.reverse()](#ref-fun-matrix-reverse)
+  - [matrix.row()](#ref-fun-matrix-row)
+  - [matrix.rows()](#ref-fun-matrix-rows)
+  - [matrix.set()](#ref-fun-matrix-set)
+  - [matrix.sort()](#ref-fun-matrix-sort)
+  - [matrix.submatrix()](#ref-fun-matrix-submatrix)
+  - [matrix.sum()](#ref-fun-matrix-sum)
+  - [matrix.swap_columns()](#ref-fun-matrix-swap-columns)
+  - [matrix.swap_rows()](#ref-fun-matrix-swap-rows)
+  - [matrix.trace()](#ref-fun-matrix-trace)
+  - [matrix.transpose()](#ref-fun-matrix-transpose)
+  - [max_bars_back()](#ref-fun-max-bars-back)
+  - [minute()](#ref-fun-minute)
+  - [month()](#ref-fun-month)
+  - [na()](#ref-fun-na)
+  - [nz()](#ref-fun-nz)
+  - [plot()](#ref-fun-plot)
+  - [plotarrow()](#ref-fun-plotarrow)
+  - [plotbar()](#ref-fun-plotbar)
+  - [plotcandle()](#ref-fun-plotcandle)
+  - [plotchar()](#ref-fun-plotchar)
+  - [plotshape()](#ref-fun-plotshape)
+  - [polyline.delete()](#ref-fun-polyline-delete)
+  - [polyline.new()](#ref-fun-polyline-new)
+  - [request.currency_rate()](#ref-fun-request-currency-rate)
+  - [request.dividends()](#ref-fun-request-dividends)
+  - [request.earnings()](#ref-fun-request-earnings)
+  - [request.economic()](#ref-fun-request-economic)
+  - [request.financial()](#ref-fun-request-financial)
+  - [request.footprint()](#ref-fun-request-footprint)
+  - [request.quandl()](#ref-fun-request-quandl)
+  - [request.security()](#ref-fun-request-security)
+  - [request.security_lower_tf()](#ref-fun-request-security-lower-tf)
+  - [request.seed()](#ref-fun-request-seed)
+  - [request.splits()](#ref-fun-request-splits)
+  - [runtime.error()](#ref-fun-runtime-error)
+  - [second()](#ref-fun-second)
+  - [str.contains()](#ref-fun-str-contains)
+  - [str.endswith()](#ref-fun-str-endswith)
+  - [str.format()](#ref-fun-str-format)
+  - [str.format_time()](#ref-fun-str-format-time)
+  - [str.length()](#ref-fun-str-length)
+  - [str.lower()](#ref-fun-str-lower)
+  - [str.match()](#ref-fun-str-match)
+  - [str.pos()](#ref-fun-str-pos)
+  - [str.repeat()](#ref-fun-str-repeat)
+  - [str.replace()](#ref-fun-str-replace)
+  - [str.replace_all()](#ref-fun-str-replace-all)
+  - [str.split()](#ref-fun-str-split)
+  - [str.startswith()](#ref-fun-str-startswith)
+  - [str.substring()](#ref-fun-str-substring)
+  - [str.tonumber()](#ref-fun-str-tonumber)
+  - [str.tostring()](#ref-fun-str-tostring)
+  - [str.trim()](#ref-fun-str-trim)
+  - [str.upper()](#ref-fun-str-upper)
+  - [strategy()](#ref-fun-strategy)
+  - [strategy.cancel()](#ref-fun-strategy-cancel)
+  - [strategy.cancel_all()](#ref-fun-strategy-cancel-all)
+  - [strategy.close()](#ref-fun-strategy-close)
+  - [strategy.close_all()](#ref-fun-strategy-close-all)
+  - [strategy.closedtrades.commission()](#ref-fun-strategy-closedtrades-commission)
+  - [strategy.closedtrades.entry_bar_index()](#ref-fun-strategy-closedtrades-entry-bar-index)
+  - [strategy.closedtrades.entry_comment()](#ref-fun-strategy-closedtrades-entry-comment)
+  - [strategy.closedtrades.entry_id()](#ref-fun-strategy-closedtrades-entry-id)
+  - [strategy.closedtrades.entry_price()](#ref-fun-strategy-closedtrades-entry-price)
+  - [strategy.closedtrades.entry_time()](#ref-fun-strategy-closedtrades-entry-time)
+  - [strategy.closedtrades.exit_bar_index()](#ref-fun-strategy-closedtrades-exit-bar-index)
+  - [strategy.closedtrades.exit_comment()](#ref-fun-strategy-closedtrades-exit-comment)
+  - [strategy.closedtrades.exit_id()](#ref-fun-strategy-closedtrades-exit-id)
+  - [strategy.closedtrades.exit_price()](#ref-fun-strategy-closedtrades-exit-price)
+  - [strategy.closedtrades.exit_time()](#ref-fun-strategy-closedtrades-exit-time)
+  - [strategy.closedtrades.max_drawdown()](#ref-fun-strategy-closedtrades-max-drawdown)
+  - [strategy.closedtrades.max_drawdown_percent()](#ref-fun-strategy-closedtrades-max-drawdown-percent)
+  - [strategy.closedtrades.max_runup()](#ref-fun-strategy-closedtrades-max-runup)
+  - [strategy.closedtrades.max_runup_percent()](#ref-fun-strategy-closedtrades-max-runup-percent)
+  - [strategy.closedtrades.profit()](#ref-fun-strategy-closedtrades-profit)
+  - [strategy.closedtrades.profit_percent()](#ref-fun-strategy-closedtrades-profit-percent)
+  - [strategy.closedtrades.size()](#ref-fun-strategy-closedtrades-size)
+  - [strategy.convert_to_account()](#ref-fun-strategy-convert-to-account)
+  - [strategy.convert_to_symbol()](#ref-fun-strategy-convert-to-symbol)
+  - [strategy.default_entry_qty()](#ref-fun-strategy-default-entry-qty)
+  - [strategy.entry()](#ref-fun-strategy-entry)
+  - [strategy.exit()](#ref-fun-strategy-exit)
+  - [strategy.opentrades.commission()](#ref-fun-strategy-opentrades-commission)
+  - [strategy.opentrades.entry_bar_index()](#ref-fun-strategy-opentrades-entry-bar-index)
+  - [strategy.opentrades.entry_comment()](#ref-fun-strategy-opentrades-entry-comment)
+  - [strategy.opentrades.entry_id()](#ref-fun-strategy-opentrades-entry-id)
+  - [strategy.opentrades.entry_price()](#ref-fun-strategy-opentrades-entry-price)
+  - [strategy.opentrades.entry_time()](#ref-fun-strategy-opentrades-entry-time)
+  - [strategy.opentrades.max_drawdown()](#ref-fun-strategy-opentrades-max-drawdown)
+  - [strategy.opentrades.max_drawdown_percent()](#ref-fun-strategy-opentrades-max-drawdown-percent)
+  - [strategy.opentrades.max_runup()](#ref-fun-strategy-opentrades-max-runup)
+  - [strategy.opentrades.max_runup_percent()](#ref-fun-strategy-opentrades-max-runup-percent)
+  - [strategy.opentrades.profit()](#ref-fun-strategy-opentrades-profit)
+  - [strategy.opentrades.profit_percent()](#ref-fun-strategy-opentrades-profit-percent)
+  - [strategy.opentrades.size()](#ref-fun-strategy-opentrades-size)
+  - [strategy.order()](#ref-fun-strategy-order)
+  - [strategy.risk.allow_entry_in()](#ref-fun-strategy-risk-allow-entry-in)
+  - [strategy.risk.max_cons_loss_days()](#ref-fun-strategy-risk-max-cons-loss-days)
+  - [strategy.risk.max_drawdown()](#ref-fun-strategy-risk-max-drawdown)
+  - [strategy.risk.max_intraday_filled_orders()](#ref-fun-strategy-risk-max-intraday-filled-orders)
+  - [strategy.risk.max_intraday_loss()](#ref-fun-strategy-risk-max-intraday-loss)
+  - [strategy.risk.max_position_size()](#ref-fun-strategy-risk-max-position-size)
+  - [string()](#ref-fun-string)
+  - [syminfo.prefix()](#ref-fun-syminfo-prefix)
+  - [syminfo.ticker()](#ref-fun-syminfo-ticker)
+  - [ta.alma()](#ref-fun-ta-alma)
+  - [ta.atr()](#ref-fun-ta-atr)
+  - [ta.barssince()](#ref-fun-ta-barssince)
+  - [ta.bb()](#ref-fun-ta-bb)
+  - [ta.bbw()](#ref-fun-ta-bbw)
+  - [ta.cci()](#ref-fun-ta-cci)
+  - [ta.change()](#ref-fun-ta-change)
+  - [ta.cmo()](#ref-fun-ta-cmo)
+  - [ta.cog()](#ref-fun-ta-cog)
+  - [ta.correlation()](#ref-fun-ta-correlation)
+  - [ta.cross()](#ref-fun-ta-cross)
+  - [ta.crossover()](#ref-fun-ta-crossover)
+  - [ta.crossunder()](#ref-fun-ta-crossunder)
+  - [ta.cum()](#ref-fun-ta-cum)
+  - [ta.dev()](#ref-fun-ta-dev)
+  - [ta.dmi()](#ref-fun-ta-dmi)
+  - [ta.ema()](#ref-fun-ta-ema)
+  - [ta.falling()](#ref-fun-ta-falling)
+  - [ta.highest()](#ref-fun-ta-highest)
+  - [ta.highestbars()](#ref-fun-ta-highestbars)
+  - [ta.hma()](#ref-fun-ta-hma)
+  - [ta.kc()](#ref-fun-ta-kc)
+  - [ta.kcw()](#ref-fun-ta-kcw)
+  - [ta.linreg()](#ref-fun-ta-linreg)
+  - [ta.lowest()](#ref-fun-ta-lowest)
+  - [ta.lowestbars()](#ref-fun-ta-lowestbars)
+  - [ta.macd()](#ref-fun-ta-macd)
+  - [ta.max()](#ref-fun-ta-max)
+  - [ta.median()](#ref-fun-ta-median)
+  - [ta.mfi()](#ref-fun-ta-mfi)
+  - [ta.min()](#ref-fun-ta-min)
+  - [ta.mode()](#ref-fun-ta-mode)
+  - [ta.mom()](#ref-fun-ta-mom)
+  - [ta.percentile_linear_interpolation()](#ref-fun-ta-percentile-linear-interpolation)
+  - [ta.percentile_nearest_rank()](#ref-fun-ta-percentile-nearest-rank)
+  - [ta.percentrank()](#ref-fun-ta-percentrank)
+  - [ta.pivot_point_levels()](#ref-fun-ta-pivot-point-levels)
+  - [ta.pivothigh()](#ref-fun-ta-pivothigh)
+  - [ta.pivotlow()](#ref-fun-ta-pivotlow)
+  - [ta.range()](#ref-fun-ta-range)
+  - [ta.rci()](#ref-fun-ta-rci)
+  - [ta.rising()](#ref-fun-ta-rising)
+  - [ta.rma()](#ref-fun-ta-rma)
+  - [ta.roc()](#ref-fun-ta-roc)
+  - [ta.rsi()](#ref-fun-ta-rsi)
+  - [ta.sar()](#ref-fun-ta-sar)
+  - [ta.sma()](#ref-fun-ta-sma)
+  - [ta.stdev()](#ref-fun-ta-stdev)
+  - [ta.stoch()](#ref-fun-ta-stoch)
+  - [ta.supertrend()](#ref-fun-ta-supertrend)
+  - [ta.swma()](#ref-fun-ta-swma)
+  - [ta.tr()](#ref-fun-ta-tr)
+  - [ta.tsi()](#ref-fun-ta-tsi)
+  - [ta.valuewhen()](#ref-fun-ta-valuewhen)
+  - [ta.variance()](#ref-fun-ta-variance)
+  - [ta.vwap()](#ref-fun-ta-vwap)
+  - [ta.vwma()](#ref-fun-ta-vwma)
+  - [ta.wma()](#ref-fun-ta-wma)
+  - [ta.wpr()](#ref-fun-ta-wpr)
+  - [table()](#ref-fun-table)
+  - [table.cell()](#ref-fun-table-cell)
+  - [table.cell_set_bgcolor()](#ref-fun-table-cell-set-bgcolor)
+  - [table.cell_set_height()](#ref-fun-table-cell-set-height)
+  - [table.cell_set_text()](#ref-fun-table-cell-set-text)
+  - [table.cell_set_text_color()](#ref-fun-table-cell-set-text-color)
+  - [table.cell_set_text_font_family()](#ref-fun-table-cell-set-text-font-family)
+  - [table.cell_set_text_formatting()](#ref-fun-table-cell-set-text-formatting)
+  - [table.cell_set_text_halign()](#ref-fun-table-cell-set-text-halign)
+  - [table.cell_set_text_size()](#ref-fun-table-cell-set-text-size)
+  - [table.cell_set_text_valign()](#ref-fun-table-cell-set-text-valign)
+  - [table.cell_set_tooltip()](#ref-fun-table-cell-set-tooltip)
+  - [table.cell_set_width()](#ref-fun-table-cell-set-width)
+  - [table.clear()](#ref-fun-table-clear)
+  - [table.delete()](#ref-fun-table-delete)
+  - [table.merge_cells()](#ref-fun-table-merge-cells)
+  - [table.new()](#ref-fun-table-new)
+  - [table.set_bgcolor()](#ref-fun-table-set-bgcolor)
+  - [table.set_border_color()](#ref-fun-table-set-border-color)
+  - [table.set_border_width()](#ref-fun-table-set-border-width)
+  - [table.set_frame_color()](#ref-fun-table-set-frame-color)
+  - [table.set_frame_width()](#ref-fun-table-set-frame-width)
+  - [table.set_position()](#ref-fun-table-set-position)
+  - [ticker.heikinashi()](#ref-fun-ticker-heikinashi)
+  - [ticker.inherit()](#ref-fun-ticker-inherit)
+  - [ticker.kagi()](#ref-fun-ticker-kagi)
+  - [ticker.linebreak()](#ref-fun-ticker-linebreak)
+  - [ticker.modify()](#ref-fun-ticker-modify)
+  - [ticker.new()](#ref-fun-ticker-new)
+  - [ticker.pointfigure()](#ref-fun-ticker-pointfigure)
+  - [ticker.renko()](#ref-fun-ticker-renko)
+  - [ticker.standard()](#ref-fun-ticker-standard)
+  - [time()](#ref-fun-time)
+  - [time_close()](#ref-fun-time-close)
+  - [timeframe.change()](#ref-fun-timeframe-change)
+  - [timeframe.from_seconds()](#ref-fun-timeframe-from-seconds)
+  - [timeframe.in_seconds()](#ref-fun-timeframe-in-seconds)
+  - [timestamp()](#ref-fun-timestamp)
+  - [volume_row.buy_volume()](#ref-fun-volume-row-buy-volume)
+  - [volume_row.delta()](#ref-fun-volume-row-delta)
+  - [volume_row.down_price()](#ref-fun-volume-row-down-price)
+  - [volume_row.has_buy_imbalance()](#ref-fun-volume-row-has-buy-imbalance)
+  - [volume_row.has_sell_imbalance()](#ref-fun-volume-row-has-sell-imbalance)
+  - [volume_row.sell_volume()](#ref-fun-volume-row-sell-volume)
+  - [volume_row.total_volume()](#ref-fun-volume-row-total-volume)
+  - [volume_row.up_price()](#ref-fun-volume-row-up-price)
+  - [weekofyear()](#ref-fun-weekofyear)
+  - [year()](#ref-fun-year)
 - [Keywords](#keywords) (15)
+  - [and](#ref-kw-and)
+  - [enum](#ref-kw-enum)
+  - [export](#ref-kw-export)
+  - [for](#ref-kw-for)
+  - [for...in](#ref-kw-for-in)
+  - [if](#ref-kw-if)
+  - [import](#ref-kw-import)
+  - [method](#ref-kw-method)
+  - [not](#ref-kw-not)
+  - [or](#ref-kw-or)
+  - [switch](#ref-kw-switch)
+  - [type](#ref-kw-type)
+  - [var](#ref-kw-var)
+  - [varip](#ref-kw-varip)
+  - [while](#ref-kw-while)
 - [Operators](#operators) (21)
+  - [-](#ref-op-2d)
+  - [-=](#ref-op-2d-3d)
+  - [:=](#ref-op-3a-3d)
+  - [!=](#ref-op-21-3d)
+  - [?:](#ref-op-3f-3a)
+  - [[]](#ref-op-5b-5d)
+  - [*](#ref-op-2a)
+  - [*=](#ref-op-2a-3d)
+  - [/](#ref-op-2f)
+  - [/=](#ref-op-2f-3d)
+  - [%](#ref-op-25)
+  - [%=](#ref-op-25-3d)
+  - [+](#ref-op-2b)
+  - [+=](#ref-op-2b-3d)
+  - [<](#ref-op-3c)
+  - [<=](#ref-op-3c-3d)
+  - [=](#ref-op-3d)
+  - [==](#ref-op-3d-3d)
+  - [=>](#ref-op-3d-3e)
+  - [>](#ref-op-3e)
+  - [>=](#ref-op-3e-3d)
 - [Annotations](#annotations) (10)
+  - [@description](#ref-an-40-description)
+  - [@enum](#ref-an-40-enum)
+  - [@field](#ref-an-40-field)
+  - [@function](#ref-an-40-function)
+  - [@param](#ref-an-40-param)
+  - [@returns](#ref-an-40-returns)
+  - [@strategy_alert_message](#ref-an-40-strategy-alert-message)
+  - [@type](#ref-an-40-type)
+  - [@variable](#ref-an-40-variable)
+  - [@version=](#ref-an-40-version-3d)
 
 **Total: 941 items**
 
@@ -18,9 +959,11 @@ Generated: 2026-05-27 14:32
 
 ## Types
 
+<a id="ref-type-array"></a>
+
 ### array
 
-Keyword used to explicitly declare the "array" type of a variable or a parameter. Array objects (or IDs) can be created with the array.new<type>() , array.from() function.
+Keyword used to explicitly declare the "array" type of a variable or a parameter. Array objects (or IDs) can be created with the [array.new<type>()](#ref-fun-array-new-3c-type-3e), [array.from()](#ref-fun-array-from) function.
 
 **Example**
 
@@ -37,9 +980,11 @@ Array objects are always of "series" form.
 
 ---
 
+<a id="ref-type-bool"></a>
+
 ### bool
 
-Keyword used to explicitly declare the "bool" (boolean) type of a variable or a parameter. "Bool" variables can have values true or false .
+Keyword used to explicitly declare the "bool" (boolean) type of a variable or a parameter. "Bool" variables can have values [true](#ref-const-true) or [false](#ref-const-false).
 
 **Example**
 
@@ -51,13 +996,15 @@ plot(b ? open : close)
 ```
 
 **Remarks**
-Explicitly mentioning the type in a variable declaration is optional. Learn more about Pine Script® types in the User Manual page on the Type System .
+Explicitly mentioning the type in a variable declaration is optional. Learn more about Pine Script® types in the User Manual page on the [Type System](./docs_content.md#docs-language-type-system).
 
 ---
 
+<a id="ref-type-box"></a>
+
 ### box
 
-Keyword used to explicitly declare the "box" type of a variable or a parameter. Box objects (or IDs) can be created with the box.new() function.
+Keyword used to explicitly declare the "box" type of a variable or a parameter. Box objects (or IDs) can be created with the [box.new()](#ref-fun-box-new) function.
 
 **Example**
 
@@ -76,9 +1023,11 @@ Box objects are always of "series" form.
 
 ---
 
+<a id="ref-type-chart-point"></a>
+
 ### chart.point
 
-Keyword to explicitly declare the type of a variable or parameter as chart.point . Scripts can produce chart.point instances using the chart.point.from_time() , chart.point.from_index() , chart.point.now() , and chart.point.new() functions.
+Keyword to explicitly declare the type of a variable or parameter as `chart.point`. Scripts can produce `chart.point` instances using the [chart.point.from_time()](#ref-fun-chart-point-from-time), [chart.point.from_index()](#ref-fun-chart-point-from-index), [chart.point.now()](#ref-fun-chart-point-now), and [chart.point.new()](#ref-fun-chart-point-new) functions.
 
 **Fields**
 index (series int) The x-coordinate of the point, expressed as a bar index value.
@@ -86,6 +1035,8 @@ time (series int) The x-coordinate of the point, expressed as a UNIX time value,
 price (series float) The y-coordinate of the point.
 
 ---
+
+<a id="ref-type-color"></a>
 
 ### color
 
@@ -109,15 +1060,17 @@ plot(close, color = c)
 
 **Remarks**
 Color literals have the following format: #RRGGBB or #RRGGBBAA. The letter pairs represent 00 to FF hexadecimal values (0 to 255 in decimal) where RR, GG and BB pairs are the values for the color's red, green and blue components. AA is an optional value for the color's transparency (or alpha component) where 00 is invisible and FF opaque. When no AA pair is supplied, FF is used. The hexadecimal letters can be upper or lower case.
-Explicitly mentioning the type in a variable declaration is optional, except when it is initialized with na . Learn more about Pine Script® types in the User Manual page on the Type System .
+Explicitly mentioning the type in a variable declaration is optional, except when it is initialized with [na](#ref-var-na). Learn more about Pine Script® types in the User Manual page on the [Type System](./docs_content.md#docs-language-type-system).
 
 ---
 
+<a id="ref-type-const"></a>
+
 ### const
 
-The const keyword explicitly assigns the "const" type qualifier to variables and the parameters of non-exported functions. Variables and parameters with the "const" qualifier reference values established at compile time that never change in the script's execution.
+The `const` keyword explicitly assigns the "const" type qualifier to variables and the parameters of non-exported functions. Variables and parameters with the "const" qualifier reference values established at compile time that never change in the script's execution.
 In variable declarations, the compiler can usually infer the qualified type automatically based on the values assigned to a variable, and it can automatically change a variable's qualifier to a stronger one when necessary. The type qualifier hierarchy is "const" < "input" < "simple" < "series", where "const" is the weakest.
-Explicitly declaring a variable with the const keyword restricts the type qualifier to "const", meaning the variable cannot accept a value with a stronger qualifier (e.g., "input"), nor can the value assigned to the variable change at any point in the script's execution.
+Explicitly declaring a variable with the `const` keyword restricts the type qualifier to "const", meaning the variable cannot accept a value with a stronger qualifier (e.g., "input"), nor can the value assigned to the variable change at any point in the script's execution.
 When using this keyword to specify the type qualifier, one must also use a type keyword to declare the allowed type.
 
 **Syntax**
@@ -158,9 +1111,11 @@ plot(myVar)
 ```
 
 **Remarks**
-To learn more, see our User Manual's section on type qualifiers .
+To learn more, see our User Manual's section on [type qualifiers](./docs_content.md#docs-language-type-system).
 
 ---
+
+<a id="ref-type-float"></a>
 
 ### float
 
@@ -177,15 +1132,19 @@ plot(f)
 ```
 
 **Remarks**
-Explicitly mentioning the type in a variable declaration is optional, except when it is initialized with na . Learn more about Pine Script® types in the User Manual page on the Type System .
+Explicitly mentioning the type in a variable declaration is optional, except when it is initialized with [na](#ref-var-na). Learn more about Pine Script® types in the User Manual page on the [Type System](./docs_content.md#docs-language-type-system).
 
 ---
+
+<a id="ref-type-footprint"></a>
 
 ### footprint
 
-A keyword that explicitly declares the type of a variable or parameter as footprint . Scripts create objects of the footprint type by calling the request.footprint() function. Scripts can use IDs of this type with the built-in footprint.*() functions to retrieve volume footprint data, including footprint rows, categorized volume sums, and volume delta.
+A keyword that explicitly declares the type of a variable or parameter as `footprint`. Scripts create objects of the `footprint` type by calling the [request.footprint()](#ref-fun-request-footprint) function. Scripts can use IDs of this type with the built-in `footprint.*()` functions to retrieve [volume footprint](https://www.tradingview.com/support/solutions/43000726164/) data, including footprint rows, categorized volume sums, and volume delta.
 
 ---
+
+<a id="ref-type-int"></a>
 
 ### int
 
@@ -202,13 +1161,15 @@ plot(i)
 ```
 
 **Remarks**
-Explicitly mentioning the type in a variable declaration is optional, except when it is initialized with na . Learn more about Pine Script® types in the User Manual page on the Type System .
+Explicitly mentioning the type in a variable declaration is optional, except when it is initialized with [na](#ref-var-na). Learn more about Pine Script® types in the User Manual page on the [Type System](./docs_content.md#docs-language-type-system).
 
 ---
 
+<a id="ref-type-label"></a>
+
 ### label
 
-Keyword used to explicitly declare the "label" type of a variable or a parameter. Label objects (or IDs) can be created with the label.new() function.
+Keyword used to explicitly declare the "label" type of a variable or a parameter. Label objects (or IDs) can be created with the [label.new()](#ref-fun-label-new) function.
 
 **Example**
 
@@ -228,9 +1189,11 @@ Label objects are always of "series" form.
 
 ---
 
+<a id="ref-type-line"></a>
+
 ### line
 
-Keyword used to explicitly declare the "line" type of a variable or a parameter. Line objects (or IDs) can be created with the line.new() function.
+Keyword used to explicitly declare the "line" type of a variable or a parameter. Line objects (or IDs) can be created with the [line.new()](#ref-fun-line-new) function.
 
 **Example**
 
@@ -249,9 +1212,11 @@ Line objects are always of "series" form.
 
 ---
 
+<a id="ref-type-linefill"></a>
+
 ### linefill
 
-Keyword used to explicitly declare the "linefill" type of a variable or a parameter. Linefill objects (or IDs) can be created with the linefill.new() function.
+Keyword used to explicitly declare the "linefill" type of a variable or a parameter. Linefill objects (or IDs) can be created with the [linefill.new()](#ref-fun-linefill-new) function.
 
 **Example**
 
@@ -274,9 +1239,11 @@ Linefill objects are always of "series" form.
 
 ---
 
+<a id="ref-type-map"></a>
+
 ### map
 
-Keyword used to explicitly declare the "map" type of a variable or a parameter. Map objects (or IDs) can be created with the map.new<type,type>() function.
+Keyword used to explicitly declare the "map" type of a variable or a parameter. Map objects (or IDs) can be created with the [map.new<type,type>()](#ref-fun-map-new-3c-type-2c-type-3e) function.
 
 **Example**
 
@@ -290,13 +1257,15 @@ label.new(bar_index, a.get(bar_index), "Current close")
 ```
 
 **Remarks**
-Map objects are always of series form.
+Map objects are always of [series](./docs_content.md#docs-language-type-system) form.
 
 ---
 
+<a id="ref-type-matrix"></a>
+
 ### matrix
 
-Keyword used to explicitly declare the "matrix" type of a variable or a parameter. Matrix objects (or IDs) can be created with the matrix.new<type>() function.
+Keyword used to explicitly declare the "matrix" type of a variable or a parameter. Matrix objects (or IDs) can be created with the [matrix.new<type>()](#ref-fun-matrix-new-3c-type-3e) function.
 
 **Example**
 
@@ -320,18 +1289,22 @@ Matrix objects are always of "series" form.
 
 ---
 
+<a id="ref-type-polyline"></a>
+
 ### polyline
 
-Keyword to explicitly declare the type of a variable or parameter as polyline . Scripts can produce polyline instances using the polyline.new() function.
+Keyword to explicitly declare the type of a variable or parameter as `polyline`. Scripts can produce `polyline` instances using the [polyline.new()](#ref-fun-polyline-new) function.
 
 ---
 
+<a id="ref-type-series"></a>
+
 ### series
 
-The series keyword explicitly assigns the "series" type qualifier to variables and function parameters. Variables and parameters that use the "series" qualifier can reference values that change throughout a script's execution.
-Explicit use of the series keyword when declaring the parameters of a library's exported functions is typically unnecessary, as the compiler can usually automatically detect whether a parameter is compatible with "series" or "simple" qualified values. By default, all exported function parameters are qualified as "series" wherever possible.
+The `series` keyword explicitly assigns the "series" type qualifier to variables and function parameters. Variables and parameters that use the "series" qualifier can reference values that change throughout a script's execution.
+Explicit use of the `series` keyword when declaring the parameters of a library's exported functions is typically unnecessary, as the compiler can usually automatically detect whether a parameter is compatible with "series" or "simple" qualified values. By default, all exported function parameters are qualified as "series" wherever possible.
 In variable declarations, the compiler can usually infer the qualified type automatically based on the values assigned to a variable, and it can automatically change a variable's qualifier to a stronger one when necessary. The type qualifier hierarchy is "const" < "input" < "simple" < "series", where "series" is the strongest.
-Explicitly declaring a variable with the series keyword restricts the type qualifier to "series", meaning the script cannot pass its value to any variable or function parameter that requires a value with a weaker qualifier ("const", "input", or "simple").
+Explicitly declaring a variable with the `series` keyword restricts the type qualifier to "series", meaning the script cannot pass its value to any variable or function parameter that requires a value with a weaker qualifier ("const", "input", or "simple").
 When using this keyword to specify the type qualifier, one must also use a type keyword to declare the allowed type.
 
 **Syntax**
@@ -388,16 +1361,18 @@ plot(close, style = plot.style_histogram, histbase = myVar)
 ```
 
 **Remarks**
-To learn more, see our User Manual's section on type qualifiers .
+To learn more, see our User Manual's section on [type qualifiers](./docs_content.md#docs-language-type-system).
 
 ---
 
+<a id="ref-type-simple"></a>
+
 ### simple
 
-The simple keyword explicitly assigns the "simple" type qualifier to variables and function parameters. Variables and parameters that use the "simple" qualifier can reference values established at the beginning of a script's execution that do not change later.
-To restrict the parameters in a library's exported functions to only allow values with a "simple" or weaker type qualifier, using the simple keyword when declaring parameters is often necessary, as libraries automatically qualify all parameters as "series" wherever possible by default. Explicitly restricting functions to accept "simple" arguments also allows them to return "simple" values in some cases, depending on the operations they execute, making them usable with the parameters of built-in functions that do not allow "series" arguments.
+The `simple` keyword explicitly assigns the "simple" type qualifier to variables and function parameters. Variables and parameters that use the "simple" qualifier can reference values established at the beginning of a script's execution that do not change later.
+To restrict the parameters in a library's exported functions to only allow values with a "simple" or weaker type qualifier, using the `simple` keyword when declaring parameters is often necessary, as libraries automatically qualify all parameters as "series" wherever possible by default. Explicitly restricting functions to accept "simple" arguments also allows them to return "simple" values in some cases, depending on the operations they execute, making them usable with the parameters of built-in functions that do not allow "series" arguments.
 In variable declarations, the compiler can usually infer the qualified type automatically based on the values assigned to a variable, and it can automatically change a variable's qualifier to a stronger one when necessary. The type qualifier hierarchy is "const" < "input" < "simple" < "series", where "simple" is stronger than "input" and "const".
-Explicitly declaring a variable with the simple keyword restricts the type qualifier to "simple", meaning the script cannot pass its value to any variable or function parameter that requires a value with a weaker qualifier ("const" or "input"). Additionally, one cannot assign a "series" value to a variable explicitly declared with the simple keyword.
+Explicitly declaring a variable with the `simple` keyword restricts the type qualifier to "simple", meaning the script cannot pass its value to any variable or function parameter that requires a value with a weaker qualifier ("const" or "input"). Additionally, one cannot assign a "series" value to a variable explicitly declared with the `simple` keyword.
 When using this keyword to specify the type qualifier, one must also use a type keyword to declare the allowed type.
 
 **Syntax**
@@ -455,9 +1430,11 @@ plot(myVar)
 ```
 
 **Remarks**
-To learn more, see our User Manual's section on type qualifiers .
+To learn more, see our User Manual's section on [type qualifiers](./docs_content.md#docs-language-type-system).
 
 ---
+
+<a id="ref-type-string"></a>
 
 ### string
 
@@ -474,13 +1451,15 @@ plot(na, title=s)
 ```
 
 **Remarks**
-Explicitly mentioning the type in a variable declaration is optional, except when it is initialized with na . Learn more about Pine Script® types in the User Manual page on the Type System .
+Explicitly mentioning the type in a variable declaration is optional, except when it is initialized with [na](#ref-var-na). Learn more about Pine Script® types in the User Manual page on the [Type System](./docs_content.md#docs-language-type-system).
 
 ---
 
+<a id="ref-type-table"></a>
+
 ### table
 
-Keyword used to explicitly declare the "table" type of a variable or a parameter. Table objects (or IDs) can be created with the table.new() function.
+Keyword used to explicitly declare the "table" type of a variable or a parameter. Table objects (or IDs) can be created with the [table.new()](#ref-fun-table-new) function.
 
 **Example**
 
@@ -502,17 +1481,21 @@ Table objects are always of "series" form.
 
 ---
 
+<a id="ref-type-volume-row"></a>
+
 ### volume_row
 
-A keyword that explicitly declares the type of a variable or parameter as volume_row . All footprint.*() functions that retrieve row data from a footprint object return an ID of the volume_row type. Scripts can use IDs of this type with the built-in volume_row.*() functions to retrieve information about a requested footprint row, including the row's price levels, categorized volume, volume delta, and imbalances.
+A keyword that explicitly declares the type of a variable or parameter as `volume_row`. All `footprint.*()` functions that retrieve row data from a [footprint](#ref-type-footprint) object return an ID of the `volume_row` type. Scripts can use IDs of this type with the built-in `volume_row.*()` functions to retrieve information about a requested footprint row, including the row's price levels, categorized volume, volume delta, and imbalances.
 
 ---
 
 ## Variables
 
+<a id="ref-var-ask"></a>
+
 ### ask
 
-The ask price at the time of the current tick, which represents the lowest price an active seller will accept for the instrument at its current value. This information is available only on the "1T" timeframe. On other timeframes, the variable's value is na .
+The ask price at the time of the current tick, which represents the lowest price an active seller will accept for the instrument at its current value. This information is available only on the "1T" timeframe. On other timeframes, the variable's value is [na](#ref-var-na).
 
 **Type**
 series float
@@ -521,6 +1504,8 @@ series float
 If the bid/ask values change since the last tick but no new trades are made, these changes will not be reflected in the value of this variable. It is only updated on new ticks.
 
 ---
+
+<a id="ref-var-bar-index"></a>
 
 ### bar_index
 
@@ -539,11 +1524,13 @@ plot(bar_index > 5000 ? close : 0)
 ```
 
 **Remarks**
-Note that bar_index has replaced n variable in version 4.
+Note that **bar_index** has replaced **n** variable in version 4.
 Note that bar indexing starts from 0 on the first historical bar.
-Please note that using this variable/function can cause indicator repainting .
+Please note that using this variable/function can cause [indicator repainting](./docs_content.md#docs-concepts-repainting).
 
 ---
+
+<a id="ref-var-barstate-isconfirmed"></a>
 
 ### barstate.isconfirmed
 
@@ -554,9 +1541,11 @@ series bool
 
 **Remarks**
 Pine Script® code that uses this variable could calculate differently on history and real-time data.
-It is NOT recommended to use barstate.isconfirmed in request.security() expression. Its value requested from request.security() is unpredictable.
+It is NOT recommended to use [barstate.isconfirmed](#ref-var-barstate-isconfirmed) in [request.security()](#ref-fun-request-security) expression. Its value requested from [request.security()](#ref-fun-request-security) is unpredictable.
 
 ---
+
+<a id="ref-var-barstate-isfirst"></a>
 
 ### barstate.isfirst
 
@@ -567,9 +1556,11 @@ series bool
 
 **Remarks**
 Pine Script® code that uses this variable could calculate differently on history and real-time data.
-Please note that using this variable/function can cause indicator repainting .
+Please note that using this variable/function can cause [indicator repainting](./docs_content.md#docs-concepts-repainting).
 
 ---
+
+<a id="ref-var-barstate-ishistory"></a>
 
 ### barstate.ishistory
 
@@ -580,9 +1571,11 @@ series bool
 
 **Remarks**
 Pine Script® code that uses this variable could calculate differently on history and real-time data.
-Please note that using this variable/function can cause indicator repainting .
+Please note that using this variable/function can cause [indicator repainting](./docs_content.md#docs-concepts-repainting).
 
 ---
+
+<a id="ref-var-barstate-islast"></a>
 
 ### barstate.islast
 
@@ -593,9 +1586,11 @@ series bool
 
 **Remarks**
 Pine Script® code that uses this variable could calculate differently on history and real-time data.
-Please note that using this variable/function can cause indicator repainting .
+Please note that using this variable/function can cause [indicator repainting](./docs_content.md#docs-concepts-repainting).
 
 ---
+
+<a id="ref-var-barstate-islastconfirmedhistory"></a>
 
 ### barstate.islastconfirmedhistory
 
@@ -606,9 +1601,11 @@ series bool
 
 **Remarks**
 Pine Script® code that uses this variable could calculate differently on history and real-time data.
-Please note that using this variable/function can cause indicator repainting .
+Please note that using this variable/function can cause [indicator repainting](./docs_content.md#docs-concepts-repainting).
 
 ---
+
+<a id="ref-var-barstate-isnew"></a>
 
 ### barstate.isnew
 
@@ -619,9 +1616,11 @@ series bool
 
 **Remarks**
 Pine Script® code that uses this variable could calculate differently on history and real-time data.
-Please note that using this variable/function can cause indicator repainting .
+Please note that using this variable/function can cause [indicator repainting](./docs_content.md#docs-concepts-repainting).
 
 ---
+
+<a id="ref-var-barstate-isrealtime"></a>
 
 ### barstate.isrealtime
 
@@ -632,13 +1631,15 @@ series bool
 
 **Remarks**
 Pine Script® code that uses this variable could calculate differently on history and real-time data.
-Please note that using this variable/function can cause indicator repainting .
+Please note that using this variable/function can cause [indicator repainting](./docs_content.md#docs-concepts-repainting).
 
 ---
 
+<a id="ref-var-bid"></a>
+
 ### bid
 
-The bid price at the time of the current tick, which represents the highest price an active buyer is willing to pay for the instrument at its current value. This information is available only on the "1T" timeframe. On other timeframes, the variable's value is na .
+The bid price at the time of the current tick, which represents the highest price an active buyer is willing to pay for the instrument at its current value. This information is available only on the "1T" timeframe. On other timeframes, the variable's value is [na](#ref-var-na).
 
 **Type**
 series float
@@ -647,6 +1648,8 @@ series float
 If the bid/ask values change since the last tick but no new trades are made, these changes will not be reflected in the value of this variable. It is only updated on new ticks.
 
 ---
+
+<a id="ref-var-box-all"></a>
 
 ### box.all
 
@@ -673,6 +1676,8 @@ The array is read-only. Index zero of the array is the ID of the oldest object o
 
 ---
 
+<a id="ref-var-chart-bg-color"></a>
+
 ### chart.bg_color
 
 Returns the color of the chart's background from the "Chart settings/Appearance/Background" field. When a gradient is selected, the middle point of the gradient is returned.
@@ -682,14 +1687,18 @@ input color
 
 ---
 
+<a id="ref-var-chart-fg-color"></a>
+
 ### chart.fg_color
 
-Returns a color providing optimal contrast with chart.bg_color .
+Returns a color providing optimal contrast with [chart.bg_color](#ref-var-chart-bg-color).
 
 **Type**
 input color
 
 ---
+
+<a id="ref-var-chart-is-heikinashi"></a>
 
 ### chart.is_heikinashi
 
@@ -697,9 +1706,11 @@ input color
 simple bool
 
 **Returns**
-Returns true if the chart type is Heikin Ashi, false otherwise.
+Returns [true](#ref-const-true) if the chart type is Heikin Ashi, [false](#ref-const-false) otherwise.
 
 ---
+
+<a id="ref-var-chart-is-kagi"></a>
 
 ### chart.is_kagi
 
@@ -707,9 +1718,11 @@ Returns true if the chart type is Heikin Ashi, false otherwise.
 simple bool
 
 **Returns**
-Returns true if the chart type is Kagi, false otherwise.
+Returns [true](#ref-const-true) if the chart type is Kagi, [false](#ref-const-false) otherwise.
 
 ---
+
+<a id="ref-var-chart-is-linebreak"></a>
 
 ### chart.is_linebreak
 
@@ -717,9 +1730,11 @@ Returns true if the chart type is Kagi, false otherwise.
 simple bool
 
 **Returns**
-Returns true if the chart type is Line break, false otherwise.
+Returns [true](#ref-const-true) if the chart type is Line break, [false](#ref-const-false) otherwise.
 
 ---
+
+<a id="ref-var-chart-is-pnf"></a>
 
 ### chart.is_pnf
 
@@ -727,9 +1742,11 @@ Returns true if the chart type is Line break, false otherwise.
 simple bool
 
 **Returns**
-Returns true if the chart type is Point & figure, false otherwise.
+Returns [true](#ref-const-true) if the chart type is Point & figure, [false](#ref-const-false) otherwise.
 
 ---
+
+<a id="ref-var-chart-is-range"></a>
 
 ### chart.is_range
 
@@ -737,9 +1754,11 @@ Returns true if the chart type is Point & figure, false otherwise.
 simple bool
 
 **Returns**
-Returns true if the chart type is Range, false otherwise.
+Returns [true](#ref-const-true) if the chart type is Range, [false](#ref-const-false) otherwise.
 
 ---
+
+<a id="ref-var-chart-is-renko"></a>
 
 ### chart.is_renko
 
@@ -747,9 +1766,11 @@ Returns true if the chart type is Range, false otherwise.
 simple bool
 
 **Returns**
-Returns true if the chart type is Renko, false otherwise.
+Returns [true](#ref-const-true) if the chart type is Renko, [false](#ref-const-false) otherwise.
 
 ---
+
+<a id="ref-var-chart-is-standard"></a>
 
 ### chart.is_standard
 
@@ -757,13 +1778,15 @@ Returns true if the chart type is Renko, false otherwise.
 simple bool
 
 **Returns**
-Returns true if the chart type is not one of the following: Renko, Kagi, Line break, Point & figure, Range, Heikin Ashi; false otherwise.
+Returns [true](#ref-const-true) if the chart type is not one of the following: Renko, Kagi, Line break, Point & figure, Range, Heikin Ashi; [false](#ref-const-false) otherwise.
 
 ---
+
+<a id="ref-var-chart-left-visible-bar-time"></a>
 
 ### chart.left_visible_bar_time
 
-The time of the leftmost bar currently visible on the chart.
+The [time](#ref-var-time) of the leftmost bar currently visible on the chart.
 
 **Type**
 input int
@@ -773,10 +1796,12 @@ Scripts using this variable will automatically re-execute when its value updates
 Alerts created on a script that includes this variable will only use the value assigned to the variable at the moment of the alert's creation, regardless of whether the value changes afterward, which may lead to repainting.
 
 ---
+
+<a id="ref-var-chart-right-visible-bar-time"></a>
 
 ### chart.right_visible_bar_time
 
-The time of the rightmost bar currently visible on the chart.
+The [time](#ref-var-time) of the rightmost bar currently visible on the chart.
 
 **Type**
 input int
@@ -786,6 +1811,8 @@ Scripts using this variable will automatically re-execute when its value updates
 Alerts created on a script that includes this variable will only use the value assigned to the variable at the moment of the alert's creation, regardless of whether the value changes afterward, which may lead to repainting.
 
 ---
+
+<a id="ref-var-close"></a>
 
 ### close
 
@@ -799,6 +1826,8 @@ Previous values may be accessed with square brackets operator [], e.g. close[1],
 
 ---
 
+<a id="ref-var-dayofmonth"></a>
+
 ### dayofmonth
 
 The day number of the month, in the exchange time zone, calculated from the bar's opening UNIX timestamp.
@@ -811,6 +1840,8 @@ This variable always references the day number corresponding to the bar's openin
 
 ---
 
+<a id="ref-var-dayofweek"></a>
+
 ### dayofweek
 
 The day number of the week, in the exchange time zone, calculated from the bar's opening UNIX timestamp.
@@ -820,13 +1851,15 @@ series int
 
 **Remarks**
 This variable always references the day number corresponding to the bar's opening time. Consequently, for symbols with overnight sessions (e.g., "EURUSD", where the "Monday" session starts on Sunday at 17:00 in exchange time), the value may represent a day from the previous week rather than the session's primary trading day.
-You can use dayofweek.sunday , dayofweek.monday , dayofweek.tuesday , dayofweek.wednesday , dayofweek.thursday , dayofweek.friday and dayofweek.saturday variables for comparisons.
+You can use [dayofweek.sunday](#ref-const-dayofweek-sunday), [dayofweek.monday](#ref-const-dayofweek-monday), [dayofweek.tuesday](#ref-const-dayofweek-tuesday), [dayofweek.wednesday](#ref-const-dayofweek-wednesday), [dayofweek.thursday](#ref-const-dayofweek-thursday), [dayofweek.friday](#ref-const-dayofweek-friday) and [dayofweek.saturday](#ref-const-dayofweek-saturday) variables for comparisons.
 
 ---
+
+<a id="ref-var-dividends-future-amount"></a>
 
 ### dividends.future_amount
 
-Returns the payment amount of the upcoming dividend in the currency of the current instrument, or na if this data isn't available.
+Returns the payment amount of the upcoming dividend in the currency of the current instrument, or [na](#ref-var-na) if this data isn't available.
 
 **Type**
 series float
@@ -835,10 +1868,12 @@ series float
 This value is only fetched once during the script's initial calculation. The variable will return the same value until the script is recalculated, even after the expected Payment date of the next dividend.
 
 ---
+
+<a id="ref-var-dividends-future-ex-date"></a>
 
 ### dividends.future_ex_date
 
-Returns the Ex-dividend date (Ex-date) of the current instrument's next dividend payment, or na if this data isn't available. Ex-dividend date signifies when investors are no longer entitled to a payout from the most recent dividend. Only those who purchased shares before this day are entitled to the dividend payment.
+Returns the Ex-dividend date (Ex-date) of the current instrument's next dividend payment, or [na](#ref-var-na) if this data isn't available. Ex-dividend date signifies when investors are no longer entitled to a payout from the most recent dividend. Only those who purchased shares before this day are entitled to the dividend payment.
 
 **Type**
 series int
@@ -850,10 +1885,12 @@ UNIX time, expressed in milliseconds.
 This value is only fetched once during the script's initial calculation. The variable will return the same value until the script is recalculated, even after the expected Payment date of the next dividend.
 
 ---
+
+<a id="ref-var-dividends-future-pay-date"></a>
 
 ### dividends.future_pay_date
 
-Returns the Payment date (Pay date) of the current instrument's next dividend payment, or na if this data isn't available. Payment date signifies the day when eligible investors will receive the dividend payment.
+Returns the Payment date (Pay date) of the current instrument's next dividend payment, or [na](#ref-var-na) if this data isn't available. Payment date signifies the day when eligible investors will receive the dividend payment.
 
 **Type**
 series int
@@ -866,9 +1903,11 @@ This value is only fetched once during the script's initial calculation. The var
 
 ---
 
+<a id="ref-var-earnings-future-eps"></a>
+
 ### earnings.future_eps
 
-Returns the estimated Earnings per Share of the next earnings report in the currency of the instrument, or na if this data isn't available.
+Returns the estimated Earnings per Share of the next earnings report in the currency of the instrument, or [na](#ref-var-na) if this data isn't available.
 
 **Type**
 series float
@@ -877,10 +1916,12 @@ series float
 This value is only fetched once during the script's initial calculation. The variable will return the same value until the script is recalculated, even after the expected time of the next earnings report.
 
 ---
+
+<a id="ref-var-earnings-future-period-end-time"></a>
 
 ### earnings.future_period_end_time
 
-Checks the data for the next earnings report and returns the UNIX timestamp of the day when the financial period covered by those earnings ends, or na if this data isn't available.
+Checks the data for the next earnings report and returns the UNIX timestamp of the day when the financial period covered by those earnings ends, or [na](#ref-var-na) if this data isn't available.
 
 **Type**
 series int
@@ -893,9 +1934,11 @@ This value is only fetched once during the script's initial calculation. The var
 
 ---
 
+<a id="ref-var-earnings-future-revenue"></a>
+
 ### earnings.future_revenue
 
-Returns the estimated Revenue of the next earnings report in the currency of the instrument, or na if this data isn't available.
+Returns the estimated Revenue of the next earnings report in the currency of the instrument, or [na](#ref-var-na) if this data isn't available.
 
 **Type**
 series float
@@ -905,9 +1948,11 @@ This value is only fetched once during the script's initial calculation. The var
 
 ---
 
+<a id="ref-var-earnings-future-time"></a>
+
 ### earnings.future_time
 
-Returns a UNIX timestamp indicating the expected time of the next earnings report, or na if this data isn't available.
+Returns a UNIX timestamp indicating the expected time of the next earnings report, or [na](#ref-var-na) if this data isn't available.
 
 **Type**
 series int
@@ -919,6 +1964,8 @@ UNIX time, expressed in milliseconds.
 This value is only fetched once during the script's initial calculation. The variable will return the same value until the script is recalculated, even after the expected time of the next earnings report.
 
 ---
+
+<a id="ref-var-high"></a>
 
 ### high
 
@@ -932,6 +1979,8 @@ Previous values may be accessed with square brackets operator [], e.g. high[1], 
 
 ---
 
+<a id="ref-var-hl2"></a>
+
 ### hl2
 
 Is a shortcut for (high + low)/2
@@ -940,6 +1989,8 @@ Is a shortcut for (high + low)/2
 series float
 
 ---
+
+<a id="ref-var-hlc3"></a>
 
 ### hlc3
 
@@ -950,6 +2001,8 @@ series float
 
 ---
 
+<a id="ref-var-hlcc4"></a>
+
 ### hlcc4
 
 Is a shortcut for (high + low + close + close)/4
@@ -959,6 +2012,8 @@ series float
 
 ---
 
+<a id="ref-var-hour"></a>
+
 ### hour
 
 Current bar hour in exchange timezone.
@@ -967,6 +2022,8 @@ Current bar hour in exchange timezone.
 series int
 
 ---
+
+<a id="ref-var-label-all"></a>
 
 ### label.all
 
@@ -993,6 +2050,8 @@ The array is read-only. Index zero of the array is the ID of the oldest object o
 
 ---
 
+<a id="ref-var-last-bar-index"></a>
+
 ### last_bar_index
 
 Bar index of the last chart bar. Bar indices begin at zero on the first bar.
@@ -1018,9 +2077,11 @@ bgcolor(allowedToTrade ? color.new(color.green, 80) : na)
 Last historical bar index for closed markets, or the real-time bar index for open markets.
 
 **Remarks**
-Please note that using this variable can cause indicator repainting .
+Please note that using this variable can cause [indicator repainting](./docs_content.md#docs-concepts-repainting).
 
 ---
+
+<a id="ref-var-last-bar-time"></a>
 
 ### last_bar_time
 
@@ -1030,10 +2091,12 @@ Time in UNIX format of the last chart bar. It is the number of milliseconds that
 series int
 
 **Remarks**
-Please note that using this variable/function can cause indicator repainting .
+Please note that using this variable/function can cause [indicator repainting](./docs_content.md#docs-concepts-repainting).
 Note that this variable returns the timestamp based on the time of the bar's open.
 
 ---
+
+<a id="ref-var-line-all"></a>
 
 ### line.all
 
@@ -1060,6 +2123,8 @@ The array is read-only. Index zero of the array is the ID of the oldest object o
 
 ---
 
+<a id="ref-var-linefill-all"></a>
+
 ### linefill.all
 
 Returns an array filled with all the current linefill objects drawn by the script.
@@ -1071,6 +2136,8 @@ array<linefill>
 The array is read-only. Index zero of the array is the ID of the oldest object on the chart.
 
 ---
+
+<a id="ref-var-low"></a>
 
 ### low
 
@@ -1084,6 +2151,8 @@ Previous values may be accessed with square brackets operator [], e.g. low[1], l
 
 ---
 
+<a id="ref-var-minute"></a>
+
 ### minute
 
 Current bar minute in exchange timezone.
@@ -1092,6 +2161,8 @@ Current bar minute in exchange timezone.
 series int
 
 ---
+
+<a id="ref-var-month"></a>
 
 ### month
 
@@ -1104,6 +2175,8 @@ series int
 Note that this variable returns the month based on the time of the bar's open. For overnight sessions (e.g. EURUSD, where Monday session starts on Sunday, 17:00) this value can be lower by 1 than the month of the trading day.
 
 ---
+
+<a id="ref-var-na"></a>
 
 ### na
 
@@ -1140,9 +2213,11 @@ plot(nz(close[1], close))
 ```
 
 **Remarks**
-Do not use this variable with comparison operators to test values for na , as it might lead to unexpected behavior. Instead, use the na() function. Note that na can be used to initialize variables when the initialization statement also specifies the variable's type.
+Do not use this variable with [comparison operators](./docs_content.md#docs-language-operators) to test values for `na`, as it might lead to unexpected behavior. Instead, use the [na()](#ref-fun-na) function. Note that `na` can be used to initialize variables when the initialization statement also specifies the variable's type.
 
 ---
+
+<a id="ref-var-ohlc4"></a>
 
 ### ohlc4
 
@@ -1152,6 +2227,8 @@ Is a shortcut for (open + high + low + close)/4
 series float
 
 ---
+
+<a id="ref-var-open"></a>
 
 ### open
 
@@ -1165,9 +2242,11 @@ Previous values may be accessed with square brackets operator [], e.g. open[1], 
 
 ---
 
+<a id="ref-var-polyline-all"></a>
+
 ### polyline.all
 
-Returns an array containing all current polyline instances drawn by the script.
+Returns an array containing all current [polyline](#ref-type-polyline) instances drawn by the script.
 
 **Type**
 array<polyline>
@@ -1176,6 +2255,8 @@ array<polyline>
 The array is read-only. Index zero of the array references the ID of the oldest polyline object on the chart.
 
 ---
+
+<a id="ref-var-second"></a>
 
 ### second
 
@@ -1186,9 +2267,11 @@ series int
 
 ---
 
+<a id="ref-var-session-isfirstbar"></a>
+
 ### session.isfirstbar
 
-Returns true if the current bar is the first bar of the day's session, false otherwise. If extended session information is used, only returns true on the first bar of the pre-market bars.
+Returns [true](#ref-const-true) if the current bar is the first bar of the day's session, [false](#ref-const-false) otherwise. If extended session information is used, only returns `true` on the first bar of the pre-market bars.
 
 **Type**
 series bool
@@ -1210,9 +2293,11 @@ if session.islastbar and barstate.isconfirmed
 
 ---
 
+<a id="ref-var-session-isfirstbar-regular"></a>
+
 ### session.isfirstbar_regular
 
-Returns true on the first regular session bar of the day, false otherwise. The result is the same whether extended session information is used or not.
+Returns [true](#ref-const-true) on the first regular session bar of the day, [false](#ref-const-false) otherwise. The result is the same whether extended session information is used or not.
 
 **Type**
 series bool
@@ -1233,9 +2318,11 @@ if session.islastbar_regular and barstate.isconfirmed
 
 ---
 
+<a id="ref-var-session-islastbar"></a>
+
 ### session.islastbar
 
-Returns true if the current bar is the last bar of the day's session, false otherwise. If extended session information is used, only returns true on the last bar of the post-market bars.
+Returns [true](#ref-const-true) if the current bar is the last bar of the day's session, [false](#ref-const-false) otherwise. If extended session information is used, only returns `true` on the last bar of the post-market bars.
 
 **Type**
 series bool
@@ -1256,14 +2343,16 @@ if session.islastbar and barstate.isconfirmed
 ```
 
 **Remarks**
-This variable is not guaranteed to return true once in every session because the last bar of the session might not exist if no trades occur during what should be the session's last bar.
+This variable is not guaranteed to return [true](#ref-const-true) once in every session because the last bar of the session might not exist if no trades occur during what should be the session's last bar.
 This variable is not guaranteed to work as expected on non-standard chart types, e.g., Renko.
 
 ---
 
+<a id="ref-var-session-islastbar-regular"></a>
+
 ### session.islastbar_regular
 
-Returns true on the last regular session bar of the day, false otherwise. The result is the same whether extended session information is used or not.
+Returns [true](#ref-const-true) on the last regular session bar of the day, [false](#ref-const-false) otherwise. The result is the same whether extended session information is used or not.
 
 **Type**
 series bool
@@ -1283,37 +2372,45 @@ if session.islastbar_regular and barstate.isconfirmed
 ```
 
 **Remarks**
-This variable is not guaranteed to return true once in every session because the last bar of the session might not exist if no trades occur during what should be the session's last bar.
+This variable is not guaranteed to return [true](#ref-const-true) once in every session because the last bar of the session might not exist if no trades occur during what should be the session's last bar.
 This variable is not guaranteed to work as expected on non-standard chart types, e.g., Renko.
 
 ---
 
+<a id="ref-var-session-ismarket"></a>
+
 ### session.ismarket
 
-Returns true if the current bar is a part of the regular trading hours (i.e. market hours), false otherwise.
+Returns [true](#ref-const-true) if the current bar is a part of the regular trading hours (i.e. market hours), [false](#ref-const-false) otherwise.
 
 **Type**
 series bool
 
 ---
+
+<a id="ref-var-session-ispostmarket"></a>
 
 ### session.ispostmarket
 
-Returns true if the current bar is a part of the post-market, false otherwise. On non-intraday charts always returns false .
+Returns [true](#ref-const-true) if the current bar is a part of the post-market, [false](#ref-const-false) otherwise. On non-intraday charts always returns `false`.
 
 **Type**
 series bool
 
 ---
+
+<a id="ref-var-session-ispremarket"></a>
 
 ### session.ispremarket
 
-Returns true if the current bar is a part of the pre-market, false otherwise. On non-intraday charts always returns false .
+Returns [true](#ref-const-true) if the current bar is a part of the pre-market, [false](#ref-const-false) otherwise. On non-intraday charts always returns `false`.
 
 **Type**
 series bool
 
 ---
+
+<a id="ref-var-strategy-account-currency"></a>
 
 ### strategy.account_currency
 
@@ -1324,6 +2421,8 @@ simple string
 
 ---
 
+<a id="ref-var-strategy-avg-losing-trade"></a>
+
 ### strategy.avg_losing_trade
 
 Returns the average amount of money lost per losing trade. Calculated as the sum of losses divided by the number of losing trades.
@@ -1332,6 +2431,8 @@ Returns the average amount of money lost per losing trade. Calculated as the sum
 series float
 
 ---
+
+<a id="ref-var-strategy-avg-losing-trade-percent"></a>
 
 ### strategy.avg_losing_trade_percent
 
@@ -1342,6 +2443,8 @@ series float
 
 ---
 
+<a id="ref-var-strategy-avg-trade"></a>
+
 ### strategy.avg_trade
 
 Returns the average amount of money gained or lost per trade. Calculated as the sum of all profits and losses divided by the number of closed trades.
@@ -1350,6 +2453,8 @@ Returns the average amount of money gained or lost per trade. Calculated as the 
 series float
 
 ---
+
+<a id="ref-var-strategy-avg-trade-percent"></a>
 
 ### strategy.avg_trade_percent
 
@@ -1360,6 +2465,8 @@ series float
 
 ---
 
+<a id="ref-var-strategy-avg-winning-trade"></a>
+
 ### strategy.avg_winning_trade
 
 Returns the average amount of money gained per winning trade. Calculated as the sum of profits divided by the number of winning trades.
@@ -1368,6 +2475,8 @@ Returns the average amount of money gained per winning trade. Calculated as the 
 series float
 
 ---
+
+<a id="ref-var-strategy-avg-winning-trade-percent"></a>
 
 ### strategy.avg_winning_trade_percent
 
@@ -1378,6 +2487,8 @@ series float
 
 ---
 
+<a id="ref-var-strategy-closedtrades"></a>
+
 ### strategy.closedtrades
 
 Number of trades, which were closed for the whole trading range.
@@ -1386,6 +2497,8 @@ Number of trades, which were closed for the whole trading range.
 series int
 
 ---
+
+<a id="ref-var-strategy-closedtrades-first-index"></a>
 
 ### strategy.closedtrades.first_index
 
@@ -1396,14 +2509,18 @@ series int
 
 ---
 
+<a id="ref-var-strategy-equity"></a>
+
 ### strategy.equity
 
-Current equity ( strategy.initial_capital + strategy.netprofit + strategy.openprofit ).
+Current equity ([strategy.initial_capital](#ref-var-strategy-initial-capital) + [strategy.netprofit](#ref-var-strategy-netprofit) + [strategy.openprofit](#ref-var-strategy-openprofit)).
 
 **Type**
 series float
 
 ---
+
+<a id="ref-var-strategy-eventrades"></a>
 
 ### strategy.eventrades
 
@@ -1414,6 +2531,8 @@ series int
 
 ---
 
+<a id="ref-var-strategy-grossloss"></a>
+
 ### strategy.grossloss
 
 Total currency value of all completed losing trades.
@@ -1422,6 +2541,8 @@ Total currency value of all completed losing trades.
 series float
 
 ---
+
+<a id="ref-var-strategy-grossloss-percent"></a>
 
 ### strategy.grossloss_percent
 
@@ -1432,6 +2553,8 @@ series float
 
 ---
 
+<a id="ref-var-strategy-grossprofit"></a>
+
 ### strategy.grossprofit
 
 Total currency value of all completed winning trades.
@@ -1440,6 +2563,8 @@ Total currency value of all completed winning trades.
 series float
 
 ---
+
+<a id="ref-var-strategy-grossprofit-percent"></a>
 
 ### strategy.grossprofit_percent
 
@@ -1450,6 +2575,8 @@ series float
 
 ---
 
+<a id="ref-var-strategy-initial-capital"></a>
+
 ### strategy.initial_capital
 
 The amount of initial capital set in the strategy properties.
@@ -1459,6 +2586,8 @@ series float
 
 ---
 
+<a id="ref-var-strategy-losstrades"></a>
+
 ### strategy.losstrades
 
 Number of unprofitable trades for the whole trading range.
@@ -1467,6 +2596,8 @@ Number of unprofitable trades for the whole trading range.
 series int
 
 ---
+
+<a id="ref-var-strategy-margin-liquidation-price"></a>
 
 ### strategy.margin_liquidation_price
 
@@ -1501,9 +2632,11 @@ if math.abs(changePercent(close, strategy.margin_liquidation_price)) <= 10
 ```
 
 **Remarks**
-The variable returns na if the strategy does not use margin, i.e., the strategy() declaration statement does not specify an argument for the margin_long or margin_short parameter.
+The variable returns [na](#ref-var-na) if the strategy does not use margin, i.e., the [strategy()](#ref-fun-strategy) declaration statement does not specify an argument for the `margin_long` or `margin_short` parameter.
 
 ---
+
+<a id="ref-var-strategy-max-contracts-held-all"></a>
 
 ### strategy.max_contracts_held_all
 
@@ -1514,6 +2647,8 @@ series float
 
 ---
 
+<a id="ref-var-strategy-max-contracts-held-long"></a>
+
 ### strategy.max_contracts_held_long
 
 Maximum number of contracts/shares/lots/units in one long trade for the whole trading range.
@@ -1522,6 +2657,8 @@ Maximum number of contracts/shares/lots/units in one long trade for the whole tr
 series float
 
 ---
+
+<a id="ref-var-strategy-max-contracts-held-short"></a>
 
 ### strategy.max_contracts_held_short
 
@@ -1532,6 +2669,8 @@ series float
 
 ---
 
+<a id="ref-var-strategy-max-drawdown"></a>
+
 ### strategy.max_drawdown
 
 Maximum equity drawdown value for the whole trading range.
@@ -1541,14 +2680,18 @@ series float
 
 ---
 
+<a id="ref-var-strategy-max-drawdown-percent"></a>
+
 ### strategy.max_drawdown_percent
 
-The maximum equity drawdown value for the whole trading range, expressed as a percentage and calculated by formula: Lowest Value During Trade / (Entry Price x Quantity) * 100 .
+The maximum equity drawdown value for the whole trading range, expressed as a percentage and calculated by formula: `Lowest Value During Trade / (Entry Price x Quantity) * 100`.
 
 **Type**
 series float
 
 ---
+
+<a id="ref-var-strategy-max-runup"></a>
 
 ### strategy.max_runup
 
@@ -1559,14 +2702,18 @@ series float
 
 ---
 
+<a id="ref-var-strategy-max-runup-percent"></a>
+
 ### strategy.max_runup_percent
 
-The maximum equity run-up value for the whole trading range, expressed as a percentage and calculated by formula: Highest Value During Trade / (Entry Price x Quantity) * 100 .
+The maximum equity run-up value for the whole trading range, expressed as a percentage and calculated by formula: `Highest Value During Trade / (Entry Price x Quantity) * 100`.
 
 **Type**
 series float
 
 ---
+
+<a id="ref-var-strategy-netprofit"></a>
 
 ### strategy.netprofit
 
@@ -1577,6 +2724,8 @@ series float
 
 ---
 
+<a id="ref-var-strategy-netprofit-percent"></a>
+
 ### strategy.netprofit_percent
 
 The total value of all completed trades, expressed as a percentage of the initial capital.
@@ -1585,6 +2734,8 @@ The total value of all completed trades, expressed as a percentage of the initia
 series float
 
 ---
+
+<a id="ref-var-strategy-openprofit"></a>
 
 ### strategy.openprofit
 
@@ -1595,14 +2746,18 @@ series float
 
 ---
 
+<a id="ref-var-strategy-openprofit-percent"></a>
+
 ### strategy.openprofit_percent
 
-The current unrealized profit or loss for all open positions, expressed as a percentage and calculated by formula: openPL / realizedEquity * 100 .
+The current unrealized profit or loss for all open positions, expressed as a percentage and calculated by formula: `openPL / realizedEquity * 100`.
 
 **Type**
 series float
 
 ---
+
+<a id="ref-var-strategy-opentrades"></a>
 
 ### strategy.opentrades
 
@@ -1612,6 +2767,8 @@ Number of market position entries, which were not closed and remain opened. If t
 series int
 
 ---
+
+<a id="ref-var-strategy-opentrades-capital-held"></a>
 
 ### strategy.opentrades.capital_held
 
@@ -1640,9 +2797,11 @@ bgcolor(bar_index > 0 and strategy.opentrades.capital_held == 0 ? color.new(colo
 ```
 
 **Remarks**
-This variable returns na if the strategy does not simulate funding trades with a portion of the hypothetical account, i.e., if the strategy() function does not include nonzero margin_long or margin_short arguments.
+This variable returns [na](#ref-var-na) if the strategy does not simulate funding trades with a portion of the hypothetical account, i.e., if the [strategy()](#ref-fun-strategy) function does not include nonzero `margin_long` or `margin_short` arguments.
 
 ---
+
+<a id="ref-var-strategy-position-avg-price"></a>
 
 ### strategy.position_avg_price
 
@@ -1653,6 +2812,8 @@ series float
 
 ---
 
+<a id="ref-var-strategy-position-entry-name"></a>
+
 ### strategy.position_entry_name
 
 Name of the order that initially opened current market position.
@@ -1661,6 +2822,8 @@ Name of the order that initially opened current market position.
 series string
 
 ---
+
+<a id="ref-var-strategy-position-size"></a>
 
 ### strategy.position_size
 
@@ -1671,6 +2834,8 @@ series float
 
 ---
 
+<a id="ref-var-strategy-wintrades"></a>
+
 ### strategy.wintrades
 
 Number of profitable trades for the whole trading range.
@@ -1679,6 +2844,8 @@ Number of profitable trades for the whole trading range.
 series int
 
 ---
+
+<a id="ref-var-syminfo-basecurrency"></a>
 
 ### syminfo.basecurrency
 
@@ -1689,14 +2856,18 @@ simple string
 
 ---
 
+<a id="ref-var-syminfo-country"></a>
+
 ### syminfo.country
 
-Returns the two-letter code of the country where the symbol is traded, in the ISO 3166-1 alpha-2 format, or na if the exchange is not directly tied to a specific country. For example, on "NASDAQ:AAPL" it will return "US", on "LSE:AAPL" it will return "GB", and on "BITSTAMP:BTCUSD it will return na .
+Returns the two-letter code of the country where the symbol is traded, in the [ISO 3166-1 alpha-2](https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2) format, or [na](#ref-var-na) if the exchange is not directly tied to a specific country. For example, on "NASDAQ:AAPL" it will return "US", on "LSE:AAPL" it will return "GB", and on "BITSTAMP:BTCUSD it will return [na](#ref-var-na).
 
 **Type**
 simple string
 
 ---
+
+<a id="ref-var-syminfo-currency"></a>
 
 ### syminfo.currency
 
@@ -1707,14 +2878,18 @@ simple string
 
 ---
 
+<a id="ref-var-syminfo-current-contract"></a>
+
 ### syminfo.current_contract
 
-The ticker identifier of the underlying contract, if the current symbol is a continuous futures contract; na otherwise.
+The ticker identifier of the underlying contract, if the current symbol is a continuous futures contract; [na](#ref-var-na) otherwise.
 
 **Type**
 simple string
 
 ---
+
+<a id="ref-var-syminfo-description"></a>
 
 ### syminfo.description
 
@@ -1724,6 +2899,8 @@ Description for the current symbol.
 simple string
 
 ---
+
+<a id="ref-var-syminfo-employees"></a>
 
 ### syminfo.employees
 
@@ -1759,18 +2936,22 @@ if barstate.islastconfirmedhistory
 
 ---
 
+<a id="ref-var-syminfo-expiration-date"></a>
+
 ### syminfo.expiration_date
 
-A UNIX timestamp representing the start of the last day of the current futures contract. This variable is only compatible with non-continuous futures symbols. On other symbols, it returns na .
+A UNIX timestamp representing the start of the last day of the current futures contract. This variable is only compatible with non-continuous futures symbols. On other symbols, it returns [na](#ref-var-na).
 
 **Type**
 simple int
 
 ---
 
+<a id="ref-var-syminfo-industry"></a>
+
 ### syminfo.industry
 
-Returns the industry of the symbol, or na if the symbol has no industry. Example: "Internet Software/Services", "Packaged software", "Integrated Oil", "Motor Vehicles", etc. These are the same values one can see in the chart's "Symbol info" window.
+Returns the industry of the symbol, or [na](#ref-var-na) if the symbol has no industry. Example: "Internet Software/Services", "Packaged software", "Integrated Oil", "Motor Vehicles", etc. These are the same values one can see in the chart's "Symbol info" window.
 
 **Type**
 simple string
@@ -1779,6 +2960,8 @@ simple string
 A sector is a broad section of the economy. An industry is a narrower classification. NASDAQ:CAT (Caterpillar, Inc.) for example, belongs to the "Producer Manufacturing" sector and the "Trucks/Construction/Farm Machinery" industry.
 
 ---
+
+<a id="ref-var-syminfo-isin"></a>
 
 ### syminfo.isin
 
@@ -1790,14 +2973,18 @@ simple string
 
 ---
 
+<a id="ref-var-syminfo-main-tickerid"></a>
+
 ### syminfo.main_tickerid
 
-A ticker identifier representing the current chart's symbol. The value contains an exchange prefix and a symbol name, separated by a colon (e.g., "NASDAQ:AAPL"). It can also include information about data modifications such as dividend adjustment, non-standard chart type, currency conversion, etc. Unlike syminfo.tickerid , this variable's value does not change when used in the expression argument of a request.*() function call.
+A ticker identifier representing the current chart's symbol. The value contains an exchange prefix and a symbol name, separated by a colon (e.g., "NASDAQ:AAPL"). It can also include information about data modifications such as dividend adjustment, non-standard chart type, currency conversion, etc. Unlike [syminfo.tickerid](#ref-var-syminfo-tickerid), this variable's value does not change when used in the `expression` argument of a `request.*()` function call.
 
 **Type**
 simple string
 
 ---
+
+<a id="ref-var-syminfo-mincontract"></a>
 
 ### syminfo.mincontract
 
@@ -1808,14 +2995,18 @@ simple float
 
 ---
 
+<a id="ref-var-syminfo-minmove"></a>
+
 ### syminfo.minmove
 
-Returns a whole number used to calculate the smallest increment between a symbol's price movements ( syminfo.mintick ). It is the numerator in the syminfo.mintick formula: syminfo.minmove / syminfo.pricescale = syminfo.mintick .
+Returns a whole number used to calculate the smallest increment between a symbol's price movements ([syminfo.mintick](#ref-var-syminfo-mintick)). It is the numerator in the [syminfo.mintick](#ref-var-syminfo-mintick) formula: `syminfo.minmove / syminfo.pricescale = syminfo.mintick`.
 
 **Type**
 simple int
 
 ---
+
+<a id="ref-var-syminfo-mintick"></a>
 
 ### syminfo.mintick
 
@@ -1825,6 +3016,8 @@ Min tick value for the current symbol.
 simple float
 
 ---
+
+<a id="ref-var-syminfo-pointvalue"></a>
 
 ### syminfo.pointvalue
 
@@ -1837,6 +3030,8 @@ The point value is also displayed in the Security Info window for a given asset.
 simple float
 
 ---
+
+<a id="ref-var-syminfo-prefix"></a>
 
 ### syminfo.prefix
 
@@ -1858,14 +3053,18 @@ if barstate.islastconfirmedhistory
 
 ---
 
+<a id="ref-var-syminfo-pricescale"></a>
+
 ### syminfo.pricescale
 
-Returns a whole number used to calculate the smallest increment between a symbol's price movements ( syminfo.mintick ). It is the denominator in the syminfo.mintick formula: syminfo.minmove / syminfo.pricescale = syminfo.mintick .
+Returns a whole number used to calculate the smallest increment between a symbol's price movements ([syminfo.mintick](#ref-var-syminfo-mintick)). It is the denominator in the [syminfo.mintick](#ref-var-syminfo-mintick) formula: `syminfo.minmove / syminfo.pricescale = syminfo.mintick`.
 
 **Type**
 simple int
 
 ---
+
+<a id="ref-var-syminfo-recommendations-buy"></a>
 
 ### syminfo.recommendations_buy
 
@@ -1912,6 +3111,8 @@ if barstate.islastconfirmedhistory
 
 ---
 
+<a id="ref-var-syminfo-recommendations-buy-strong"></a>
+
 ### syminfo.recommendations_buy_strong
 
 The number of analysts who gave the current symbol a "Strong Buy" rating.
@@ -1956,6 +3157,8 @@ if barstate.islastconfirmedhistory
 ```
 
 ---
+
+<a id="ref-var-syminfo-recommendations-date"></a>
 
 ### syminfo.recommendations_date
 
@@ -2002,6 +3205,8 @@ if barstate.islastconfirmedhistory
 
 ---
 
+<a id="ref-var-syminfo-recommendations-hold"></a>
+
 ### syminfo.recommendations_hold
 
 The number of analysts who gave the current symbol a "Hold" rating.
@@ -2046,6 +3251,8 @@ if barstate.islastconfirmedhistory
 ```
 
 ---
+
+<a id="ref-var-syminfo-recommendations-sell"></a>
 
 ### syminfo.recommendations_sell
 
@@ -2092,6 +3299,8 @@ if barstate.islastconfirmedhistory
 
 ---
 
+<a id="ref-var-syminfo-recommendations-sell-strong"></a>
+
 ### syminfo.recommendations_sell_strong
 
 The number of analysts who gave the current symbol a "Strong Sell" rating.
@@ -2136,6 +3345,8 @@ if barstate.islastconfirmedhistory
 ```
 
 ---
+
+<a id="ref-var-syminfo-recommendations-total"></a>
 
 ### syminfo.recommendations_total
 
@@ -2182,9 +3393,11 @@ if barstate.islastconfirmedhistory
 
 ---
 
+<a id="ref-var-syminfo-root"></a>
+
 ### syminfo.root
 
-Root for derivatives like futures contract. For other symbols returns the same value as syminfo.ticker .
+Root for derivatives like futures contract. For other symbols returns the same value as [syminfo.ticker](#ref-var-syminfo-ticker).
 
 **Type**
 simple string
@@ -2202,9 +3415,11 @@ if barstate.islastconfirmedhistory
 
 ---
 
+<a id="ref-var-syminfo-sector"></a>
+
 ### syminfo.sector
 
-Returns the sector of the symbol, or na if the symbol has no sector. Example: "Electronic Technology", "Technology services", "Energy Minerals", "Consumer Durables", etc. These are the same values one can see in the chart's "Symbol info" window.
+Returns the sector of the symbol, or [na](#ref-var-na) if the symbol has no sector. Example: "Electronic Technology", "Technology services", "Energy Minerals", "Consumer Durables", etc. These are the same values one can see in the chart's "Symbol info" window.
 
 **Type**
 simple string
@@ -2214,14 +3429,18 @@ A sector is a broad section of the economy. An industry is a narrower classifica
 
 ---
 
+<a id="ref-var-syminfo-session"></a>
+
 ### syminfo.session
 
-Session type of the chart main series. Possible values are session.regular , session.extended .
+Session type of the chart main series. Possible values are [session.regular](#ref-const-session-regular), [session.extended](#ref-const-session-extended).
 
 **Type**
 simple string
 
 ---
+
+<a id="ref-var-syminfo-shareholders"></a>
 
 ### syminfo.shareholders
 
@@ -2257,6 +3476,8 @@ if barstate.islastconfirmedhistory
 
 ---
 
+<a id="ref-var-syminfo-shares-outstanding-float"></a>
+
 ### syminfo.shares_outstanding_float
 
 The total number of shares outstanding a company has available, excluding any of its restricted shares.
@@ -2290,6 +3511,8 @@ if barstate.islastconfirmedhistory
 ```
 
 ---
+
+<a id="ref-var-syminfo-shares-outstanding-total"></a>
 
 ### syminfo.shares_outstanding_total
 
@@ -2325,6 +3548,8 @@ if barstate.islastconfirmedhistory
 
 ---
 
+<a id="ref-var-syminfo-target-price-average"></a>
+
 ### syminfo.target_price_average
 
 The average of the last yearly price targets for the symbol predicted by analysts.
@@ -2357,9 +3582,11 @@ if barstate.islastconfirmedhistory
 ```
 
 **Remarks**
-If analysts supply the targets when the market is closed, the variable can return na until the market opens.
+If analysts supply the targets when the market is closed, the variable can return [na](#ref-var-na) until the market opens.
 
 ---
+
+<a id="ref-var-syminfo-target-price-date"></a>
 
 ### syminfo.target_price_date
 
@@ -2393,9 +3620,11 @@ if barstate.islastconfirmedhistory
 ```
 
 **Remarks**
-If analysts supply the targets when the market is closed, the variable can return na until the market opens.
+If analysts supply the targets when the market is closed, the variable can return [na](#ref-var-na) until the market opens.
 
 ---
+
+<a id="ref-var-syminfo-target-price-estimates"></a>
 
 ### syminfo.target_price_estimates
 
@@ -2429,9 +3658,11 @@ if barstate.islastconfirmedhistory
 ```
 
 **Remarks**
-If analysts supply the targets when the market is closed, the variable can return na until the market opens.
+If analysts supply the targets when the market is closed, the variable can return [na](#ref-var-na) until the market opens.
 
 ---
+
+<a id="ref-var-syminfo-target-price-high"></a>
 
 ### syminfo.target_price_high
 
@@ -2465,9 +3696,11 @@ if barstate.islastconfirmedhistory
 ```
 
 **Remarks**
-If analysts supply the targets when the market is closed, the variable can return na until the market opens.
+If analysts supply the targets when the market is closed, the variable can return [na](#ref-var-na) until the market opens.
 
 ---
+
+<a id="ref-var-syminfo-target-price-low"></a>
 
 ### syminfo.target_price_low
 
@@ -2501,9 +3734,11 @@ if barstate.islastconfirmedhistory
 ```
 
 **Remarks**
-If analysts supply the targets when the market is closed, the variable can return na until the market opens.
+If analysts supply the targets when the market is closed, the variable can return [na](#ref-var-na) until the market opens.
 
 ---
+
+<a id="ref-var-syminfo-target-price-median"></a>
 
 ### syminfo.target_price_median
 
@@ -2537,9 +3772,11 @@ if barstate.islastconfirmedhistory
 ```
 
 **Remarks**
-If analysts supply the targets when the market is closed, the variable can return na until the market opens.
+If analysts supply the targets when the market is closed, the variable can return [na](#ref-var-na) until the market opens.
 
 ---
+
+<a id="ref-var-syminfo-ticker"></a>
 
 ### syminfo.ticker
 
@@ -2550,27 +3787,33 @@ simple string
 
 ---
 
+<a id="ref-var-syminfo-tickerid"></a>
+
 ### syminfo.tickerid
 
-A ticker identifier representing the chart's symbol or a requested symbol, depending on how the script uses it. The variable's value represents a requested dataset's ticker ID when used in the expression argument of a request.*() function call. Otherwise, it represents the chart's ticker ID. The value contains an exchange prefix and a symbol name, separated by a colon (e.g., "NASDAQ:AAPL"). It can also include information about data modifications such as dividend adjustment, non-standard chart type, currency conversion, etc.
+A ticker identifier representing the chart's symbol or a requested symbol, depending on how the script uses it. The variable's value represents a requested dataset's ticker ID when used in the `expression` argument of a `request.*()` function call. Otherwise, it represents the chart's ticker ID. The value contains an exchange prefix and a symbol name, separated by a colon (e.g., "NASDAQ:AAPL"). It can also include information about data modifications such as dividend adjustment, non-standard chart type, currency conversion, etc.
 
 **Type**
 simple string
 
 **Remarks**
-Because the value of this variable does not always use a simple "prefix:ticker" format, it is a poor candidate for use in boolean comparisons or string manipulation functions. In those contexts, run the variable's result through ticker.standard() to purify it. This will remove any extraneous information and return a ticker ID consistently formatted using the "prefix:ticker" structure.
-To always access the script's main ticker ID, even within another context, use the syminfo.main_tickerid variable.
+Because the value of this variable does not always use a simple "prefix:ticker" format, it is a poor candidate for use in boolean comparisons or string manipulation functions. In those contexts, run the variable's result through [ticker.standard()](#ref-fun-ticker-standard) to purify it. This will remove any extraneous information and return a ticker ID consistently formatted using the "prefix:ticker" structure.
+To always access the script's main ticker ID, even within another context, use the [syminfo.main_tickerid](#ref-var-syminfo-main-tickerid) variable.
 
 ---
 
+<a id="ref-var-syminfo-timezone"></a>
+
 ### syminfo.timezone
 
-Timezone of the exchange of the chart main series. Possible values see in timestamp() .
+Timezone of the exchange of the chart main series. Possible values see in [timestamp()](#ref-fun-timestamp).
 
 **Type**
 simple string
 
 ---
+
+<a id="ref-var-syminfo-type"></a>
 
 ### syminfo.type
 
@@ -2580,6 +3823,8 @@ The type of market the symbol belongs to. The values are "stock", "fund", "dr", 
 simple string
 
 ---
+
+<a id="ref-var-syminfo-volumetype"></a>
 
 ### syminfo.volumetype
 
@@ -2593,6 +3838,8 @@ Only some data feed suppliers provide information qualifying volume. As a result
 
 ---
 
+<a id="ref-var-ta-accdist"></a>
+
 ### ta.accdist
 
 Accumulation/distribution index.
@@ -2601,6 +3848,8 @@ Accumulation/distribution index.
 series float
 
 ---
+
+<a id="ref-var-ta-iii"></a>
 
 ### ta.iii
 
@@ -2624,6 +3873,8 @@ plot(f_iii())
 ```
 
 ---
+
+<a id="ref-var-ta-nvi"></a>
 
 ### ta.nvi
 
@@ -2655,6 +3906,8 @@ plot(f_nvi())
 
 ---
 
+<a id="ref-var-ta-obv"></a>
+
 ### ta.obv
 
 On Balance Volume.
@@ -2677,6 +3930,8 @@ plot(f_obv())
 ```
 
 ---
+
+<a id="ref-var-ta-pvi"></a>
 
 ### ta.pvi
 
@@ -2708,6 +3963,8 @@ plot(f_pvi())
 
 ---
 
+<a id="ref-var-ta-pvt"></a>
+
 ### ta.pvt
 
 Price-Volume Trend.
@@ -2731,23 +3988,29 @@ plot(f_pvt())
 
 ---
 
+<a id="ref-var-ta-tr"></a>
+
 ### ta.tr
 
-True range, equivalent to ta.tr(handle_na = false) . It is calculated as math.max(high - low, math.abs(high - close[1]), math.abs(low - close[1])) .
+True range, equivalent to `ta.tr(handle_na = false)`. It is calculated as `math.max(high - low, math.abs(high - close[1]), math.abs(low - close[1]))`.
 
 **Type**
 series float
 
 ---
+
+<a id="ref-var-ta-vwap"></a>
 
 ### ta.vwap
 
-Volume Weighted Average Price. It uses hlc3 as its source series.
+Volume Weighted Average Price. It uses [hlc3](#ref-var-hlc3) as its source series.
 
 **Type**
 series float
 
 ---
+
+<a id="ref-var-ta-wad"></a>
 
 ### ta.wad
 
@@ -2776,6 +4039,8 @@ plot(f_wad())
 
 ---
 
+<a id="ref-var-ta-wvad"></a>
+
 ### ta.wvad
 
 Williams Variable Accumulation/Distribution.
@@ -2798,6 +4063,8 @@ plot(f_wvad())
 ```
 
 ---
+
+<a id="ref-var-table-all"></a>
 
 ### table.all
 
@@ -2824,6 +4091,8 @@ The array is read-only. Index zero of the array is the ID of the oldest object o
 
 ---
 
+<a id="ref-var-time"></a>
+
 ### time
 
 Current bar time in UNIX format. It is the number of milliseconds that have elapsed since 00:00:00 UTC, 1 January 1970.
@@ -2832,18 +4101,22 @@ Current bar time in UNIX format. It is the number of milliseconds that have elap
 series int
 
 **Remarks**
-Note that this variable returns the timestamp based on the time of the bar's open. Because of that, for overnight sessions (e.g. EURUSD, where Monday session starts on Sunday, 17:00) this variable can return time before the specified date of the trading day. For example, on EURUSD, dayofmonth(time) can be lower by 1 than the date of the trading day, because the bar for the current day actually opens one day prior.
+Note that this variable returns the timestamp based on the time of the bar's open. Because of that, for overnight sessions (e.g. EURUSD, where Monday session starts on Sunday, 17:00) this variable can return time before the specified date of the trading day. For example, on EURUSD, `dayofmonth(time)` can be lower by 1 than the date of the trading day, because the bar for the current day actually opens one day prior.
 
 ---
 
+<a id="ref-var-time-close"></a>
+
 ### time_close
 
-The time of the current bar's close in UNIX format. It represents the number of milliseconds elapsed since 00:00:00 UTC, 1 January 1970. On tick charts and price-based charts such as Renko, line break, Kagi, point & figure, and range, this variable's series holds an na timestamp for the latest realtime bar (because the future closing time is unpredictable), but valid timestamps for all previous bars.
+The time of the current bar's close in UNIX format. It represents the number of milliseconds elapsed since 00:00:00 UTC, 1 January 1970. On tick charts and price-based charts such as Renko, line break, Kagi, point & figure, and range, this variable's series holds an [na](#ref-var-na) timestamp for the latest realtime bar (because the future closing time is unpredictable), but valid timestamps for all previous bars.
 
 **Type**
 series int
 
 ---
+
+<a id="ref-var-time-tradingday"></a>
 
 ### time_tradingday
 
@@ -2881,9 +4154,11 @@ bgcolor(isFridaySession ? color.new(color.teal, 80) : na, title = "isFridaySessi
 ```
 
 **Remarks**
-This variable is helpful when working with overnight sessions, where the day's session can begin on the previous calendar day. For example, on the "FXCM:EURUSD" symbol, the Monday session starts on Sunday, 17:00, exchange time. Unlike time , which returns the timestamp for Sunday at 17:00 on the Monday daily bar, time_tradingday returns the timestamp for Monday at 00:00 UTC. When used on timeframes higher than "1D", time_tradingday returns the timestamp of the last trading day inside that bar (e.g., on "1W", it returns the timestamp of the final trading day within the week).
+This variable is helpful when working with overnight sessions, where the day's session can begin on the previous calendar day. For example, on the "FXCM:EURUSD" symbol, the Monday session starts on Sunday, 17:00, exchange time. Unlike `time`, which returns the timestamp for Sunday at 17:00 on the Monday daily bar, `time_tradingday` returns the timestamp for Monday at 00:00 UTC. When used on timeframes higher than "1D", `time_tradingday` returns the timestamp of the last trading day inside that bar (e.g., on "1W", it returns the timestamp of the final trading day within the week).
 
 ---
+
+<a id="ref-var-timeframe-isdaily"></a>
 
 ### timeframe.isdaily
 
@@ -2894,6 +4169,8 @@ simple bool
 
 ---
 
+<a id="ref-var-timeframe-isdwm"></a>
+
 ### timeframe.isdwm
 
 Returns true if current resolution is a daily or weekly or monthly resolution, false otherwise.
@@ -2902,6 +4179,8 @@ Returns true if current resolution is a daily or weekly or monthly resolution, f
 simple bool
 
 ---
+
+<a id="ref-var-timeframe-isintraday"></a>
 
 ### timeframe.isintraday
 
@@ -2912,6 +4191,8 @@ simple bool
 
 ---
 
+<a id="ref-var-timeframe-isminutes"></a>
+
 ### timeframe.isminutes
 
 Returns true if current resolution is a minutes resolution, false otherwise.
@@ -2920,6 +4201,8 @@ Returns true if current resolution is a minutes resolution, false otherwise.
 simple bool
 
 ---
+
+<a id="ref-var-timeframe-ismonthly"></a>
 
 ### timeframe.ismonthly
 
@@ -2930,6 +4213,8 @@ simple bool
 
 ---
 
+<a id="ref-var-timeframe-isseconds"></a>
+
 ### timeframe.isseconds
 
 Returns true if current resolution is a seconds resolution, false otherwise.
@@ -2938,6 +4223,8 @@ Returns true if current resolution is a seconds resolution, false otherwise.
 simple bool
 
 ---
+
+<a id="ref-var-timeframe-isticks"></a>
 
 ### timeframe.isticks
 
@@ -2948,6 +4235,8 @@ simple bool
 
 ---
 
+<a id="ref-var-timeframe-isweekly"></a>
+
 ### timeframe.isweekly
 
 Returns true if current resolution is a weekly resolution, false otherwise.
@@ -2957,9 +4246,11 @@ simple bool
 
 ---
 
+<a id="ref-var-timeframe-main-period"></a>
+
 ### timeframe.main_period
 
-A string representation of the script's main timeframe. If the script is an indicator() that specifies a timeframe value in its declaration statement, this variable holds that value. Otherwise, its value represents the chart's timeframe. Unlike timeframe.period , this variable's value does not change when used in the expression argument of a request.*() function call.
+A string representation of the script's main timeframe. If the script is an [indicator()](#ref-fun-indicator) that specifies a `timeframe` value in its declaration statement, this variable holds that value. Otherwise, its value represents the chart's timeframe. Unlike [timeframe.period](#ref-var-timeframe-period), this variable's value does not change when used in the `expression` argument of a `request.*()` function call.
 The string's format is "<quantity>[<unit>]", where <unit> is "T" for ticks, "S" for seconds, "D" for days, "W" for weeks, and "M" for months, but is absent for minutes. No <unit> exists for hours: hourly timeframes are expressed in minutes.
 The variable's value is: "10S" for 10 seconds, "30" for 30 minutes, "240" for four hours, "1D" for one day, "2W" for two weeks, and "3M" for one quarter.
 
@@ -2967,6 +4258,8 @@ The variable's value is: "10S" for 10 seconds, "30" for 30 minutes, "240" for fo
 simple string
 
 ---
+
+<a id="ref-var-timeframe-multiplier"></a>
 
 ### timeframe.multiplier
 
@@ -2977,9 +4270,11 @@ simple int
 
 ---
 
+<a id="ref-var-timeframe-period"></a>
+
 ### timeframe.period
 
-A string representation of the script's main timeframe or a requested timeframe, depending on how the script uses it. The variable's value represents the timeframe of a requested dataset when used in the expression argument of a request.*() function call. Otherwise, its value represents the script's main timeframe ( timeframe.main_period ), which equals either the timeframe argument of the indicator() declaration statement or the chart's timeframe.
+A string representation of the script's main timeframe or a requested timeframe, depending on how the script uses it. The variable's value represents the timeframe of a requested dataset when used in the `expression` argument of a `request.*()` function call. Otherwise, its value represents the script's main timeframe ([timeframe.main_period](#ref-var-timeframe-main-period)), which equals either the `timeframe` argument of the [indicator()](#ref-fun-indicator) declaration statement or the chart's timeframe.
 The string's format is "<quantity>[<unit>]", where <unit> is "T" for ticks, "S" for seconds, "D" for days, "W" for weeks, and "M" for months, but is absent for minutes. No <unit> exists for hours: hourly timeframes are expressed in minutes.
 The variable's value is: "10S" for 10 seconds, "30" for 30 minutes, "240" for four hours, "1D" for one day, "2W" for two weeks, and "3M" for one quarter.
 
@@ -2987,9 +4282,11 @@ The variable's value is: "10S" for 10 seconds, "30" for 30 minutes, "240" for fo
 simple string
 
 **Remarks**
-To always access the script's main timeframe, even within another context, use the timeframe.main_period variable.
+To always access the script's main timeframe, even within another context, use the [timeframe.main_period](#ref-var-timeframe-main-period) variable.
 
 ---
+
+<a id="ref-var-timenow"></a>
 
 ### timenow
 
@@ -2999,9 +4296,11 @@ Current time in UNIX format. It is the number of milliseconds that have elapsed 
 series int
 
 **Remarks**
-Please note that using this variable/function can cause indicator repainting .
+Please note that using this variable/function can cause [indicator repainting](./docs_content.md#docs-concepts-repainting).
 
 ---
+
+<a id="ref-var-volume"></a>
 
 ### volume
 
@@ -3015,6 +4314,8 @@ Previous values may be accessed with square brackets operator [], e.g. volume[1]
 
 ---
 
+<a id="ref-var-weekofyear"></a>
+
 ### weekofyear
 
 The week number of the year, in the exchange time zone, calculated from the bar's opening UNIX timestamp.
@@ -3026,6 +4327,8 @@ series int
 This variable always references the week number corresponding to the bar's opening time. Consequently, for symbols with overnight sessions (e.g., "EURUSD", where the "Monday" session starts on Sunday at 17:00 in exchange time), the value may represent a previous calendar week rather than the week of the session's primary trading day.
 
 ---
+
+<a id="ref-var-year"></a>
 
 ### year
 
@@ -3041,6 +4344,8 @@ Note that this variable returns the year based on the time of the bar's open. Fo
 
 ## Constants
 
+<a id="ref-const-adjustment-dividends"></a>
+
 ### adjustment.dividends
 
 Constant for dividends adjustment type (dividends adjustment is applied).
@@ -3049,6 +4354,8 @@ Constant for dividends adjustment type (dividends adjustment is applied).
 const string
 
 ---
+
+<a id="ref-const-adjustment-none"></a>
 
 ### adjustment.none
 
@@ -3059,6 +4366,8 @@ const string
 
 ---
 
+<a id="ref-const-adjustment-splits"></a>
+
 ### adjustment.splits
 
 Constant for splits adjustment type (splits adjustment is applied).
@@ -3068,9 +4377,11 @@ const string
 
 ---
 
+<a id="ref-const-alert-freq-all"></a>
+
 ### alert.freq_all
 
-A named constant for use with the freq parameter of the alert() function.
+A named constant for use with the `freq` parameter of the alert() function.
 All function calls trigger the alert.
 
 **Type**
@@ -3078,9 +4389,11 @@ const string
 
 ---
 
+<a id="ref-const-alert-freq-once-per-bar"></a>
+
 ### alert.freq_once_per_bar
 
-A named constant for use with the freq parameter of the alert() function.
+A named constant for use with the `freq` parameter of the alert() function.
 The first function call during the bar triggers the alert.
 
 **Type**
@@ -3088,9 +4401,11 @@ const string
 
 ---
 
+<a id="ref-const-alert-freq-once-per-bar-close"></a>
+
 ### alert.freq_once_per_bar_close
 
-A named constant for use with the freq parameter of the alert() function.
+A named constant for use with the `freq` parameter of the alert() function.
 The function call triggers the alert only when it occurs during the last script iteration of the real-time bar, when it closes.
 
 **Type**
@@ -3098,32 +4413,40 @@ const string
 
 ---
 
+<a id="ref-const-backadjustment-inherit"></a>
+
 ### backadjustment.inherit
 
-A constant to specify the value of the backadjustment parameter in ticker.new() and ticker.modify() functions.
+A constant to specify the value of the `backadjustment` parameter in [ticker.new()](#ref-fun-ticker-new) and [ticker.modify()](#ref-fun-ticker-modify) functions.
 
 **Type**
 const backadjustment
 
 ---
+
+<a id="ref-const-backadjustment-off"></a>
 
 ### backadjustment.off
 
-A constant to specify the value of the backadjustment parameter in ticker.new() and ticker.modify() functions.
+A constant to specify the value of the `backadjustment` parameter in [ticker.new()](#ref-fun-ticker-new) and [ticker.modify()](#ref-fun-ticker-modify) functions.
 
 **Type**
 const backadjustment
 
 ---
+
+<a id="ref-const-backadjustment-on"></a>
 
 ### backadjustment.on
 
-A constant to specify the value of the backadjustment parameter in ticker.new() and ticker.modify() functions.
+A constant to specify the value of the `backadjustment` parameter in [ticker.new()](#ref-fun-ticker-new) and [ticker.modify()](#ref-fun-ticker-modify) functions.
 
 **Type**
 const backadjustment
 
 ---
+
+<a id="ref-const-barmerge-gaps-off"></a>
 
 ### barmerge.gaps_off
 
@@ -3134,14 +4457,18 @@ const barmerge_gaps
 
 ---
 
+<a id="ref-const-barmerge-gaps-on"></a>
+
 ### barmerge.gaps_on
 
-Merge strategy for requested data. Data is merged with possible gaps ( na values).
+Merge strategy for requested data. Data is merged with possible gaps ([na](#ref-var-na) values).
 
 **Type**
 const barmerge_gaps
 
 ---
+
+<a id="ref-const-barmerge-lookahead-off"></a>
 
 ### barmerge.lookahead_off
 
@@ -3152,6 +4479,8 @@ const barmerge_lookahead
 
 ---
 
+<a id="ref-const-barmerge-lookahead-on"></a>
+
 ### barmerge.lookahead_on
 
 Merge strategy for the requested data position. Requested barset is merged with current barset in the order of sorting bars by their opening time. This merge strategy can lead to undesirable effect of getting data from "future" on calculation on history. This is unacceptable in backtesting strategies, but can be useful in indicators.
@@ -3160,6 +4489,8 @@ Merge strategy for the requested data position. Requested barset is merged with 
 const barmerge_lookahead
 
 ---
+
+<a id="ref-const-color-aqua"></a>
 
 ### color.aqua
 
@@ -3170,6 +4501,8 @@ const color
 
 ---
 
+<a id="ref-const-color-black"></a>
+
 ### color.black
 
 Is a named constant for #363A45 color.
@@ -3178,6 +4511,8 @@ Is a named constant for #363A45 color.
 const color
 
 ---
+
+<a id="ref-const-color-blue"></a>
 
 ### color.blue
 
@@ -3188,6 +4523,8 @@ const color
 
 ---
 
+<a id="ref-const-color-fuchsia"></a>
+
 ### color.fuchsia
 
 Is a named constant for #E040FB color.
@@ -3196,6 +4533,8 @@ Is a named constant for #E040FB color.
 const color
 
 ---
+
+<a id="ref-const-color-gray"></a>
 
 ### color.gray
 
@@ -3206,6 +4545,8 @@ const color
 
 ---
 
+<a id="ref-const-color-green"></a>
+
 ### color.green
 
 Is a named constant for #4CAF50 color.
@@ -3214,6 +4555,8 @@ Is a named constant for #4CAF50 color.
 const color
 
 ---
+
+<a id="ref-const-color-lime"></a>
 
 ### color.lime
 
@@ -3224,6 +4567,8 @@ const color
 
 ---
 
+<a id="ref-const-color-maroon"></a>
+
 ### color.maroon
 
 Is a named constant for #880E4F color.
@@ -3232,6 +4577,8 @@ Is a named constant for #880E4F color.
 const color
 
 ---
+
+<a id="ref-const-color-navy"></a>
 
 ### color.navy
 
@@ -3242,6 +4589,8 @@ const color
 
 ---
 
+<a id="ref-const-color-olive"></a>
+
 ### color.olive
 
 Is a named constant for #808000 color.
@@ -3250,6 +4599,8 @@ Is a named constant for #808000 color.
 const color
 
 ---
+
+<a id="ref-const-color-orange"></a>
 
 ### color.orange
 
@@ -3260,6 +4611,8 @@ const color
 
 ---
 
+<a id="ref-const-color-purple"></a>
+
 ### color.purple
 
 Is a named constant for #9C27B0 color.
@@ -3268,6 +4621,8 @@ Is a named constant for #9C27B0 color.
 const color
 
 ---
+
+<a id="ref-const-color-red"></a>
 
 ### color.red
 
@@ -3278,6 +4633,8 @@ const color
 
 ---
 
+<a id="ref-const-color-silver"></a>
+
 ### color.silver
 
 Is a named constant for #B2B5BE color.
@@ -3286,6 +4643,8 @@ Is a named constant for #B2B5BE color.
 const color
 
 ---
+
+<a id="ref-const-color-teal"></a>
 
 ### color.teal
 
@@ -3296,6 +4655,8 @@ const color
 
 ---
 
+<a id="ref-const-color-white"></a>
+
 ### color.white
 
 Is a named constant for #FFFFFF color.
@@ -3304,6 +4665,8 @@ Is a named constant for #FFFFFF color.
 const color
 
 ---
+
+<a id="ref-const-color-yellow"></a>
 
 ### color.yellow
 
@@ -3314,6 +4677,8 @@ const color
 
 ---
 
+<a id="ref-const-currency-aed"></a>
+
 ### currency.AED
 
 Arab Emirates Dirham.
@@ -3322,6 +4687,8 @@ Arab Emirates Dirham.
 const string
 
 ---
+
+<a id="ref-const-currency-ars"></a>
 
 ### currency.ARS
 
@@ -3332,6 +4699,8 @@ const string
 
 ---
 
+<a id="ref-const-currency-aud"></a>
+
 ### currency.AUD
 
 Australian dollar.
@@ -3340,6 +4709,8 @@ Australian dollar.
 const string
 
 ---
+
+<a id="ref-const-currency-bdt"></a>
 
 ### currency.BDT
 
@@ -3350,6 +4721,8 @@ const string
 
 ---
 
+<a id="ref-const-currency-bhd"></a>
+
 ### currency.BHD
 
 Bahraini Dinar.
@@ -3358,6 +4731,8 @@ Bahraini Dinar.
 const string
 
 ---
+
+<a id="ref-const-currency-brl"></a>
 
 ### currency.BRL
 
@@ -3368,6 +4743,8 @@ const string
 
 ---
 
+<a id="ref-const-currency-btc"></a>
+
 ### currency.BTC
 
 Bitcoin.
@@ -3376,6 +4753,8 @@ Bitcoin.
 const string
 
 ---
+
+<a id="ref-const-currency-cad"></a>
 
 ### currency.CAD
 
@@ -3386,6 +4765,8 @@ const string
 
 ---
 
+<a id="ref-const-currency-chf"></a>
+
 ### currency.CHF
 
 Swiss franc.
@@ -3394,6 +4775,8 @@ Swiss franc.
 const string
 
 ---
+
+<a id="ref-const-currency-clp"></a>
 
 ### currency.CLP
 
@@ -3404,6 +4787,8 @@ const string
 
 ---
 
+<a id="ref-const-currency-cny"></a>
+
 ### currency.CNY
 
 Chinese Yuan.
@@ -3412,6 +4797,8 @@ Chinese Yuan.
 const string
 
 ---
+
+<a id="ref-const-currency-cop"></a>
 
 ### currency.COP
 
@@ -3422,6 +4809,8 @@ const string
 
 ---
 
+<a id="ref-const-currency-czk"></a>
+
 ### currency.CZK
 
 Czech Koruna.
@@ -3430,6 +4819,8 @@ Czech Koruna.
 const string
 
 ---
+
+<a id="ref-const-currency-dkk"></a>
 
 ### currency.DKK
 
@@ -3440,6 +4831,8 @@ const string
 
 ---
 
+<a id="ref-const-currency-egp"></a>
+
 ### currency.EGP
 
 Egyptian pound.
@@ -3448,6 +4841,8 @@ Egyptian pound.
 const string
 
 ---
+
+<a id="ref-const-currency-eth"></a>
 
 ### currency.ETH
 
@@ -3458,6 +4853,8 @@ const string
 
 ---
 
+<a id="ref-const-currency-eur"></a>
+
 ### currency.EUR
 
 Euro.
@@ -3466,6 +4863,8 @@ Euro.
 const string
 
 ---
+
+<a id="ref-const-currency-gbp"></a>
 
 ### currency.GBP
 
@@ -3476,6 +4875,8 @@ const string
 
 ---
 
+<a id="ref-const-currency-hkd"></a>
+
 ### currency.HKD
 
 Hong Kong dollar.
@@ -3484,6 +4885,8 @@ Hong Kong dollar.
 const string
 
 ---
+
+<a id="ref-const-currency-huf"></a>
 
 ### currency.HUF
 
@@ -3494,6 +4897,8 @@ const string
 
 ---
 
+<a id="ref-const-currency-idr"></a>
+
 ### currency.IDR
 
 Indonesian Rupiah.
@@ -3502,6 +4907,8 @@ Indonesian Rupiah.
 const string
 
 ---
+
+<a id="ref-const-currency-ils"></a>
 
 ### currency.ILS
 
@@ -3512,6 +4919,8 @@ const string
 
 ---
 
+<a id="ref-const-currency-inr"></a>
+
 ### currency.INR
 
 Indian rupee.
@@ -3520,6 +4929,8 @@ Indian rupee.
 const string
 
 ---
+
+<a id="ref-const-currency-isk"></a>
 
 ### currency.ISK
 
@@ -3530,6 +4941,8 @@ const string
 
 ---
 
+<a id="ref-const-currency-jpy"></a>
+
 ### currency.JPY
 
 Japanese yen.
@@ -3538,6 +4951,8 @@ Japanese yen.
 const string
 
 ---
+
+<a id="ref-const-currency-kes"></a>
 
 ### currency.KES
 
@@ -3548,6 +4963,8 @@ const string
 
 ---
 
+<a id="ref-const-currency-krw"></a>
+
 ### currency.KRW
 
 South Korean won.
@@ -3556,6 +4973,8 @@ South Korean won.
 const string
 
 ---
+
+<a id="ref-const-currency-kwd"></a>
 
 ### currency.KWD
 
@@ -3566,6 +4985,8 @@ const string
 
 ---
 
+<a id="ref-const-currency-lkr"></a>
+
 ### currency.LKR
 
 Sri Lankan Rupee.
@@ -3574,6 +4995,8 @@ Sri Lankan Rupee.
 const string
 
 ---
+
+<a id="ref-const-currency-mad"></a>
 
 ### currency.MAD
 
@@ -3584,6 +5007,8 @@ const string
 
 ---
 
+<a id="ref-const-currency-mxn"></a>
+
 ### currency.MXN
 
 Mexican Peso.
@@ -3592,6 +5017,8 @@ Mexican Peso.
 const string
 
 ---
+
+<a id="ref-const-currency-myr"></a>
 
 ### currency.MYR
 
@@ -3602,6 +5029,8 @@ const string
 
 ---
 
+<a id="ref-const-currency-ngn"></a>
+
 ### currency.NGN
 
 Nigerian Naira.
@@ -3610,6 +5039,8 @@ Nigerian Naira.
 const string
 
 ---
+
+<a id="ref-const-currency-nok"></a>
 
 ### currency.NOK
 
@@ -3620,6 +5051,8 @@ const string
 
 ---
 
+<a id="ref-const-currency-none"></a>
+
 ### currency.NONE
 
 Unspecified currency.
@@ -3628,6 +5061,8 @@ Unspecified currency.
 const string
 
 ---
+
+<a id="ref-const-currency-nzd"></a>
 
 ### currency.NZD
 
@@ -3638,6 +5073,8 @@ const string
 
 ---
 
+<a id="ref-const-currency-pen"></a>
+
 ### currency.PEN
 
 Peruvian sol.
@@ -3646,6 +5083,8 @@ Peruvian sol.
 const string
 
 ---
+
+<a id="ref-const-currency-php"></a>
 
 ### currency.PHP
 
@@ -3656,6 +5095,8 @@ const string
 
 ---
 
+<a id="ref-const-currency-pkr"></a>
+
 ### currency.PKR
 
 Pakistani rupee.
@@ -3664,6 +5105,8 @@ Pakistani rupee.
 const string
 
 ---
+
+<a id="ref-const-currency-pln"></a>
 
 ### currency.PLN
 
@@ -3674,6 +5117,8 @@ const string
 
 ---
 
+<a id="ref-const-currency-qar"></a>
+
 ### currency.QAR
 
 Qatari Riyal.
@@ -3682,6 +5127,8 @@ Qatari Riyal.
 const string
 
 ---
+
+<a id="ref-const-currency-ron"></a>
 
 ### currency.RON
 
@@ -3692,6 +5139,8 @@ const string
 
 ---
 
+<a id="ref-const-currency-rsd"></a>
+
 ### currency.RSD
 
 Serbian Dinar.
@@ -3700,6 +5149,8 @@ Serbian Dinar.
 const string
 
 ---
+
+<a id="ref-const-currency-rub"></a>
 
 ### currency.RUB
 
@@ -3710,6 +5161,8 @@ const string
 
 ---
 
+<a id="ref-const-currency-sar"></a>
+
 ### currency.SAR
 
 Saudi Riyal.
@@ -3718,6 +5171,8 @@ Saudi Riyal.
 const string
 
 ---
+
+<a id="ref-const-currency-sek"></a>
 
 ### currency.SEK
 
@@ -3728,6 +5183,8 @@ const string
 
 ---
 
+<a id="ref-const-currency-sgd"></a>
+
 ### currency.SGD
 
 Singapore dollar.
@@ -3736,6 +5193,8 @@ Singapore dollar.
 const string
 
 ---
+
+<a id="ref-const-currency-thb"></a>
 
 ### currency.THB
 
@@ -3746,6 +5205,8 @@ const string
 
 ---
 
+<a id="ref-const-currency-tnd"></a>
+
 ### currency.TND
 
 Tunisian Dinar.
@@ -3754,6 +5215,8 @@ Tunisian Dinar.
 const string
 
 ---
+
+<a id="ref-const-currency-try"></a>
 
 ### currency.TRY
 
@@ -3764,6 +5227,8 @@ const string
 
 ---
 
+<a id="ref-const-currency-twd"></a>
+
 ### currency.TWD
 
 New Taiwan Dollar.
@@ -3772,6 +5237,8 @@ New Taiwan Dollar.
 const string
 
 ---
+
+<a id="ref-const-currency-usd"></a>
 
 ### currency.USD
 
@@ -3782,6 +5249,8 @@ const string
 
 ---
 
+<a id="ref-const-currency-usdt"></a>
+
 ### currency.USDT
 
 Tether.
@@ -3790,6 +5259,8 @@ Tether.
 const string
 
 ---
+
+<a id="ref-const-currency-ves"></a>
 
 ### currency.VES
 
@@ -3800,6 +5271,8 @@ const string
 
 ---
 
+<a id="ref-const-currency-vnd"></a>
+
 ### currency.VND
 
 Vietnamese Dong.
@@ -3808,6 +5281,8 @@ Vietnamese Dong.
 const string
 
 ---
+
+<a id="ref-const-currency-zar"></a>
 
 ### currency.ZAR
 
@@ -3818,98 +5293,118 @@ const string
 
 ---
 
+<a id="ref-const-dayofweek-friday"></a>
+
 ### dayofweek.friday
 
-Is a named constant for return value of dayofweek() function and value of dayofweek variable.
+Is a named constant for return value of [dayofweek()](#ref-fun-dayofweek) function and value of [dayofweek](#ref-var-dayofweek) variable.
 
 **Type**
 const int
 
 ---
+
+<a id="ref-const-dayofweek-monday"></a>
 
 ### dayofweek.monday
 
-Is a named constant for return value of dayofweek() function and value of dayofweek variable.
+Is a named constant for return value of [dayofweek()](#ref-fun-dayofweek) function and value of [dayofweek](#ref-var-dayofweek) variable.
 
 **Type**
 const int
 
 ---
+
+<a id="ref-const-dayofweek-saturday"></a>
 
 ### dayofweek.saturday
 
-Is a named constant for return value of dayofweek() function and value of dayofweek variable.
+Is a named constant for return value of [dayofweek()](#ref-fun-dayofweek) function and value of [dayofweek](#ref-var-dayofweek) variable.
 
 **Type**
 const int
 
 ---
+
+<a id="ref-const-dayofweek-sunday"></a>
 
 ### dayofweek.sunday
 
-Is a named constant for return value of dayofweek() function and value of dayofweek variable.
+Is a named constant for return value of [dayofweek()](#ref-fun-dayofweek) function and value of [dayofweek](#ref-var-dayofweek) variable.
 
 **Type**
 const int
 
 ---
+
+<a id="ref-const-dayofweek-thursday"></a>
 
 ### dayofweek.thursday
 
-Is a named constant for return value of dayofweek() function and value of dayofweek variable.
+Is a named constant for return value of [dayofweek()](#ref-fun-dayofweek) function and value of [dayofweek](#ref-var-dayofweek) variable.
 
 **Type**
 const int
 
 ---
+
+<a id="ref-const-dayofweek-tuesday"></a>
 
 ### dayofweek.tuesday
 
-Is a named constant for return value of dayofweek() function and value of dayofweek variable.
+Is a named constant for return value of [dayofweek()](#ref-fun-dayofweek) function and value of [dayofweek](#ref-var-dayofweek) variable.
 
 **Type**
 const int
 
 ---
+
+<a id="ref-const-dayofweek-wednesday"></a>
 
 ### dayofweek.wednesday
 
-Is a named constant for return value of dayofweek() function and value of dayofweek variable.
+Is a named constant for return value of [dayofweek()](#ref-fun-dayofweek) function and value of [dayofweek](#ref-var-dayofweek) variable.
 
 **Type**
 const int
 
 ---
 
+<a id="ref-const-display-all"></a>
+
 ### display.all
 
-A named constant for use with the display parameter of the plot*() , input*() , fill() , bgcolor() , barcolor() , and hline() functions. Specifies that the values or visuals appear in all possible locations by default.
+A named constant for use with the `display` parameter of the `plot*()`, `input*()`, [fill()](#ref-fun-fill), [bgcolor()](#ref-fun-bgcolor), [barcolor()](#ref-fun-barcolor), and [hline()](#ref-fun-hline) functions. Specifies that the values or visuals appear in all possible locations by default.
 
 **Type**
 const plot_simple_display
 
 **Remarks**
-The display.* constants support + and - operations, enabling custom combinations of display settings. For example, display.all - display.data_window specifies that the data for an input or plot appears in all possible locations except for the Data Window.
+The `display.*` constants support [+](#ref-op-2b) and [-](#ref-op-2d) operations, enabling custom combinations of display settings. For example, `display.all - display.data_window` specifies that the data for an input or plot appears in all possible locations except for the Data Window.
 Selecting a deselected plot in the script's "Settings/Style" tab changes its display settings, causing the plotted data to appear in all available chart locations. To restore the display settings coded in the script, select "Reset settings" from the "Defaults" dropdown menu at the bottom of the "Settings" dialog box.
 
 ---
+
+<a id="ref-const-display-data-window"></a>
 
 ### display.data_window
 
-A named constant for use with the display parameter of the plot*() and input*() functions. Specifies that the values are available in the Data Window by default. The Data Window tab is accessible by clicking the "Object Tree and Data Window" icon in the chart's right sidebar.
+A named constant for use with the `display` parameter of the `plot*()` and `input*()` functions. Specifies that the values are available in the Data Window by default. The Data Window tab is accessible by clicking the "Object Tree and Data Window" icon in the chart's right sidebar.
 
 **Type**
 const plot_display
 
 **Remarks**
-The display.* constants support + and - operations, enabling custom combinations of display settings. For example, display.data_window + display.status_line specifies that the data for an input or plot appears in the Data Window and the script's status line, and display.all - display.data_window specifies that the data appears in all possible locations except for the Data Window.
+The `display.*` constants support [+](#ref-op-2b) and [-](#ref-op-2d) operations, enabling custom combinations of display settings. For example, `display.data_window + display.status_line` specifies that the data for an input or plot appears in the Data Window and the script's status line, and `display.all - display.data_window` specifies that the data appears in all possible locations except for the Data Window.
 Selecting a deselected plot in the script's "Settings/Style" tab changes its display settings, causing the plotted data to appear in all available chart locations. To restore the display settings coded in the script, select "Reset settings" from the "Defaults" dropdown menu at the bottom of the "Settings" dialog box.
 
 ---
 
+<a id="ref-const-display-none"></a>
+
 ### display.none
 
-A named constant for use with the display parameter of the plot*() , input*() , fill() , bgcolor() , barcolor() , and hline() functions. Specifies that the values or visuals are not displayed anywhere by default.
+A named constant for use with the `display` parameter of the `plot*()`, `input*()`, [fill()](#ref-fun-fill), [bgcolor()](#ref-fun-bgcolor), [barcolor()](#ref-fun-barcolor), and [hline()](#ref-fun-hline) functions. Specifies that the values or visuals are not displayed anywhere by default.
 
 **Type**
 const plot_simple_display
@@ -3919,183 +5414,221 @@ Selecting a deselected plot in the script's "Settings/Style" tab changes its dis
 
 ---
 
+<a id="ref-const-display-pane"></a>
+
 ### display.pane
 
-A named constant for use with the display parameter of the plot*() functions. Specifies that the plotted values are displayed in a chart pane by default.
+A named constant for use with the `display` parameter of the `plot*()` functions. Specifies that the plotted values are displayed in a chart pane by default.
 
 **Type**
 const plot_display
 
 **Remarks**
-The display.* constants support + and - operations, enabling custom combinations of display settings. For example, display.pane + display.data_window specifies that the plot's values appear in the chart pane and the Data Window, and display.all - display.pane specifies that the values appear in all possible locations except for the chart pane.
+The `display.*` constants support [+](#ref-op-2b) and [-](#ref-op-2d) operations, enabling custom combinations of display settings. For example, `display.pane + display.data_window` specifies that the plot's values appear in the chart pane and the Data Window, and `display.all - display.pane` specifies that the values appear in all possible locations except for the chart pane.
 Selecting a deselected plot in the script's "Settings/Style" tab changes its display settings, causing the plotted data to appear in all available chart locations. To restore the display settings coded in the script, select "Reset settings" from the "Defaults" dropdown menu at the bottom of the "Settings" dialog box.
 
 ---
 
+<a id="ref-const-display-pine-screener"></a>
+
 ### display.pine_screener
 
-A named constant for use with the display parameter of the plot() function. Specifies that, by default, the Pine Screener displays a column for the plot's values when the user applies the indicator to the chosen watchlist.
+A named constant for use with the `display` parameter of the [plot()](#ref-fun-plot) function. Specifies that, by default, the [Pine Screener](https://www.tradingview.com/support/solutions/43000742436/) displays a column for the plot's values when the user applies the indicator to the chosen watchlist.
 
 **Type**
 const plot_display
 
 **Remarks**
-The display.* constants support + and - operations, enabling custom combinations of display settings. For example, display.data_window + display.pine_screener specifies that the plotted values appear in the Data Window and the Pine Screener, and display.all - display.pine_screener specifies that the values appear in all possible locations except for the Pine Screener.
+The `display.*` constants support [+](#ref-op-2b) and [-](#ref-op-2d) operations, enabling custom combinations of display settings. For example, `display.data_window + display.pine_screener` specifies that the plotted values appear in the Data Window and the Pine Screener, and `display.all - display.pine_screener` specifies that the values appear in all possible locations except for the Pine Screener.
 The Pine Screener displays columns for only the first 10 enabled plots from a script by default. If a plot's default display settings do not include the screener, or if the screener already shows columns for 10 other plots from the script, users can configure the screener to show a column for the plot by using the "Manage columns" menu at the far right of the table header.
 
 ---
 
+<a id="ref-const-display-price-scale"></a>
+
 ### display.price_scale
 
-A named constant for use with the display parameter of the plot*() functions. Specifies that the price scale displays a label for the plot's data, but only if the chart's settings allow it.
+A named constant for use with the `display` parameter of the `plot*()` functions. Specifies that the price scale displays a label for the plot's data, but only if the chart's settings allow it.
 
 **Type**
 const plot_display
 
 **Remarks**
-The display.* constants support + and - operations, enabling custom combinations of display settings. For example, display.price_scale + display.data_window specifies that the plot's data appears on the price scale and in the Data Window, and display.all - display.price_scale specifies that the data appears in all possible locations except for the price scale.
+The `display.*` constants support [+](#ref-op-2b) and [-](#ref-op-2d) operations, enabling custom combinations of display settings. For example, `display.price_scale + display.data_window` specifies that the plot's data appears on the price scale and in the Data Window, and `display.all - display.price_scale` specifies that the data appears in all possible locations except for the price scale.
 Selecting a deselected plot in the script's "Settings/Style" tab changes its display settings, causing the plotted data to appear in all available chart locations. To restore the display settings coded in the script, select "Reset settings" from the "Defaults" dropdown menu at the bottom of the "Settings" dialog box.
 
 ---
+
+<a id="ref-const-display-status-line"></a>
 
 ### display.status_line
 
-A named constant for use with the display parameter of the plot*() and input*() functions. Specifies that the values are available in the script's status line, but only if the chart's settings allow it.
+A named constant for use with the `display` parameter of the `plot*()` and `input*()` functions. Specifies that the values are available in the script's status line, but only if the chart's settings allow it.
 
 **Type**
 const plot_display
 
 **Remarks**
-The display.* constants support + and - operations, enabling custom combinations of display settings. For example, display.data_window + display.status_line specifies that the data for an input or plot appears in the Data Window and the script's status line, and display.all - display.status_line specifies that the data appears in all possible locations except for the status line.
+The `display.*` constants support [+](#ref-op-2b) and [-](#ref-op-2d) operations, enabling custom combinations of display settings. For example, `display.data_window + display.status_line` specifies that the data for an input or plot appears in the Data Window and the script's status line, and `display.all - display.status_line` specifies that the data appears in all possible locations except for the status line.
 Selecting a deselected plot in the script's "Settings/Style" tab changes its display settings, causing the plotted data to appear in all available chart locations. To restore the display settings coded in the script, select "Reset settings" from the "Defaults" dropdown menu at the bottom of the "Settings" dialog box.
 
 ---
 
+<a id="ref-const-dividends-gross"></a>
+
 ### dividends.gross
 
-A named constant for the request.dividends() function. Is used to request the dividends return on a stock before deductions.
+A named constant for the [request.dividends()](#ref-fun-request-dividends) function. Is used to request the dividends return on a stock before deductions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-dividends-net"></a>
 
 ### dividends.net
 
-A named constant for the request.dividends() function. Is used to request the dividends return on a stock after deductions.
+A named constant for the [request.dividends()](#ref-fun-request-dividends) function. Is used to request the dividends return on a stock after deductions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-earnings-actual"></a>
 
 ### earnings.actual
 
-A named constant for the request.earnings() function. Is used to request the earnings value as it was reported.
+A named constant for the [request.earnings()](#ref-fun-request-earnings) function. Is used to request the earnings value as it was reported.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-earnings-estimate"></a>
 
 ### earnings.estimate
 
-A named constant for the request.earnings() function. Is used to request the estimated earnings value.
+A named constant for the [request.earnings()](#ref-fun-request-earnings) function. Is used to request the estimated earnings value.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-earnings-standardized"></a>
 
 ### earnings.standardized
 
-A named constant for the request.earnings() function. Is used to request the standardized earnings value.
+A named constant for the [request.earnings()](#ref-fun-request-earnings) function. Is used to request the standardized earnings value.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-extend-both"></a>
 
 ### extend.both
 
-A named constant for line.new() and line.set_extend() functions.
+A named constant for [line.new()](#ref-fun-line-new) and [line.set_extend()](#ref-fun-line-set-extend) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-extend-left"></a>
 
 ### extend.left
 
-A named constant for line.new() and line.set_extend() functions.
+A named constant for [line.new()](#ref-fun-line-new) and [line.set_extend()](#ref-fun-line-set-extend) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-extend-none"></a>
 
 ### extend.none
 
-A named constant for line.new() and line.set_extend() functions.
+A named constant for [line.new()](#ref-fun-line-new) and [line.set_extend()](#ref-fun-line-set-extend) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-extend-right"></a>
 
 ### extend.right
 
-A named constant for line.new() and line.set_extend() functions.
+A named constant for [line.new()](#ref-fun-line-new) and [line.set_extend()](#ref-fun-line-set-extend) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-false"></a>
 
 ### false
 
-Literal representing a bool value, and result of a comparison operation.
+Literal representing a [bool](#ref-type-bool) value, and result of a comparison operation.
 
 **Remarks**
-See the User Manual for comparison operators and logical operators .
+See the User Manual for [comparison operators](./docs_content.md#docs-language-operators) and [logical operators](./docs_content.md#docs-language-operators).
 
 ---
+
+<a id="ref-const-font-family-default"></a>
 
 ### font.family_default
 
-Default text font for box.new() , box.set_text_font_family() , label.new() , label.set_text_font_family() , table.cell() and table.cell_set_text_font_family() functions.
+Default text font for [box.new()](#ref-fun-box-new), [box.set_text_font_family()](#ref-fun-box-set-text-font-family), [label.new()](#ref-fun-label-new), [label.set_text_font_family()](#ref-fun-label-set-text-font-family), [table.cell()](#ref-fun-table-cell) and [table.cell_set_text_font_family()](#ref-fun-table-cell-set-text-font-family) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-font-family-monospace"></a>
 
 ### font.family_monospace
 
-Monospace text font for box.new() , box.set_text_font_family() , label.new() , label.set_text_font_family() , table.cell() and table.cell_set_text_font_family() functions.
+Monospace text font for [box.new()](#ref-fun-box-new), [box.set_text_font_family()](#ref-fun-box-set-text-font-family), [label.new()](#ref-fun-label-new), [label.set_text_font_family()](#ref-fun-label-set-text-font-family), [table.cell()](#ref-fun-table-cell) and [table.cell_set_text_font_family()](#ref-fun-table-cell-set-text-font-family) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-format-inherit"></a>
 
 ### format.inherit
 
-Is a named constant for selecting the formatting of the script output values from the parent series in the indicator() function.
+Is a named constant for selecting the formatting of the script output values from the parent series in the [indicator()](#ref-fun-indicator) function.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-format-mintick"></a>
 
 ### format.mintick
 
-Is a named constant to use with the str.tostring() function. Passing a number to str.tostring() with this argument rounds the number to the nearest value that can be divided by syminfo.mintick , without the remainder, with ties rounding up, and returns the string version of said value with trailing zeros.
+Is a named constant to use with the [str.tostring()](#ref-fun-str-tostring) function. Passing a number to [str.tostring()](#ref-fun-str-tostring) with this argument rounds the number to the nearest value that can be divided by [syminfo.mintick](#ref-var-syminfo-mintick), without the remainder, with ties rounding up, and returns the string version of said value with trailing zeros.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-format-percent"></a>
 
 ### format.percent
 
@@ -4105,13 +5638,15 @@ Is a named constant for selecting the formatting of the script output values as 
 const string
 
 **Remarks**
-The default precision is 2, regardless of the precision of the chart itself. This can be changed with the 'precision' argument of the indicator() function.
+The default precision is 2, regardless of the precision of the chart itself. This can be changed with the 'precision' argument of the [indicator()](#ref-fun-indicator) function.
 
 ---
 
+<a id="ref-const-format-price"></a>
+
 ### format.price
 
-Is a named constant for selecting the formatting of the script output values as prices in the indicator() function.
+Is a named constant for selecting the formatting of the script output values as prices in the [indicator()](#ref-fun-indicator) function.
 
 **Type**
 const string
@@ -4121,366 +5656,448 @@ If format is format.price, default precision value is set. You can use the preci
 
 ---
 
+<a id="ref-const-format-volume"></a>
+
 ### format.volume
 
-Is a named constant for selecting the formatting of the script output values as volume in the indicator() function, e.g. '5183' will be formatted as '5.183K'.
-The decimal precision rules defined by this variable take precedence over other precision settings. When an indicator() , strategy() , or plot*() call uses this format option, the function's precision parameter will not affect the result.
+Is a named constant for selecting the formatting of the script output values as volume in the [indicator()](#ref-fun-indicator) function, e.g. '5183' will be formatted as '5.183K'.
+The decimal precision rules defined by this variable take precedence over other precision settings. When an [indicator()](#ref-fun-indicator), [strategy()](#ref-fun-strategy), or `plot*()` call uses this `format` option, the function's `precision` parameter will not affect the result.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-hline-style-dashed"></a>
 
 ### hline.style_dashed
 
-Is a named constant for dashed linestyle of hline() function.
+Is a named constant for dashed linestyle of [hline()](#ref-fun-hline) function.
 
 **Type**
 const hline_style
 
 ---
+
+<a id="ref-const-hline-style-dotted"></a>
 
 ### hline.style_dotted
 
-Is a named constant for dotted linestyle of hline() function.
+Is a named constant for dotted linestyle of [hline()](#ref-fun-hline) function.
 
 **Type**
 const hline_style
 
 ---
+
+<a id="ref-const-hline-style-solid"></a>
 
 ### hline.style_solid
 
-Is a named constant for solid linestyle of hline() function.
+Is a named constant for solid linestyle of [hline()](#ref-fun-hline) function.
 
 **Type**
 const hline_style
 
 ---
 
+<a id="ref-const-label-style-arrowdown"></a>
+
 ### label.style_arrowdown
 
-Label style for label.new() and label.set_style() functions.
+Label style for [label.new()](#ref-fun-label-new) and [label.set_style()](#ref-fun-label-set-style) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-label-style-arrowup"></a>
 
 ### label.style_arrowup
 
-Label style for label.new() and label.set_style() functions.
+Label style for [label.new()](#ref-fun-label-new) and [label.set_style()](#ref-fun-label-set-style) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-label-style-circle"></a>
 
 ### label.style_circle
 
-Label style for label.new() and label.set_style() functions.
+Label style for [label.new()](#ref-fun-label-new) and [label.set_style()](#ref-fun-label-set-style) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-label-style-cross"></a>
 
 ### label.style_cross
 
-Label style for label.new() and label.set_style() functions.
+Label style for [label.new()](#ref-fun-label-new) and [label.set_style()](#ref-fun-label-set-style) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-label-style-diamond"></a>
 
 ### label.style_diamond
 
-Label style for label.new() and label.set_style() functions.
+Label style for [label.new()](#ref-fun-label-new) and [label.set_style()](#ref-fun-label-set-style) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-label-style-flag"></a>
 
 ### label.style_flag
 
-Label style for label.new() and label.set_style() functions.
+Label style for [label.new()](#ref-fun-label-new) and [label.set_style()](#ref-fun-label-set-style) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-label-style-label-center"></a>
 
 ### label.style_label_center
 
-Label style for label.new() and label.set_style() functions.
+Label style for [label.new()](#ref-fun-label-new) and [label.set_style()](#ref-fun-label-set-style) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-label-style-label-down"></a>
 
 ### label.style_label_down
 
-Label style for label.new() and label.set_style() functions.
+Label style for [label.new()](#ref-fun-label-new) and [label.set_style()](#ref-fun-label-set-style) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-label-style-label-left"></a>
 
 ### label.style_label_left
 
-Label style for label.new() and label.set_style() functions.
+Label style for [label.new()](#ref-fun-label-new) and [label.set_style()](#ref-fun-label-set-style) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-label-style-label-lower-left"></a>
 
 ### label.style_label_lower_left
 
-Label style for label.new() and label.set_style() functions.
+Label style for [label.new()](#ref-fun-label-new) and [label.set_style()](#ref-fun-label-set-style) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-label-style-label-lower-right"></a>
 
 ### label.style_label_lower_right
 
-Label style for label.new() and label.set_style() functions.
+Label style for [label.new()](#ref-fun-label-new) and [label.set_style()](#ref-fun-label-set-style) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-label-style-label-right"></a>
 
 ### label.style_label_right
 
-Label style for label.new() and label.set_style() functions.
+Label style for [label.new()](#ref-fun-label-new) and [label.set_style()](#ref-fun-label-set-style) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-label-style-label-up"></a>
 
 ### label.style_label_up
 
-Label style for label.new() and label.set_style() functions.
+Label style for [label.new()](#ref-fun-label-new) and [label.set_style()](#ref-fun-label-set-style) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-label-style-label-upper-left"></a>
 
 ### label.style_label_upper_left
 
-Label style for label.new() and label.set_style() functions.
+Label style for [label.new()](#ref-fun-label-new) and [label.set_style()](#ref-fun-label-set-style) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-label-style-label-upper-right"></a>
 
 ### label.style_label_upper_right
 
-Label style for label.new() and label.set_style() functions.
+Label style for [label.new()](#ref-fun-label-new) and [label.set_style()](#ref-fun-label-set-style) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-label-style-none"></a>
 
 ### label.style_none
 
-Label style for label.new() and label.set_style() functions.
+Label style for [label.new()](#ref-fun-label-new) and [label.set_style()](#ref-fun-label-set-style) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-label-style-square"></a>
 
 ### label.style_square
 
-Label style for label.new() and label.set_style() functions.
+Label style for [label.new()](#ref-fun-label-new) and [label.set_style()](#ref-fun-label-set-style) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-label-style-text-outline"></a>
 
 ### label.style_text_outline
 
-Label style for label.new() and label.set_style() functions.
+Label style for [label.new()](#ref-fun-label-new) and [label.set_style()](#ref-fun-label-set-style) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-label-style-triangledown"></a>
 
 ### label.style_triangledown
 
-Label style for label.new() and label.set_style() functions.
+Label style for [label.new()](#ref-fun-label-new) and [label.set_style()](#ref-fun-label-set-style) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-label-style-triangleup"></a>
 
 ### label.style_triangleup
 
-Label style for label.new() and label.set_style() functions.
+Label style for [label.new()](#ref-fun-label-new) and [label.set_style()](#ref-fun-label-set-style) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-label-style-xcross"></a>
 
 ### label.style_xcross
 
-Label style for label.new() and label.set_style() functions.
+Label style for [label.new()](#ref-fun-label-new) and [label.set_style()](#ref-fun-label-set-style) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-line-style-arrow-both"></a>
 
 ### line.style_arrow_both
 
-Line style for line.new() and line.set_style() functions. Solid line with arrows on both points.
+Line style for [line.new()](#ref-fun-line-new) and [line.set_style()](#ref-fun-line-set-style) functions. Solid line with arrows on both points.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-line-style-arrow-left"></a>
 
 ### line.style_arrow_left
 
-Line style for line.new() and line.set_style() functions. Solid line with arrow on the first point.
+Line style for [line.new()](#ref-fun-line-new) and [line.set_style()](#ref-fun-line-set-style) functions. Solid line with arrow on the first point.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-line-style-arrow-right"></a>
 
 ### line.style_arrow_right
 
-Line style for line.new() and line.set_style() functions. Solid line with arrow on the second point.
+Line style for [line.new()](#ref-fun-line-new) and [line.set_style()](#ref-fun-line-set-style) functions. Solid line with arrow on the second point.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-line-style-dashed"></a>
 
 ### line.style_dashed
 
-Line style for line.new() and line.set_style() functions.
+Line style for [line.new()](#ref-fun-line-new) and [line.set_style()](#ref-fun-line-set-style) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-line-style-dotted"></a>
 
 ### line.style_dotted
 
-Line style for line.new() and line.set_style() functions.
+Line style for [line.new()](#ref-fun-line-new) and [line.set_style()](#ref-fun-line-set-style) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-line-style-solid"></a>
 
 ### line.style_solid
 
-Line style for line.new() and line.set_style() functions.
+Line style for [line.new()](#ref-fun-line-new) and [line.set_style()](#ref-fun-line-set-style) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-location-abovebar"></a>
 
 ### location.abovebar
 
-Location value for plotshape() , plotchar() functions. Shape is plotted above main series bars.
+Location value for [plotshape()](#ref-fun-plotshape), [plotchar()](#ref-fun-plotchar) functions. Shape is plotted above main series bars.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-location-absolute"></a>
 
 ### location.absolute
 
-Location value for plotshape() , plotchar() functions. Shape is plotted on chart using indicator value as a price coordinate.
+Location value for [plotshape()](#ref-fun-plotshape), [plotchar()](#ref-fun-plotchar) functions. Shape is plotted on chart using indicator value as a price coordinate.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-location-belowbar"></a>
 
 ### location.belowbar
 
-Location value for plotshape() , plotchar() functions. Shape is plotted below main series bars.
+Location value for [plotshape()](#ref-fun-plotshape), [plotchar()](#ref-fun-plotchar) functions. Shape is plotted below main series bars.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-location-bottom"></a>
 
 ### location.bottom
 
-Location value for plotshape() , plotchar() functions. Shape is plotted near the bottom chart border.
+Location value for [plotshape()](#ref-fun-plotshape), [plotchar()](#ref-fun-plotchar) functions. Shape is plotted near the bottom chart border.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-location-top"></a>
 
 ### location.top
 
-Location value for plotshape() , plotchar() functions. Shape is plotted near the top chart border.
+Location value for [plotshape()](#ref-fun-plotshape), [plotchar()](#ref-fun-plotchar) functions. Shape is plotted near the top chart border.
 
 **Type**
 const string
 
 ---
 
+<a id="ref-const-math-e"></a>
+
 ### math.e
 
-Is a named constant for Euler's number . It is equal to 2.7182818284590452.
+Is a named constant for [Euler's number](https://en.wikipedia.org/wiki/E_(mathematical_constant)). It is equal to 2.7182818284590452.
 
 **Type**
 const float
 
 ---
+
+<a id="ref-const-math-phi"></a>
 
 ### math.phi
 
-Is a named constant for the golden ratio . It is equal to 1.6180339887498948.
+Is a named constant for the [golden ratio](https://en.wikipedia.org/wiki/Golden_ratio). It is equal to 1.6180339887498948.
 
 **Type**
 const float
 
 ---
+
+<a id="ref-const-math-pi"></a>
 
 ### math.pi
 
-Is a named constant for Archimedes' constant . It is equal to 3.1415926535897932.
+Is a named constant for [Archimedes' constant](https://en.wikipedia.org/wiki/Pi). It is equal to 3.1415926535897932.
 
 **Type**
 const float
 
 ---
+
+<a id="ref-const-math-rphi"></a>
 
 ### math.rphi
 
-Is a named constant for the golden ratio conjugate . It is equal to 0.6180339887498948.
+Is a named constant for the [golden ratio conjugate](https://en.wikipedia.org/wiki/Golden_ratio#Golden_ratio_conjugate). It is equal to 0.6180339887498948.
 
 **Type**
 const float
 
 ---
+
+<a id="ref-const-order-ascending"></a>
 
 ### order.ascending
 
@@ -4491,6 +6108,8 @@ const sort_order
 
 ---
 
+<a id="ref-const-order-descending"></a>
+
 ### order.descending
 
 Determines the sort order of the array from the largest to the smallest value.
@@ -4500,135 +6119,165 @@ const sort_order
 
 ---
 
+<a id="ref-const-plot-linestyle-dashed"></a>
+
 ### plot.linestyle_dashed
 
-A named constant for use with the plot() function's linestyle parameter, which modifies the appearance of plotted lines. If the style argument of the function call specifies a plot style that displays a line, using this constant as the linestyle argument specifies that the plotted line is dashed.
+A named constant for use with the [plot()](#ref-fun-plot) function's `linestyle` parameter, which modifies the appearance of plotted lines. If the `style` argument of the function call specifies a plot style that displays a line, using this constant as the `linestyle` argument specifies that the plotted line is dashed.
 
 **Type**
 const plot_line_style
 
 ---
+
+<a id="ref-const-plot-linestyle-dotted"></a>
 
 ### plot.linestyle_dotted
 
-A named constant for use with the plot() function's linestyle parameter, which modifies the appearance of plotted lines. If the style argument of the function call specifies a plot style that displays a line, using this constant as the linestyle argument specifies that the plotted line is dotted.
+A named constant for use with the [plot()](#ref-fun-plot) function's `linestyle` parameter, which modifies the appearance of plotted lines. If the `style` argument of the function call specifies a plot style that displays a line, using this constant as the `linestyle` argument specifies that the plotted line is dotted.
 
 **Type**
 const plot_line_style
 
 ---
+
+<a id="ref-const-plot-linestyle-solid"></a>
 
 ### plot.linestyle_solid
 
-A named constant for use with the plot() function's linestyle parameter, which modifies the appearance of plotted lines. If the style argument of the function call specifies a plot style that displays a line, using this constant as the linestyle argument specifies that the plotted line is solid.
+A named constant for use with the [plot()](#ref-fun-plot) function's `linestyle` parameter, which modifies the appearance of plotted lines. If the `style` argument of the function call specifies a plot style that displays a line, using this constant as the `linestyle` argument specifies that the plotted line is solid.
 
 **Type**
 const plot_line_style
 
 ---
 
+<a id="ref-const-plot-style-area"></a>
+
 ### plot.style_area
 
-A named constant for the 'Area' style, to be used as an argument for the style parameter in the plot() function.
+A named constant for the 'Area' style, to be used as an argument for the `style` parameter in the [plot()](#ref-fun-plot) function.
 
 **Type**
 const plot_style
 
 ---
+
+<a id="ref-const-plot-style-areabr"></a>
 
 ### plot.style_areabr
 
-A named constant for the 'Area With Breaks' style, to be used as an argument for the style parameter in the plot() function. Similar to plot.style_area , except the gaps in the data are not filled.
+A named constant for the 'Area With Breaks' style, to be used as an argument for the `style` parameter in the [plot()](#ref-fun-plot) function. Similar to [plot.style_area](#ref-const-plot-style-area), except the gaps in the data are not filled.
 
 **Type**
 const plot_style
 
 ---
+
+<a id="ref-const-plot-style-circles"></a>
 
 ### plot.style_circles
 
-A named constant for the 'Circles' style, to be used as an argument for the style parameter in the plot() function.
+A named constant for the 'Circles' style, to be used as an argument for the `style` parameter in the [plot()](#ref-fun-plot) function.
 
 **Type**
 const plot_style
 
 ---
+
+<a id="ref-const-plot-style-columns"></a>
 
 ### plot.style_columns
 
-A named constant for the 'Columns' style, to be used as an argument for the style parameter in the plot() function.
+A named constant for the 'Columns' style, to be used as an argument for the `style` parameter in the [plot()](#ref-fun-plot) function.
 
 **Type**
 const plot_style
 
 ---
+
+<a id="ref-const-plot-style-cross"></a>
 
 ### plot.style_cross
 
-A named constant for the 'Cross' style, to be used as an argument for the style parameter in the plot() function.
+A named constant for the 'Cross' style, to be used as an argument for the `style` parameter in the [plot()](#ref-fun-plot) function.
 
 **Type**
 const plot_style
 
 ---
+
+<a id="ref-const-plot-style-histogram"></a>
 
 ### plot.style_histogram
 
-A named constant for the 'Histogram' style, to be used as an argument for the style parameter in the plot() function.
+A named constant for the 'Histogram' style, to be used as an argument for the `style` parameter in the [plot()](#ref-fun-plot) function.
 
 **Type**
 const plot_style
 
 ---
+
+<a id="ref-const-plot-style-line"></a>
 
 ### plot.style_line
 
-A named constant for the 'Line' style, to be used as an argument for the style parameter in the plot() function.
+A named constant for the 'Line' style, to be used as an argument for the `style` parameter in the [plot()](#ref-fun-plot) function.
 
 **Type**
 const plot_style
 
 ---
+
+<a id="ref-const-plot-style-linebr"></a>
 
 ### plot.style_linebr
 
-A named constant for the 'Line With Breaks' style, to be used as an argument for the style parameter in the plot() function. Similar to plot.style_line , except the gaps in the data are not filled.
+A named constant for the 'Line With Breaks' style, to be used as an argument for the `style` parameter in the [plot()](#ref-fun-plot) function. Similar to [plot.style_line](#ref-const-plot-style-line), except the gaps in the data are not filled.
 
 **Type**
 const plot_style
 
 ---
+
+<a id="ref-const-plot-style-stepline"></a>
 
 ### plot.style_stepline
 
-A named constant for the 'Step Line' style, to be used as an argument for the style parameter in the plot() function.
+A named constant for the 'Step Line' style, to be used as an argument for the `style` parameter in the [plot()](#ref-fun-plot) function.
 
 **Type**
 const plot_style
 
 ---
+
+<a id="ref-const-plot-style-stepline-diamond"></a>
 
 ### plot.style_stepline_diamond
 
-A named constant for the 'Step Line With Diamonds' style, to be used as an argument for the style parameter in the plot() function. Similar to plot.style_stepline , except the data changes are also marked with the Diamond shapes.
+A named constant for the 'Step Line With Diamonds' style, to be used as an argument for the `style` parameter in the [plot()](#ref-fun-plot) function. Similar to [plot.style_stepline](#ref-const-plot-style-stepline), except the data changes are also marked with the Diamond shapes.
 
 **Type**
 const plot_style
 
 ---
+
+<a id="ref-const-plot-style-steplinebr"></a>
 
 ### plot.style_steplinebr
 
-A named constant for the 'Step line with Breaks' style, to be used as an argument for the style parameter in the plot() function.
+A named constant for the 'Step line with Breaks' style, to be used as an argument for the `style` parameter in the [plot()](#ref-fun-plot) function.
 
 **Type**
 const plot_style
 
 ---
 
+<a id="ref-const-position-bottom-center"></a>
+
 ### position.bottom_center
 
-Table position is used in table.new() , table.cell() functions.
+Table position is used in [table.new()](#ref-fun-table-new), [table.cell()](#ref-fun-table-cell) functions.
 Binds the table to the bottom edge in the center.
 
 **Type**
@@ -4636,9 +6285,11 @@ const string
 
 ---
 
+<a id="ref-const-position-bottom-left"></a>
+
 ### position.bottom_left
 
-Table position is used in table.new() , table.cell() functions.
+Table position is used in [table.new()](#ref-fun-table-new), [table.cell()](#ref-fun-table-cell) functions.
 Binds the table to the bottom left of the screen.
 
 **Type**
@@ -4646,9 +6297,11 @@ const string
 
 ---
 
+<a id="ref-const-position-bottom-right"></a>
+
 ### position.bottom_right
 
-Table position is used in table.new() , table.cell() functions.
+Table position is used in [table.new()](#ref-fun-table-new), [table.cell()](#ref-fun-table-cell) functions.
 Binds the table to the bottom right of the screen.
 
 **Type**
@@ -4656,9 +6309,11 @@ const string
 
 ---
 
+<a id="ref-const-position-middle-center"></a>
+
 ### position.middle_center
 
-Table position is used in table.new() , table.cell() functions.
+Table position is used in [table.new()](#ref-fun-table-new), [table.cell()](#ref-fun-table-cell) functions.
 Binds the table to the center of the screen.
 
 **Type**
@@ -4666,9 +6321,11 @@ const string
 
 ---
 
+<a id="ref-const-position-middle-left"></a>
+
 ### position.middle_left
 
-Table position is used in table.new() , table.cell() functions.
+Table position is used in [table.new()](#ref-fun-table-new), [table.cell()](#ref-fun-table-cell) functions.
 Binds the table to the left side of the screen.
 
 **Type**
@@ -4676,9 +6333,11 @@ const string
 
 ---
 
+<a id="ref-const-position-middle-right"></a>
+
 ### position.middle_right
 
-Table position is used in table.new() , table.cell() functions.
+Table position is used in [table.new()](#ref-fun-table-new), [table.cell()](#ref-fun-table-cell) functions.
 Binds the table to the right side of the screen.
 
 **Type**
@@ -4686,9 +6345,11 @@ const string
 
 ---
 
+<a id="ref-const-position-top-center"></a>
+
 ### position.top_center
 
-Table position is used in table.new() , table.cell() functions.
+Table position is used in [table.new()](#ref-fun-table-new), [table.cell()](#ref-fun-table-cell) functions.
 Binds the table to the top edge in the center.
 
 **Type**
@@ -4696,9 +6357,11 @@ const string
 
 ---
 
+<a id="ref-const-position-top-left"></a>
+
 ### position.top_left
 
-Table position is used in table.new() , table.cell() functions.
+Table position is used in [table.new()](#ref-fun-table-new), [table.cell()](#ref-fun-table-cell) functions.
 Binds the table to the upper-left edge.
 
 **Type**
@@ -4706,9 +6369,11 @@ const string
 
 ---
 
+<a id="ref-const-position-top-right"></a>
+
 ### position.top_right
 
-Table position is used in table.new() , table.cell() functions.
+Table position is used in [table.new()](#ref-fun-table-new), [table.cell()](#ref-fun-table-cell) functions.
 Binds the table to the upper-right edge.
 
 **Type**
@@ -4716,32 +6381,40 @@ const string
 
 ---
 
+<a id="ref-const-scale-left"></a>
+
 ### scale.left
 
-A named constant for use as the scale argument in indicator() and strategy() declaration statements. Specifies that the script's price scale is on the left side of the pane. If the script overlays on the main chart pane or another script's pane, it adds a new price scale on the left side of the pane and scales its visuals independently to fit the pane's visual space.
+A named constant for use as the `scale` argument in [indicator()](#ref-fun-indicator) and [strategy()](#ref-fun-strategy) declaration statements. Specifies that the script's price scale is on the left side of the pane. If the script overlays on the main chart pane or another script's pane, it adds a new price scale on the left side of the pane and scales its visuals independently to fit the pane's visual space.
 
 **Type**
 const scale_type
 
 ---
+
+<a id="ref-const-scale-none"></a>
 
 ### scale.none
 
-A named constant for use as the scale argument in indicator() and strategy() declaration statements. A declaration statement can use this constant only if its overlay argument is true . Specifies that the script scales its visuals independently to fit the visual space of the main chart pane or another script's pane without displaying a separate scale. The script displays plotted numbers directly on the pane's existing price scale if the chart's settings allow it. If the user moves the script to a new pane, the script displays the values on a new scale to the left or right of that pane, depending on the chart's "Scales placement" setting.
+A named constant for use as the `scale` argument in [indicator()](#ref-fun-indicator) and [strategy()](#ref-fun-strategy) declaration statements. A declaration statement can use this constant only if its `overlay` argument is `true`. Specifies that the script scales its visuals independently to fit the visual space of the main chart pane or another script's pane without displaying a separate scale. The script displays plotted numbers directly on the pane's existing price scale if the chart's settings allow it. If the user moves the script to a new pane, the script displays the values on a new scale to the left or right of that pane, depending on the chart's "Scales placement" setting.
 
 **Type**
 const scale_type
 
 ---
+
+<a id="ref-const-scale-right"></a>
 
 ### scale.right
 
-A named constant for use as the scale argument in indicator() and strategy() declaration statements. Specifies that the script's price scale is on the right side of the pane. If the script overlays on the main chart pane or another script's pane, it adds a new price scale on the right side of the pane and scales its visuals independently to fit the pane's visual space.
+A named constant for use as the `scale` argument in [indicator()](#ref-fun-indicator) and [strategy()](#ref-fun-strategy) declaration statements. Specifies that the script's price scale is on the right side of the pane. If the script overlays on the main chart pane or another script's pane, it adds a new price scale on the right side of the pane and scales its visuals independently to fit the pane's visual space.
 
 **Type**
 const scale_type
 
 ---
+
+<a id="ref-const-session-extended"></a>
 
 ### session.extended
 
@@ -4752,6 +6425,8 @@ const string
 
 ---
 
+<a id="ref-const-session-regular"></a>
+
 ### session.regular
 
 Constant for regular session type (no extended hours data).
@@ -4761,216 +6436,264 @@ const string
 
 ---
 
+<a id="ref-const-settlement-as-close-inherit"></a>
+
 ### settlement_as_close.inherit
 
-A constant to specify the value of the settlement_as_close parameter in ticker.new() and ticker.modify() functions.
+A constant to specify the value of the `settlement_as_close` parameter in [ticker.new()](#ref-fun-ticker-new) and [ticker.modify()](#ref-fun-ticker-modify) functions.
 
 **Type**
 const settlement
 
 ---
+
+<a id="ref-const-settlement-as-close-off"></a>
 
 ### settlement_as_close.off
 
-A constant to specify the value of the settlement_as_close parameter in ticker.new() and ticker.modify() functions.
+A constant to specify the value of the `settlement_as_close` parameter in [ticker.new()](#ref-fun-ticker-new) and [ticker.modify()](#ref-fun-ticker-modify) functions.
 
 **Type**
 const settlement
 
 ---
+
+<a id="ref-const-settlement-as-close-on"></a>
 
 ### settlement_as_close.on
 
-A constant to specify the value of the settlement_as_close parameter in ticker.new() and ticker.modify() functions.
+A constant to specify the value of the `settlement_as_close` parameter in [ticker.new()](#ref-fun-ticker-new) and [ticker.modify()](#ref-fun-ticker-modify) functions.
 
 **Type**
 const settlement
 
 ---
 
+<a id="ref-const-shape-arrowdown"></a>
+
 ### shape.arrowdown
 
-Shape style for plotshape() function.
+Shape style for [plotshape()](#ref-fun-plotshape) function.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-shape-arrowup"></a>
 
 ### shape.arrowup
 
-Shape style for plotshape() function.
+Shape style for [plotshape()](#ref-fun-plotshape) function.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-shape-circle"></a>
 
 ### shape.circle
 
-Shape style for plotshape() function.
+Shape style for [plotshape()](#ref-fun-plotshape) function.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-shape-cross"></a>
 
 ### shape.cross
 
-Shape style for plotshape() function.
+Shape style for [plotshape()](#ref-fun-plotshape) function.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-shape-diamond"></a>
 
 ### shape.diamond
 
-Shape style for plotshape() function.
+Shape style for [plotshape()](#ref-fun-plotshape) function.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-shape-flag"></a>
 
 ### shape.flag
 
-Shape style for plotshape() function.
+Shape style for [plotshape()](#ref-fun-plotshape) function.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-shape-labeldown"></a>
 
 ### shape.labeldown
 
-Shape style for plotshape() function.
+Shape style for [plotshape()](#ref-fun-plotshape) function.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-shape-labelup"></a>
 
 ### shape.labelup
 
-Shape style for plotshape() function.
+Shape style for [plotshape()](#ref-fun-plotshape) function.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-shape-square"></a>
 
 ### shape.square
 
-Shape style for plotshape() function.
+Shape style for [plotshape()](#ref-fun-plotshape) function.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-shape-triangledown"></a>
 
 ### shape.triangledown
 
-Shape style for plotshape() function.
+Shape style for [plotshape()](#ref-fun-plotshape) function.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-shape-triangleup"></a>
 
 ### shape.triangleup
 
-Shape style for plotshape() function.
+Shape style for [plotshape()](#ref-fun-plotshape) function.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-shape-xcross"></a>
 
 ### shape.xcross
 
-Shape style for plotshape() function.
+Shape style for [plotshape()](#ref-fun-plotshape) function.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-size-auto"></a>
 
 ### size.auto
 
-A constant to specify the size of the graphics drawn by plotchar() , plotshape() , label.new() , and box.new() . Adjusts the size of the graphics automatically.
+A constant to specify the size of the graphics drawn by [plotchar()](#ref-fun-plotchar), [plotshape()](#ref-fun-plotshape), [label.new()](#ref-fun-label-new), and [box.new()](#ref-fun-box-new). Adjusts the size of the graphics automatically.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-size-huge"></a>
 
 ### size.huge
 
-A constant to specify the size of the graphics drawn by plotchar() , plotshape() , label.new() , box.new() , and table.cell() . Sets the size to huge.
+A constant to specify the size of the graphics drawn by [plotchar()](#ref-fun-plotchar), [plotshape()](#ref-fun-plotshape), [label.new()](#ref-fun-label-new), [box.new()](#ref-fun-box-new), and [table.cell()](#ref-fun-table-cell). Sets the size to huge.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-size-large"></a>
 
 ### size.large
 
-A constant to specify the size of the graphics drawn by plotchar() , plotshape() , label.new() , box.new() , and table.cell() . Sets the size to large.
+A constant to specify the size of the graphics drawn by [plotchar()](#ref-fun-plotchar), [plotshape()](#ref-fun-plotshape), [label.new()](#ref-fun-label-new), [box.new()](#ref-fun-box-new), and [table.cell()](#ref-fun-table-cell). Sets the size to large.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-size-normal"></a>
 
 ### size.normal
 
-A constant to specify the size of the graphics drawn by plotchar() , plotshape() , label.new() , box.new() , and table.cell() . Sets the size to normal.
+A constant to specify the size of the graphics drawn by [plotchar()](#ref-fun-plotchar), [plotshape()](#ref-fun-plotshape), [label.new()](#ref-fun-label-new), [box.new()](#ref-fun-box-new), and [table.cell()](#ref-fun-table-cell). Sets the size to normal.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-size-small"></a>
 
 ### size.small
 
-A constant to specify the size of the graphics drawn by plotchar() , plotshape() , label.new() , box.new() , and table.cell() . Sets the size to small.
+A constant to specify the size of the graphics drawn by [plotchar()](#ref-fun-plotchar), [plotshape()](#ref-fun-plotshape), [label.new()](#ref-fun-label-new), [box.new()](#ref-fun-box-new), and [table.cell()](#ref-fun-table-cell). Sets the size to small.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-size-tiny"></a>
 
 ### size.tiny
 
-A constant to specify the size of the graphics drawn by plotchar() , plotshape() , label.new() , box.new() , and table.cell() . Sets the size to tiny.
+A constant to specify the size of the graphics drawn by [plotchar()](#ref-fun-plotchar), [plotshape()](#ref-fun-plotshape), [label.new()](#ref-fun-label-new), [box.new()](#ref-fun-box-new), and [table.cell()](#ref-fun-table-cell). Sets the size to tiny.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-splits-denominator"></a>
 
 ### splits.denominator
 
-A named constant for the request.splits() function. Is used to request the denominator (the number below the line in a fraction) of a splits.
+A named constant for the [request.splits()](#ref-fun-request-splits) function. Is used to request the denominator (the number below the line in a fraction) of a splits.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-splits-numerator"></a>
 
 ### splits.numerator
 
-A named constant for the request.splits() function. Is used to request the numerator (the number above the line in a fraction) of a splits.
+A named constant for the [request.splits()](#ref-fun-request-splits) function. Is used to request the numerator (the number above the line in a fraction) of a splits.
 
 **Type**
 const string
 
 ---
 
+<a id="ref-const-strategy-cash"></a>
+
 ### strategy.cash
 
-This is one of the arguments that can be supplied to the default_qty_type parameter in the strategy() declaration statement. It is only relevant when no value is used for the ‘qty’ parameter in strategy.entry() or strategy.order() function calls. It specifies that an amount of cash in the strategy.account_currency will be used to enter trades.
+This is one of the arguments that can be supplied to the `default_qty_type` parameter in the [strategy()](#ref-fun-strategy) declaration statement. It is only relevant when no value is used for the ‘qty’ parameter in [strategy.entry()](#ref-fun-strategy-entry) or [strategy.order()](#ref-fun-strategy-order) function calls. It specifies that an amount of cash in the `strategy.account_currency` will be used to enter trades.
 
 **Type**
 const string
@@ -4991,6 +6714,8 @@ if bar_index == 2
 
 ---
 
+<a id="ref-const-strategy-commission-cash-per-contract"></a>
+
 ### strategy.commission.cash_per_contract
 
 Commission type for an order. Money displayed in the account currency per contract.
@@ -4999,6 +6724,8 @@ Commission type for an order. Money displayed in the account currency per contra
 const string
 
 ---
+
+<a id="ref-const-strategy-commission-cash-per-order"></a>
 
 ### strategy.commission.cash_per_order
 
@@ -5009,6 +6736,8 @@ const string
 
 ---
 
+<a id="ref-const-strategy-commission-percent"></a>
+
 ### strategy.commission.percent
 
 Commission type for an order. A percentage of the cash volume of order.
@@ -5017,6 +6746,8 @@ Commission type for an order. A percentage of the cash volume of order.
 const string
 
 ---
+
+<a id="ref-const-strategy-direction-all"></a>
 
 ### strategy.direction.all
 
@@ -5027,6 +6758,8 @@ const string
 
 ---
 
+<a id="ref-const-strategy-direction-long"></a>
+
 ### strategy.direction.long
 
 It allows strategy to open only long positions.
@@ -5035,6 +6768,8 @@ It allows strategy to open only long positions.
 const string
 
 ---
+
+<a id="ref-const-strategy-direction-short"></a>
 
 ### strategy.direction.short
 
@@ -5045,9 +6780,11 @@ const string
 
 ---
 
+<a id="ref-const-strategy-fixed"></a>
+
 ### strategy.fixed
 
-This is one of the arguments that can be supplied to the default_qty_type parameter in the strategy() declaration statement. It is only relevant when no value is used for the ‘qty’ parameter in strategy.entry() or strategy.order() function calls. It specifies that a number of contracts/shares/lots will be used to enter trades.
+This is one of the arguments that can be supplied to the `default_qty_type` parameter in the [strategy()](#ref-fun-strategy) declaration statement. It is only relevant when no value is used for the ‘qty’ parameter in [strategy.entry()](#ref-fun-strategy-entry) or [strategy.order()](#ref-fun-strategy-order) function calls. It specifies that a number of contracts/shares/lots will be used to enter trades.
 
 **Type**
 const string
@@ -5068,52 +6805,62 @@ if bar_index == 2
 
 ---
 
+<a id="ref-const-strategy-long"></a>
+
 ### strategy.long
 
-A named constant for use with the direction parameter of the strategy.entry() and strategy.order() commands. It specifies that the command creates a buy order.
+A named constant for use with the `direction` parameter of the [strategy.entry()](#ref-fun-strategy-entry) and [strategy.order()](#ref-fun-strategy-order) commands. It specifies that the command creates a buy order.
 
 **Type**
 const strategy_direction
 
 ---
 
+<a id="ref-const-strategy-oca-cancel"></a>
+
 ### strategy.oca.cancel
 
-A named constant for use with the oca_type parameter of the strategy.entry() and strategy.order() commands. It specifies that the strategy cancels the unfilled order when another order with the same oca_name and oca_type executes.
+A named constant for use with the `oca_type` parameter of the [strategy.entry()](#ref-fun-strategy-entry) and [strategy.order()](#ref-fun-strategy-order) commands. It specifies that the strategy cancels the unfilled order when another order with the same `oca_name` and `oca_type` executes.
 
 **Type**
 const string
 
 **Remarks**
-Strategies cannot cancel or reduce pending orders from an OCA group if they execute on the same tick. For example, if the market price triggers two stop orders from strategy.order() calls with the same oca_* arguments, the strategy cannot fully or partially cancel either one.
+Strategies cannot cancel or reduce pending orders from an OCA group if they execute on the same tick. For example, if the market price triggers two stop orders from [strategy.order()](#ref-fun-strategy-order) calls with the same `oca_*` arguments, the strategy cannot fully or partially cancel either one.
 
 ---
+
+<a id="ref-const-strategy-oca-none"></a>
 
 ### strategy.oca.none
 
-A named constant for use with the oca_type parameter of the strategy.entry() and strategy.order() commands. It specifies that the order executes independently of all other orders, including those with the same oca_name .
+A named constant for use with the `oca_type` parameter of the [strategy.entry()](#ref-fun-strategy-entry) and [strategy.order()](#ref-fun-strategy-order) commands. It specifies that the order executes independently of all other orders, including those with the same `oca_name`.
 
 **Type**
 const string
 
 ---
 
+<a id="ref-const-strategy-oca-reduce"></a>
+
 ### strategy.oca.reduce
 
-A named constant for use with the oca_type parameter of the strategy.entry() and strategy.order() commands. It specifies that when another order with the same oca_name and oca_type executes, the strategy reduces the unfilled order by that order's size. If the unfilled order's size reaches 0 after reduction, it is the same as canceling the order entirely.
+A named constant for use with the `oca_type` parameter of the [strategy.entry()](#ref-fun-strategy-entry) and [strategy.order()](#ref-fun-strategy-order) commands. It specifies that when another order with the same `oca_name` and `oca_type` executes, the strategy reduces the unfilled order by that order's size. If the unfilled order's size reaches 0 after reduction, it is the same as canceling the order entirely.
 
 **Type**
 const string
 
 **Remarks**
-Strategies cannot cancel or reduce pending orders from an OCA group if they execute on the same tick. For example, if the market price triggers two stop orders from strategy.order() calls with the same oca_* arguments, the strategy cannot fully or partially cancel either one.
-Orders from strategy.exit() automatically use this OCA type, and they belong to the same OCA group by default.
+Strategies cannot cancel or reduce pending orders from an OCA group if they execute on the same tick. For example, if the market price triggers two stop orders from [strategy.order()](#ref-fun-strategy-order) calls with the same `oca_*` arguments, the strategy cannot fully or partially cancel either one.
+Orders from [strategy.exit()](#ref-fun-strategy-exit) automatically use this OCA type, and they belong to the same OCA group by default.
 
 ---
 
+<a id="ref-const-strategy-percent-of-equity"></a>
+
 ### strategy.percent_of_equity
 
-This is one of the arguments that can be supplied to the default_qty_type parameter in the strategy() declaration statement. It is only relevant when no value is used for the ‘qty’ parameter in strategy.entry() or strategy.order() function calls. It specifies that a percentage (0-100) of equity will be used to enter trades.
+This is one of the arguments that can be supplied to the `default_qty_type` parameter in the [strategy()](#ref-fun-strategy) declaration statement. It is only relevant when no value is used for the ‘qty’ parameter in [strategy.entry()](#ref-fun-strategy-entry) or [strategy.order()](#ref-fun-strategy-order) function calls. It specifies that a percentage (0-100) of equity will be used to enter trades.
 
 **Type**
 const string
@@ -5140,153 +6887,187 @@ if bar_index == 6
 
 ---
 
+<a id="ref-const-strategy-short"></a>
+
 ### strategy.short
 
-A named constant for use with the direction parameter of the strategy.entry() and strategy.order() commands. It specifies that the command creates a sell order.
+A named constant for use with the `direction` parameter of the [strategy.entry()](#ref-fun-strategy-entry) and [strategy.order()](#ref-fun-strategy-order) commands. It specifies that the command creates a sell order.
 
 **Type**
 const strategy_direction
 
 ---
 
+<a id="ref-const-text-align-bottom"></a>
+
 ### text.align_bottom
 
-Vertical text alignment for box.new() , box.set_text_valign() , table.cell() and table.cell_set_text_valign() functions.
+Vertical text alignment for [box.new()](#ref-fun-box-new), [box.set_text_valign()](#ref-fun-box-set-text-valign), [table.cell()](#ref-fun-table-cell) and [table.cell_set_text_valign()](#ref-fun-table-cell-set-text-valign) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-text-align-center"></a>
 
 ### text.align_center
 
-Text alignment for box.new() , box.set_text_halign() , box.set_text_valign() , label.new() and label.set_textalign() functions.
+Text alignment for [box.new()](#ref-fun-box-new), [box.set_text_halign()](#ref-fun-box-set-text-halign), [box.set_text_valign()](#ref-fun-box-set-text-valign), [label.new()](#ref-fun-label-new) and [label.set_textalign()](#ref-fun-label-set-textalign) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-text-align-left"></a>
 
 ### text.align_left
 
-Horizontal text alignment for box.new() , box.set_text_halign() , label.new() and label.set_textalign() functions.
+Horizontal text alignment for [box.new()](#ref-fun-box-new), [box.set_text_halign()](#ref-fun-box-set-text-halign), [label.new()](#ref-fun-label-new) and [label.set_textalign()](#ref-fun-label-set-textalign) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-text-align-right"></a>
 
 ### text.align_right
 
-Horizontal text alignment for box.new() , box.set_text_halign() , label.new() and label.set_textalign() functions.
+Horizontal text alignment for [box.new()](#ref-fun-box-new), [box.set_text_halign()](#ref-fun-box-set-text-halign), [label.new()](#ref-fun-label-new) and [label.set_textalign()](#ref-fun-label-set-textalign) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-text-align-top"></a>
 
 ### text.align_top
 
-Vertical text alignment for box.new() , box.set_text_valign() , table.cell() and table.cell_set_text_valign() functions.
+Vertical text alignment for [box.new()](#ref-fun-box-new), [box.set_text_valign()](#ref-fun-box-set-text-valign), [table.cell()](#ref-fun-table-cell) and [table.cell_set_text_valign()](#ref-fun-table-cell-set-text-valign) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-text-format-bold"></a>
 
 ### text.format_bold
 
-A named constant for use with the text_formatting parameter of the label.new() , box.new() , table.cell() , and *set_text_formatting() functions. Makes the text bold.
+A named constant for use with the `text_formatting` parameter of the `label.new()`, `box.new()`, `table.cell()`, and `*set_text_formatting()` functions. Makes the text bold.
 
 **Type**
 const text_format
 
 ---
+
+<a id="ref-const-text-format-italic"></a>
 
 ### text.format_italic
 
-A named constant for use with the text_formatting parameter of the label.new() , box.new() , table.cell() , and *set_text_formatting() functions. Italicizes the text.
+A named constant for use with the `text_formatting` parameter of the `label.new()`, `box.new()`, `table.cell()`, and `*set_text_formatting()` functions. Italicizes the text.
 
 **Type**
 const text_format
 
 ---
+
+<a id="ref-const-text-format-none"></a>
 
 ### text.format_none
 
-A named constant for use with the text_formatting parameter of the label.new() , box.new() , table.cell() , and *set_text_formatting() functions. Signifies no special text formatting.
+A named constant for use with the `text_formatting` parameter of the `label.new()`, `box.new()`, `table.cell()`, and `*set_text_formatting()` functions. Signifies no special text formatting.
 
 **Type**
 const text_format
 
 ---
 
+<a id="ref-const-text-wrap-auto"></a>
+
 ### text.wrap_auto
 
-Automatic wrapping mode for box.new() and box.set_text_wrap() functions.
+Automatic wrapping mode for [box.new()](#ref-fun-box-new) and [box.set_text_wrap()](#ref-fun-box-set-text-wrap) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-text-wrap-none"></a>
 
 ### text.wrap_none
 
-Disabled wrapping mode for box.new() and box.set_text_wrap() functions.
+Disabled wrapping mode for [box.new()](#ref-fun-box-new) and [box.set_text_wrap()](#ref-fun-box-set-text-wrap) functions.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-true"></a>
 
 ### true
 
-Literal representing one of the values a bool variable can hold, or an expression can evaluate to when it uses comparison or logical operators.
+Literal representing one of the values a [bool](#ref-type-bool) variable can hold, or an expression can evaluate to when it uses comparison or logical operators.
 
 **Remarks**
-See the User Manual for comparison operators and logical operators .
+See the User Manual for [comparison operators](./docs_content.md#docs-language-operators) and [logical operators](./docs_content.md#docs-language-operators).
 
 ---
+
+<a id="ref-const-xloc-bar-index"></a>
 
 ### xloc.bar_index
 
-A constant that specifies how functions that create and modify Pine drawings interpret x-coordinates. If xloc = xloc.bar_index , the drawing object treats each x-coordinate as a bar_index value.
+A constant that specifies how functions that create and modify Pine drawings interpret x-coordinates. If `xloc = xloc.bar_index`, the drawing object treats each x-coordinate as a `bar_index` value.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-xloc-bar-time"></a>
 
 ### xloc.bar_time
 
-A constant that specifies how functions that create and modify Pine drawings interpret x-coordinates. If xloc = xloc.bar_time , the drawing object treats each x-coordinate as a UNIX timestamp, expressed in milliseconds.
+A constant that specifies how functions that create and modify Pine drawings interpret x-coordinates. If `xloc = xloc.bar_time`, the drawing object treats each x-coordinate as a UNIX timestamp, expressed in milliseconds.
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-yloc-abovebar"></a>
 
 ### yloc.abovebar
 
-A named constant that specifies the algorithm of interpretation of y-value in function label.new() .
+A named constant that specifies the algorithm of interpretation of y-value in function [label.new()](#ref-fun-label-new).
 
 **Type**
 const string
 
 ---
+
+<a id="ref-const-yloc-belowbar"></a>
 
 ### yloc.belowbar
 
-A named constant that specifies the algorithm of interpretation of y-value in function label.new() .
+A named constant that specifies the algorithm of interpretation of y-value in function [label.new()](#ref-fun-label-new).
 
 **Type**
 const string
 
 ---
 
+<a id="ref-const-yloc-price"></a>
+
 ### yloc.price
 
-A named constant that specifies the algorithm of interpretation of y-value in function label.new() .
+A named constant that specifies the algorithm of interpretation of y-value in function [label.new()](#ref-fun-label-new).
 
 **Type**
 const string
@@ -5294,6 +7075,8 @@ const string
 ---
 
 ## Functions
+
+<a id="ref-fun-alert"></a>
 
 ### alert()
 
@@ -5307,7 +7090,7 @@ alert(message, freq) → void
 
 **Arguments**
 message (series string) The message to send when the alert occurs.
-freq (input string) Optional. Determines the allowed frequency of the alert trigger. Possible values are: alert.freq_all (allows an alert on any realtime update), alert.freq_once_per_bar (allows an alert only on the first execution for each realtime bar), or alert.freq_once_per_bar_close (allows an alert only when a realtime bar closes). The default is alert.freq_once_per_bar .
+freq (input string) Optional. Determines the allowed frequency of the alert trigger. Possible values are: [alert.freq_all](#ref-const-alert-freq-all) (allows an alert on any realtime update), [alert.freq_once_per_bar](#ref-const-alert-freq-once-per-bar) (allows an alert only on the first execution for each realtime bar), or [alert.freq_once_per_bar_close](#ref-const-alert-freq-once-per-bar-close) (allows an alert only when a realtime bar closes). The default is [alert.freq_once_per_bar](#ref-const-alert-freq-once-per-bar).
 
 **Example**
 
@@ -5324,15 +7107,17 @@ plotchar(xUp, "xUp", "▲", location.top, size = size.tiny)
 ```
 
 **Remarks**
-The alert() function does not display information on the chart.
-In contrast to alertcondition() , calls to this function do not count toward a script's plot count. Additionally, alert() calls are allowed in local scopes, including the scopes of exported library functions.
-See this article in our Help Center to learn more about activating alerts from alert() calls.
+The `alert()` function does not display information on the chart.
+In contrast to [alertcondition()](#ref-fun-alertcondition), calls to this function do not count toward a script's plot count. Additionally, `alert()` calls are allowed in local scopes, including the scopes of exported library functions.
+See [this article](https://www.tradingview.com/chart/?solution=43000597494) in our Help Center to learn more about activating alerts from `alert()` calls.
 
 ---
 
+<a id="ref-fun-alertcondition"></a>
+
 ### alertcondition()
 
-Creates alert condition, that is available in Create Alert dialog. Please note, that alertcondition() does NOT create an alert, it just gives you more options in Create Alert dialog. Also, alertcondition() effect is invisible on chart.
+Creates alert condition, that is available in Create Alert dialog. Please note, that [alertcondition()](#ref-fun-alertcondition) does NOT create an alert, it just gives you more options in Create Alert dialog. Also, [alertcondition()](#ref-fun-alertcondition) effect is invisible on chart.
 
 **Syntax**
 
@@ -5358,6 +7143,8 @@ Please note that an alertcondition call generates an additional plot. All such c
 
 ---
 
+<a id="ref-fun-array-abs"></a>
+
 ### array.abs()
 
 Returns an array containing the absolute value of each element in the original array.
@@ -5376,6 +7163,8 @@ array.abs(id) → array<int>
 id (array<int/float>) An array object.
 
 ---
+
+<a id="ref-fun-array-avg"></a>
 
 ### array.avg()
 
@@ -5409,9 +7198,11 @@ plot(array.avg(a))
 Mean of array's elements.
 
 **Remarks**
-Returns na if the id array is empty.
+Returns [na](#ref-var-na) if the `id` array is empty.
 
 ---
+
+<a id="ref-fun-array-binary-search"></a>
 
 ### array.binary_search()
 
@@ -5442,6 +7233,8 @@ plot(position)
 A binary search works on arrays pre-sorted in ascending order. It begins by comparing an element in the middle of the array with the target value. If the element matches the target value, its position in the array is returned. If the element's value is greater than the target value, the search continues in the lower half of the array. If the element's value is less than the target value, the search continues in the upper half of the array. By doing this recursively, the algorithm progressively eliminates smaller and smaller portions of the array in which the target value cannot lie.
 
 ---
+
+<a id="ref-fun-array-binary-search-leftmost"></a>
 
 ### array.binary_search_leftmost()
 
@@ -5484,6 +7277,8 @@ A binary search works on arrays pre-sorted in ascending order. It begins by comp
 
 ---
 
+<a id="ref-fun-array-binary-search-rightmost"></a>
+
 ### array.binary_search_rightmost()
 
 The function returns the index of the value if it is found. When the value is not found, the function returns the index of the element to the right of where the value would lie if it was in the array. The array must be sorted in ascending order.
@@ -5525,6 +7320,8 @@ A binary search works on sorted arrays in ascending order. It begins by comparin
 
 ---
 
+<a id="ref-fun-array-clear"></a>
+
 ### array.clear()
 
 The function removes all elements from an array.
@@ -5551,6 +7348,8 @@ plot(array.size(a))
 ```
 
 ---
+
+<a id="ref-fun-array-concat"></a>
 
 ### array.concat()
 
@@ -5587,6 +7386,8 @@ The first array with merged elements from the second array.
 
 ---
 
+<a id="ref-fun-array-copy"></a>
+
 ### array.copy()
 
 The function creates a copy of an existing array.
@@ -5617,6 +7418,8 @@ plot(array.sum(b) / length)
 A copy of an array.
 
 ---
+
+<a id="ref-fun-array-covariance"></a>
 
 ### array.covariance()
 
@@ -5650,13 +7453,15 @@ plot(array.covariance(a, b))
 The covariance of two arrays.
 
 **Remarks**
-If biased is true , function will calculate using a biased estimate of the entire population, if false - unbiased estimate of a sample. Returns na if both arrays are empty.
+If `biased` is [true](#ref-const-true), function will calculate using a biased estimate of the entire population, if [false](#ref-const-false) - unbiased estimate of a sample. Returns [na](#ref-var-na) if both arrays are empty.
 
 ---
 
+<a id="ref-fun-array-every"></a>
+
 ### array.every()
 
-Returns true if all elements of the id array are true , false otherwise.
+Returns [true](#ref-const-true) if all elements of the `id` array are [true](#ref-const-true), [false](#ref-const-false) otherwise.
 
 **Syntax**
 
@@ -5668,9 +7473,11 @@ array.every(id) → series bool
 id (array<bool>) An array object.
 
 **Remarks**
-This function also works with arrays of int and float types, in which case zero values are considered false , and all others true .
+This function also works with arrays of [int](#ref-type-int) and [float](#ref-type-float) types, in which case zero values are considered [false](#ref-const-false), and all others [true](#ref-const-true).
 
 ---
+
+<a id="ref-fun-array-fill"></a>
 
 ### array.fill()
 
@@ -5700,6 +7507,8 @@ plot(array.sum(a))
 
 ---
 
+<a id="ref-fun-array-first"></a>
+
 ### array.first()
 
 Returns the array's first element. Throws a runtime error if the array is empty.
@@ -5723,6 +7532,8 @@ plot(array.first(arr))
 ```
 
 ---
+
+<a id="ref-fun-array-from"></a>
 
 ### array.from()
 
@@ -5798,6 +7609,8 @@ This function can accept up to 4,000 'int', 'float', 'bool', or 'color' argument
 
 ---
 
+<a id="ref-fun-array-get"></a>
+
 ### array.get()
 
 The function returns the value of the element at the specified index.
@@ -5827,9 +7640,11 @@ plot(array.get(a, 9))
 The array element's value.
 
 **Remarks**
-If the index is positive, the function counts forwards from the beginning of the array to the end. The index of the first element is 0, and the index of the last element is array.size() - 1 . If the index is negative, the function counts backwards from the end of the array to the beginning. In this case, the index of the last element is -1, and the index of the first element is negative array.size() . For example, for an array that contains three elements, all of the following are valid arguments for the index parameter: 0, 1, 2, -1, -2, -3.
+If the index is positive, the function counts forwards from the beginning of the array to the end. The index of the first element is 0, and the index of the last element is `array.size() - 1`. If the index is negative, the function counts backwards from the end of the array to the beginning. In this case, the index of the last element is -1, and the index of the first element is negative `array.size()`. For example, for an array that contains three elements, all of the following are valid arguments for the `index` parameter: 0, 1, 2, -1, -2, -3.
 
 ---
+
+<a id="ref-fun-array-includes"></a>
 
 ### array.includes()
 
@@ -5862,6 +7677,8 @@ True if the value was found in the array, false otherwise.
 
 ---
 
+<a id="ref-fun-array-indexof"></a>
+
 ### array.indexof()
 
 The function returns the index of the first occurrence of the value, or -1 if the value is not found.
@@ -5891,6 +7708,8 @@ The index of an element.
 
 ---
 
+<a id="ref-fun-array-insert"></a>
+
 ### array.insert()
 
 The function changes the contents of an array by adding new elements in place.
@@ -5917,9 +7736,11 @@ plot(array.get(a, 5))
 ```
 
 **Remarks**
-If the index is positive, the function counts forwards from the beginning of the array to the end. The index of the first element is 0, and the index of the last element is array.size() - 1 . If the index is negative, the function counts backwards from the end of the array to the beginning. In this case, the index of the last element is -1, and the index of the first element is negative array.size() . For example, for an array that contains three elements, all of the following are valid arguments for the index parameter: 0, 1, 2, -1, -2, -3.
+If the index is positive, the function counts forwards from the beginning of the array to the end. The index of the first element is 0, and the index of the last element is `array.size() - 1`. If the index is negative, the function counts backwards from the end of the array to the beginning. In this case, the index of the last element is -1, and the index of the first element is negative `array.size()`. For example, for an array that contains three elements, all of the following are valid arguments for the `index` parameter: 0, 1, 2, -1, -2, -3.
 
 ---
+
+<a id="ref-fun-array-join"></a>
 
 ### array.join()
 
@@ -5946,6 +7767,8 @@ label.new(bar_index, close, array.join(a, ","))
 
 ---
 
+<a id="ref-fun-array-last"></a>
+
 ### array.last()
 
 Returns the array's last element. Throws a runtime error if the array is empty.
@@ -5969,6 +7792,8 @@ plot(array.last(arr))
 ```
 
 ---
+
+<a id="ref-fun-array-lastindexof"></a>
 
 ### array.lastindexof()
 
@@ -5998,6 +7823,8 @@ plot(index)
 The index of an element.
 
 ---
+
+<a id="ref-fun-array-max"></a>
 
 ### array.max()
 
@@ -6031,9 +7858,11 @@ plot(thirdHighest)
 The greatest or the nth greatest value in the array.
 
 **Remarks**
-Returns na if the id array is empty.
+Returns [na](#ref-var-na) if the `id` array is empty.
 
 ---
+
+<a id="ref-fun-array-median"></a>
 
 ### array.median()
 
@@ -6067,9 +7896,11 @@ plot(array.median(a))
 The median of the array's elements.
 
 **Remarks**
-Returns na if the id array is empty.
+Returns [na](#ref-var-na) if the `id` array is empty.
 
 ---
+
+<a id="ref-fun-array-min"></a>
 
 ### array.min()
 
@@ -6103,9 +7934,11 @@ plot(secondLowest)
 The smallest or the nth smallest value in the array.
 
 **Remarks**
-Returns na if the id array is empty.
+Returns [na](#ref-var-na) if the `id` array is empty.
 
 ---
+
+<a id="ref-fun-array-mode"></a>
 
 ### array.mode()
 
@@ -6136,12 +7969,14 @@ plot(array.mode(a))
 ```
 
 **Returns**
-The most frequently occurring value from the id array. If none exists, returns the smallest value instead.
+The most frequently occurring value from the `id` array. If none exists, returns the smallest value instead.
 
 **Remarks**
-Returns na if the id array is empty.
+Returns [na](#ref-var-na) if the `id` array is empty.
 
 ---
+
+<a id="ref-fun-array-new-bool"></a>
 
 ### array.new_bool()
 
@@ -6175,6 +8010,8 @@ An array index starts from 0.
 
 ---
 
+<a id="ref-fun-array-new-box"></a>
+
 ### array.new_box()
 
 The function creates a new array object of box type elements.
@@ -6206,6 +8043,8 @@ The ID of an array object which may be used in other array.*() functions.
 An array index starts from 0.
 
 ---
+
+<a id="ref-fun-array-new-color"></a>
 
 ### array.new_color()
 
@@ -6239,6 +8078,8 @@ An array index starts from 0.
 
 ---
 
+<a id="ref-fun-array-new-float"></a>
+
 ### array.new_float()
 
 The function creates a new array object of float type elements.
@@ -6271,6 +8112,8 @@ An array index starts from 0.
 
 ---
 
+<a id="ref-fun-array-new-int"></a>
+
 ### array.new_int()
 
 The function creates a new array object of int type elements.
@@ -6302,6 +8145,8 @@ The ID of an array object which may be used in other array.*() functions.
 An array index starts from 0.
 
 ---
+
+<a id="ref-fun-array-new-label"></a>
 
 ### array.new_label()
 
@@ -6365,6 +8210,8 @@ An array index starts from 0.
 
 ---
 
+<a id="ref-fun-array-new-line"></a>
+
 ### array.new_line()
 
 The function creates a new array object of line type elements.
@@ -6400,6 +8247,8 @@ An array index starts from 0.
 
 ---
 
+<a id="ref-fun-array-new-linefill"></a>
+
 ### array.new_linefill()
 
 The function creates a new array object of linefill type elements.
@@ -6421,6 +8270,8 @@ The ID of an array object which may be used in other array.*() functions.
 An array index starts from 0.
 
 ---
+
+<a id="ref-fun-array-new-string"></a>
 
 ### array.new_string()
 
@@ -6454,6 +8305,8 @@ An array index starts from 0.
 
 ---
 
+<a id="ref-fun-array-new-table"></a>
+
 ### array.new_table()
 
 The function creates a new array object of table type elements.
@@ -6485,6 +8338,8 @@ The ID of an array object which may be used in other array.*() functions.
 An array index starts from 0.
 
 ---
+
+<a id="ref-fun-array-new-3c-type-3e"></a>
 
 ### array.new<type>()
 
@@ -6555,6 +8410,8 @@ If you want to initialize an array and specify all its elements at the same time
 
 ---
 
+<a id="ref-fun-array-percentile-linear-interpolation"></a>
+
 ### array.percentile_linear_interpolation()
 
 Returns the value for which the specified percentage of array values (percentile) are less than or equal to it, using linear interpolation.
@@ -6575,9 +8432,11 @@ percentage (series int/float) The percentage of values that must be equal or les
 
 **Remarks**
 In statistics, the percentile is the percent of ranking items that appear at or below a certain score. This measurement shows the percentage of scores within a standard frequency distribution that is lower than the percentile rank being measured. Linear interpolation estimates the value between two ranks.
-Returns na if the id array is empty.
+Returns [na](#ref-var-na) if the `id` array is empty.
 
 ---
+
+<a id="ref-fun-array-percentile-nearest-rank"></a>
 
 ### array.percentile_nearest_rank()
 
@@ -6599,13 +8458,15 @@ percentage (series int/float) The percentage of values that must be equal or les
 
 **Remarks**
 In statistics, the percentile is the percent of ranking items that appear at or below a certain score. This measurement shows the percentage of scores within a standard frequency distribution that is lower than the percentile rank you're measuring.
-Returns na if the id array is empty.
+Returns [na](#ref-var-na) if the `id` array is empty.
 
 ---
 
+<a id="ref-fun-array-percentrank"></a>
+
 ### array.percentrank()
 
-Returns the percentile rank of the element at the specified index .
+Returns the percentile rank of the element at the specified `index`.
 
 **Syntax & Overloads**
 
@@ -6623,9 +8484,11 @@ index (series int) The index of the element for which the percentile rank should
 
 **Remarks**
 Percentile rank is the number of elements in the array that are less than or equal to the reference value, expressed as a percentage.
-Returns na if the id array is empty.
+Returns [na](#ref-var-na) if the `id` array is empty.
 
 ---
+
+<a id="ref-fun-array-pop"></a>
 
 ### array.pop()
 
@@ -6656,6 +8519,8 @@ The value of the removed element.
 
 ---
 
+<a id="ref-fun-array-push"></a>
+
 ### array.push()
 
 The function appends a value to an array.
@@ -6681,6 +8546,8 @@ plot(array.get(a, 5))
 ```
 
 ---
+
+<a id="ref-fun-array-range"></a>
 
 ### array.range()
 
@@ -6714,9 +8581,11 @@ plot(array.range(a))
 The difference between the min and max values in the array.
 
 **Remarks**
-Returns na if the id array is empty.
+Returns [na](#ref-var-na) if the `id` array is empty.
 
 ---
+
+<a id="ref-fun-array-remove"></a>
 
 ### array.remove()
 
@@ -6747,9 +8616,11 @@ plot(removedEl)
 The value of the removed element.
 
 **Remarks**
-If the index is positive, the function counts forwards from the beginning of the array to the end. The index of the first element is 0, and the index of the last element is array.size() - 1 . If the index is negative, the function counts backwards from the end of the array to the beginning. In this case, the index of the last element is -1, and the index of the first element is negative array.size() . For example, for an array that contains three elements, all of the following are valid arguments for the index parameter: 0, 1, 2, -1, -2, -3.
+If the index is positive, the function counts forwards from the beginning of the array to the end. The index of the first element is 0, and the index of the last element is `array.size() - 1`. If the index is negative, the function counts backwards from the end of the array to the beginning. In this case, the index of the last element is -1, and the index of the first element is negative `array.size()`. For example, for an array that contains three elements, all of the following are valid arguments for the `index` parameter: 0, 1, 2, -1, -2, -3.
 
 ---
+
+<a id="ref-fun-array-reverse"></a>
 
 ### array.reverse()
 
@@ -6779,6 +8650,8 @@ plot(array.get(a, 0))
 
 ---
 
+<a id="ref-fun-array-set"></a>
+
 ### array.set()
 
 The function sets the value of the element at the specified index.
@@ -6806,9 +8679,11 @@ plot(array.sum(a) / 10)
 ```
 
 **Remarks**
-If the index is positive, the function counts forwards from the beginning of the array to the end. The index of the first element is 0, and the index of the last element is array.size() - 1 . If the index is negative, the function counts backwards from the end of the array to the beginning. In this case, the index of the last element is -1, and the index of the first element is negative array.size() . For example, for an array that contains three elements, all of the following are valid arguments for the index parameter: 0, 1, 2, -1, -2, -3.
+If the index is positive, the function counts forwards from the beginning of the array to the end. The index of the first element is 0, and the index of the last element is `array.size() - 1`. If the index is negative, the function counts backwards from the end of the array to the beginning. In this case, the index of the last element is -1, and the index of the first element is negative `array.size()`. For example, for an array that contains three elements, all of the following are valid arguments for the `index` parameter: 0, 1, 2, -1, -2, -3.
 
 ---
+
+<a id="ref-fun-array-shift"></a>
 
 ### array.shift()
 
@@ -6838,6 +8713,8 @@ plot(removedEl)
 The value of the removed element.
 
 ---
+
+<a id="ref-fun-array-size"></a>
 
 ### array.size()
 
@@ -6873,6 +8750,8 @@ The number of elements in the array.
 
 ---
 
+<a id="ref-fun-array-slice"></a>
+
 ### array.slice()
 
 Creates an array representing a slice of an existing array. Setting a slice's element to a new value changes the corresponding element in the original array to that value. Likewise, inserting or removing an element in the slice inserts or removes an element in the original array at the index range covered by the slice.
@@ -6885,8 +8764,8 @@ array.slice(id, index_from, index_to) → array<type>
 
 **Arguments**
 id (any array type) The reference (ID) of the array from which to create a new slice.
-index_from (series int) The id array index corresponding to the start of the slice.
-index_to (series int) The id array index corresponding to the end of the slice. The index is non-inclusive; the resulting slice contains all the original array's elements from index_from to index_to - 1 .
+index_from (series int) The `id` array index corresponding to the start of the slice.
+index_to (series int) The `id` array index corresponding to the end of the slice. The index is non-inclusive; the resulting slice contains all the original array's elements from `index_from` to `index_to - 1`.
 
 **Example**
 
@@ -6904,17 +8783,19 @@ plot(array.sum(slice) / 5)
 ```
 
 **Returns**
-The ID of an array representing a slice of the id array.
+The ID of an array representing a slice of the `id` array.
 
 **Remarks**
-The indices in the resulting slice range from zero to one less than the slice's size. These indices do not directly represent the same element indices as the original array. For example, if the index_from value is 5, the slice's element at index 1 refers to the id array's element at index 6.
-Scripts cannot modify the elements of a historical array. Therefore, they cannot modify historical array slices created by this function. Instead of modifying an array referenced by an ID retrieved with the [] operator, use array.copy() to create a shallow copy of the historical array, then modify the copy or a slice of that copy instead.
+The indices in the resulting slice range from zero to one less than the slice's size. These indices do not directly represent the same element indices as the original array. For example, if the `index_from` value is 5, the slice's element at index 1 refers to the `id` array's element at index 6.
+Scripts cannot modify the elements of a historical array. Therefore, they cannot modify historical array slices created by this function. Instead of modifying an array referenced by an ID retrieved with the [[]](#ref-op-5b-5d) operator, use [array.copy()](#ref-fun-array-copy) to create a shallow copy of the historical array, then modify the copy or a slice of that copy instead.
 
 ---
 
+<a id="ref-fun-array-some"></a>
+
 ### array.some()
 
-Returns true if at least one element of the id array is true , false otherwise.
+Returns [true](#ref-const-true) if at least one element of the `id` array is [true](#ref-const-true), [false](#ref-const-false) otherwise.
 
 **Syntax**
 
@@ -6926,9 +8807,11 @@ array.some(id) → series bool
 id (array<bool>) An array object.
 
 **Remarks**
-This function also works with arrays of int and float types, in which case zero values are considered false , and all others true .
+This function also works with arrays of [int](#ref-type-int) and [float](#ref-type-float) types, in which case zero values are considered [false](#ref-const-false), and all others [true](#ref-const-true).
 
 ---
+
+<a id="ref-fun-array-sort"></a>
 
 ### array.sort()
 
@@ -6963,6 +8846,8 @@ if barstate.islast
 
 ---
 
+<a id="ref-fun-array-sort-indices"></a>
+
 ### array.sort_indices()
 
 Returns an array of indices which, when used to index the original array, will access its elements in their sorted order. It does not modify the original array.
@@ -6994,6 +8879,8 @@ plot(smallestValue)
 ```
 
 ---
+
+<a id="ref-fun-array-standardize"></a>
 
 ### array.standardize()
 
@@ -7030,6 +8917,8 @@ The array of standardized elements.
 
 ---
 
+<a id="ref-fun-array-stdev"></a>
+
 ### array.stdev()
 
 The function returns the standard deviation of an array's elements.
@@ -7063,10 +8952,12 @@ plot(array.stdev(a))
 The standard deviation of the array's elements.
 
 **Remarks**
-If biased is true, the function calculates using a biased estimate of the entire population. If biased is false, it uses an unbiased estimate of a sample.
-Returns na if the id array is empty.
+If `biased` is true, the function calculates using a biased estimate of the entire population. If `biased` is false, it uses an unbiased estimate of a sample.
+Returns [na](#ref-var-na) if the `id` array is empty.
 
 ---
+
+<a id="ref-fun-array-sum"></a>
 
 ### array.sum()
 
@@ -7100,9 +8991,11 @@ plot(array.sum(a))
 The sum of the array's elements.
 
 **Remarks**
-Returns na if the id array is empty.
+Returns [na](#ref-var-na) if the `id` array is empty.
 
 ---
+
+<a id="ref-fun-array-unshift"></a>
 
 ### array.unshift()
 
@@ -7129,6 +9022,8 @@ plot(array.get(a, 0))
 ```
 
 ---
+
+<a id="ref-fun-array-variance"></a>
 
 ### array.variance()
 
@@ -7163,10 +9058,12 @@ plot(array.variance(a))
 The variance of the array's elements.
 
 **Remarks**
-If biased is true, function will calculate using a biased estimate of the entire population, if false - unbiased estimate of a sample.
-Returns na if the id array is empty.
+If `biased` is true, function will calculate using a biased estimate of the entire population, if false - unbiased estimate of a sample.
+Returns [na](#ref-var-na) if the `id` array is empty.
 
 ---
+
+<a id="ref-fun-barcolor"></a>
 
 ### barcolor()
 
@@ -7184,7 +9081,7 @@ offset (simple int) Shifts the color series to the left or to the right on the g
 editable (input bool) If true then barcolor style will be editable in Format dialog. Default is true.
 show_last (input int) Optional. The number of bars, counting backwards from the most recent bar, on which the function can draw.
 title (const string) Title of the barcolor. Optional argument.
-display (input plot_simple_display) Controls where the barcolor is displayed. Possible values are: display.none , display.all . Default is display.all .
+display (input plot_simple_display) Controls where the barcolor is displayed. Possible values are: [display.none](#ref-const-display-none), [display.all](#ref-const-display-all). Default is [display.all](#ref-const-display-all).
 
 **Example**
 
@@ -7195,6 +9092,8 @@ barcolor(close < open ? color.black : color.white)
 ```
 
 ---
+
+<a id="ref-fun-bgcolor"></a>
 
 ### bgcolor()
 
@@ -7212,8 +9111,8 @@ offset (simple int) Shifts the color series to the left or to the right on the g
 editable (input bool) If true then bgcolor style will be editable in Format dialog. Default is true.
 show_last (input int) Optional. The number of bars, counting backwards from the most recent bar, on which the function can draw.
 title (const string) Title of the bgcolor. Optional argument.
-display (input plot_simple_display) Controls where the bgcolor is displayed. Possible values are: display.none , display.all . Default is display.all .
-force_overlay (const bool) If true , the plotted results will display on the main chart pane, even when the script occupies a separate pane. Optional. The default is false .
+display (input plot_simple_display) Controls where the bgcolor is displayed. Possible values are: [display.none](#ref-const-display-none), [display.all](#ref-const-display-all). Default is [display.all](#ref-const-display-all).
+force_overlay (const bool) If [true](#ref-const-true), the plotted results will display on the main chart pane, even when the script occupies a separate pane. Optional. The default is [false](#ref-const-false).
 
 **Example**
 
@@ -7225,9 +9124,11 @@ bgcolor(close < open ? color.new(color.red,70) : color.new(color.green, 70))
 
 ---
 
+<a id="ref-fun-bool"></a>
+
 ### bool()
 
-Converts the x value to a bool value. Returns false if x is na , false , or an int / float value equal to 0. Returns true for all other possible values.
+Converts the `x` value to a [bool](#ref-type-bool) value. Returns [false](#ref-const-false) if `x` is [na](#ref-var-na), [false](#ref-const-false), or an [int](#ref-type-int)/[float](#ref-type-float) value equal to 0. Returns [true](#ref-const-true) for all other possible values.
 
 **Syntax & Overloads**
 
@@ -7248,12 +9149,14 @@ bool(x) → series bool
 ```
 
 **Arguments**
-x (simple int/float/bool) The value to convert to the specified type, usually na .
+x (simple int/float/bool) The value to convert to the specified type, usually [na](#ref-var-na).
 
 **Returns**
 The value of the argument after casting to bool.
 
 ---
+
+<a id="ref-fun-box"></a>
 
 ### box()
 
@@ -7266,12 +9169,14 @@ box(x) → series box
 ```
 
 **Arguments**
-x (series box) The value to convert to the specified type, usually na .
+x (series box) The value to convert to the specified type, usually [na](#ref-var-na).
 
 **Returns**
 The value of the argument after casting to box.
 
 ---
+
+<a id="ref-fun-box-copy"></a>
 
 ### box.copy()
 
@@ -7304,6 +9209,8 @@ if barstate.islastconfirmedhistory
 
 ---
 
+<a id="ref-fun-box-delete"></a>
+
 ### box.delete()
 
 Deletes the specified box object. If it has already been deleted, does nothing.
@@ -7318,6 +9225,8 @@ box.delete(id) → void
 id (series box) A box object to delete.
 
 ---
+
+<a id="ref-fun-box-get-bottom"></a>
 
 ### box.get_bottom()
 
@@ -7337,6 +9246,8 @@ The price value.
 
 ---
 
+<a id="ref-fun-box-get-left"></a>
+
 ### box.get_left()
 
 Returns the bar index or the UNIX time (depending on the last value used for 'xloc') of the left border of the box.
@@ -7354,6 +9265,8 @@ id (series box) A box object.
 A bar index or a UNIX timestamp (in milliseconds).
 
 ---
+
+<a id="ref-fun-box-get-right"></a>
 
 ### box.get_right()
 
@@ -7373,6 +9286,8 @@ A bar index or a UNIX timestamp (in milliseconds).
 
 ---
 
+<a id="ref-fun-box-get-top"></a>
+
 ### box.get_top()
 
 Returns the price value of the top border of the box.
@@ -7391,6 +9306,8 @@ The price value.
 
 ---
 
+<a id="ref-fun-box-new"></a>
+
 ### box.new()
 
 Creates a new box object.
@@ -7406,23 +9323,23 @@ box.new(left, top, right, bottom, border_color, border_width, border_style, exte
 ```
 
 **Arguments**
-top_left (chart.point) A chart.point object that specifies the top-left corner location of the box.
-bottom_right (chart.point) A chart.point object that specifies the bottom-right corner location of the box.
-border_color (series color) Color of the four borders. Optional. The default is color.blue .
+top_left (chart.point) A [chart.point](#ref-type-chart-point) object that specifies the top-left corner location of the box.
+bottom_right (chart.point) A [chart.point](#ref-type-chart-point) object that specifies the bottom-right corner location of the box.
+border_color (series color) Color of the four borders. Optional. The default is [color.blue](#ref-const-color-blue).
 border_width (series int) Width of the four borders, in pixels. Optional. The default is 1 pixel.
-border_style (series string) Style of the four borders. Possible values: line.style_solid , line.style_dotted , line.style_dashed . Optional. The default value is line.style_solid .
-extend (series string) When extend.none is used, the horizontal borders start at the left border and end at the right border. With extend.left or extend.right , the horizontal borders are extended indefinitely to the left or right of the box, respectively. With extend.both , the horizontal borders are extended on both sides. Optional. The default value is extend.none .
-xloc (series string) Determines whether the arguments to 'left' and 'right' are a bar index or a time value. If xloc = xloc.bar_index , the arguments must be a bar index. If xloc = xloc.bar_time , the arguments must be a UNIX time. Possible values: xloc.bar_index and xloc.bar_time . Optional. The default is xloc.bar_index .
-bgcolor (series color) Background color of the box. Optional. The default is color.blue .
+border_style (series string) Style of the four borders. Possible values: [line.style_solid](#ref-const-line-style-solid), [line.style_dotted](#ref-const-line-style-dotted), [line.style_dashed](#ref-const-line-style-dashed). Optional. The default value is [line.style_solid](#ref-const-line-style-solid).
+extend (series string) When [extend.none](#ref-const-extend-none) is used, the horizontal borders start at the left border and end at the right border. With [extend.left](#ref-const-extend-left) or [extend.right](#ref-const-extend-right), the horizontal borders are extended indefinitely to the left or right of the box, respectively. With [extend.both](#ref-const-extend-both), the horizontal borders are extended on both sides. Optional. The default value is [extend.none](#ref-const-extend-none).
+xloc (series string) Determines whether the arguments to 'left' and 'right' are a bar index or a time value. If xloc = [xloc.bar_index](#ref-const-xloc-bar-index), the arguments must be a bar index. If xloc = [xloc.bar_time](#ref-const-xloc-bar-time), the arguments must be a UNIX time. Possible values: [xloc.bar_index](#ref-const-xloc-bar-index) and [xloc.bar_time](#ref-const-xloc-bar-time). Optional. The default is [xloc.bar_index](#ref-const-xloc-bar-index).
+bgcolor (series color) Background color of the box. Optional. The default is [color.blue](#ref-const-color-blue).
 text (series string) The text to be displayed inside the box. Optional. The default is empty string.
-text_size (series int/string) Optional. Size of the box's text. The size can be any positive integer, or one of the size.* built-in constant strings. The constant strings and their equivalent integer values are: size.auto (0), size.tiny (8), size.small (10), size.normal (14), size.large (20), size.huge (36). The default value is size.auto or 0.
-text_color (series color) The color of the text. Optional. The default is color.black .
-text_halign (series string) The horizontal alignment of the box's text. Optional. The default value is text.align_center . Possible values: text.align_left , text.align_center , text.align_right .
-text_valign (series string) The vertical alignment of the box's text. Optional. The default value is text.align_center . Possible values: text.align_top , text.align_center , text.align_bottom .
-text_wrap (series string) Optional. Whether to wrap text. Wrapped text starts a new line when it reaches the side of the box. Wrapped text lower than the bottom of the box is not displayed. Unwrapped text stays on a single line and is displayed past the width of the box if it is too long. If the text_size is 0 or text.wrap_auto , this setting has no effect. The default value is text.wrap_none . Possible values: text.wrap_none , text.wrap_auto .
-text_font_family (series string) The font family of the text. Optional. The default value is font.family_default . Possible values: font.family_default , font.family_monospace .
-force_overlay (const bool) If true , the drawing will display on the main chart pane, even when the script occupies a separate pane. Optional. The default is false .
-text_formatting (series text_format) The formatting of the displayed text. Formatting options support addition. For example, text.format_bold + text.format_italic will make the text both bold and italicized. Possible values: text.format_none , text.format_bold , text.format_italic . Optional. The default is text.format_none .
+text_size (series int/string) Optional. Size of the box's text. The size can be any positive integer, or one of the `size.*` built-in constant strings. The constant strings and their equivalent integer values are: [size.auto](#ref-const-size-auto) (0), [size.tiny](#ref-const-size-tiny) (8), [size.small](#ref-const-size-small) (10), [size.normal](#ref-const-size-normal) (14), [size.large](#ref-const-size-large) (20), [size.huge](#ref-const-size-huge) (36). The default value is [size.auto](#ref-const-size-auto) or 0.
+text_color (series color) The color of the text. Optional. The default is [color.black](#ref-const-color-black).
+text_halign (series string) The horizontal alignment of the box's text. Optional. The default value is [text.align_center](#ref-const-text-align-center). Possible values: [text.align_left](#ref-const-text-align-left), [text.align_center](#ref-const-text-align-center), [text.align_right](#ref-const-text-align-right).
+text_valign (series string) The vertical alignment of the box's text. Optional. The default value is [text.align_center](#ref-const-text-align-center). Possible values: [text.align_top](#ref-const-text-align-top), [text.align_center](#ref-const-text-align-center), [text.align_bottom](#ref-const-text-align-bottom).
+text_wrap (series string) Optional. Whether to wrap text. Wrapped text starts a new line when it reaches the side of the box. Wrapped text lower than the bottom of the box is not displayed. Unwrapped text stays on a single line and *is displayed* past the width of the box if it is too long. If the `text_size` is 0 or [text.wrap_auto](#ref-const-text-wrap-auto), this setting has no effect. The default value is [text.wrap_none](#ref-const-text-wrap-none). Possible values: [text.wrap_none](#ref-const-text-wrap-none), [text.wrap_auto](#ref-const-text-wrap-auto).
+text_font_family (series string) The font family of the text. Optional. The default value is [font.family_default](#ref-const-font-family-default). Possible values: [font.family_default](#ref-const-font-family-default), [font.family_monospace](#ref-const-font-family-monospace).
+force_overlay (const bool) If [true](#ref-const-true), the drawing will display on the main chart pane, even when the script occupies a separate pane. Optional. The default is [false](#ref-const-false).
+text_formatting (series text_format) The formatting of the displayed text. Formatting options support addition. For example, `text.format_bold + text.format_italic` will make the text both bold and italicized. Possible values: [text.format_none](#ref-var-text-format-none), [text.format_bold](#ref-var-text-format-bold), [text.format_italic](#ref-var-text-format-italic). Optional. The default is [text.format_none](#ref-var-text-format-none).
 
 **Example**
 
@@ -7440,6 +9357,8 @@ The ID of a box object which may be used in box.set_*() and box.get_*() function
 
 ---
 
+<a id="ref-fun-box-set-bgcolor"></a>
+
 ### box.set_bgcolor()
 
 Sets the background color of the box.
@@ -7455,6 +9374,8 @@ id (series box) A box object.
 color (series color) New background color.
 
 ---
+
+<a id="ref-fun-box-set-border-color"></a>
 
 ### box.set_border_color()
 
@@ -7472,6 +9393,8 @@ color (series color) New border color.
 
 ---
 
+<a id="ref-fun-box-set-border-style"></a>
+
 ### box.set_border_style()
 
 Sets the border style of the box.
@@ -7487,6 +9410,8 @@ id (series box) A box object.
 style (series string) New border style.
 
 ---
+
+<a id="ref-fun-box-set-border-width"></a>
 
 ### box.set_border_width()
 
@@ -7504,6 +9429,8 @@ width (series int) Width of the four borders, in pixels.
 
 ---
 
+<a id="ref-fun-box-set-bottom"></a>
+
 ### box.set_bottom()
 
 Sets the bottom coordinate of the box.
@@ -7520,9 +9447,11 @@ bottom (series int/float) Price value of the bottom border.
 
 ---
 
+<a id="ref-fun-box-set-bottom-right-point"></a>
+
 ### box.set_bottom_right_point()
 
-Sets the bottom-right corner location of the id box to point .
+Sets the bottom-right corner location of the `id` box to `point`.
 
 **Syntax**
 
@@ -7531,14 +9460,16 @@ box.set_bottom_right_point(id, point) → void
 ```
 
 **Arguments**
-id (series box) A box object.
-point (chart.point) A chart.point object.
+id (series box) A [box](#ref-type-box) object.
+point (chart.point) A [chart.point](#ref-type-chart-point) object.
 
 ---
 
+<a id="ref-fun-box-set-extend"></a>
+
 ### box.set_extend()
 
-Sets extending type of the border of this box object. When extend.none is used, the horizontal borders start at the left border and end at the right border. With extend.left or extend.right , the horizontal borders are extended indefinitely to the left or right of the box, respectively. With extend.both , the horizontal borders are extended on both sides.
+Sets extending type of the border of this box object. When [extend.none](#ref-const-extend-none) is used, the horizontal borders start at the left border and end at the right border. With [extend.left](#ref-const-extend-left) or [extend.right](#ref-const-extend-right), the horizontal borders are extended indefinitely to the left or right of the box, respectively. With [extend.both](#ref-const-extend-both), the horizontal borders are extended on both sides.
 
 **Syntax**
 
@@ -7552,6 +9483,8 @@ extend (series string) New extending type.
 
 ---
 
+<a id="ref-fun-box-set-left"></a>
+
 ### box.set_left()
 
 Sets the left coordinate of the box.
@@ -7564,9 +9497,11 @@ box.set_left(id, left) → void
 
 **Arguments**
 id (series box) A box object.
-left (series int) Bar index or bar time of the left border. Note that objects positioned using xloc.bar_index cannot be drawn further than 500 bars into the future.
+left (series int) Bar index or bar time of the left border. Note that objects positioned using [xloc.bar_index](#ref-const-xloc-bar-index) cannot be drawn further than 500 bars into the future.
 
 ---
+
+<a id="ref-fun-box-set-lefttop"></a>
 
 ### box.set_lefttop()
 
@@ -7585,6 +9520,8 @@ top (series int/float) Price value of the top border.
 
 ---
 
+<a id="ref-fun-box-set-right"></a>
+
 ### box.set_right()
 
 Sets the right coordinate of the box.
@@ -7597,9 +9534,11 @@ box.set_right(id, right) → void
 
 **Arguments**
 id (series box) A box object.
-right (series int) Bar index or bar time of the right border. Note that objects positioned using xloc.bar_index cannot be drawn further than 500 bars into the future.
+right (series int) Bar index or bar time of the right border. Note that objects positioned using [xloc.bar_index](#ref-const-xloc-bar-index) cannot be drawn further than 500 bars into the future.
 
 ---
+
+<a id="ref-fun-box-set-rightbottom"></a>
 
 ### box.set_rightbottom()
 
@@ -7618,6 +9557,8 @@ bottom (series int/float) Price value of the bottom border.
 
 ---
 
+<a id="ref-fun-box-set-text"></a>
+
 ### box.set_text()
 
 The function sets the text in the box.
@@ -7633,6 +9574,8 @@ id (series box) A box object.
 text (series string) The text to be displayed inside the box.
 
 ---
+
+<a id="ref-fun-box-set-text-color"></a>
 
 ### box.set_text_color()
 
@@ -7650,6 +9593,8 @@ text_color (series color) The color of the text.
 
 ---
 
+<a id="ref-fun-box-set-text-font-family"></a>
+
 ### box.set_text_font_family()
 
 The function sets the font family of the text inside the box.
@@ -7662,7 +9607,7 @@ box.set_text_font_family(id, text_font_family) → void
 
 **Arguments**
 id (series box) A box object.
-text_font_family (series string) The font family of the text. Possible values: font.family_default , font.family_monospace .
+text_font_family (series string) The font family of the text. Possible values: [font.family_default](#ref-const-font-family-default), [font.family_monospace](#ref-const-font-family-monospace).
 
 **Example**
 
@@ -7676,6 +9621,8 @@ if barstate.islastconfirmedhistory
 
 ---
 
+<a id="ref-fun-box-set-text-formatting"></a>
+
 ### box.set_text_formatting()
 
 Sets the formatting attributes the drawing applies to displayed text.
@@ -7688,9 +9635,11 @@ box.set_text_formatting(id, text_formatting) → void
 
 **Arguments**
 id (series box) A box object.
-text_formatting (series text_format) The formatting of the displayed text. Formatting options support addition. For example, text.format_bold + text.format_italic will make the text both bold and italicized. Possible values: text.format_none , text.format_bold , text.format_italic . Optional. The default is text.format_none .
+text_formatting (series text_format) The formatting of the displayed text. Formatting options support addition. For example, `text.format_bold + text.format_italic` will make the text both bold and italicized. Possible values: [text.format_none](#ref-var-text-format-none), [text.format_bold](#ref-var-text-format-bold), [text.format_italic](#ref-var-text-format-italic). Optional. The default is [text.format_none](#ref-var-text-format-none).
 
 ---
+
+<a id="ref-fun-box-set-text-halign"></a>
 
 ### box.set_text_halign()
 
@@ -7704,9 +9653,11 @@ box.set_text_halign(id, text_halign) → void
 
 **Arguments**
 id (series box) A box object.
-text_halign (series string) The horizontal alignment of a box's text. Possible values: text.align_left , text.align_center , text.align_right .
+text_halign (series string) The horizontal alignment of a box's text. Possible values: [text.align_left](#ref-const-text-align-left), [text.align_center](#ref-const-text-align-center), [text.align_right](#ref-const-text-align-right).
 
 ---
+
+<a id="ref-fun-box-set-text-size"></a>
 
 ### box.set_text_size()
 
@@ -7720,9 +9671,11 @@ box.set_text_size(id, text_size) → void
 
 **Arguments**
 id (series box) A box object.
-text_size (series int/string) Size of the box's text. The size can be any positive integer, or one of the size.* built-in constant strings. The constant strings and their equivalent integer values are: size.auto (0), size.tiny (8), size.small (10), size.normal (14), size.large (20), size.huge (36).
+text_size (series int/string) Size of the box's text. The size can be any positive integer, or one of the `size.*` built-in constant strings. The constant strings and their equivalent integer values are: [size.auto](#ref-const-size-auto) (0), [size.tiny](#ref-const-size-tiny) (8), [size.small](#ref-const-size-small) (10), [size.normal](#ref-const-size-normal) (14), [size.large](#ref-const-size-large) (20), [size.huge](#ref-const-size-huge) (36).
 
 ---
+
+<a id="ref-fun-box-set-text-valign"></a>
 
 ### box.set_text_valign()
 
@@ -7736,9 +9689,11 @@ box.set_text_valign(id, text_valign) → void
 
 **Arguments**
 id (series box) A box object.
-text_valign (series string) The vertical alignment of the box's text. Possible values: text.align_top , text.align_center , text.align_bottom .
+text_valign (series string) The vertical alignment of the box's text. Possible values: [text.align_top](#ref-const-text-align-top), [text.align_center](#ref-const-text-align-center), [text.align_bottom](#ref-const-text-align-bottom).
 
 ---
+
+<a id="ref-fun-box-set-text-wrap"></a>
 
 ### box.set_text_wrap()
 
@@ -7752,9 +9707,11 @@ box.set_text_wrap(id, text_wrap) → void
 
 **Arguments**
 id (series box) A box object.
-text_wrap (series string) Whether to wrap text. Wrapped text starts a new line when it reaches the side of the box. Wrapped text lower than the bottom of the box is not displayed. Unwrapped text stays on a single line and is displayed past the width of the box if it is too long. If the text_size is 0 or text.wrap_auto , this setting has no effect. Possible values: text.wrap_none , text.wrap_auto .
+text_wrap (series string) Whether to wrap text. Wrapped text starts a new line when it reaches the side of the box. Wrapped text lower than the bottom of the box is not displayed. Unwrapped text stays on a single line and *is displayed* past the width of the box if it is too long. If the `text_size` is 0 or [text.wrap_auto](#ref-const-text-wrap-auto), this setting has no effect. Possible values: [text.wrap_none](#ref-const-text-wrap-none), [text.wrap_auto](#ref-const-text-wrap-auto).
 
 ---
+
+<a id="ref-fun-box-set-top"></a>
 
 ### box.set_top()
 
@@ -7772,9 +9729,11 @@ top (series int/float) Price value of the top border.
 
 ---
 
+<a id="ref-fun-box-set-top-left-point"></a>
+
 ### box.set_top_left_point()
 
-Sets the top-left corner location of the id box to point .
+Sets the top-left corner location of the `id` box to `point`.
 
 **Syntax**
 
@@ -7783,14 +9742,16 @@ box.set_top_left_point(id, point) → void
 ```
 
 **Arguments**
-id (series box) A box object.
-point (chart.point) A chart.point object.
+id (series box) A [box](#ref-type-box) object.
+point (chart.point) A [chart.point](#ref-type-chart-point) object.
 
 ---
 
+<a id="ref-fun-box-set-xloc"></a>
+
 ### box.set_xloc()
 
-Sets the left and right borders of a box and updates its xloc property.
+Sets the left and right borders of a [box](#ref-type-box) and updates its `xloc` property.
 
 **Syntax**
 
@@ -7802,13 +9763,15 @@ box.set_xloc(id, left, right, xloc) → void
 id (series box) The ID of the box object to update.
 left (series int) The bar index or timestamp for the left border of the box.
 right (series int) The bar index or timestamp for the right border of the box.
-xloc (series string) Determines whether the box treats the left and right arguments as bar indices or timestamps. Possible values: xloc.bar_index and xloc.bar_time . If the value is xloc.bar_index , the arguments represent bar indices. If xloc.bar_time , the arguments represent UNIX timestamps .
+xloc (series string) Determines whether the box treats the `left` and `right` arguments as bar indices or timestamps. Possible values: [xloc.bar_index](#ref-const-xloc-bar-index) and [xloc.bar_time](#ref-const-xloc-bar-time). If the value is [xloc.bar_index](#ref-const-xloc-bar-index), the arguments represent bar indices. If [xloc.bar_time](#ref-const-xloc-bar-time), the arguments represent [UNIX timestamps](./docs_content.md#docs-concepts-time).
 
 ---
 
+<a id="ref-fun-chart-point-copy"></a>
+
 ### chart.point.copy()
 
-Creates a copy of a chart.point object with the specified id .
+Creates a copy of a [chart.point](#ref-type-chart-point) object with the specified `id`.
 
 **Syntax**
 
@@ -7817,13 +9780,15 @@ chart.point.copy(id) → chart.point
 ```
 
 **Arguments**
-id (chart.point) A chart.point object.
+id (chart.point) A [chart.point](#ref-type-chart-point) object.
 
 ---
 
+<a id="ref-fun-chart-point-from-index"></a>
+
 ### chart.point.from_index()
 
-Returns a chart.point object with index as its x-coordinate and price as its y-coordinate.
+Returns a [chart.point](#ref-type-chart-point) object with `index` as its x-coordinate and `price` as its y-coordinate.
 
 **Syntax**
 
@@ -7836,13 +9801,15 @@ index (series int) The x-coordinate of the point, expressed as a bar index value
 price (series int/float) The y-coordinate of the point.
 
 **Remarks**
-The time field values of chart.point instances returned from this function will be na , meaning drawing objects with xloc values set to xloc.bar_time will not work with them.
+The `time` field values of [chart.point](#ref-type-chart-point) instances returned from this function will be [na](#ref-var-na), meaning drawing objects with `xloc` values set to `xloc.bar_time` will not work with them.
 
 ---
 
+<a id="ref-fun-chart-point-from-time"></a>
+
 ### chart.point.from_time()
 
-Returns a chart.point object with time as its x-coordinate and price as its y-coordinate.
+Returns a [chart.point](#ref-type-chart-point) object with `time` as its x-coordinate and `price` as its y-coordinate.
 
 **Syntax**
 
@@ -7855,13 +9822,15 @@ time (series int) The x-coordinate of the point, expressed as a UNIX time value,
 price (series int/float) The y-coordinate of the point.
 
 **Remarks**
-The index field values of chart.point instances returned from this function will be na , meaning drawing objects with xloc values set to xloc.bar_index will not work with them.
+The `index` field values of [chart.point](#ref-type-chart-point) instances returned from this function will be [na](#ref-var-na), meaning drawing objects with `xloc` values set to `xloc.bar_index` will not work with them.
 
 ---
 
+<a id="ref-fun-chart-point-new"></a>
+
 ### chart.point.new()
 
-Creates a new chart.point object with the specified time , index , and price .
+Creates a new [chart.point](#ref-type-chart-point) object with the specified `time`, `index`, and `price`.
 
 **Syntax**
 
@@ -7875,14 +9844,16 @@ index (series int) The x-coordinate of the point, expressed as a bar index value
 price (series int/float) The y-coordinate of the point.
 
 **Remarks**
-Whether a drawing object uses a point's time or index field as an x-coordinate depends on the xloc type used in the function call that returned the drawing.
-It's important to note that this function does not verify that the time and index values refer to the same bar.
+Whether a drawing object uses a point's `time` or `index` field as an x-coordinate depends on the `xloc` type used in the function call that returned the drawing.
+It's important to note that this function does not verify that the `time` and `index` values refer to the same bar.
 
 ---
 
+<a id="ref-fun-chart-point-now"></a>
+
 ### chart.point.now()
 
-Returns a chart.point object with price as the y-coordinate
+Returns a [chart.point](#ref-type-chart-point) object with `price` as the y-coordinate
 
 **Syntax**
 
@@ -7891,12 +9862,14 @@ chart.point.now(price) → chart.point
 ```
 
 **Arguments**
-price (series int/float) The y-coordinate of the point. Optional. The default is close .
+price (series int/float) The y-coordinate of the point. Optional. The default is [close](#ref-var-close).
 
 **Remarks**
-The chart.point instance returned from this function records values for its index and time fields on the bar it executed on, making it suitable for use with drawing objects of any xloc type.
+The [chart.point](#ref-type-chart-point) instance returned from this function records values for its `index` and `time` fields on the bar it executed on, making it suitable for use with drawing objects of any `xloc` type.
 
 ---
+
+<a id="ref-fun-color"></a>
 
 ### color()
 
@@ -7921,12 +9894,14 @@ color(x) → series color
 ```
 
 **Arguments**
-x (const color) The value to convert to the specified type, usually na .
+x (const color) The value to convert to the specified type, usually [na](#ref-var-na).
 
 **Returns**
 The value of the argument after casting to color.
 
 ---
+
+<a id="ref-fun-color-b"></a>
 
 ### color.b()
 
@@ -7966,6 +9941,8 @@ The value (0 to 255) of the color's blue component.
 
 ---
 
+<a id="ref-fun-color-from-gradient"></a>
+
 ### color.from_gradient()
 
 Based on the relative position of value in the bottom_value to top_value range, the function returns a color from the gradient defined by bottom_color to top_color.
@@ -7998,9 +9975,11 @@ plot(ta.rsi(close,7), color=color2)
 A color calculated from the linear gradient between bottom_color to top_color.
 
 **Remarks**
-Using this function will have an impact on the colors displayed in the script's "Settings/Style" tab. See the User Manual for more information.
+Using this function will have an impact on the colors displayed in the script's "Settings/Style" tab. See the [User Manual](./docs_content.md#docs-concepts-colors) for more information.
 
 ---
+
+<a id="ref-fun-color-g"></a>
 
 ### color.g()
 
@@ -8040,6 +10019,8 @@ The value (0 to 255) of the color's green component.
 
 ---
 
+<a id="ref-fun-color-new"></a>
+
 ### color.new()
 
 Function color applies the specified transparency to the given color.
@@ -8078,9 +10059,11 @@ plot(close, color=color.new(color.red, 50))
 Color with specified transparency.
 
 **Remarks**
-Using arguments that are not constants (e.g., 'simple', 'input' or 'series') will have an impact on the colors displayed in the script's "Settings/Style" tab. See the User Manual for more information.
+Using arguments that are not constants (e.g., 'simple', 'input' or 'series') will have an impact on the colors displayed in the script's "Settings/Style" tab. See the [User Manual](./docs_content.md#docs-concepts-colors) for more information.
 
 ---
+
+<a id="ref-fun-color-r"></a>
 
 ### color.r()
 
@@ -8119,6 +10102,8 @@ plot(color.r(color.red))
 The value (0 to 255) of the color's red component.
 
 ---
+
+<a id="ref-fun-color-rgb"></a>
 
 ### color.rgb()
 
@@ -8160,9 +10145,11 @@ plot(close, color=color.rgb(255, 0, 0, 50))
 Color with specified transparency.
 
 **Remarks**
-Using arguments that are not constants (e.g., 'simple', 'input' or 'series') will have an impact on the colors displayed in the script's "Settings/Style" tab. See the User Manual for more information.
+Using arguments that are not constants (e.g., 'simple', 'input' or 'series') will have an impact on the colors displayed in the script's "Settings/Style" tab. See the [User Manual](./docs_content.md#docs-concepts-colors) for more information.
 
 ---
+
+<a id="ref-fun-color-t"></a>
 
 ### color.t()
 
@@ -8202,6 +10189,8 @@ The value (0-100) of the color's transparency.
 
 ---
 
+<a id="ref-fun-dayofmonth"></a>
+
 ### dayofmonth()
 
 Calculates the day number of the month, in a specified time zone, from a UNIX timestamp.
@@ -8214,15 +10203,17 @@ dayofmonth(time, timezone) → series int
 
 **Arguments**
 time (series int) A UNIX timestamp in milliseconds.
-timezone (series string) Optional. Specifies the time zone of the returned day number. The value can be a time zone string in UTC/GMT offset notation (e.g., "UTC-5") or IANA time zone database notation (e.g., "America/New_York"). The default is syminfo.timezone .
+timezone (series string) Optional. Specifies the time zone of the returned day number. The value can be a time zone string in UTC/GMT offset notation (e.g., "UTC-5") or IANA time zone database notation (e.g., "America/New_York"). The default is [syminfo.timezone](#ref-var-syminfo-timezone).
 
 **Returns**
 The calculated day of the month, expressed in the specified time zone.
 
 **Remarks**
-A UNIX timestamp represents the number of milliseconds elapsed since 00:00 UTC on 1970-01-01. The meaning of a UNIX timestamp does not change relative to any time zone.
+A [UNIX timestamp](./docs_content.md#docs-concepts-time) represents the number of milliseconds elapsed since 00:00 UTC on 1970-01-01. The meaning of a UNIX timestamp does not change relative to any time zone.
 
 ---
+
+<a id="ref-fun-dayofweek"></a>
 
 ### dayofweek()
 
@@ -8236,15 +10227,17 @@ dayofweek(time, timezone) → series int
 
 **Arguments**
 time (series int) A UNIX timestamp in milliseconds.
-timezone (series string) Optional. Specifies the time zone of the returned day number. The value can be a time zone string in UTC/GMT offset notation (e.g., "UTC-5") or IANA time zone database notation (e.g., "America/New_York"). The default is syminfo.timezone .
+timezone (series string) Optional. Specifies the time zone of the returned day number. The value can be a time zone string in UTC/GMT offset notation (e.g., "UTC-5") or IANA time zone database notation (e.g., "America/New_York"). The default is [syminfo.timezone](#ref-var-syminfo-timezone).
 
 **Returns**
 The calculated day number, expressed in the specified time zone.
 
 **Remarks**
-A UNIX timestamp represents the number of milliseconds elapsed since 00:00 UTC on 1970-01-01. The meaning of a UNIX timestamp does not change relative to any time zone.
+A [UNIX timestamp](./docs_content.md#docs-concepts-time) represents the number of milliseconds elapsed since 00:00 UTC on 1970-01-01. The meaning of a UNIX timestamp does not change relative to any time zone.
 
 ---
+
+<a id="ref-fun-fill"></a>
 
 ### fill()
 
@@ -8271,7 +10264,7 @@ color (series color) Color of the background fill. You can use constants like 'c
 title (const string) Title of the created fill object. Optional argument.
 editable (input bool) If true then fill style will be editable in Format dialog. Default is true.
 fillgaps (const bool) Controls continuing fills on gaps, i.e., when one of the plot() calls returns an na value. When true, the last fill will continue on gaps. The default is false.
-display (input plot_simple_display) Controls where the fill is displayed. Possible values are: display.none , display.all . Default is display.all .
+display (input plot_simple_display) Controls where the fill is displayed. Possible values are: [display.none](#ref-const-display-none), [display.all](#ref-const-display-all). Default is [display.all](#ref-const-display-all).
 Fill between two horizontal lines
 
 **Example**
@@ -8314,6 +10307,8 @@ fill(topLine, botLine, topVal, botVal, topCol, botCol)
 
 ---
 
+<a id="ref-fun-fixnan"></a>
+
 ### fixnan()
 
 For a given series replaces NaN values with previous nearest non-NaN value.
@@ -8340,6 +10335,8 @@ Series without na gaps.
 
 ---
 
+<a id="ref-fun-float"></a>
+
 ### float()
 
 Casts na to float
@@ -8363,16 +10360,18 @@ float(x) → series float
 ```
 
 **Arguments**
-x (const int/float) The value to convert to the specified type, usually na .
+x (const int/float) The value to convert to the specified type, usually [na](#ref-var-na).
 
 **Returns**
 The value of the argument after casting to float.
 
 ---
 
+<a id="ref-fun-footprint-buy-volume"></a>
+
 ### footprint.buy_volume()
 
-Calculates the total "buy" volume for the volume footprint represented by a footprint object.
+Calculates the total "buy" volume for the volume footprint represented by a [footprint](#ref-type-footprint) object.
 
 **Syntax**
 
@@ -8381,16 +10380,18 @@ footprint.buy_volume(id) → series float
 ```
 
 **Arguments**
-id (footprint) The reference (ID) of the footprint object to analyze.
+id (footprint) The reference (ID) of the [footprint](#ref-type-footprint) object to analyze.
 
 **Returns**
 The total "buy" volume measured by the footprint.
 
 ---
 
+<a id="ref-fun-footprint-delta"></a>
+
 ### footprint.delta()
 
-Calculates the overall volume delta for the volume footprint represented by a footprint object. The value represents the difference between the footprint's total "buy" volume and "sell" volume. A positive value indicates that the total "buy" volume in the footprint exceeds the total "sell" volume, and a negative value indicates the opposite.
+Calculates the overall volume delta for the volume footprint represented by a [footprint](#ref-type-footprint) object. The value represents the difference between the footprint's total "buy" volume and "sell" volume. A positive value indicates that the total "buy" volume in the footprint exceeds the total "sell" volume, and a negative value indicates the opposite.
 
 **Syntax**
 
@@ -8399,16 +10400,18 @@ footprint.delta(id) → series float
 ```
 
 **Arguments**
-id (footprint) The reference (ID) of the footprint object to analyze.
+id (footprint) The reference (ID) of the [footprint](#ref-type-footprint) object to analyze.
 
 **Returns**
 The overall volume delta for the footprint.
 
 ---
 
+<a id="ref-fun-footprint-get-row-by-price"></a>
+
 ### footprint.get_row_by_price()
 
-Analyzes the volume footprint represented by a footprint object to find the row whose price range includes the specified price level. If the price belongs to one of the rows, the function returns the ID of the volume_row object that contains the data for that row. Otherwise, it returns na .
+Analyzes the volume footprint represented by a [footprint](#ref-type-footprint) object to find the row whose price range includes the specified price level. If the price belongs to one of the rows, the function returns the ID of the [volume_row](#ref-type-volume-row) object that contains the data for that row. Otherwise, it returns [na](#ref-var-na).
 
 **Syntax**
 
@@ -8417,17 +10420,19 @@ footprint.get_row_by_price(id, price) → volume_row
 ```
 
 **Arguments**
-id (footprint) The reference (ID) of the footprint object to analyze.
+id (footprint) The reference (ID) of the [footprint](#ref-type-footprint) object to analyze.
 price (series int/float) The price value for which to find the corresponding footprint row.
 
 **Returns**
-The ID of a volume_row object representing the footprint row that contains the specified price, or na if the price is outside the footprint's price range.
+The ID of a [volume_row](#ref-type-volume-row) object representing the footprint row that contains the specified price, or [na](#ref-var-na) if the price is outside the footprint's price range.
 
 ---
 
+<a id="ref-fun-footprint-poc"></a>
+
 ### footprint.poc()
 
-Finds the Point of Control (POC) row for the volume footprint represented by a footprint object, then returns the ID of a volume_row object containing the data for that row.
+Finds the Point of Control (POC) row for the volume footprint represented by a [footprint](#ref-type-footprint) object, then returns the ID of a [volume_row](#ref-type-volume-row) object containing the data for that row.
 
 **Syntax**
 
@@ -8436,16 +10441,18 @@ footprint.poc(id) → volume_row
 ```
 
 **Arguments**
-id (footprint) The reference (ID) of the footprint object to analyze.
+id (footprint) The reference (ID) of the [footprint](#ref-type-footprint) object to analyze.
 
 **Returns**
-The ID of a volume_row object representing the footprint's POC row.
+The ID of a [volume_row](#ref-type-volume-row) object representing the footprint's POC row.
 
 ---
 
+<a id="ref-fun-footprint-rows"></a>
+
 ### footprint.rows()
 
-Creates an array containing all volume_row IDs from a footprint object. Each volume_row object referenced in the array contains data for one row in the calculated volume footprint, where the first object represents the lowest row and the last one represents the highest row.
+Creates an array containing all [volume_row](#ref-type-volume-row) IDs from a [footprint](#ref-type-footprint) object. Each [volume_row](#ref-type-volume-row) object referenced in the array contains data for one row in the calculated volume footprint, where the first object represents the lowest row and the last one represents the highest row.
 
 **Syntax**
 
@@ -8454,16 +10461,18 @@ footprint.rows(id) → array<volume_row>
 ```
 
 **Arguments**
-id (footprint) The reference (ID) of the footprint object to analyze.
+id (footprint) The reference (ID) of the [footprint](#ref-type-footprint) object to analyze.
 
 **Returns**
-The ID of an array containing a volume_row ID for each row in the footprint.
+The ID of an array containing a [volume_row](#ref-type-volume-row) ID for each row in the footprint.
 
 ---
 
+<a id="ref-fun-footprint-sell-volume"></a>
+
 ### footprint.sell_volume()
 
-Calculates the total "sell" volume for the volume footprint represented by a footprint object.
+Calculates the total "sell" volume for the volume footprint represented by a [footprint](#ref-type-footprint) object.
 
 **Syntax**
 
@@ -8472,16 +10481,18 @@ footprint.sell_volume(id) → series float
 ```
 
 **Arguments**
-id (footprint) The reference (ID) of the footprint object to analyze.
+id (footprint) The reference (ID) of the [footprint](#ref-type-footprint) object to analyze.
 
 **Returns**
 The total "sell" volume measured by the footprint.
 
 ---
 
+<a id="ref-fun-footprint-total-volume"></a>
+
 ### footprint.total_volume()
 
-Calculates the sum of the total "buy" volume and "sell" volume for the volume footprint represented by a footprint object.
+Calculates the sum of the total "buy" volume and "sell" volume for the volume footprint represented by a [footprint](#ref-type-footprint) object.
 
 **Syntax**
 
@@ -8490,16 +10501,18 @@ footprint.total_volume(id) → series float
 ```
 
 **Arguments**
-id (footprint) The reference (ID) of the footprint object to analyze.
+id (footprint) The reference (ID) of the [footprint](#ref-type-footprint) object to analyze.
 
 **Returns**
 The total volume measured by the footprint.
 
 ---
 
+<a id="ref-fun-footprint-vah"></a>
+
 ### footprint.vah()
 
-Finds the Value Area High (VAH) row for the volume footprint represented by a footprint object, then returns the ID of a volume_row object containing the data for that row.
+Finds the Value Area High (VAH) row for the volume footprint represented by a [footprint](#ref-type-footprint) object, then returns the ID of a [volume_row](#ref-type-volume-row) object containing the data for that row.
 
 **Syntax**
 
@@ -8508,16 +10521,18 @@ footprint.vah(id) → volume_row
 ```
 
 **Arguments**
-id (footprint) The reference (ID) of the footprint object to analyze.
+id (footprint) The reference (ID) of the [footprint](#ref-type-footprint) object to analyze.
 
 **Returns**
-The ID of a volume_row object representing the footprint's VAH row.
+The ID of a [volume_row](#ref-type-volume-row) object representing the footprint's VAH row.
 
 ---
 
+<a id="ref-fun-footprint-val"></a>
+
 ### footprint.val()
 
-Finds the Value Area Low (VAL) row for the volume footprint represented by a footprint object, then returns the ID of a volume_row object containing the data for that row.
+Finds the Value Area Low (VAL) row for the volume footprint represented by a [footprint](#ref-type-footprint) object, then returns the ID of a [volume_row](#ref-type-volume-row) object containing the data for that row.
 
 **Syntax**
 
@@ -8526,12 +10541,14 @@ footprint.val(id) → volume_row
 ```
 
 **Arguments**
-id (footprint) The reference (ID) of the footprint object to analyze.
+id (footprint) The reference (ID) of the [footprint](#ref-type-footprint) object to analyze.
 
 **Returns**
-The ID of a volume_row object representing the footprint's VAL row.
+The ID of a [volume_row](#ref-type-volume-row) object representing the footprint's VAL row.
 
 ---
+
+<a id="ref-fun-hline"></a>
 
 ### hline()
 
@@ -8547,10 +10564,10 @@ hline(price, title, color, linestyle, linewidth, editable, display) → hline
 price (input int/float) Price value at which the object will be rendered. Required argument.
 title (const string) Title of the object.
 color (input color) Color of the rendered line. Must be a constant value (not an expression). Optional argument.
-linestyle (input hline_style) Style of the rendered line. Possible values are: hline.style_solid , hline.style_dotted , hline.style_dashed . Optional argument.
+linestyle (input hline_style) Style of the rendered line. Possible values are: [hline.style_solid](#ref-const-hline-style-solid), [hline.style_dotted](#ref-const-hline-style-dotted), [hline.style_dashed](#ref-const-hline-style-dashed). Optional argument.
 linewidth (input int) Width of the rendered line. Default value is 1.
 editable (input bool) If true then hline style will be editable in Format dialog. Default is true.
-display (input plot_simple_display) Controls where the hline is displayed. Possible values are: display.none , display.all . Default is display.all .
+display (input plot_simple_display) Controls where the hline is displayed. Possible values are: [display.none](#ref-const-display-none), [display.all](#ref-const-display-all). Default is [display.all](#ref-const-display-all).
 
 **Example**
 
@@ -8566,9 +10583,11 @@ fill(h1, h2, color=color.new(color.green, 90))
 ```
 
 **Returns**
-An hline object, that can be used in fill()
+An hline object, that can be used in [fill()](#ref-fun-fill)
 
 ---
+
+<a id="ref-fun-hour"></a>
 
 ### hour()
 
@@ -8580,7 +10599,7 @@ hour(time, timezone) → series int
 
 **Arguments**
 time (series int) UNIX time in milliseconds.
-timezone (series string) Allows adjusting the returned value to a time zone specified in either UTC/GMT notation (e.g., "UTC-5", "GMT+0530") or as an IANA time zone database name (e.g., "America/New_York"). Optional. The default is syminfo.timezone .
+timezone (series string) Allows adjusting the returned value to a time zone specified in either UTC/GMT notation (e.g., "UTC-5", "GMT+0530") or as an IANA time zone database name (e.g., "America/New_York"). Optional. The default is [syminfo.timezone](#ref-var-syminfo-timezone).
 
 **Returns**
 Hour (in exchange timezone) for provided UNIX time.
@@ -8589,6 +10608,8 @@ Hour (in exchange timezone) for provided UNIX time.
 UNIX time is the number of milliseconds that have elapsed since 00:00:00 UTC, 1 January 1970.
 
 ---
+
+<a id="ref-fun-indicator"></a>
 
 ### indicator()
 
@@ -8601,23 +10622,23 @@ indicator(title, shorttitle, overlay, format, precision, scale, max_bars_back, t
 ```
 
 **Arguments**
-title (const string) A string representing the script's title. The script displays the string's text in all possible locations if the declaration statement does not include a shorttitle argument. Additionally, the "Publish script" window uses the text as the default title for a script publication .
-shorttitle (const string) Optional. A string representing the script's display name on charts. If specified and not an empty string, the value's text replaces the title string in most chart locations, including the "Settings" window, the script's status line, the Data Window, and the "Create alert" dialog box. Otherwise, the title string appears as the script's title in all locations. The default is an empty string.
-overlay (const bool) Optional. If true , the script's visuals appear on the main chart pane if the user adds it to the chart directly, or in another script's pane if the user applies it to that script. If false , the script's visuals appear in a separate pane. However, if a function call that creates visuals includes force_overlay = true , its output always appears on the main chart pane, even if the script occupies a separate pane. Changes to this argument apply only after the user adds the script to the chart again. Additionally, if the user moves the script to another pane by selecting a "Move to" option in the script's "More" menu, the script does not move back to its original pane after any updates to the source code. The default is false .
-format (const string) Optional. Specifies the format of the script's plotted values. Possible values are format.inherit , format.price , format.volume , and format.percent . The default is format.inherit .
-precision (const int) Optional. Specifies the number of fractional digits that the script shows for plotted numbers. The value must be an integer from 0 to 16. If specified and the format argument is format.inherit , the script uses format.price as the formatting option instead. If the format argument is {format.volume}, the script ignores the precision value, because the decimal precision rules specified by format.volume supersede other precision settings. By default, the script inherits the precision settings of the chart.
-scale (const scale_type) Optional. Determines the location of the script's price scale and the scaling behavior of the script's visuals. Possible values are scale.right , scale.left , and scale.none . If specified and the script overlays on the main chart pane or another script's pane, the script scales its visuals independently to fit the pane's visual space. If the script occupies the same pane as the main chart or another script, scale.right or scale.left adds a separate price scale for the script to the left or right side of that pane. If the script occupies a separate pane, either argument positions the price scale for that pane on the left or right side without adding a new scale. If the argument is scale.none , which is valid only if the overlay argument is true , the script displays plotted numbers directly on the scale of the existing pane, or displays values on a new price scale if the user moves it to a new pane. Changes to the argument apply only after the user adds the script to the chart again. If not specified, the script uses the main price scale for the pane it occupies, and it does not scale its visuals separately if it overlays on an existing pane.
-max_bars_back (const int) Optional. Sets the minimum length of all the script's historical buffers, which determine the number of bars back that the script can reference for each series using the [] operator or the functions that retrieve history internally. The value must be an integer from 0 to 5000. By default, Pine's runtime system automatically calculates appropriate historical buffer sizes for each series while loading a script. Manually setting buffer sizes is necessary only in rare cases where automatic size detection fails. See the Historical buffers section of our User Manual for advanced details.
-timeframe (const string) Optional. A valid timeframe string that determines the main timeframe the script uses for its calculations. If specified, the script automatically adds a "Timeframe" input to the "Settings/Inputs" tab. The input's displayed default in the tab represents the same timeframe as the specified argument. If the value is an empty string or not specified, the script uses the same timeframe as the chart. An argument is allowed for this parameter only if the script does not use drawing types or alert() function calls.
-timeframe_gaps (const bool) Optional. Controls how the script displays plotted values if the timeframe value represents a higher timeframe than the chart's timeframe. An argument for this parameter is allowed only if the call includes a timeframe argument. If specified, the script adds a "Wait for timeframe closes" input, where users can change the setting, below the generated "Timeframe" input in the "Settings/Inputs" tab. If true , the indicator displays values only on the chart bars where new higher-timeframe data is available, and na on all other bars. If false , the indicator displays the last retrieved values on all chart bars where new data is not available. The default is true .
-explicit_plot_zorder (const bool) Optional. Specifies which rules the script uses to determine the visual order of plots from plot*() calls, levels from hline() calls, and fills from fill() calls on the chart. If true , the indicator displays these visuals in the order of their function calls in the code. If false , the script uses the default z-index rules to determine the order of the visuals. The default is false .
-max_lines_count (const int) Optional. Determines the maximum number of line objects that remain available to the script. The system automatically deletes the oldest line objects when the number of lines exceeds the limit. The limit specified by the argument is approximate; the script might display more drawings than specified. The default is ~50 lines.
-max_labels_count (const int) Optional. Determines the maximum number of label objects that remain available to the script. The system automatically deletes the oldest label objects when the number of labels exceeds the limit. The limit specified by the argument is approximate; the script might display more drawings than specified. The default is ~50 labels.
-max_boxes_count (const int) Optional. Determines the maximum number of box objects that remain available to the script. The system automatically deletes the oldest box objects when the number of boxes exceeds the limit. The limit specified by the argument is approximate; the script might display more drawings than specified. The default is ~50 boxes.
+title (const string) A string representing the script's title. The script displays the string's text in all possible locations if the declaration statement does not include a `shorttitle` argument. Additionally, the "Publish script" window uses the text as the default title for a [script publication](./docs_content.md#docs-writing-publishing).
+shorttitle (const string) Optional. A string representing the script's display name on charts. If specified and not an empty string, the value's text replaces the `title` string in most chart locations, including the "Settings" window, the script's status line, the Data Window, and the "Create alert" dialog box. Otherwise, the `title` string appears as the script's title in all locations. The default is an empty string.
+overlay (const bool) Optional. If `true`, the script's visuals appear on the main chart pane if the user adds it to the chart directly, or in another script's pane if the user applies it to that script. If `false`, the script's visuals appear in a separate pane. However, if a function call that creates [visuals](./docs_content.md#docs-visuals-overview) includes `force_overlay = true`, its output always appears on the main chart pane, even if the script occupies a separate pane. Changes to this argument apply only after the user adds the script to the chart again. Additionally, if the user moves the script to another pane by selecting a "Move to" option in the script's "More" menu, the script does not move back to its original pane after any updates to the source code. The default is `false`.
+format (const string) Optional. Specifies the format of the script's plotted values. Possible values are [format.inherit](#ref-const-format-inherit), [format.price](#ref-const-format-price), [format.volume](#ref-const-format-volume), and [format.percent](#ref-const-format-percent). The default is [format.inherit](#ref-const-format-inherit).
+precision (const int) Optional. Specifies the number of fractional digits that the script shows for plotted numbers. The value must be an integer from 0 to 16. If specified and the `format` argument is [format.inherit](#ref-const-format-inherit), the script uses [format.price](#ref-const-format-price) as the formatting option instead. If the `format` argument is {format.volume}, the script ignores the `precision` value, because the decimal precision rules specified by [format.volume](#ref-const-format-volume) supersede other precision settings. By default, the script inherits the precision settings of the chart.
+scale (const scale_type) Optional. Determines the location of the script's price scale and the scaling behavior of the script's visuals. Possible values are [scale.right](#ref-const-scale-right), [scale.left](#ref-const-scale-left), and [scale.none](#ref-const-scale-none). If specified and the script overlays on the main chart pane or another script's pane, the script scales its visuals independently to fit the pane's visual space. If the script occupies the same pane as the main chart or another script, [scale.right](#ref-const-scale-right) or [scale.left](#ref-const-scale-left) adds a separate price scale for the script to the left or right side of that pane. If the script occupies a separate pane, either argument positions the price scale for that pane on the left or right side without adding a new scale. If the argument is [scale.none](#ref-const-scale-none), which is valid only if the `overlay` argument is `true`, the script displays plotted numbers directly on the scale of the existing pane, or displays values on a new price scale if the user moves it to a new pane. Changes to the argument apply only after the user adds the script to the chart again. If not specified, the script uses the main price scale for the pane it occupies, and it does not scale its visuals separately if it overlays on an existing pane.
+max_bars_back (const int) Optional. Sets the minimum length of all the script's historical buffers, which determine the number of bars back that the script can reference for each series using the [[]](#ref-op-5b-5d) operator or the functions that retrieve history internally. The value must be an integer from 0 to 5000. By default, Pine's runtime system automatically calculates appropriate historical buffer sizes for each series while loading a script. Manually setting buffer sizes is necessary only in rare cases where automatic size detection fails. See the [Historical buffers](./docs_content.md#docs-language-execution-model) section of our User Manual for advanced details.
+timeframe (const string) Optional. A valid [timeframe string](./docs_content.md#docs-concepts-timeframes) that determines the main timeframe the script uses for its calculations. If specified, the script automatically adds a "Timeframe" input to the "Settings/Inputs" tab. The input's displayed default in the tab represents the same timeframe as the specified argument. If the value is an empty string or not specified, the script uses the same timeframe as the chart. An argument is allowed for this parameter only if the script does not use [drawing types](./docs_content.md#docs-language-type-system) or [alert()](#ref-fun-alert) function calls.
+timeframe_gaps (const bool) Optional. Controls how the script displays plotted values if the `timeframe` value represents a higher timeframe than the chart's timeframe. An argument for this parameter is allowed only if the call includes a `timeframe` argument. If specified, the script adds a "Wait for timeframe closes" input, where users can change the setting, below the generated "Timeframe" input in the "Settings/Inputs" tab. If `true`, the indicator displays values only on the chart bars where new higher-timeframe data is available, and [na](#ref-var-na) on all other bars. If `false`, the indicator displays the last retrieved values on all chart bars where new data is not available. The default is `true`.
+explicit_plot_zorder (const bool) Optional. Specifies which rules the script uses to determine the visual order of plots from `plot*()` calls, levels from [hline()](#ref-fun-hline) calls, and fills from [fill()](#ref-fun-fill) calls on the chart. If `true`, the indicator displays these visuals in the order of their function calls in the code. If `false`, the script uses the default [z-index](./docs_content.md#docs-visuals-overview) rules to determine the order of the visuals. The default is `false`.
+max_lines_count (const int) Optional. Determines the maximum number of [line](#ref-type-line) objects that remain available to the script. The system automatically deletes the oldest [line](#ref-type-line) objects when the number of lines exceeds the limit. The limit specified by the argument is approximate; the script might display more drawings than specified. The default is ~50 lines.
+max_labels_count (const int) Optional. Determines the maximum number of [label](#ref-type-label) objects that remain available to the script. The system automatically deletes the oldest [label](#ref-type-label) objects when the number of labels exceeds the limit. The limit specified by the argument is approximate; the script might display more drawings than specified. The default is ~50 labels.
+max_boxes_count (const int) Optional. Determines the maximum number of [box](#ref-type-box) objects that remain available to the script. The system automatically deletes the oldest [box](#ref-type-box) objects when the number of boxes exceeds the limit. The limit specified by the argument is approximate; the script might display more drawings than specified. The default is ~50 boxes.
 calc_bars_count (const int) Optional. Determines how many of the most recent historical bars are available to the script. If specified, the script automatically adds a "Calculated bars" input to the "Settings/Inputs" tab. If the value is positive and less than the number of historical bars in the dataset, the script starts its calculations that number of bars before the most recent bar. If the value is 0, the script's calculations start on the dataset's first bar. The default is 0.
-max_polylines_count (const int) Optional. Determines the maximum number of polyline objects that remain available to the script. The system automatically deletes the oldest polyline objects when the number of polylines exceeds the limit. The limit specified by the argument is approximate; the script might display more drawings than specified. The default is ~50 polylines.
-dynamic_requests (const bool) Optional. Specifies whether the script can use dynamic request.*() function calls. Dynamic request.*() calls are allowed within the local scopes of conditional structures (e.g., if ), loops (e.g., for ), and exported functions. Additionally, such calls allow "series" arguments for several parameters that otherwise require values with "simple" or weaker qualifiers. See the Dynamic requests section of our User Manual for more information. The default is true .
-behind_chart (const bool) Optional. Controls whether all plots and drawings appear behind the chart display (if true ) or in front of it (if false ). This parameter takes effect only when the overlay argument is true . Changes to the argument apply only after the user adds the script to the chart again. The default is true .
+max_polylines_count (const int) Optional. Determines the maximum number of [polyline](#ref-type-polyline) objects that remain available to the script. The system automatically deletes the oldest [polyline](#ref-type-polyline) objects when the number of polylines exceeds the limit. The limit specified by the argument is approximate; the script might display more drawings than specified. The default is ~50 polylines.
+dynamic_requests (const bool) Optional. Specifies whether the script can use dynamic `request.*()` function calls. Dynamic `request.*()` calls are allowed within the local scopes of conditional structures (e.g., [if](#ref-kw-if)), loops (e.g., [for](#ref-kw-for)), and exported functions. Additionally, such calls allow "series" arguments for several parameters that otherwise require values with "simple" or weaker qualifiers. See the [Dynamic requests](./docs_content.md#docs-concepts-other-timeframes-and-data) section of our User Manual for more information. The default is `true`.
+behind_chart (const bool) Optional. Controls whether all plots and drawings appear behind the chart display (if `true`) or in front of it (if `false`). This parameter takes effect only when the `overlay` argument is `true`. Changes to the argument apply only after the user adds the script to the chart again. The default is `true`.
 
 **Example**
 
@@ -8628,9 +10649,11 @@ plot(close)
 ```
 
 **Remarks**
-Every indicator script must include exactly one indicator() statement in the code.
+Every indicator script must include exactly one [indicator()](#ref-fun-indicator) statement in the code.
 
 ---
+
+<a id="ref-fun-input"></a>
 
 ### input()
 
@@ -8663,13 +10686,13 @@ input(defval, title, tooltip, inline, group, display, active) → input bool
 ```
 
 **Arguments**
-defval (const int/float/bool/string/color or source-type built-ins) Determines the default value of the input variable proposed in the script's "Settings/Inputs" tab, from where script users can change it. Source-type built-ins are built-in series float variables that specify the source of the calculation: close , hlc3 , etc.
+defval (const int/float/bool/string/color or source-type built-ins) Determines the default value of the input variable proposed in the script's "Settings/Inputs" tab, from where script users can change it. Source-type built-ins are built-in series float variables that specify the source of the calculation: `close`, `hlc3`, etc.
 title (const string) Title of the input. If not specified, the variable name is used as the input's title. If the title is specified, but it is empty, the name will be an empty string.
 tooltip (const string) The string that will be shown to the user when hovering over the tooltip icon.
 inline (const string) Combines all the input calls using the same argument in one line. The string used as an argument is not displayed. It is only used to identify inputs belonging to the same line.
 group (const string) Creates a header above all inputs using the same group argument string. The string is also used as the header's text.
-display (const plot_display) Controls where the script will display the input's information, aside from within the script's settings. This option allows one to remove a specific input from the script's status line or the Data Window to ensure only the most necessary inputs are displayed there. Possible values: display.none , display.data_window , display.status_line , display.all . Optional. The default depends on the type of the value passed to defval : display.none for bool and color values, display.all for everything else.
-active (input bool) Optional. Specifies whether users can change the value of the input in the script's "Settings/Inputs" tab. The script can use this parameter to set the state of the input based on the values of other inputs. If true , users can change the value of the input. If false , the input is grayed out, and users cannot change the value. The default is true .
+display (const plot_display) Controls where the script will display the input's information, aside from within the script's settings. This option allows one to remove a specific input from the script's status line or the Data Window to ensure only the most necessary inputs are displayed there. Possible values: [display.none](#ref-const-display-none), [display.data_window](#ref-const-display-data-window), [display.status_line](#ref-const-display-status-line), [display.all](#ref-const-display-all). Optional. The default depends on the type of the value passed to `defval`: [display.none](#ref-const-display-none) for [bool](#ref-type-bool) and [color](#ref-type-color) values, [display.all](#ref-const-display-all) for everything else.
+active (input bool) Optional. Specifies whether users can change the value of the input in the script's "Settings/Inputs" tab. The script can use this parameter to set the state of the input based on the values of other inputs. If [true](#ref-const-true), users can change the value of the input. If [false](#ref-const-false), the input is grayed out, and users cannot change the value. The default is [true](#ref-const-true).
 
 **Example**
 
@@ -8699,9 +10722,11 @@ label.delete(l[1])
 Value of input variable.
 
 **Remarks**
-Result of input() function always should be assigned to a variable, see examples above.
+Result of [input()](#ref-fun-input) function always should be assigned to a variable, see examples above.
 
 ---
+
+<a id="ref-fun-input-bool"></a>
 
 ### input.bool()
 
@@ -8720,8 +10745,8 @@ tooltip (const string) The string that will be shown to the user when hovering o
 inline (const string) Combines all the input calls using the same argument in one line. The string used as an argument is not displayed. It is only used to identify inputs belonging to the same line.
 group (const string) Creates a header above all inputs using the same group argument string. The string is also used as the header's text.
 confirm (const bool) If true, then user will be asked to confirm input value before indicator is added to chart. Default value is false.
-display (const plot_display) Controls where the script will display the input's information, aside from within the script's settings. This option allows one to remove a specific input from the script's status line or the Data Window to ensure only the most necessary inputs are displayed there. Possible values: display.none , display.data_window , display.status_line , display.all . Optional. The default is display.none .
-active (input bool) Optional. Specifies whether users can change the value of the input in the script's "Settings/Inputs" tab. The script can use this parameter to set the state of the input based on the values of other inputs. If true , users can change the value of the input. If false , the input is grayed out, and users cannot change the value. The default is true .
+display (const plot_display) Controls where the script will display the input's information, aside from within the script's settings. This option allows one to remove a specific input from the script's status line or the Data Window to ensure only the most necessary inputs are displayed there. Possible values: [display.none](#ref-const-display-none), [display.data_window](#ref-const-display-data-window), [display.status_line](#ref-const-display-status-line), [display.all](#ref-const-display-all). Optional. The default is [display.none](#ref-const-display-none).
+active (input bool) Optional. Specifies whether users can change the value of the input in the script's "Settings/Inputs" tab. The script can use this parameter to set the state of the input based on the values of other inputs. If [true](#ref-const-true), users can change the value of the input. If [false](#ref-const-false), the input is grayed out, and users cannot change the value. The default is [true](#ref-const-true).
 
 **Example**
 
@@ -8736,9 +10761,11 @@ plot(i_switch ? open : na)
 Value of input variable.
 
 **Remarks**
-Result of input.bool() function always should be assigned to a variable, see examples above.
+Result of [input.bool()](#ref-fun-input-bool) function always should be assigned to a variable, see examples above.
 
 ---
+
+<a id="ref-fun-input-color"></a>
 
 ### input.color()
 
@@ -8757,8 +10784,8 @@ tooltip (const string) The string that will be shown to the user when hovering o
 inline (const string) Combines all the input calls using the same argument in one line. The string used as an argument is not displayed. It is only used to identify inputs belonging to the same line.
 group (const string) Creates a header above all inputs using the same group argument string. The string is also used as the header's text.
 confirm (const bool) If true, then user will be asked to confirm input value before indicator is added to chart. Default value is false.
-display (const plot_display) Controls where the script will display the input's information, aside from within the script's settings. This option allows one to remove a specific input from the script's status line or the Data Window to ensure only the most necessary inputs are displayed there. Possible values: display.none , display.data_window , display.status_line , display.all . Optional. The default is display.none .
-active (input bool) Optional. Specifies whether users can change the value of the input in the script's "Settings/Inputs" tab. The script can use this parameter to set the state of the input based on the values of other inputs. If true , users can change the value of the input. If false , the input is grayed out, and users cannot change the value. The default is true .
+display (const plot_display) Controls where the script will display the input's information, aside from within the script's settings. This option allows one to remove a specific input from the script's status line or the Data Window to ensure only the most necessary inputs are displayed there. Possible values: [display.none](#ref-const-display-none), [display.data_window](#ref-const-display-data-window), [display.status_line](#ref-const-display-status-line), [display.all](#ref-const-display-all). Optional. The default is [display.none](#ref-const-display-none).
+active (input bool) Optional. Specifies whether users can change the value of the input in the script's "Settings/Inputs" tab. The script can use this parameter to set the state of the input based on the values of other inputs. If [true](#ref-const-true), users can change the value of the input. If [false](#ref-const-false), the input is grayed out, and users cannot change the value. The default is [true](#ref-const-true).
 
 **Example**
 
@@ -8773,13 +10800,15 @@ plot(close, color=i_col)
 Value of input variable.
 
 **Remarks**
-Result of input.color() function always should be assigned to a variable, see examples above.
+Result of [input.color()](#ref-fun-input-color) function always should be assigned to a variable, see examples above.
 
 ---
 
+<a id="ref-fun-input-enum"></a>
+
 ### input.enum()
 
-Adds an input to the Inputs tab of your script's Settings, which allows you to provide configuration options to script users. This function adds a dropdown with options based on the enum fields passed to its defval and options parameters.
+Adds an input to the Inputs tab of your script's Settings, which allows you to provide configuration options to script users. This function adds a dropdown with options based on the [enum](#ref-kw-enum) fields passed to its `defval` and `options` parameters.
 The text for each option in the resulting dropdown corresponds to the titles of the included fields. If a field's title is not specified in the enum declaration, its title is the string representation of its name.
 
 **Syntax**
@@ -8789,15 +10818,15 @@ input.enum(defval, title, options, tooltip, inline, group, confirm, display, act
 ```
 
 **Arguments**
-defval (const enum) Determines the default value of the input, which users can change in the script's "Settings/Inputs" tab. When the options parameter has a specified tuple of enum fields, the tuple must include the defval .
+defval (const enum) Determines the default value of the input, which users can change in the script's "Settings/Inputs" tab. When the `options` parameter has a specified tuple of enum fields, the tuple must include the `defval`.
 title (const string) Title of the input. If not specified, the variable name is used as the input's title. If the title is specified, but it is empty, the name will be an empty string.
-options (tuple of enum fields: [enumName.field1, enumName.field2, ...]) A list of options to choose from. Optional. By default, the titles of all of the enum's fields are available in the dropdown. Passing a tuple as the options argument limits the list to only the included fields.
+options (tuple of enum fields: [enumName.field1, enumName.field2, ...]) A list of options to choose from. Optional. By default, the titles of all of the enum's fields are available in the dropdown. Passing a tuple as the `options` argument limits the list to only the included fields.
 tooltip (const string) The string that will be shown to the user when hovering over the tooltip icon.
 inline (const string) Combines all the input calls using the same argument in one line. The string used as an argument is not displayed. It is only used to identify inputs belonging to the same line.
 group (const string) Creates a header above all inputs using the same group argument string. The string is also used as the header's text.
-confirm (const bool) If true , then user will be asked to confirm input value before indicator is added to chart. Default value is false .
-display (const plot_display) Controls where the script will display the input's information, aside from within the script's settings. This option allows one to remove a specific input from the script's status line or the Data Window to ensure only the most necessary inputs are displayed there. Possible values: display.none , display.data_window , display.status_line , display.all . Optional. The default is display.all .
-active (input bool) Optional. Specifies whether users can change the value of the input in the script's "Settings/Inputs" tab. The script can use this parameter to set the state of the input based on the values of other inputs. If true , users can change the value of the input. If false , the input is grayed out, and users cannot change the value. The default is true .
+confirm (const bool) If `true`, then user will be asked to confirm input value before indicator is added to chart. Default value is `false`.
+display (const plot_display) Controls where the script will display the input's information, aside from within the script's settings. This option allows one to remove a specific input from the script's status line or the Data Window to ensure only the most necessary inputs are displayed there. Possible values: [display.none](#ref-var-display-none), [display.data_window](#ref-var-display-data-window), [display.status_line](#ref-var-display-status-line), [display.all](#ref-var-display-all). Optional. The default is [display.all](#ref-var-display-all).
+active (input bool) Optional. Specifies whether users can change the value of the input in the script's "Settings/Inputs" tab. The script can use this parameter to set the state of the input based on the values of other inputs. If [true](#ref-const-true), users can change the value of the input. If [false](#ref-const-false), the input is grayed out, and users cannot change the value. The default is [true](#ref-const-true).
 
 **Example**
 
@@ -8833,9 +10862,11 @@ bgcolor(inSession ? color.new(color.green, 90) : na, title = "Active session hig
 Value of input variable.
 
 **Remarks**
-All fields included in the defval and options arguments must belong to the same enum.
+All fields included in the `defval` and `options` arguments must belong to the same enum.
 
 ---
+
+<a id="ref-fun-input-float"></a>
 
 ### input.float()
 
@@ -8852,15 +10883,15 @@ input.float(defval, title, minval, maxval, step, tooltip, inline, group, confirm
 ```
 
 **Arguments**
-defval (const int/float) Determines the default value of the input variable proposed in the script's "Settings/Inputs" tab, from where script users can change it. When a list of values is used with the options parameter, the value must be one of them.
+defval (const int/float) Determines the default value of the input variable proposed in the script's "Settings/Inputs" tab, from where script users can change it. When a list of values is used with the `options` parameter, the value must be one of them.
 title (const string) Title of the input. If not specified, the variable name is used as the input's title. If the title is specified, but it is empty, the name will be an empty string.
-options (tuple of const int/float values: [val1, val2, ...]) A list of options to choose from a dropdown menu, separated by commas and enclosed in square brackets: [val1, val2, ...]. When using this parameter, the minval , maxval and step parameters cannot be used.
+options (tuple of const int/float values: [val1, val2, ...]) A list of options to choose from a dropdown menu, separated by commas and enclosed in square brackets: [val1, val2, ...]. When using this parameter, the `minval`, `maxval` and `step` parameters cannot be used.
 tooltip (const string) The string that will be shown to the user when hovering over the tooltip icon.
 inline (const string) Combines all the input calls using the same argument in one line. The string used as an argument is not displayed. It is only used to identify inputs belonging to the same line.
 group (const string) Creates a header above all inputs using the same group argument string. The string is also used as the header's text.
 confirm (const bool) If true, then user will be asked to confirm input value before indicator is added to chart. Default value is false.
-display (const plot_display) Controls where the script will display the input's information, aside from within the script's settings. This option allows one to remove a specific input from the script's status line or the Data Window to ensure only the most necessary inputs are displayed there. Possible values: display.none , display.data_window , display.status_line , display.all . Optional. The default is display.all .
-active (input bool) Optional. Specifies whether users can change the value of the input in the script's "Settings/Inputs" tab. The script can use this parameter to set the state of the input based on the values of other inputs. If true , users can change the value of the input. If false , the input is grayed out, and users cannot change the value. The default is true .
+display (const plot_display) Controls where the script will display the input's information, aside from within the script's settings. This option allows one to remove a specific input from the script's status line or the Data Window to ensure only the most necessary inputs are displayed there. Possible values: [display.none](#ref-const-display-none), [display.data_window](#ref-const-display-data-window), [display.status_line](#ref-const-display-status-line), [display.all](#ref-const-display-all). Optional. The default is [display.all](#ref-const-display-all).
+active (input bool) Optional. Specifies whether users can change the value of the input in the script's "Settings/Inputs" tab. The script can use this parameter to set the state of the input based on the values of other inputs. If [true](#ref-const-true), users can change the value of the input. If [false](#ref-const-false), the input is grayed out, and users cannot change the value. The default is [true](#ref-const-true).
 
 **Example**
 
@@ -8878,9 +10909,11 @@ plot(math.cos(i_angle2) > 0 ? close : open, "cos", color=color.red)
 Value of input variable.
 
 **Remarks**
-Result of input.float() function always should be assigned to a variable, see examples above.
+Result of [input.float()](#ref-fun-input-float) function always should be assigned to a variable, see examples above.
 
 ---
+
+<a id="ref-fun-input-int"></a>
 
 ### input.int()
 
@@ -8897,15 +10930,15 @@ input.int(defval, title, minval, maxval, step, tooltip, inline, group, confirm, 
 ```
 
 **Arguments**
-defval (const int) Determines the default value of the input variable proposed in the script's "Settings/Inputs" tab, from where script users can change it. When a list of values is used with the options parameter, the value must be one of them.
+defval (const int) Determines the default value of the input variable proposed in the script's "Settings/Inputs" tab, from where script users can change it. When a list of values is used with the `options` parameter, the value must be one of them.
 title (const string) Title of the input. If not specified, the variable name is used as the input's title. If the title is specified, but it is empty, the name will be an empty string.
-options (tuple of const int values: [val1, val2, ...]) A list of options to choose from a dropdown menu, separated by commas and enclosed in square brackets: [val1, val2, ...]. When using this parameter, the minval , maxval and step parameters cannot be used.
+options (tuple of const int values: [val1, val2, ...]) A list of options to choose from a dropdown menu, separated by commas and enclosed in square brackets: [val1, val2, ...]. When using this parameter, the `minval`, `maxval` and `step` parameters cannot be used.
 tooltip (const string) The string that will be shown to the user when hovering over the tooltip icon.
 inline (const string) Combines all the input calls using the same argument in one line. The string used as an argument is not displayed. It is only used to identify inputs belonging to the same line.
 group (const string) Creates a header above all inputs using the same group argument string. The string is also used as the header's text.
 confirm (const bool) If true, then user will be asked to confirm input value before indicator is added to chart. Default value is false.
-display (const plot_display) Controls where the script will display the input's information, aside from within the script's settings. This option allows one to remove a specific input from the script's status line or the Data Window to ensure only the most necessary inputs are displayed there. Possible values: display.none , display.data_window , display.status_line , display.all . Optional. The default is display.all .
-active (input bool) Optional. Specifies whether users can change the value of the input in the script's "Settings/Inputs" tab. The script can use this parameter to set the state of the input based on the values of other inputs. If true , users can change the value of the input. If false , the input is grayed out, and users cannot change the value. The default is true .
+display (const plot_display) Controls where the script will display the input's information, aside from within the script's settings. This option allows one to remove a specific input from the script's status line or the Data Window to ensure only the most necessary inputs are displayed there. Possible values: [display.none](#ref-const-display-none), [display.data_window](#ref-const-display-data-window), [display.status_line](#ref-const-display-status-line), [display.all](#ref-const-display-all). Optional. The default is [display.all](#ref-const-display-all).
+active (input bool) Optional. Specifies whether users can change the value of the input in the script's "Settings/Inputs" tab. The script can use this parameter to set the state of the input based on the values of other inputs. If [true](#ref-const-true), users can change the value of the input. If [false](#ref-const-false), the input is grayed out, and users cannot change the value. The default is [true](#ref-const-true).
 
 **Example**
 
@@ -8923,9 +10956,11 @@ plot(ta.sma(close, i_len2))
 Value of input variable.
 
 **Remarks**
-Result of input.int() function always should be assigned to a variable, see examples above.
+Result of [input.int()](#ref-fun-input-int) function always should be assigned to a variable, see examples above.
 
 ---
+
+<a id="ref-fun-input-price"></a>
 
 ### input.price()
 
@@ -8943,9 +10978,9 @@ title (const string) Title of the input. If not specified, the variable name is 
 tooltip (const string) The string that will be shown to the user when hovering over the tooltip icon.
 inline (const string) Combines all the input calls using the same argument in one line. The string used as an argument is not displayed. It is only used to identify inputs belonging to the same line.
 group (const string) Creates a header above all inputs using the same group argument string. The string is also used as the header's text.
-confirm (const bool) Optional. If true , the script prompts the user to set the input's initial value by clicking a point on the chart. If inputs of other types require confirmation, the "Confirm inputs" dialog box also displays this input's field, allowing final adjustments to the value before the script starts to run. The default is false .
-display (const plot_display) Controls where the script will display the input's information, aside from within the script's settings. This option allows one to remove a specific input from the script's status line or the Data Window to ensure only the most necessary inputs are displayed there. Possible values: display.none , display.data_window , display.status_line , display.all . Optional. The default is display.all .
-active (input bool) Optional. Specifies whether users can change the value of the input in the script's "Settings/Inputs" tab. The script can use this parameter to set the state of the input based on the values of other inputs. If true , users can change the value of the input. If false , the input is grayed out, and users cannot change the value. The default is true .
+confirm (const bool) Optional. If [true](#ref-const-true), the script prompts the user to set the input's initial value by clicking a point on the chart. If inputs of other types require confirmation, the "Confirm inputs" dialog box also displays this input's field, allowing final adjustments to the value before the script starts to run. The default is [false](#ref-const-false).
+display (const plot_display) Controls where the script will display the input's information, aside from within the script's settings. This option allows one to remove a specific input from the script's status line or the Data Window to ensure only the most necessary inputs are displayed there. Possible values: [display.none](#ref-const-display-none), [display.data_window](#ref-const-display-data-window), [display.status_line](#ref-const-display-status-line), [display.all](#ref-const-display-all). Optional. The default is [display.all](#ref-const-display-all).
+active (input bool) Optional. Specifies whether users can change the value of the input in the script's "Settings/Inputs" tab. The script can use this parameter to set the state of the input based on the values of other inputs. If [true](#ref-const-true), users can change the value of the input. If [false](#ref-const-false), the input is grayed out, and users cannot change the value. The default is [true](#ref-const-true).
 
 **Example**
 
@@ -8964,9 +10999,11 @@ Value of input variable.
 
 **Remarks**
 The user can change the input's value by specifying a new value in the "Settings/Inputs" tab, or by moving the input's marker on the chart. Alternatively, they can select "Reset points" from the script's "More" menu and set a new input value by clicking a point on the chart.
-If an input.time() and input.price() function call in the script share a unique inline argument and have matching group arguments, those calls create a single interactive point marker on the chart. The user can move that marker to adjust the input time and price values simultaneously.
+If an [input.time()](#ref-fun-input-time) and [input.price()](#ref-fun-input-price) function call in the script share a unique `inline` argument and have matching `group` arguments, those calls create a single interactive point marker on the chart. The user can move that marker to adjust the input time and price values simultaneously.
 
 ---
+
+<a id="ref-fun-input-session"></a>
 
 ### input.session()
 
@@ -8979,15 +11016,15 @@ input.session(defval, title, options, tooltip, inline, group, confirm, display, 
 ```
 
 **Arguments**
-defval (const string) Determines the default value of the input variable proposed in the script's "Settings/Inputs" tab, from where the user can change it. When a list of values is used with the options parameter, the value must be one of them.
+defval (const string) Determines the default value of the input variable proposed in the script's "Settings/Inputs" tab, from where the user can change it. When a list of values is used with the `options` parameter, the value must be one of them.
 title (const string) Title of the input. If not specified, the variable name is used as the input's title. If the title is specified, but it is empty, the name will be an empty string.
 options (tuple of const string values: [val1, val2, ...]) A list of options to choose from.
 tooltip (const string) The string that will be shown to the user when hovering over the tooltip icon.
 inline (const string) Combines all the input calls using the same argument in one line. The string used as an argument is not displayed. It is only used to identify inputs belonging to the same line.
 group (const string) Creates a header above all inputs using the same group argument string. The string is also used as the header's text.
 confirm (const bool) If true, then user will be asked to confirm input value before indicator is added to chart. Default value is false.
-display (const plot_display) Controls where the script will display the input's information, aside from within the script's settings. This option allows one to remove a specific input from the script's status line or the Data Window to ensure only the most necessary inputs are displayed there. Possible values: display.none , display.data_window , display.status_line , display.all . Optional. The default is display.all .
-active (input bool) Optional. Specifies whether users can change the value of the input in the script's "Settings/Inputs" tab. The script can use this parameter to set the state of the input based on the values of other inputs. If true , users can change the value of the input. If false , the input is grayed out, and users cannot change the value. The default is true .
+display (const plot_display) Controls where the script will display the input's information, aside from within the script's settings. This option allows one to remove a specific input from the script's status line or the Data Window to ensure only the most necessary inputs are displayed there. Possible values: [display.none](#ref-const-display-none), [display.data_window](#ref-const-display-data-window), [display.status_line](#ref-const-display-status-line), [display.all](#ref-const-display-all). Optional. The default is [display.all](#ref-const-display-all).
+active (input bool) Optional. Specifies whether users can change the value of the input in the script's "Settings/Inputs" tab. The script can use this parameter to set the state of the input based on the values of other inputs. If [true](#ref-const-true), users can change the value of the input. If [false](#ref-const-false), the input is grayed out, and users cannot change the value. The default is [true](#ref-const-true).
 
 **Example**
 
@@ -9003,13 +11040,15 @@ bgcolor(time == t ? color.green : na)
 Value of input variable.
 
 **Remarks**
-Result of input.session() function always should be assigned to a variable, see examples above.
+Result of [input.session()](#ref-fun-input-session) function always should be assigned to a variable, see examples above.
 
 ---
 
+<a id="ref-fun-input-source"></a>
+
 ### input.source()
 
-Adds an input to the Inputs tab of your script's Settings, which allows you to provide configuration options to script users. This function adds a dropdown that allows the user to select a source for the calculation, e.g. close , hl2 , etc. The user can also select an output from another indicator on their chart as the source.
+Adds an input to the Inputs tab of your script's Settings, which allows you to provide configuration options to script users. This function adds a dropdown that allows the user to select a source for the calculation, e.g. [close](#ref-var-close), [hl2](#ref-var-hl2), etc. The user can also select an output from another indicator on their chart as the source.
 
 **Syntax**
 
@@ -9023,8 +11062,8 @@ title (const string) Title of the input. If not specified, the variable name is 
 tooltip (const string) The string that will be shown to the user when hovering over the tooltip icon.
 inline (const string) Combines all the input calls using the same argument in one line. The string used as an argument is not displayed. It is only used to identify inputs belonging to the same line.
 group (const string) Creates a header above all inputs using the same group argument string. The string is also used as the header's text.
-display (const plot_display) Controls where the script will display the input's information, aside from within the script's settings. This option allows one to remove a specific input from the script's status line or the Data Window to ensure only the most necessary inputs are displayed there. Possible values: display.none , display.data_window , display.status_line , display.all . Optional. The default is display.all .
-active (input bool) Optional. Specifies whether users can change the value of the input in the script's "Settings/Inputs" tab. The script can use this parameter to set the state of the input based on the values of other inputs. If true , users can change the value of the input. If false , the input is grayed out, and users cannot change the value. The default is true .
+display (const plot_display) Controls where the script will display the input's information, aside from within the script's settings. This option allows one to remove a specific input from the script's status line or the Data Window to ensure only the most necessary inputs are displayed there. Possible values: [display.none](#ref-const-display-none), [display.data_window](#ref-const-display-data-window), [display.status_line](#ref-const-display-status-line), [display.all](#ref-const-display-all). Optional. The default is [display.all](#ref-const-display-all).
+active (input bool) Optional. Specifies whether users can change the value of the input in the script's "Settings/Inputs" tab. The script can use this parameter to set the state of the input based on the values of other inputs. If [true](#ref-const-true), users can change the value of the input. If [false](#ref-const-false), the input is grayed out, and users cannot change the value. The default is [true](#ref-const-true).
 confirm (const bool) If true, then user will be asked to confirm input value before indicator is added to chart. Default value is false.
 
 **Example**
@@ -9040,9 +11079,11 @@ plot(i_src)
 Value of input variable.
 
 **Remarks**
-Result of input.source() function always should be assigned to a variable, see examples above.
+Result of [input.source()](#ref-fun-input-source) function always should be assigned to a variable, see examples above.
 
 ---
+
+<a id="ref-fun-input-string"></a>
 
 ### input.string()
 
@@ -9055,15 +11096,15 @@ input.string(defval, title, options, tooltip, inline, group, confirm, display, a
 ```
 
 **Arguments**
-defval (const string) Determines the default value of the input variable proposed in the script's "Settings/Inputs" tab, from where the user can change it. When a list of values is used with the options parameter, the value must be one of them.
+defval (const string) Determines the default value of the input variable proposed in the script's "Settings/Inputs" tab, from where the user can change it. When a list of values is used with the `options` parameter, the value must be one of them.
 title (const string) Title of the input. If not specified, the variable name is used as the input's title. If the title is specified, but it is empty, the name will be an empty string.
 options (tuple of const string values: [val1, val2, ...]) A list of options to choose from.
 tooltip (const string) The string that will be shown to the user when hovering over the tooltip icon.
 inline (const string) Combines all the input calls using the same argument in one line. The string used as an argument is not displayed. It is only used to identify inputs belonging to the same line.
 group (const string) Creates a header above all inputs using the same group argument string. The string is also used as the header's text.
 confirm (const bool) If true, then user will be asked to confirm input value before indicator is added to chart. Default value is false.
-display (const plot_display) Controls where the script will display the input's information, aside from within the script's settings. This option allows one to remove a specific input from the script's status line or the Data Window to ensure only the most necessary inputs are displayed there. Possible values: display.none , display.data_window , display.status_line , display.all . Optional. The default is display.all .
-active (input bool) Optional. Specifies whether users can change the value of the input in the script's "Settings/Inputs" tab. The script can use this parameter to set the state of the input based on the values of other inputs. If true , users can change the value of the input. If false , the input is grayed out, and users cannot change the value. The default is true .
+display (const plot_display) Controls where the script will display the input's information, aside from within the script's settings. This option allows one to remove a specific input from the script's status line or the Data Window to ensure only the most necessary inputs are displayed there. Possible values: [display.none](#ref-const-display-none), [display.data_window](#ref-const-display-data-window), [display.status_line](#ref-const-display-status-line), [display.all](#ref-const-display-all). Optional. The default is [display.all](#ref-const-display-all).
+active (input bool) Optional. Specifies whether users can change the value of the input in the script's "Settings/Inputs" tab. The script can use this parameter to set the state of the input based on the values of other inputs. If [true](#ref-const-true), users can change the value of the input. If [false](#ref-const-false), the input is grayed out, and users cannot change the value. The default is [true](#ref-const-true).
 
 **Example**
 
@@ -9079,9 +11120,11 @@ label.delete(l[1])
 Value of input variable.
 
 **Remarks**
-Result of input.string() function always should be assigned to a variable, see examples above.
+Result of [input.string()](#ref-fun-input-string) function always should be assigned to a variable, see examples above.
 
 ---
+
+<a id="ref-fun-input-symbol"></a>
 
 ### input.symbol()
 
@@ -9100,8 +11143,8 @@ tooltip (const string) The string that will be shown to the user when hovering o
 inline (const string) Combines all the input calls using the same argument in one line. The string used as an argument is not displayed. It is only used to identify inputs belonging to the same line.
 group (const string) Creates a header above all inputs using the same group argument string. The string is also used as the header's text.
 confirm (const bool) If true, then user will be asked to confirm input value before indicator is added to chart. Default value is false.
-display (const plot_display) Controls where the script will display the input's information, aside from within the script's settings. This option allows one to remove a specific input from the script's status line or the Data Window to ensure only the most necessary inputs are displayed there. Possible values: display.none , display.data_window , display.status_line , display.all . Optional. The default is display.all .
-active (input bool) Optional. Specifies whether users can change the value of the input in the script's "Settings/Inputs" tab. The script can use this parameter to set the state of the input based on the values of other inputs. If true , users can change the value of the input. If false , the input is grayed out, and users cannot change the value. The default is true .
+display (const plot_display) Controls where the script will display the input's information, aside from within the script's settings. This option allows one to remove a specific input from the script's status line or the Data Window to ensure only the most necessary inputs are displayed there. Possible values: [display.none](#ref-const-display-none), [display.data_window](#ref-const-display-data-window), [display.status_line](#ref-const-display-status-line), [display.all](#ref-const-display-all). Optional. The default is [display.all](#ref-const-display-all).
+active (input bool) Optional. Specifies whether users can change the value of the input in the script's "Settings/Inputs" tab. The script can use this parameter to set the state of the input based on the values of other inputs. If [true](#ref-const-true), users can change the value of the input. If [false](#ref-const-false), the input is grayed out, and users cannot change the value. The default is [true](#ref-const-true).
 
 **Example**
 
@@ -9117,9 +11160,11 @@ plot(s)
 Value of input variable.
 
 **Remarks**
-Result of input.symbol() function always should be assigned to a variable, see examples above.
+Result of [input.symbol()](#ref-fun-input-symbol) function always should be assigned to a variable, see examples above.
 
 ---
+
+<a id="ref-fun-input-text-area"></a>
 
 ### input.text_area()
 
@@ -9137,8 +11182,8 @@ title (const string) Title of the input. If not specified, the variable name is 
 tooltip (const string) The string that will be shown to the user when hovering over the tooltip icon.
 group (const string) Creates a header above all inputs using the same group argument string. The string is also used as the header's text.
 confirm (const bool) If true, then user will be asked to confirm input value before indicator is added to chart. Default value is false.
-display (const plot_display) Controls where the script will display the input's information, aside from within the script's settings. This option allows one to remove a specific input from the script's status line or the Data Window to ensure only the most necessary inputs are displayed there. Possible values: display.none , display.data_window , display.status_line , display.all . Optional. The default is display.none .
-active (input bool) Optional. Specifies whether users can change the value of the input in the script's "Settings/Inputs" tab. The script can use this parameter to set the state of the input based on the values of other inputs. If true , users can change the value of the input. If false , the input is grayed out, and users cannot change the value. The default is true .
+display (const plot_display) Controls where the script will display the input's information, aside from within the script's settings. This option allows one to remove a specific input from the script's status line or the Data Window to ensure only the most necessary inputs are displayed there. Possible values: [display.none](#ref-const-display-none), [display.data_window](#ref-const-display-data-window), [display.status_line](#ref-const-display-status-line), [display.all](#ref-const-display-all). Optional. The default is [display.none](#ref-const-display-none).
+active (input bool) Optional. Specifies whether users can change the value of the input in the script's "Settings/Inputs" tab. The script can use this parameter to set the state of the input based on the values of other inputs. If [true](#ref-const-true), users can change the value of the input. If [false](#ref-const-false), the input is grayed out, and users cannot change the value. The default is [true](#ref-const-true).
 
 **Example**
 
@@ -9153,9 +11198,11 @@ plot(close)
 Value of input variable.
 
 **Remarks**
-Result of input.text_area() function always should be assigned to a variable, see examples above.
+Result of [input.text_area()](#ref-fun-input-text-area) function always should be assigned to a variable, see examples above.
 
 ---
+
+<a id="ref-fun-input-time"></a>
 
 ### input.time()
 
@@ -9168,14 +11215,14 @@ input.time(defval, title, tooltip, inline, group, confirm, display, active) → 
 ```
 
 **Arguments**
-defval (const int) Determines the default value of the input variable proposed in the script's "Settings/Inputs" tab, from where the user can change it. The value can be a timestamp() function, but only if it uses a date argument in const string format.
+defval (const int) Determines the default value of the input variable proposed in the script's "Settings/Inputs" tab, from where the user can change it. The value can be a [timestamp()](#ref-fun-timestamp) function, but only if it uses a date argument in const string format.
 title (const string) Title of the input. If not specified, the variable name is used as the input's title. If the title is specified, but it is empty, the name will be an empty string.
 tooltip (const string) The string that will be shown to the user when hovering over the tooltip icon.
 inline (const string) Combines all the input calls using the same argument in one line. The string used as an argument is not displayed. It is only used to identify inputs belonging to the same line.
 group (const string) Creates a header above all inputs using the same group argument string. The string is also used as the header's text.
-confirm (const bool) Optional. If true , the script prompts the user to set the input's initial value by clicking a point on the chart. If inputs of other types require confirmation, the "Confirm inputs" dialog box also displays this input's field, allowing final adjustments to the value before the script starts to run. The default is false .
-display (const plot_display) Controls where the script will display the input's information, aside from within the script's settings. This option allows one to remove a specific input from the script's status line or the Data Window to ensure only the most necessary inputs are displayed there. Possible values: display.none , display.data_window , display.status_line , display.all . Optional. The default is display.none .
-active (input bool) Optional. Specifies whether users can change the value of the input in the script's "Settings/Inputs" tab. The script can use this parameter to set the state of the input based on the values of other inputs. If true , users can change the value of the input. If false , the input is grayed out, and users cannot change the value. The default is true .
+confirm (const bool) Optional. If [true](#ref-const-true), the script prompts the user to set the input's initial value by clicking a point on the chart. If inputs of other types require confirmation, the "Confirm inputs" dialog box also displays this input's field, allowing final adjustments to the value before the script starts to run. The default is [false](#ref-const-false).
+display (const plot_display) Controls where the script will display the input's information, aside from within the script's settings. This option allows one to remove a specific input from the script's status line or the Data Window to ensure only the most necessary inputs are displayed there. Possible values: [display.none](#ref-const-display-none), [display.data_window](#ref-const-display-data-window), [display.status_line](#ref-const-display-status-line), [display.all](#ref-const-display-all). Optional. The default is [display.none](#ref-const-display-none).
+active (input bool) Optional. Specifies whether users can change the value of the input in the script's "Settings/Inputs" tab. The script can use this parameter to set the state of the input based on the values of other inputs. If [true](#ref-const-true), users can change the value of the input. If [false](#ref-const-false), the input is grayed out, and users cannot change the value. The default is [true](#ref-const-true).
 
 **Example**
 
@@ -9192,9 +11239,11 @@ Value of input variable.
 
 **Remarks**
 The user can change the input's value by specifying a new value in the "Settings/Inputs" tab, or by moving the input's marker on the chart. Alternatively, they can select "Reset points" from the script's "More" menu and set a new input value by clicking a point on the chart.
-If an input.time() and input.price() function call in the script share a unique inline argument and have matching group arguments, those calls create a single interactive point marker on the chart. The user can move that marker to adjust the input time and price values simultaneously.
+If an [input.time()](#ref-fun-input-time) and [input.price()](#ref-fun-input-price) function call in the script share a unique `inline` argument and have matching `group` arguments, those calls create a single interactive point marker on the chart. The user can move that marker to adjust the input time and price values simultaneously.
 
 ---
+
+<a id="ref-fun-input-timeframe"></a>
 
 ### input.timeframe()
 
@@ -9207,15 +11256,15 @@ input.timeframe(defval, title, options, tooltip, inline, group, confirm, display
 ```
 
 **Arguments**
-defval (const string) Determines the default value of the input variable proposed in the script's "Settings/Inputs" tab, from where the user can change it. When a list of values is used with the options parameter, the value must be one of them.
+defval (const string) Determines the default value of the input variable proposed in the script's "Settings/Inputs" tab, from where the user can change it. When a list of values is used with the `options` parameter, the value must be one of them.
 title (const string) Title of the input. If not specified, the variable name is used as the input's title. If the title is specified, but it is empty, the name will be an empty string.
 options (tuple of const string values: [val1, val2, ...]) A list of options to choose from.
 tooltip (const string) The string that will be shown to the user when hovering over the tooltip icon.
 inline (const string) Combines all the input calls using the same argument in one line. The string used as an argument is not displayed. It is only used to identify inputs belonging to the same line.
 group (const string) Creates a header above all inputs using the same group argument string. The string is also used as the header's text.
 confirm (const bool) If true, then user will be asked to confirm input value before indicator is added to chart. Default value is false.
-display (const plot_display) Controls where the script will display the input's information, aside from within the script's settings. This option allows one to remove a specific input from the script's status line or the Data Window to ensure only the most necessary inputs are displayed there. Possible values: display.none , display.data_window , display.status_line , display.all . Optional. The default is display.all .
-active (input bool) Optional. Specifies whether users can change the value of the input in the script's "Settings/Inputs" tab. The script can use this parameter to set the state of the input based on the values of other inputs. If true , users can change the value of the input. If false , the input is grayed out, and users cannot change the value. The default is true .
+display (const plot_display) Controls where the script will display the input's information, aside from within the script's settings. This option allows one to remove a specific input from the script's status line or the Data Window to ensure only the most necessary inputs are displayed there. Possible values: [display.none](#ref-const-display-none), [display.data_window](#ref-const-display-data-window), [display.status_line](#ref-const-display-status-line), [display.all](#ref-const-display-all). Optional. The default is [display.all](#ref-const-display-all).
+active (input bool) Optional. Specifies whether users can change the value of the input in the script's "Settings/Inputs" tab. The script can use this parameter to set the state of the input based on the values of other inputs. If [true](#ref-const-true), users can change the value of the input. If [false](#ref-const-false), the input is grayed out, and users cannot change the value. The default is [true](#ref-const-true).
 
 **Example**
 
@@ -9231,9 +11280,11 @@ plot(s)
 Value of input variable.
 
 **Remarks**
-Result of input.timeframe() function always should be assigned to a variable, see examples above.
+Result of [input.timeframe()](#ref-fun-input-timeframe) function always should be assigned to a variable, see examples above.
 
 ---
+
+<a id="ref-fun-int"></a>
 
 ### int()
 
@@ -9258,12 +11309,14 @@ int(x) → series int
 ```
 
 **Arguments**
-x (const int/float) The value to convert to the specified type, usually na .
+x (const int/float) The value to convert to the specified type, usually [na](#ref-var-na).
 
 **Returns**
 The value of the argument after casting to int.
 
 ---
+
+<a id="ref-fun-label"></a>
 
 ### label()
 
@@ -9276,12 +11329,14 @@ label(x) → series label
 ```
 
 **Arguments**
-x (series label) The value to convert to the specified type, usually na .
+x (series label) The value to convert to the specified type, usually [na](#ref-var-na).
 
 **Returns**
 The value of the argument after casting to label.
 
 ---
+
+<a id="ref-fun-label-copy"></a>
 
 ### label.copy()
 
@@ -9320,6 +11375,8 @@ New label ID object which may be passed to label.setXXX and label.getXXX functio
 
 ---
 
+<a id="ref-fun-label-delete"></a>
+
 ### label.delete()
 
 Deletes the specified label object. If it has already been deleted, does nothing.
@@ -9334,6 +11391,8 @@ label.delete(id) → void
 id (series label) Label object to delete.
 
 ---
+
+<a id="ref-fun-label-get-text"></a>
 
 ### label.get_text()
 
@@ -9363,6 +11422,8 @@ String object containing the text of this label.
 
 ---
 
+<a id="ref-fun-label-get-x"></a>
+
 ### label.get_x()
 
 Returns UNIX time or bar index (depending on the last xloc value set) of this label's position.
@@ -9391,6 +11452,8 @@ UNIX timestamp (in milliseconds) or bar index.
 
 ---
 
+<a id="ref-fun-label-get-y"></a>
+
 ### label.get_y()
 
 Returns price of this label's position.
@@ -9409,6 +11472,8 @@ Floating point value representing price.
 
 ---
 
+<a id="ref-fun-label-new"></a>
+
 ### label.new()
 
 Creates new label object.
@@ -9424,19 +11489,19 @@ label.new(x, y, text, xloc, yloc, color, style, textcolor, size, textalign, tool
 ```
 
 **Arguments**
-point (chart.point) A chart.point object that specifies the label's location.
+point (chart.point) A [chart.point](#ref-type-chart-point) object that specifies the label's location.
 text (series string) Label text. Default is empty string.
-xloc (series string) See description of x argument. Possible values: xloc.bar_index and xloc.bar_time . Default is xloc.bar_index .
-yloc (series string) Possible values are yloc.price , yloc.abovebar , yloc.belowbar . If yloc= yloc.price , y argument specifies the price of the label position. If yloc= yloc.abovebar , label is located above bar. If yloc= yloc.belowbar , label is located below bar. Default is yloc.price .
+xloc (series string) See description of **x** argument. Possible values: [xloc.bar_index](#ref-const-xloc-bar-index) and [xloc.bar_time](#ref-const-xloc-bar-time). Default is [xloc.bar_index](#ref-const-xloc-bar-index).
+yloc (series string) Possible values are [yloc.price](#ref-const-yloc-price), [yloc.abovebar](#ref-const-yloc-abovebar), [yloc.belowbar](#ref-const-yloc-belowbar). If yloc=[yloc.price](#ref-const-yloc-price), **y** argument specifies the price of the label position. If yloc=[yloc.abovebar](#ref-const-yloc-abovebar), label is located above bar. If yloc=[yloc.belowbar](#ref-const-yloc-belowbar), label is located below bar. Default is [yloc.price](#ref-const-yloc-price).
 color (series color) Color of the label border and arrow
-style (series string) Label style. Possible values: label.style_none , label.style_xcross , label.style_cross , label.style_triangleup , label.style_triangledown , label.style_flag , label.style_circle , label.style_arrowup , label.style_arrowdown , label.style_label_up , label.style_label_down , label.style_label_left , label.style_label_right , label.style_label_lower_left , label.style_label_lower_right , label.style_label_upper_left , label.style_label_upper_right , label.style_label_center , label.style_square , label.style_diamond , label.style_text_outline . Default is label.style_label_down .
+style (series string) Label style. Possible values: [label.style_none](#ref-const-label-style-none), [label.style_xcross](#ref-const-label-style-xcross), [label.style_cross](#ref-const-label-style-cross), [label.style_triangleup](#ref-const-label-style-triangleup), [label.style_triangledown](#ref-const-label-style-triangledown), [label.style_flag](#ref-const-label-style-flag), [label.style_circle](#ref-const-label-style-circle), [label.style_arrowup](#ref-const-label-style-arrowup), [label.style_arrowdown](#ref-const-label-style-arrowdown), [label.style_label_up](#ref-const-label-style-label-up), [label.style_label_down](#ref-const-label-style-label-down), [label.style_label_left](#ref-const-label-style-label-left), [label.style_label_right](#ref-const-label-style-label-right), [label.style_label_lower_left](#ref-const-label-style-label-lower-left), [label.style_label_lower_right](#ref-const-label-style-label-lower-right), [label.style_label_upper_left](#ref-const-label-style-label-upper-left), [label.style_label_upper_right](#ref-const-label-style-label-upper-right), [label.style_label_center](#ref-const-label-style-label-center), [label.style_square](#ref-const-label-style-square), [label.style_diamond](#ref-const-label-style-diamond), [label.style_text_outline](#ref-const-label-style-text-outline). Default is [label.style_label_down](#ref-const-label-style-label-down).
 textcolor (series color) Text color.
-size (series int/string) Optional. Size of the label. Accepts a positive int value or one of the built-in size.* constants. The constants and their equivalent numeric sizes are: size.auto (0), size.tiny (~7), size.small (~10), size.normal (12), size.large (18), size.huge (24). The default value is size.normal , which represents the numeric size of 12.
-textalign (series string) Label text alignment. Possible values: text.align_left , text.align_center , text.align_right . Default value is text.align_center .
+size (series int/string) Optional. Size of the label. Accepts a positive [int](#ref-type-int) value or one of the built-in `size.*` constants. The constants and their equivalent numeric sizes are: [size.auto](#ref-const-size-auto) (0), [size.tiny](#ref-const-size-tiny) (~7), [size.small](#ref-const-size-small) (~10), [size.normal](#ref-const-size-normal) (12), [size.large](#ref-const-size-large) (18), [size.huge](#ref-const-size-huge) (24). The default value is [size.normal](#ref-const-size-normal), which represents the numeric size of 12.
+textalign (series string) Label text alignment. Possible values: [text.align_left](#ref-const-text-align-left), [text.align_center](#ref-const-text-align-center), [text.align_right](#ref-const-text-align-right). Default value is [text.align_center](#ref-const-text-align-center).
 tooltip (series string) Hover to see tooltip label.
-text_font_family (series string) The font family of the text. Optional. The default value is font.family_default . Possible values: font.family_default , font.family_monospace .
-force_overlay (const bool) If true , the drawing will display on the main chart pane, even when the script occupies a separate pane. Optional. The default is false .
-text_formatting (series text_format) The formatting of the displayed text. Formatting options support addition. For example, text.format_bold + text.format_italic will make the text both bold and italicized. Possible values: text.format_none , text.format_bold , text.format_italic . Optional. The default is text.format_none .
+text_font_family (series string) The font family of the text. Optional. The default value is [font.family_default](#ref-const-font-family-default). Possible values: [font.family_default](#ref-const-font-family-default), [font.family_monospace](#ref-const-font-family-monospace).
+force_overlay (const bool) If [true](#ref-const-true), the drawing will display on the main chart pane, even when the script occupies a separate pane. Optional. The default is [false](#ref-const-false).
+text_formatting (series text_format) The formatting of the displayed text. Formatting options support addition. For example, `text.format_bold + text.format_italic` will make the text both bold and italicized. Possible values: [text.format_none](#ref-var-text-format-none), [text.format_bold](#ref-var-text-format-bold), [text.format_italic](#ref-var-text-format-italic). Optional. The default is [text.format_none](#ref-var-text-format-none).
 
 **Example**
 
@@ -9455,6 +11520,8 @@ Label ID object which may be passed to label.setXXX and label.getXXX functions.
 
 ---
 
+<a id="ref-fun-label-set-color"></a>
+
 ### label.set_color()
 
 Sets label border and arrow color.
@@ -9471,9 +11538,11 @@ color (series color) New label border and arrow color.
 
 ---
 
+<a id="ref-fun-label-set-point"></a>
+
 ### label.set_point()
 
-Sets the location of the id label to point .
+Sets the location of the `id` label to `point`.
 
 **Syntax**
 
@@ -9482,10 +11551,12 @@ label.set_point(id, point) → void
 ```
 
 **Arguments**
-id (series label) A label object.
-point (chart.point) A chart.point object.
+id (series label) A [label](#ref-type-label) object.
+point (chart.point) A [chart.point](#ref-type-chart-point) object.
 
 ---
+
+<a id="ref-fun-label-set-size"></a>
 
 ### label.set_size()
 
@@ -9499,9 +11570,11 @@ label.set_size(id, size) → void
 
 **Arguments**
 id (series label) Label object.
-size (series int/string) Size of the label. Accepts a positive int value or one of the built-in size.* constants. The constants and their equivalent numeric sizes are: size.auto (0), size.tiny (~7), size.small (~10), size.normal (12), size.large (18), size.huge (24). The default value is size.normal , which represents the numeric size of 12.
+size (series int/string) Size of the label. Accepts a positive [int](#ref-type-int) value or one of the built-in `size.*` constants. The constants and their equivalent numeric sizes are: [size.auto](#ref-const-size-auto) (0), [size.tiny](#ref-const-size-tiny) (~7), [size.small](#ref-const-size-small) (~10), [size.normal](#ref-const-size-normal) (12), [size.large](#ref-const-size-large) (18), [size.huge](#ref-const-size-huge) (24). The default value is [size.normal](#ref-const-size-normal), which represents the numeric size of 12.
 
 ---
+
+<a id="ref-fun-label-set-style"></a>
 
 ### label.set_style()
 
@@ -9515,9 +11588,11 @@ label.set_style(id, style) → void
 
 **Arguments**
 id (series label) Label object.
-style (series string) New label style. Possible values: label.style_none , label.style_xcross , label.style_cross , label.style_triangleup , label.style_triangledown , label.style_flag , label.style_circle , label.style_arrowup , label.style_arrowdown , label.style_label_up , label.style_label_down , label.style_label_left , label.style_label_right , label.style_label_lower_left , label.style_label_lower_right , label.style_label_upper_left , label.style_label_upper_right , label.style_label_center , label.style_square , label.style_diamond , label.style_text_outline .
+style (series string) New label style. Possible values: [label.style_none](#ref-const-label-style-none), [label.style_xcross](#ref-const-label-style-xcross), [label.style_cross](#ref-const-label-style-cross), [label.style_triangleup](#ref-const-label-style-triangleup), [label.style_triangledown](#ref-const-label-style-triangledown), [label.style_flag](#ref-const-label-style-flag), [label.style_circle](#ref-const-label-style-circle), [label.style_arrowup](#ref-const-label-style-arrowup), [label.style_arrowdown](#ref-const-label-style-arrowdown), [label.style_label_up](#ref-const-label-style-label-up), [label.style_label_down](#ref-const-label-style-label-down), [label.style_label_left](#ref-const-label-style-label-left), [label.style_label_right](#ref-const-label-style-label-right), [label.style_label_lower_left](#ref-const-label-style-label-lower-left), [label.style_label_lower_right](#ref-const-label-style-label-lower-right), [label.style_label_upper_left](#ref-const-label-style-label-upper-left), [label.style_label_upper_right](#ref-const-label-style-label-upper-right), [label.style_label_center](#ref-const-label-style-label-center), [label.style_square](#ref-const-label-style-square), [label.style_diamond](#ref-const-label-style-diamond), [label.style_text_outline](#ref-const-label-style-text-outline).
 
 ---
+
+<a id="ref-fun-label-set-text"></a>
 
 ### label.set_text()
 
@@ -9535,6 +11610,8 @@ text (series string) New label text.
 
 ---
 
+<a id="ref-fun-label-set-text-font-family"></a>
+
 ### label.set_text_font_family()
 
 The function sets the font family of the text inside the label.
@@ -9547,7 +11624,7 @@ label.set_text_font_family(id, text_font_family) → void
 
 **Arguments**
 id (series label) A label object.
-text_font_family (series string) The font family of the text. Possible values: font.family_default , font.family_monospace .
+text_font_family (series string) The font family of the text. Possible values: [font.family_default](#ref-const-font-family-default), [font.family_monospace](#ref-const-font-family-monospace).
 
 **Example**
 
@@ -9561,6 +11638,8 @@ if barstate.islastconfirmedhistory
 
 ---
 
+<a id="ref-fun-label-set-text-formatting"></a>
+
 ### label.set_text_formatting()
 
 Sets the formatting attributes the drawing applies to displayed text.
@@ -9573,9 +11652,11 @@ label.set_text_formatting(id, text_formatting) → void
 
 **Arguments**
 id (series label) Label object.
-text_formatting (series text_format) The formatting of the displayed text. Formatting options support addition. For example, text.format_bold + text.format_italic will make the text both bold and italicized. Possible values: text.format_none , text.format_bold , text.format_italic . Optional. The default is text.format_none .
+text_formatting (series text_format) The formatting of the displayed text. Formatting options support addition. For example, `text.format_bold + text.format_italic` will make the text both bold and italicized. Possible values: [text.format_none](#ref-var-text-format-none), [text.format_bold](#ref-var-text-format-bold), [text.format_italic](#ref-var-text-format-italic). Optional. The default is [text.format_none](#ref-var-text-format-none).
 
 ---
+
+<a id="ref-fun-label-set-textalign"></a>
 
 ### label.set_textalign()
 
@@ -9589,9 +11670,11 @@ label.set_textalign(id, textalign) → void
 
 **Arguments**
 id (series label) Label object.
-textalign (series string) Label text alignment. Possible values: text.align_left , text.align_center , text.align_right .
+textalign (series string) Label text alignment. Possible values: [text.align_left](#ref-const-text-align-left), [text.align_center](#ref-const-text-align-center), [text.align_right](#ref-const-text-align-right).
 
 ---
+
+<a id="ref-fun-label-set-textcolor"></a>
 
 ### label.set_textcolor()
 
@@ -9609,6 +11692,8 @@ textcolor (series color) New text color.
 
 ---
 
+<a id="ref-fun-label-set-tooltip"></a>
+
 ### label.set_tooltip()
 
 Sets the tooltip text.
@@ -9625,6 +11710,8 @@ tooltip (series string) Tooltip text.
 
 ---
 
+<a id="ref-fun-label-set-x"></a>
+
 ### label.set_x()
 
 Sets bar index or bar time (depending on the xloc) of the label position.
@@ -9637,9 +11724,11 @@ label.set_x(id, x) → void
 
 **Arguments**
 id (series label) Label object.
-x (series int) New bar index or bar time of the label position. Note that objects positioned using xloc.bar_index cannot be drawn further than 500 bars into the future.
+x (series int) New bar index or bar time of the label position. Note that objects positioned using [xloc.bar_index](#ref-const-xloc-bar-index) cannot be drawn further than 500 bars into the future.
 
 ---
+
+<a id="ref-fun-label-set-xloc"></a>
 
 ### label.set_xloc()
 
@@ -9658,6 +11747,8 @@ xloc (series string) New x-location value.
 
 ---
 
+<a id="ref-fun-label-set-xy"></a>
+
 ### label.set_xy()
 
 Sets bar index/time and price of the label position.
@@ -9670,10 +11761,12 @@ label.set_xy(id, x, y) → void
 
 **Arguments**
 id (series label) Label object.
-x (series int) New bar index or bar time of the label position. Note that objects positioned using xloc.bar_index cannot be drawn further than 500 bars into the future.
+x (series int) New bar index or bar time of the label position. Note that objects positioned using [xloc.bar_index](#ref-const-xloc-bar-index) cannot be drawn further than 500 bars into the future.
 y (series int/float) New price of the label position.
 
 ---
+
+<a id="ref-fun-label-set-y"></a>
 
 ### label.set_y()
 
@@ -9691,6 +11784,8 @@ y (series int/float) New price of the label position.
 
 ---
 
+<a id="ref-fun-label-set-yloc"></a>
+
 ### label.set_yloc()
 
 Sets new y-location calculation algorithm.
@@ -9707,9 +11802,11 @@ yloc (series string) New y-location value.
 
 ---
 
+<a id="ref-fun-library"></a>
+
 ### library()
 
-Declaration statement identifying a script as a library .
+Declaration statement identifying a script as a [library](./docs_content.md#docs-concepts-libraries).
 
 **Syntax**
 
@@ -9718,9 +11815,9 @@ library(title, overlay, dynamic_requests) → void
 ```
 
 **Arguments**
-title (const string) The title of the library and its identifier. It cannot contain spaces, special characters or begin with a digit. It is used as the publication's default title, and to uniquely identify the library in the import statement, when another script uses it. It is also used as the script's name on the chart.
-overlay (const bool) If true , the script's visuals appear on the main chart pane if the user adds it to the chart directly, or in another script's pane if the user applies it to that script. If false , the script's visuals appear in a separate pane. Changes to the overlay value apply only after the user adds the script to the chart again. Additionally, if the user moves the script to another pane by selecting a "Move to" option in the script's "More" menu, it does not move back to its original pane after any updates to the source code. The default is false . Strategy-specific labels that display entries and exits will be displayed over the main chart regardless of this setting.
-dynamic_requests (const bool) Specifies whether the script can dynamically call functions from the request.*() namespace. Dynamic request.*() calls are allowed within the local scopes of conditional structures (e.g., if ), loops (e.g., for ), and exported functions. Additionally, such calls allow "series" arguments for many of their parameters. Optional. The default is true . See the User Manual's Dynamic requests section for more information.
+title (const string) The title of the library and its identifier. It cannot contain spaces, special characters or begin with a digit. It is used as the publication's default title, and to uniquely identify the library in the [import](#ref-kw-import) statement, when another script uses it. It is also used as the script's name on the chart.
+overlay (const bool) If [true](#ref-const-true), the script's visuals appear on the main chart pane if the user adds it to the chart directly, or in another script's pane if the user applies it to that script. If [false](#ref-const-false), the script's visuals appear in a separate pane. Changes to the `overlay` value apply only after the user adds the script to the chart again. Additionally, if the user moves the script to another pane by selecting a "Move to" option in the script's "More" menu, it does not move back to its original pane after any updates to the source code. The default is [false](#ref-const-false). Strategy-specific labels that display entries and exits will be displayed over the main chart regardless of this setting.
+dynamic_requests (const bool) Specifies whether the script can dynamically call functions from the `request.*()` namespace. Dynamic `request.*()` calls are allowed within the local scopes of conditional structures (e.g., [if](#ref-kw-if)), loops (e.g., [for](#ref-kw-for)), and exported functions. Additionally, such calls allow "series" arguments for many of their parameters. Optional. The default is [true](#ref-const-true). See the User Manual's [Dynamic requests](./docs_content.md#docs-concepts-other-timeframes-and-data) section for more information.
 
 **Example**
 
@@ -9736,6 +11833,8 @@ plot(sinh(0))
 
 ---
 
+<a id="ref-fun-line"></a>
+
 ### line()
 
 Casts na to line
@@ -9747,12 +11846,14 @@ line(x) → series line
 ```
 
 **Arguments**
-x (series line) The value to convert to the specified type, usually na .
+x (series line) The value to convert to the specified type, usually [na](#ref-var-na).
 
 **Returns**
 The value of the argument after casting to line.
 
 ---
+
+<a id="ref-fun-line-copy"></a>
 
 ### line.copy()
 
@@ -9788,6 +11889,8 @@ New line ID object which may be passed to line.setXXX and line.getXXX functions.
 
 ---
 
+<a id="ref-fun-line-delete"></a>
+
 ### line.delete()
 
 Deletes the specified line object. If it has already been deleted, does nothing.
@@ -9802,6 +11905,8 @@ line.delete(id) → void
 id (series line) Line object to delete.
 
 ---
+
+<a id="ref-fun-line-get-price"></a>
 
 ### line.get_price()
 
@@ -9837,6 +11942,8 @@ This function can only be called for lines created using 'xloc.bar_index'. If yo
 
 ---
 
+<a id="ref-fun-line-get-x1"></a>
+
 ### line.get_x1()
 
 Returns UNIX time or bar index (depending on the last xloc value set) of the first point of the line.
@@ -9865,6 +11972,8 @@ UNIX timestamp (in milliseconds) or bar index.
 
 ---
 
+<a id="ref-fun-line-get-x2"></a>
+
 ### line.get_x2()
 
 Returns UNIX time or bar index (depending on the last xloc value set) of the second point of the line.
@@ -9882,6 +11991,8 @@ id (series line) Line object.
 UNIX timestamp (in milliseconds) or bar index.
 
 ---
+
+<a id="ref-fun-line-get-y1"></a>
 
 ### line.get_y1()
 
@@ -9901,6 +12012,8 @@ Price value.
 
 ---
 
+<a id="ref-fun-line-get-y2"></a>
+
 ### line.get_y2()
 
 Returns price of the second point of the line.
@@ -9919,6 +12032,8 @@ Price value.
 
 ---
 
+<a id="ref-fun-line-new"></a>
+
 ### line.new()
 
 Creates new line object.
@@ -9934,14 +12049,14 @@ line.new(x1, y1, x2, y2, xloc, extend, color, style, width, force_overlay) → s
 ```
 
 **Arguments**
-first_point (chart.point) A chart.point object that specifies the line's starting coordinate.
-second_point (chart.point) A chart.point object that specifies the line's ending coordinate.
-xloc (series string) See description of x1 argument. Possible values: xloc.bar_index and xloc.bar_time . Default is xloc.bar_index .
-extend (series string) If extend= extend.none , draws segment starting at point (x1, y1) and ending at point (x2, y2). If extend is equal to extend.right or extend.left , draws a ray starting at point (x1, y1) or (x2, y2), respectively. If extend= extend.both , draws a straight line that goes through these points. Default value is extend.none .
+first_point (chart.point) A [chart.point](#ref-type-chart-point) object that specifies the line's starting coordinate.
+second_point (chart.point) A [chart.point](#ref-type-chart-point) object that specifies the line's ending coordinate.
+xloc (series string) See description of **x1** argument. Possible values: [xloc.bar_index](#ref-const-xloc-bar-index) and [xloc.bar_time](#ref-const-xloc-bar-time). Default is [xloc.bar_index](#ref-const-xloc-bar-index).
+extend (series string) If extend=[extend.none](#ref-const-extend-none), draws segment starting at point (x1, y1) and ending at point (x2, y2). If extend is equal to [extend.right](#ref-const-extend-right) or [extend.left](#ref-const-extend-left), draws a ray starting at point (x1, y1) or (x2, y2), respectively. If extend=[extend.both](#ref-const-extend-both), draws a straight line that goes through these points. Default value is [extend.none](#ref-const-extend-none).
 color (series color) Line color.
-style (series string) Line style. Possible values: line.style_solid , line.style_dotted , line.style_dashed , line.style_arrow_left , line.style_arrow_right , line.style_arrow_both .
+style (series string) Line style. Possible values: [line.style_solid](#ref-const-line-style-solid), [line.style_dotted](#ref-const-line-style-dotted), [line.style_dashed](#ref-const-line-style-dashed), [line.style_arrow_left](#ref-const-line-style-arrow-left), [line.style_arrow_right](#ref-const-line-style-arrow-right), [line.style_arrow_both](#ref-const-line-style-arrow-both).
 width (series int) Line width in pixels.
-force_overlay (const bool) If true , the drawing will display on the main chart pane, even when the script occupies a separate pane. Optional. The default is false .
+force_overlay (const bool) If [true](#ref-const-true), the drawing will display on the main chart pane, even when the script occupies a separate pane. Optional. The default is [false](#ref-const-false).
 
 **Example**
 
@@ -9961,6 +12076,8 @@ Line ID object which may be passed to line.setXXX and line.getXXX functions.
 
 ---
 
+<a id="ref-fun-line-set-color"></a>
+
 ### line.set_color()
 
 Sets the line color
@@ -9977,9 +12094,11 @@ color (series color) New line color
 
 ---
 
+<a id="ref-fun-line-set-extend"></a>
+
 ### line.set_extend()
 
-Sets extending type of this line object. If extend= extend.none , draws segment starting at point (x1, y1) and ending at point (x2, y2). If extend is equal to extend.right or extend.left , draws a ray starting at point (x1, y1) or (x2, y2), respectively. If extend= extend.both , draws a straight line that goes through these points.
+Sets extending type of this line object. If extend=[extend.none](#ref-const-extend-none), draws segment starting at point (x1, y1) and ending at point (x2, y2). If extend is equal to [extend.right](#ref-const-extend-right) or [extend.left](#ref-const-extend-left), draws a ray starting at point (x1, y1) or (x2, y2), respectively. If extend=[extend.both](#ref-const-extend-both), draws a straight line that goes through these points.
 
 **Syntax**
 
@@ -9993,9 +12112,11 @@ extend (series string) New extending type.
 
 ---
 
+<a id="ref-fun-line-set-first-point"></a>
+
 ### line.set_first_point()
 
-Sets the first point of the id line to point .
+Sets the first point of the `id` line to `point`.
 
 **Syntax**
 
@@ -10004,14 +12125,16 @@ line.set_first_point(id, point) → void
 ```
 
 **Arguments**
-id (series line) A line object.
-point (chart.point) A chart.point object.
+id (series line) A [line](#ref-type-line) object.
+point (chart.point) A [chart.point](#ref-type-chart-point) object.
 
 ---
 
+<a id="ref-fun-line-set-second-point"></a>
+
 ### line.set_second_point()
 
-Sets the second point of the id line to point .
+Sets the second point of the `id` line to `point`.
 
 **Syntax**
 
@@ -10020,10 +12143,12 @@ line.set_second_point(id, point) → void
 ```
 
 **Arguments**
-id (series line) A line object.
-point (chart.point) A chart.point object.
+id (series line) A [line](#ref-type-line) object.
+point (chart.point) A [chart.point](#ref-type-chart-point) object.
 
 ---
+
+<a id="ref-fun-line-set-style"></a>
 
 ### line.set_style()
 
@@ -10041,6 +12166,8 @@ style (series string) New line style.
 
 ---
 
+<a id="ref-fun-line-set-width"></a>
+
 ### line.set_width()
 
 Sets the line width.
@@ -10057,6 +12184,8 @@ width (series int) New line width in pixels.
 
 ---
 
+<a id="ref-fun-line-set-x1"></a>
+
 ### line.set_x1()
 
 Sets bar index or bar time (depending on the xloc) of the first point.
@@ -10069,9 +12198,11 @@ line.set_x1(id, x) → void
 
 **Arguments**
 id (series line) Line object.
-x (series int) Bar index or bar time. Note that objects positioned using xloc.bar_index cannot be drawn further than 500 bars into the future.
+x (series int) Bar index or bar time. Note that objects positioned using [xloc.bar_index](#ref-const-xloc-bar-index) cannot be drawn further than 500 bars into the future.
 
 ---
+
+<a id="ref-fun-line-set-x2"></a>
 
 ### line.set_x2()
 
@@ -10085,9 +12216,11 @@ line.set_x2(id, x) → void
 
 **Arguments**
 id (series line) Line object.
-x (series int) Bar index or bar time. Note that objects positioned using xloc.bar_index cannot be drawn further than 500 bars into the future.
+x (series int) Bar index or bar time. Note that objects positioned using [xloc.bar_index](#ref-const-xloc-bar-index) cannot be drawn further than 500 bars into the future.
 
 ---
+
+<a id="ref-fun-line-set-xloc"></a>
 
 ### line.set_xloc()
 
@@ -10107,6 +12240,8 @@ xloc (series string) New x-location value.
 
 ---
 
+<a id="ref-fun-line-set-xy1"></a>
+
 ### line.set_xy1()
 
 Sets bar index/time and price of the first point.
@@ -10119,10 +12254,12 @@ line.set_xy1(id, x, y) → void
 
 **Arguments**
 id (series line) Line object.
-x (series int) Bar index or bar time. Note that objects positioned using xloc.bar_index cannot be drawn further than 500 bars into the future.
+x (series int) Bar index or bar time. Note that objects positioned using [xloc.bar_index](#ref-const-xloc-bar-index) cannot be drawn further than 500 bars into the future.
 y (series int/float) Price.
 
 ---
+
+<a id="ref-fun-line-set-xy2"></a>
 
 ### line.set_xy2()
 
@@ -10141,6 +12278,8 @@ y (series int/float) Price.
 
 ---
 
+<a id="ref-fun-line-set-y1"></a>
+
 ### line.set_y1()
 
 Sets price of the first point
@@ -10156,6 +12295,8 @@ id (series line) Line object.
 y (series int/float) Price.
 
 ---
+
+<a id="ref-fun-line-set-y2"></a>
 
 ### line.set_y2()
 
@@ -10173,6 +12314,8 @@ y (series int/float) Price.
 
 ---
 
+<a id="ref-fun-linefill"></a>
+
 ### linefill()
 
 Casts na to linefill.
@@ -10184,12 +12327,14 @@ linefill(x) → series linefill
 ```
 
 **Arguments**
-x (series linefill) The value to convert to the specified type, usually na .
+x (series linefill) The value to convert to the specified type, usually [na](#ref-var-na).
 
 **Returns**
 The value of the argument after casting to linefill.
 
 ---
+
+<a id="ref-fun-linefill-delete"></a>
 
 ### linefill.delete()
 
@@ -10206,9 +12351,11 @@ id (series linefill) A linefill object.
 
 ---
 
+<a id="ref-fun-linefill-get-line1"></a>
+
 ### linefill.get_line1()
 
-Returns the ID of the first line used in the id linefill.
+Returns the ID of the first line used in the `id` linefill.
 
 **Syntax**
 
@@ -10221,9 +12368,11 @@ id (series linefill) A linefill object.
 
 ---
 
+<a id="ref-fun-linefill-get-line2"></a>
+
 ### linefill.get_line2()
 
-Returns the ID of the second line used in the id linefill.
+Returns the ID of the second line used in the `id` linefill.
 
 **Syntax**
 
@@ -10236,9 +12385,11 @@ id (series linefill) A linefill object.
 
 ---
 
+<a id="ref-fun-linefill-new"></a>
+
 ### linefill.new()
 
-Creates a new linefill object and displays it on the chart, filling the space between line1 and line2 with the color specified in color .
+Creates a new linefill object and displays it on the chart, filling the space between `line1` and `line2` with the color specified in `color`.
 
 **Syntax**
 
@@ -10255,10 +12406,12 @@ color (series color) The color used to fill the space between the lines.
 The ID of a linefill object that can be passed to other linefill.*() functions.
 
 **Remarks**
-If any line of the two is deleted, the linefill object is also deleted. If the lines are moved (e.g. via line.set_xy() functions), the linefill object is also moved.
-If both lines are extended in the same direction relative to the lines themselves (e.g. both have extend.right as the value of their extend= parameter), the space between line extensions will also be filled.
+If any line of the two is deleted, the linefill object is also deleted. If the lines are moved (e.g. via [line.set_xy()](#ref-fun-line-set-xy) functions), the linefill object is also moved.
+If both lines are extended in the same direction relative to the lines themselves (e.g. both have [extend.right](#ref-const-extend-right) as the value of their `extend=` parameter), the space between line extensions will also be filled.
 
 ---
+
+<a id="ref-fun-linefill-set-color"></a>
 
 ### linefill.set_color()
 
@@ -10275,6 +12428,8 @@ id (series linefill) A linefill object.
 color (series color) The color of the linefill object.
 
 ---
+
+<a id="ref-fun-log-error"></a>
 
 ### log.error()
 
@@ -10323,11 +12478,13 @@ The formatted string.
 
 **Remarks**
 Any curly braces within an unquoted pattern must be balanced. For example, "ab {0} de" and "ab '}' de" are valid patterns, but "ab {0'}' de", "ab } de" and "''{''" are not.
-The function can apply additional formatting to some values inside of the {} . The list of additional formatting options can be found in the EXAMPLE section of the str.format() article.
-The string used as the formatString argument can contain single quote characters ('). However, one must pair all single quotes in that string to avoid unexpected formatting results.
-The "Pine logs..." button is accessible from the "More" dropdown in the Pine Editor and from the "More" dropdown in the status line of any script that uses log.*() functions.
+The function can apply additional formatting to some values inside of the `{}`. The list of additional formatting options can be found in the EXAMPLE section of the [str.format()](#ref-fun-str-format) article.
+The string used as the `formatString` argument can contain single quote characters ('). However, one must pair all single quotes in that string to avoid unexpected formatting results.
+The "Pine logs..." button is accessible from the "More" dropdown in the Pine Editor and from the "More" dropdown in the status line of any script that uses `log.*()` functions.
 
 ---
+
+<a id="ref-fun-log-info"></a>
 
 ### log.info()
 
@@ -10376,11 +12533,13 @@ The formatted string.
 
 **Remarks**
 Any curly braces within an unquoted pattern must be balanced. For example, "ab {0} de" and "ab '}' de" are valid patterns, but "ab {0'}' de", "ab } de" and "''{''" are not.
-The function can apply additional formatting to some values inside of the {} . The list of additional formatting options can be found in the EXAMPLE section of the str.format() article.
-The string used as the formatString argument can contain single quote characters ('). However, one must pair all single quotes in that string to avoid unexpected formatting results.
-The "Pine logs..." button is accessible from the "More" dropdown in the Pine Editor and from the "More" dropdown in the status line of any script that uses log.*() functions.
+The function can apply additional formatting to some values inside of the `{}`. The list of additional formatting options can be found in the EXAMPLE section of the [str.format()](#ref-fun-str-format) article.
+The string used as the `formatString` argument can contain single quote characters ('). However, one must pair all single quotes in that string to avoid unexpected formatting results.
+The "Pine logs..." button is accessible from the "More" dropdown in the Pine Editor and from the "More" dropdown in the status line of any script that uses `log.*()` functions.
 
 ---
+
+<a id="ref-fun-log-warning"></a>
 
 ### log.warning()
 
@@ -10429,11 +12588,13 @@ The formatted string.
 
 **Remarks**
 Any curly braces within an unquoted pattern must be balanced. For example, "ab {0} de" and "ab '}' de" are valid patterns, but "ab {0'}' de", "ab } de" and "''{''" are not.
-The function can apply additional formatting to some values inside of the {} . The list of additional formatting options can be found in the EXAMPLE section of the str.format() article.
-The string used as the formatString argument can contain single quote characters ('). However, one must pair all single quotes in that string to avoid unexpected formatting results.
-The "Pine logs..." button is accessible from the "More" dropdown in the Pine Editor and from the "More" dropdown in the status line of any script that uses log.*() functions.
+The function can apply additional formatting to some values inside of the `{}`. The list of additional formatting options can be found in the EXAMPLE section of the [str.format()](#ref-fun-str-format) article.
+The string used as the `formatString` argument can contain single quote characters ('). However, one must pair all single quotes in that string to avoid unexpected formatting results.
+The "Pine logs..." button is accessible from the "More" dropdown in the Pine Editor and from the "More" dropdown in the status line of any script that uses `log.*()` functions.
 
 ---
+
+<a id="ref-fun-map-clear"></a>
 
 ### map.clear()
 
@@ -10463,9 +12624,11 @@ plot(oddMap.size())
 
 ---
 
+<a id="ref-fun-map-contains"></a>
+
 ### map.contains()
 
-Returns true if the key was found in the id map, false otherwise.
+Returns [true](#ref-const-true) if the `key` was found in the `id` map, [false](#ref-const-false) otherwise.
 
 **Syntax**
 
@@ -10491,6 +12654,8 @@ plot(p)
 ```
 
 ---
+
+<a id="ref-fun-map-copy"></a>
 
 ### map.copy()
 
@@ -10520,13 +12685,15 @@ plot(b.get("example"))
 ```
 
 **Returns**
-A copy of the id map.
+A copy of the `id` map.
 
 ---
 
+<a id="ref-fun-map-get"></a>
+
 ### map.get()
 
-Returns the value associated with the specified key in the id map.
+Returns the value associated with the specified `key` in the `id` map.
 
 **Syntax**
 
@@ -10552,9 +12719,11 @@ plot(map.get(a, 1))
 
 ---
 
+<a id="ref-fun-map-keys"></a>
+
 ### map.keys()
 
-Returns an array of all the keys in the id map. The resulting array is a copy and any changes to it are not reflected in the original map.
+Returns an array of all the keys in the `id` map. The resulting array is a copy and any changes to it are not reflected in the original map.
 
 **Syntax**
 
@@ -10587,11 +12756,13 @@ Maps maintain insertion order. The elements within the array returned by this fu
 
 ---
 
+<a id="ref-fun-map-new-3c-type-2c-type-3e"></a>
+
 ### map.new<type,type>()
 
-Creates a new map object: a collection that consists of key-value pairs, where all keys are of the keyType , and all values are of the valueType .
-keyType can be a primitive type or enum. For example: int , float , bool , string , color .
-valueType can be of any type except array<> , matrix<> , and map<> . User-defined types are allowed, even if they have array<> , matrix<> , or map<> as one of their fields.
+Creates a new map object: a collection that consists of key-value pairs, where all keys are of the `keyType`, and all values are of the `valueType`.
+`keyType` can be a primitive type or enum. For example: [int](#ref-type-int), [float](#ref-type-float), [bool](#ref-type-bool), [string](#ref-type-string), [color](#ref-type-color).
+`valueType` can be of any type except `array<>`, `matrix<>`, and `map<>`. User-defined types are allowed, even if they have `array<>`, `matrix<>`, or `map<>` as one of their fields.
 
 **Syntax**
 
@@ -10614,13 +12785,15 @@ The ID of a map object which may be used in other map.*() functions.
 
 **Remarks**
 Each key is unique and can only appear once. When adding a new value with a key that the map already contains, that value replaces the old value associated with the key.
-Maps maintain insertion order. Note that the order does not change when inserting a pair with a key that's already in the map. The new pair replaces the existing pair with the key in such cases.
+Maps maintain insertion order. Note that the order does not change when inserting a pair with a `key` that's already in the map. The new pair replaces the existing pair with the `key` in such cases.
 
 ---
 
+<a id="ref-fun-map-put"></a>
+
 ### map.put()
 
-Puts a new key-value pair into the id map.
+Puts a new key-value pair into the `id` map.
 
 **Syntax**
 
@@ -10648,16 +12821,18 @@ plot(currFirst)
 ```
 
 **Returns**
-The previous value associated with key if the key was already present in the map, or na if the key is new.
+The previous value associated with `key` if the key was already present in the map, or [na](#ref-var-na) if the key is new.
 
 **Remarks**
-Maps maintain insertion order. Note that the order does not change when inserting a pair with a key that's already in the map. The new pair replaces the existing pair with the key in such cases.
+Maps maintain insertion order. Note that the order does not change when inserting a pair with a `key` that's already in the map. The new pair replaces the existing pair with the `key` in such cases.
 
 ---
 
+<a id="ref-fun-map-put-all"></a>
+
 ### map.put_all()
 
-Puts all key-value pairs from the id2 map into the id map.
+Puts all key-value pairs from the `id2` map into the `id` map.
 
 **Syntax**
 
@@ -10685,9 +12860,11 @@ plot(a.get("third"))
 
 ---
 
+<a id="ref-fun-map-remove"></a>
+
 ### map.remove()
 
-Removes a key-value pair from the id map.
+Removes a key-value pair from the `id` map.
 
 **Syntax**
 
@@ -10711,13 +12888,15 @@ plot(close, color = oldColorValue)
 ```
 
 **Returns**
-The previous value associated with key if the key was present in the map, or na if there was no such key.
+The previous value associated with `key` if the key was present in the map, or [na](#ref-var-na) if there was no such key.
 
 ---
 
+<a id="ref-fun-map-size"></a>
+
 ### map.size()
 
-Returns the number of key-value pairs in the id map.
+Returns the number of key-value pairs in the `id` map.
 
 **Syntax**
 
@@ -10742,9 +12921,11 @@ plot(map.size(a))
 
 ---
 
+<a id="ref-fun-map-values"></a>
+
 ### map.values()
 
-Returns an array of all the values in the id map. The resulting array is a copy and any changes to it are not reflected in the original map.
+Returns an array of all the values in the `id` map. The resulting array is a copy and any changes to it are not reflected in the original map.
 
 **Syntax**
 
@@ -10777,9 +12958,11 @@ Maps maintain insertion order. The elements within the array returned by this fu
 
 ---
 
+<a id="ref-fun-math-abs"></a>
+
 ### math.abs()
 
-Absolute value of number is number if number >= 0, or - number otherwise.
+Absolute value of `number` is `number` if `number` >= 0, or -`number` otherwise.
 
 **Syntax & Overloads**
 
@@ -10819,9 +13002,11 @@ math.abs(number) → series float
 number (const int) The number to use in the calculation.
 
 **Returns**
-The absolute value of number .
+The absolute value of `number`.
 
 ---
+
+<a id="ref-fun-math-acos"></a>
 
 ### math.acos()
 
@@ -10849,9 +13034,11 @@ math.acos(angle) → series float
 angle (const int/float) The value, in radians, to use in the calculation.
 
 **Returns**
-The arc cosine of a value; the returned angle is in the range [0, Pi], or na if y is outside of range [-1, 1].
+The arc cosine of a value; the returned angle is in the range [0, Pi], or [na](#ref-var-na) if y is outside of range [-1, 1].
 
 ---
+
+<a id="ref-fun-math-asin"></a>
 
 ### math.asin()
 
@@ -10879,9 +13066,11 @@ math.asin(angle) → series float
 angle (const int/float) The value, in radians, to use in the calculation.
 
 **Returns**
-The arcsine of a value; the returned angle is in the range [-Pi/2, Pi/2], or na if y is outside of range [-1, 1].
+The arcsine of a value; the returned angle is in the range [-Pi/2, Pi/2], or [na](#ref-var-na) if y is outside of range [-1, 1].
 
 ---
+
+<a id="ref-fun-math-atan"></a>
 
 ### math.atan()
 
@@ -10913,6 +13102,8 @@ The arc tangent of a value; the returned angle is in the range [-Pi/2, Pi/2].
 
 ---
 
+<a id="ref-fun-math-avg"></a>
+
 ### math.avg()
 
 Calculates average of all given series (elementwise).
@@ -10935,9 +13126,11 @@ Average.
 
 ---
 
+<a id="ref-fun-math-ceil"></a>
+
 ### math.ceil()
 
-Rounds the specified number up to the smallest whole number ("int" value) that is greater than or equal to it.
+Rounds the specified `number` up to the smallest whole number ("int" value) that is greater than or equal to it.
 
 **Syntax & Overloads**
 
@@ -10961,9 +13154,11 @@ math.ceil(number) → series int
 number (const int/float) The number to round.
 
 **Returns**
-The smallest "int" value that is greater than or equal to the number .
+The smallest "int" value that is greater than or equal to the `number`.
 
 ---
+
+<a id="ref-fun-math-cos"></a>
 
 ### math.cos()
 
@@ -10995,9 +13190,11 @@ The trigonometric cosine of an angle.
 
 ---
 
+<a id="ref-fun-math-exp"></a>
+
 ### math.exp()
 
-The exp function of number is e raised to the power of number , where e is Euler's number.
+The exp function of `number` is e raised to the power of `number`, where e is Euler's number.
 
 **Syntax & Overloads**
 
@@ -11021,13 +13218,15 @@ math.exp(number) → series float
 number (const int/float) The number to use in the calculation.
 
 **Returns**
-A value representing e raised to the power of number .
+A value representing e raised to the power of `number`.
 
 ---
 
+<a id="ref-fun-math-floor"></a>
+
 ### math.floor()
 
-Rounds the specified number down to the largest whole number ("int" value) that is less than or equal to it.
+Rounds the specified `number` down to the largest whole number ("int" value) that is less than or equal to it.
 
 **Syntax & Overloads**
 
@@ -11051,13 +13250,15 @@ math.floor(number) → series int
 number (const int/float) The number to round.
 
 **Returns**
-The largest "int" value that is less than or equal to the number .
+The largest "int" value that is less than or equal to the `number`.
 
 ---
 
+<a id="ref-fun-math-log"></a>
+
 ### math.log()
 
-Natural logarithm of any number > 0 is the unique y such that e^y = number .
+Natural logarithm of any `number` > 0 is the unique y such that e^y = `number`.
 
 **Syntax & Overloads**
 
@@ -11081,13 +13282,15 @@ math.log(number) → series float
 number (const int/float) The number to use in the calculation.
 
 **Returns**
-The natural logarithm of number .
+The natural logarithm of `number`.
 
 ---
 
+<a id="ref-fun-math-log10"></a>
+
 ### math.log10()
 
-The common (or base 10) logarithm of number is the power to which 10 must be raised to obtain the number . 10^y = number .
+The common (or base 10) logarithm of `number` is the power to which 10 must be raised to obtain the `number`. 10^y = `number`.
 
 **Syntax & Overloads**
 
@@ -11111,9 +13314,11 @@ math.log10(number) → series float
 number (const int/float) The number to use in the calculation.
 
 **Returns**
-The base 10 logarithm of number .
+The base 10 logarithm of `number`.
 
 ---
+
+<a id="ref-fun-math-max"></a>
 
 ### math.max()
 
@@ -11170,6 +13375,8 @@ The greatest of multiple given values.
 
 ---
 
+<a id="ref-fun-math-min"></a>
+
 ### math.min()
 
 Returns the smallest of multiple values.
@@ -11225,6 +13432,8 @@ The smallest of multiple given values.
 
 ---
 
+<a id="ref-fun-math-pow"></a>
+
 ### math.pow()
 
 Mathematical power function.
@@ -11260,9 +13469,11 @@ plot(math.pow(close, 2))
 ```
 
 **Returns**
-base raised to the power of exponent . If base is a series, it is calculated elementwise.
+`base` raised to the power of `exponent`. If `base` is a series, it is calculated elementwise.
 
 ---
+
+<a id="ref-fun-math-random"></a>
 
 ### math.random()
 
@@ -11284,9 +13495,11 @@ A random value.
 
 ---
 
+<a id="ref-fun-math-round"></a>
+
 ### math.round()
 
-Returns the value of number rounded to the nearest integer, with ties rounding up. If the precision parameter is used, returns a float value rounded to that amount of decimal places.
+Returns the value of `number` rounded to the nearest integer, with ties rounding up. If the `precision` parameter is used, returns a float value rounded to that amount of decimal places.
 
 **Syntax & Overloads**
 
@@ -11326,16 +13539,18 @@ math.round(number, precision) → series float
 number (const int/float) The value to be rounded.
 
 **Returns**
-The value of number rounded to the nearest integer, or according to precision.
+The value of `number` rounded to the nearest integer, or according to precision.
 
 **Remarks**
 Note that for 'na' values function returns 'na'.
 
 ---
 
+<a id="ref-fun-math-round-to-mintick"></a>
+
 ### math.round_to_mintick()
 
-Returns the value rounded to the symbol's mintick, i.e. the nearest value that can be divided by syminfo.mintick , without the remainder, with ties rounding up.
+Returns the value rounded to the symbol's mintick, i.e. the nearest value that can be divided by [syminfo.mintick](#ref-var-syminfo-mintick), without the remainder, with ties rounding up.
 
 **Syntax & Overloads**
 
@@ -11351,16 +13566,18 @@ math.round_to_mintick(number) → series float
 number (simple int/float) The value to be rounded.
 
 **Returns**
-The number rounded to tick precision.
+The `number` rounded to tick precision.
 
 **Remarks**
 Note that for 'na' values function returns 'na'.
 
 ---
 
+<a id="ref-fun-math-sign"></a>
+
 ### math.sign()
 
-Sign (signum) of number is zero if number is zero, 1.0 if number is greater than zero, -1.0 if number is less than zero.
+Sign (signum) of `number` is zero if `number` is zero, 1.0 if `number` is greater than zero, -1.0 if `number` is less than zero.
 
 **Syntax & Overloads**
 
@@ -11387,6 +13604,8 @@ number (const int/float) The number to use in the calculation.
 The sign of the argument.
 
 ---
+
+<a id="ref-fun-math-sin"></a>
 
 ### math.sin()
 
@@ -11418,9 +13637,11 @@ The trigonometric sine of an angle.
 
 ---
 
+<a id="ref-fun-math-sqrt"></a>
+
 ### math.sqrt()
 
-Square root of any number >= 0 is the unique y >= 0 such that y^2 = number .
+Square root of any `number` >= 0 is the unique y >= 0 such that y^2 = `number`.
 
 **Syntax & Overloads**
 
@@ -11444,9 +13665,11 @@ math.sqrt(number) → series float
 number (const int/float) The number to use in the calculation.
 
 **Returns**
-The square root of number .
+The square root of `number`.
 
 ---
+
+<a id="ref-fun-math-sum"></a>
 
 ### math.sum()
 
@@ -11463,12 +13686,14 @@ source (series int/float) Series of values to process.
 length (series int) Number of bars (length).
 
 **Returns**
-Sum of source for length bars back.
+Sum of `source` for `length` bars back.
 
 **Remarks**
-na values in the source series are ignored; the function calculates on the length quantity of non- na values.
+`na` values in the `source` series are ignored; the function calculates on the `length` quantity of non-`na` values.
 
 ---
+
+<a id="ref-fun-math-tan"></a>
 
 ### math.tan()
 
@@ -11500,6 +13725,8 @@ The trigonometric tangent of an angle.
 
 ---
 
+<a id="ref-fun-math-todegrees"></a>
+
 ### math.todegrees()
 
 Returns an approximately equivalent angle in degrees from an angle measured in radians.
@@ -11517,6 +13744,8 @@ radians (series int/float) Angle in radians.
 The angle value in degrees.
 
 ---
+
+<a id="ref-fun-math-toradians"></a>
 
 ### math.toradians()
 
@@ -11536,9 +13765,11 @@ The angle value in radians.
 
 ---
 
+<a id="ref-fun-matrix-add-col"></a>
+
 ### matrix.add_col()
 
-Inserts a new column at the column index of the id matrix.
+Inserts a new column at the `column` index of the `id` matrix.
 
 **Syntax**
 
@@ -11548,8 +13779,8 @@ matrix.add_col(id, column, array_id) → void
 
 **Arguments**
 id (any matrix type) The matrix object's ID (reference).
-column (series int) Optional. The index of the new column. Must be a value from 0 to matrix.columns(id) . All existing columns with indices that are greater than or equal to this value increase their index by one. The default is matrix.columns(id) .
-array_id (any array type) Optional. The ID of an array to use as the new column. If the matrix is empty, the array can be of any size. Otherwise, its size must equal matrix.rows(id) . By default, the function inserts a column of na values.
+column (series int) Optional. The index of the new column. Must be a value from 0 to `matrix.columns(id)`. All existing columns with indices that are greater than or equal to this value increase their index by one. The default is `matrix.columns(id)`.
+array_id (any array type) Optional. The ID of an array to use as the new column. If the matrix is empty, the array can be of any size. Otherwise, its size must equal `matrix.rows(id)`. By default, the function inserts a column of [na](#ref-var-na) values.
 Adding a column to the matrix
 
 **Example**
@@ -11596,13 +13827,15 @@ if barstate.islastconfirmedhistory
 ```
 
 **Remarks**
-Rather than add columns to an empty matrix, it is far more efficient to declare a matrix with explicit dimensions and fill it with values. Adding a column is also much slower than adding a row with the matrix.add_row() function.
+Rather than add columns to an empty matrix, it is far more efficient to declare a matrix with explicit dimensions and fill it with values. Adding a column is also much slower than adding a row with the [matrix.add_row()](#ref-fun-matrix-add-row) function.
 
 ---
 
+<a id="ref-fun-matrix-add-row"></a>
+
 ### matrix.add_row()
 
-Inserts a new row at the row index of the id matrix.
+Inserts a new row at the `row` index of the `id` matrix.
 
 **Syntax**
 
@@ -11612,8 +13845,8 @@ matrix.add_row(id, row, array_id) → void
 
 **Arguments**
 id (any matrix type) The matrix object's ID (reference).
-row (series int) Optional. The index of the new row. Must be a value from 0 to matrix.rows(id) . All existing rows with indices that are greater than or equal to this value increase their index by one. The default is matrix.rows(id) .
-array_id (any array type) Optional. The ID of an array to use as the new row. If the matrix is empty, the array can be of any size. Otherwise, its size must equal matrix.columns(id) . By default, the function inserts a row of na values.
+row (series int) Optional. The index of the new row. Must be a value from 0 to `matrix.rows(id)`. All existing rows with indices that are greater than or equal to this value increase their index by one. The default is `matrix.rows(id)`.
+array_id (any array type) Optional. The ID of an array to use as the new row. If the matrix is empty, the array can be of any size. Otherwise, its size must equal `matrix.columns(id)`. By default, the function inserts a row of [na](#ref-var-na) values.
 Adding a row to the matrix
 
 **Example**
@@ -11664,6 +13897,8 @@ Indexing of rows and columns starts at zero. Rather than add rows to an empty ma
 
 ---
 
+<a id="ref-fun-matrix-avg"></a>
+
 ### matrix.avg()
 
 The function calculates the average of all elements in the matrix.
@@ -11702,9 +13937,11 @@ plot(x, 'Matrix average value')
 ```
 
 **Returns**
-The average value from the id matrix.
+The average value from the `id` matrix.
 
 ---
+
+<a id="ref-fun-matrix-col"></a>
 
 ### matrix.col()
 
@@ -11737,12 +13974,14 @@ plot(array.get(a, 0))
 ```
 
 **Returns**
-An array ID containing the column values of the id matrix.
+An array ID containing the `column` values of the `id` matrix.
 
 **Remarks**
 Indexing of rows starts at 0.
 
 ---
+
+<a id="ref-fun-matrix-columns"></a>
 
 ### matrix.columns()
 
@@ -11775,13 +14014,15 @@ if barstate.islastconfirmedhistory
 ```
 
 **Returns**
-The number of columns in the matrix id .
+The number of columns in the matrix `id`.
 
 ---
 
+<a id="ref-fun-matrix-concat"></a>
+
 ### matrix.concat()
 
-The function appends the m2 matrix to the m1 matrix.
+The function appends the `m2` matrix to the `m1` matrix.
 
 **Syntax**
 
@@ -11791,7 +14032,7 @@ matrix.concat(id1, id2) → matrix<type>
 
 **Arguments**
 id1 (any matrix type) Matrix object to concatenate into.
-id2 (any matrix type) Matrix object whose elements will be appended to id1 .
+id2 (any matrix type) Matrix object whose elements will be appended to `id1`.
 
 **Example**
 
@@ -11815,12 +14056,14 @@ if barstate.islastconfirmedhistory
 ```
 
 **Returns**
-Returns the id1 matrix concatenated with the id2 matrix.
+Returns the `id1` matrix concatenated with the `id2` matrix.
 
 **Remarks**
 The number of columns in both matrices must be identical.
 
 ---
+
+<a id="ref-fun-matrix-copy"></a>
 
 ### matrix.copy()
 
@@ -11862,13 +14105,15 @@ if barstate.islastconfirmedhistory
 ```
 
 **Returns**
-A new matrix object of the copied id matrix.
+A new matrix object of the copied `id` matrix.
 
 ---
 
+<a id="ref-fun-matrix-det"></a>
+
 ### matrix.det()
 
-The function returns the determinant of a square matrix.
+The function returns the [determinant](https://en.wikipedia.org/wiki/Determinant) of a square matrix.
 
 **Syntax & Overloads**
 
@@ -11904,16 +14149,18 @@ plot(x, 'Matrix determinant')
 ```
 
 **Returns**
-The determinant value of the id matrix.
+The determinant value of the `id` matrix.
 
 **Remarks**
-Function calculation based on the LU decomposition algorithm.
+Function calculation based on the [LU decomposition](https://en.wikipedia.org/wiki/LU_decomposition) algorithm.
 
 ---
 
+<a id="ref-fun-matrix-diff"></a>
+
 ### matrix.diff()
 
-The function returns a new matrix resulting from the subtraction between matrices id1 and id2 , or of matrix id1 and an id2 scalar (a numerical value).
+The function returns a new matrix resulting from the subtraction between matrices `id1` and `id2`, or of matrix `id1` and an `id2` scalar (a numerical value).
 
 **Syntax & Overloads**
 
@@ -11974,13 +14221,15 @@ if barstate.islastconfirmedhistory
 ```
 
 **Returns**
-A new matrix object containing the difference between id2 and id1 .
+A new matrix object containing the difference between `id2` and `id1`.
 
 ---
 
+<a id="ref-fun-matrix-eigenvalues"></a>
+
 ### matrix.eigenvalues()
 
-The function returns an array containing the eigenvalues of a square matrix.
+The function returns an array containing the [eigenvalues](https://en.wikipedia.org/wiki/Eigenvalues_and_eigenvectors) of a square matrix.
 
 **Syntax & Overloads**
 
@@ -12023,16 +14272,18 @@ if barstate.islastconfirmedhistory
 ```
 
 **Returns**
-An array containing the eigenvalues of the id matrix.
+An array containing the eigenvalues of the `id` matrix.
 
 **Remarks**
 The function is calculated using "The Implicit QL Algorithm".
 
 ---
 
+<a id="ref-fun-matrix-eigenvectors"></a>
+
 ### matrix.eigenvectors()
 
-Returns a matrix of eigenvectors , in which each column is an eigenvector of the id matrix.
+Returns a matrix of [eigenvectors](https://en.wikipedia.org/wiki/Eigenvalues_and_eigenvectors), in which each column is an eigenvector of the `id` matrix.
 
 **Syntax & Overloads**
 
@@ -12075,12 +14326,14 @@ if barstate.islastconfirmedhistory
 ```
 
 **Returns**
-A new matrix containing the eigenvectors of the id matrix.
+A new matrix containing the eigenvectors of the `id` matrix.
 
 **Remarks**
 The function is calculated using "The Implicit QL Algorithm".
 
 ---
+
+<a id="ref-fun-matrix-elements-count"></a>
 
 ### matrix.elements_count()
 
@@ -12097,9 +14350,11 @@ id (any matrix type) A matrix object.
 
 ---
 
+<a id="ref-fun-matrix-fill"></a>
+
 ### matrix.fill()
 
-The function fills a rectangular area of the id matrix defined by the indices from_column to to_column (not including it) and from_row to to_row (not including it) with the value .
+The function fills a rectangular area of the `id` matrix defined by the indices `from_column` to `to_column` (not including it) and `from_row` to `to_row`(not including it) with the `value`.
 
 **Syntax**
 
@@ -12111,9 +14366,9 @@ matrix.fill(id, value, from_row, to_row, from_column, to_column) → void
 id (any matrix type) A matrix object.
 value (series <type of the matrix's elements>) The value to fill with.
 from_row (series int) Row index from which the fill will begin (inclusive). Optional. The default value is 0.
-to_row (series int) Row index where the fill will end (not inclusive). Optional. The default value is matrix.rows() .
+to_row (series int) Row index where the fill will end (not inclusive). Optional. The default value is [matrix.rows()](#ref-fun-matrix-rows).
 from_column (series int) Column index from which the fill will begin (inclusive). Optional. The default value is 0.
-to_column (series int) Column index where the fill will end (non inclusive). Optional. The default value is matrix.columns() .
+to_column (series int) Column index where the fill will end (non inclusive). Optional. The default value is [matrix.columns()](#ref-fun-matrix-columns).
 
 **Example**
 
@@ -12133,6 +14388,8 @@ if barstate.islastconfirmedhistory
 ```
 
 ---
+
+<a id="ref-fun-matrix-get"></a>
 
 ### matrix.get()
 
@@ -12165,16 +14422,18 @@ plot(x)
 ```
 
 **Returns**
-The value of the element at the row and column index of the id matrix.
+The value of the element at the `row` and `column` index of the `id` matrix.
 
 **Remarks**
 Indexing of the rows and columns starts at zero.
 
 ---
 
+<a id="ref-fun-matrix-inv"></a>
+
 ### matrix.inv()
 
-The function returns the inverse of a square matrix.
+The function returns the [inverse](https://en.wikipedia.org/wiki/Invertible_matrix) of a square matrix.
 
 **Syntax & Overloads**
 
@@ -12217,16 +14476,18 @@ if barstate.islastconfirmedhistory
 ```
 
 **Returns**
-A new matrix, which is the inverse of the id matrix.
+A new matrix, which is the inverse of the `id` matrix.
 
 **Remarks**
-The function is calculated using the LU decomposition algorithm.
+The function is calculated using the [LU decomposition](https://en.wikipedia.org/wiki/LU_decomposition) algorithm.
 
 ---
 
+<a id="ref-fun-matrix-is-antidiagonal"></a>
+
 ### matrix.is_antidiagonal()
 
-The function determines if the matrix is anti-diagonal (all elements outside the secondary diagonal are zero).
+The function determines if the matrix is [anti-diagonal](https://en.wikipedia.org/wiki/Anti-diagonal_matrix) (all elements outside the secondary diagonal are zero).
 
 **Syntax**
 
@@ -12238,16 +14499,18 @@ matrix.is_antidiagonal(id) → series bool
 id (matrix<int/float>) Matrix object to test.
 
 **Returns**
-Returns true if the id matrix is ​​anti-diagonal, false otherwise.
+Returns true if the `id` matrix is ​​anti-diagonal, false otherwise.
 
 **Remarks**
 Returns false with non-square matrices.
 
 ---
 
+<a id="ref-fun-matrix-is-antisymmetric"></a>
+
 ### matrix.is_antisymmetric()
 
-The function determines if a matrix is antisymmetric (its transpose equals its negative).
+The function determines if a matrix is [antisymmetric](https://en.wikipedia.org/wiki/Skew-symmetric_matrix) (its [transpose](https://en.wikipedia.org/wiki/Transpose) equals its negative).
 
 **Syntax**
 
@@ -12259,16 +14522,18 @@ matrix.is_antisymmetric(id) → series bool
 id (matrix<int/float>) Matrix object to test.
 
 **Returns**
-Returns true, if the id matrix is antisymmetric, false otherwise.
+Returns true, if the `id` matrix is antisymmetric, false otherwise.
 
 **Remarks**
 Returns false with non-square matrices.
 
 ---
 
+<a id="ref-fun-matrix-is-binary"></a>
+
 ### matrix.is_binary()
 
-The function determines if the matrix is binary (when all elements of the matrix are 0 or 1).
+The function determines if the matrix is [binary](https://en.wikipedia.org/wiki/Logical_matrix) (when all elements of the matrix are 0 or 1).
 
 **Syntax**
 
@@ -12280,13 +14545,15 @@ matrix.is_binary(id) → series bool
 id (matrix<int/float>) Matrix object to test.
 
 **Returns**
-Returns true if the id matrix is binary, false otherwise.
+Returns true if the `id` matrix is binary, false otherwise.
 
 ---
 
+<a id="ref-fun-matrix-is-diagonal"></a>
+
 ### matrix.is_diagonal()
 
-The function determines if the matrix is diagonal (all elements outside the main diagonal are zero).
+The function determines if the matrix is [diagonal](https://en.wikipedia.org/wiki/Diagonal_matrix) (all elements outside the main diagonal are zero).
 
 **Syntax**
 
@@ -12298,16 +14565,18 @@ matrix.is_diagonal(id) → series bool
 id (matrix<int/float>) Matrix object to test.
 
 **Returns**
-Returns true if the id matrix is diagonal, false otherwise.
+Returns true if the `id` matrix is diagonal, false otherwise.
 
 **Remarks**
 Returns false with non-square matrices.
 
 ---
 
+<a id="ref-fun-matrix-is-identity"></a>
+
 ### matrix.is_identity()
 
-The function determines if a matrix is an identity matrix (elements with ones on the main diagonal and zeros elsewhere).
+The function determines if a matrix is an [identity matrix](https://en.wikipedia.org/wiki/Identity_matrix) (elements with ones on the [main diagonal](https://en.wikipedia.org/wiki/Main_diagonal) and zeros elsewhere).
 
 **Syntax**
 
@@ -12319,16 +14588,18 @@ matrix.is_identity(id) → series bool
 id (matrix<int/float>) Matrix object to test.
 
 **Returns**
-Returns true if id is an identity matrix, false otherwise.
+Returns true if `id` is an identity matrix, false otherwise.
 
 **Remarks**
 Returns false with non-square matrices.
 
 ---
 
+<a id="ref-fun-matrix-is-square"></a>
+
 ### matrix.is_square()
 
-The function determines if the matrix is square (it has the same number of rows and columns).
+The function determines if the matrix is [square](https://en.wikipedia.org/wiki/Square_matrix) (it has the same number of rows and columns).
 
 **Syntax**
 
@@ -12340,13 +14611,15 @@ matrix.is_square(id) → series bool
 id (any matrix type) Matrix object to test.
 
 **Returns**
-Returns true if the id matrix is square, false otherwise.
+Returns true if the `id` matrix is square, false otherwise.
 
 ---
 
+<a id="ref-fun-matrix-is-stochastic"></a>
+
 ### matrix.is_stochastic()
 
-The function determines if the matrix is stochastic .
+The function determines if the matrix is [stochastic](https://en.wikipedia.org/wiki/Stochastic_matrix).
 
 **Syntax**
 
@@ -12358,13 +14631,15 @@ matrix.is_stochastic(id) → series bool
 id (matrix<int/float>) Matrix object to test.
 
 **Returns**
-Returns true if the id matrix is stochastic, false otherwise.
+Returns true if the `id` matrix is stochastic, false otherwise.
 
 ---
 
+<a id="ref-fun-matrix-is-symmetric"></a>
+
 ### matrix.is_symmetric()
 
-The function determines if a square matrix is symmetric (elements are symmetric with respect to the main diagonal ).
+The function determines if a [square matrix](https://en.wikipedia.org/wiki/Square_matrix) is [symmetric](https://en.wikipedia.org/wiki/Symmetric_matrix) (elements are symmetric with respect to the [main diagonal](https://en.wikipedia.org/wiki/Main_diagonal)).
 
 **Syntax**
 
@@ -12376,16 +14651,18 @@ matrix.is_symmetric(id) → series bool
 id (matrix<int/float>) Matrix object to test.
 
 **Returns**
-Returns true if the id matrix is symmetric, false otherwise.
+Returns true if the `id` matrix is symmetric, false otherwise.
 
 **Remarks**
 Returns false with non-square matrices.
 
 ---
 
+<a id="ref-fun-matrix-is-triangular"></a>
+
 ### matrix.is_triangular()
 
-The function determines if the matrix is triangular (if all elements above or below the main diagonal are zero).
+The function determines if the matrix is [triangular](https://en.wikipedia.org/wiki/Triangular_matrix) (if all elements above or below the [main diagonal](https://en.wikipedia.org/wiki/Main_diagonal) are zero).
 
 **Syntax**
 
@@ -12397,12 +14674,14 @@ matrix.is_triangular(id) → series bool
 id (matrix<int/float>) Matrix object to test.
 
 **Returns**
-Returns true if the id matrix is triangular, false otherwise.
+Returns true if the `id` matrix is triangular, false otherwise.
 
 **Remarks**
 Returns false with non-square matrices.
 
 ---
+
+<a id="ref-fun-matrix-is-zero"></a>
 
 ### matrix.is_zero()
 
@@ -12418,13 +14697,15 @@ matrix.is_zero(id) → series bool
 id (matrix<int/float>) Matrix object to check.
 
 **Returns**
-Returns true if all elements of the id matrix are zero, false otherwise.
+Returns true if all elements of the `id` matrix are zero, false otherwise.
 
 ---
 
+<a id="ref-fun-matrix-kron"></a>
+
 ### matrix.kron()
 
-The function returns the Kronecker product for the id1 and id2 matrices.
+The function returns the [Kronecker product](https://en.wikipedia.org/wiki/Kronecker_product) for the `id1` and `id2` matrices.
 
 **Syntax & Overloads**
 
@@ -12468,9 +14749,11 @@ if barstate.islastconfirmedhistory
 ```
 
 **Returns**
-A new matrix containing the Kronecker product of id1 and id2 .
+A new matrix containing the [Kronecker product](https://en.wikipedia.org/wiki/Kronecker_product) of `id1` and `id2`.
 
 ---
+
+<a id="ref-fun-matrix-max"></a>
 
 ### matrix.max()
 
@@ -12510,13 +14793,15 @@ plot(x, 'Matrix maximum value')
 ```
 
 **Returns**
-The maximum value from the id matrix.
+The maximum value from the `id` matrix.
 
 ---
 
+<a id="ref-fun-matrix-median"></a>
+
 ### matrix.median()
 
-The function calculates the median ("the middle" value) of matrix elements.
+The function calculates the [median](https://en.wikipedia.org/wiki/Median) ("the middle" value) of matrix elements.
 
 **Syntax & Overloads**
 
@@ -12552,9 +14837,11 @@ plot(x, 'Median of the matrix')
 ```
 
 **Remarks**
-Note that na elements of the matrix are not considered when calculating the median.
+Note that [na](#ref-var-na) elements of the matrix are not considered when calculating the median.
 
 ---
+
+<a id="ref-fun-matrix-min"></a>
 
 ### matrix.min()
 
@@ -12594,13 +14881,15 @@ plot(x, 'Matrix minimum value')
 ```
 
 **Returns**
-The smallest value from the id matrix.
+The smallest value from the `id` matrix.
 
 ---
 
+<a id="ref-fun-matrix-mode"></a>
+
 ### matrix.mode()
 
-The function calculates the mode of the matrix, which is the most frequently occurring value from the matrix elements. When there are multiple values occurring equally frequently, the function returns the smallest of those values.
+The function calculates the [mode](https://en.wikipedia.org/wiki/Mode_(statistics)) of the matrix, which is the most frequently occurring value from the matrix elements. When there are multiple values occurring equally frequently, the function returns the smallest of those values.
 
 **Syntax & Overloads**
 
@@ -12636,16 +14925,18 @@ plot(x, 'Mode of the matrix')
 ```
 
 **Returns**
-The most frequently occurring value from the id matrix. If none exists, returns the smallest value instead.
+The most frequently occurring value from the `id` matrix. If none exists, returns the smallest value instead.
 
 **Remarks**
-Note that na elements of the matrix are not considered when calculating the mode.
+Note that [na](#ref-var-na) elements of the matrix are not considered when calculating the mode.
 
 ---
 
+<a id="ref-fun-matrix-mult"></a>
+
 ### matrix.mult()
 
-The function returns a new matrix resulting from the product between the matrices id1 and id2 , or between an id1 matrix and an id2 scalar (a numerical value), or between an id1 matrix and an id2 vector (an array of values).
+The function returns a new matrix resulting from the [product](https://en.wikipedia.org/wiki/Matrix_multiplication) between the matrices `id1` and `id2`, or between an `id1` matrix and an `id2` scalar (a numerical value), or between an `id1` matrix and an `id2` vector (an array of values).
 
 **Syntax & Overloads**
 
@@ -12753,9 +15044,11 @@ if barstate.islastconfirmedhistory
 ```
 
 **Returns**
-A new matrix object containing the product of id2 and id1 .
+A new matrix object containing the product of `id2` and `id1`.
 
 ---
+
+<a id="ref-fun-matrix-new-3c-type-3e"></a>
 
 ### matrix.new<type>()
 
@@ -12810,7 +15103,7 @@ if barstate.islastconfirmedhistory
     label.new(bar_index, high, str.tostring(m1))
 ```
 
-Create a matrix from an input.text_area() field
+Create a matrix from an `input.text_area()` field
 
 **Example**
 
@@ -12872,9 +15165,11 @@ The ID of the new matrix object.
 
 ---
 
+<a id="ref-fun-matrix-pinv"></a>
+
 ### matrix.pinv()
 
-The function returns the pseudoinverse of a matrix.
+The function returns the [pseudoinverse](https://en.wikipedia.org/wiki/Moore%E2%80%93Penrose_inverse) of a matrix.
 
 **Syntax & Overloads**
 
@@ -12917,16 +15212,18 @@ if barstate.islastconfirmedhistory
 ```
 
 **Returns**
-A new matrix containing the pseudoinverse of the id matrix.
+A new matrix containing the pseudoinverse of the `id` matrix.
 
 **Remarks**
-The function is calculated using a Moore–Penrose inverse formula based on singular-value decomposition of a matrix. For non-singular square matrices this function returns the result of matrix.inv() .
+The function is calculated using a [Moore–Penrose](https://en.wikipedia.org/wiki/Moore%E2%80%93Penrose_inverse#Definition) inverse formula based on singular-value decomposition of a matrix. For non-singular square matrices this function returns the result of [matrix.inv()](#ref-fun-matrix-inv).
 
 ---
 
+<a id="ref-fun-matrix-pow"></a>
+
 ### matrix.pow()
 
-The function calculates the product of the matrix by itself power times.
+The function calculates the product of the matrix by itself `power` times.
 
 **Syntax & Overloads**
 
@@ -12964,13 +15261,15 @@ if barstate.islastconfirmedhistory
 ```
 
 **Returns**
-The product of the id matrix by itself power times.
+The product of the `id` matrix by itself `power` times.
 
 ---
 
+<a id="ref-fun-matrix-rank"></a>
+
 ### matrix.rank()
 
-The function calculates the rank of the matrix.
+The function calculates the [rank](https://en.wikipedia.org/wiki/Rank_(linear_algebra)) of the matrix.
 
 **Syntax**
 
@@ -13009,13 +15308,15 @@ if barstate.islastconfirmedhistory
 ```
 
 **Returns**
-The rank of the id matrix.
+The rank of the `id` matrix.
 
 ---
 
+<a id="ref-fun-matrix-remove-col"></a>
+
 ### matrix.remove_col()
 
-The function removes the column at column index of the id matrix and returns an array containing the removed column's values.
+The function removes the column at `column` index of the `id` matrix and returns an array containing the removed column's values.
 
 **Syntax**
 
@@ -13025,7 +15326,7 @@ matrix.remove_col(id, column) → array<type>
 
 **Arguments**
 id (any matrix type) A matrix object.
-column (series int) The index of the column to be removed. Optional. The default value is matrix.columns() .
+column (series int) The index of the column to be removed. Optional. The default value is [matrix.columns()](#ref-fun-matrix-columns).
 
 **Example**
 
@@ -13059,16 +15360,18 @@ if barstate.islastconfirmedhistory
 ```
 
 **Returns**
-An array containing the elements of the column removed from the id matrix.
+An array containing the elements of the column removed from the `id` matrix.
 
 **Remarks**
-Indexing of rows and columns starts at zero. It is far more efficient to declare matrices with explicit dimensions than to build them by adding or removing columns. Deleting a column is also much slower than deleting a row with the matrix.remove_row() function.
+Indexing of rows and columns starts at zero. It is far more efficient to declare matrices with explicit dimensions than to build them by adding or removing columns. Deleting a column is also much slower than deleting a row with the [matrix.remove_row()](#ref-fun-matrix-remove-row) function.
 
 ---
 
+<a id="ref-fun-matrix-remove-row"></a>
+
 ### matrix.remove_row()
 
-The function removes the row at row index of the id matrix and returns an array containing the removed row's values.
+The function removes the row at `row` index of the `id` matrix and returns an array containing the removed row's values.
 
 **Syntax**
 
@@ -13078,7 +15381,7 @@ matrix.remove_row(id, row) → array<type>
 
 **Arguments**
 id (any matrix type) A matrix object.
-row (series int) The index of the row to be deleted. Optional. The default value is matrix.rows() .
+row (series int) The index of the row to be deleted. Optional. The default value is [matrix.rows()](#ref-fun-matrix-rows).
 
 **Example**
 
@@ -13112,16 +15415,18 @@ if barstate.islastconfirmedhistory
 ```
 
 **Returns**
-An array containing the elements of the row removed from the id matrix.
+An array containing the elements of the row removed from the `id` matrix.
 
 **Remarks**
 Indexing of rows and columns starts at zero. It is far more efficient to declare matrices with explicit dimensions than to build them by adding or removing rows.
 
 ---
 
+<a id="ref-fun-matrix-reshape"></a>
+
 ### matrix.reshape()
 
-The function rebuilds the id matrix to rows x cols dimensions.
+The function rebuilds the `id` matrix to `rows` x `cols` dimensions.
 
 **Syntax**
 
@@ -13168,9 +15473,11 @@ if barstate.islastconfirmedhistory
 
 ---
 
+<a id="ref-fun-matrix-reverse"></a>
+
 ### matrix.reverse()
 
-The function reverses the order of rows and columns in the matrix id . The first row and first column become the last, and the last become the first.
+The function reverses the order of rows and columns in the matrix `id`. The first row and first column become the last, and the last become the first.
 
 **Syntax**
 
@@ -13213,6 +15520,8 @@ if barstate.islastconfirmedhistory
 
 ---
 
+<a id="ref-fun-matrix-row"></a>
+
 ### matrix.row()
 
 The function creates a one-dimensional array from the elements of a matrix row.
@@ -13244,12 +15553,14 @@ plot(array.get(a, 0))
 ```
 
 **Returns**
-An array ID containing the row values of the id matrix.
+An array ID containing the `row` values of the `id` matrix.
 
 **Remarks**
 Indexing of rows starts at 0.
 
 ---
+
+<a id="ref-fun-matrix-rows"></a>
 
 ### matrix.rows()
 
@@ -13282,13 +15593,15 @@ if barstate.islastconfirmedhistory
 ```
 
 **Returns**
-The number of rows in the matrix id .
+The number of rows in the matrix `id`.
 
 ---
 
+<a id="ref-fun-matrix-set"></a>
+
 ### matrix.set()
 
-The function assigns value to the element at the row and column of the id matrix.
+The function assigns `value` to the element at the `row` and `column` of the `id` matrix.
 
 **Syntax**
 
@@ -13321,9 +15634,11 @@ if barstate.islastconfirmedhistory
 
 ---
 
+<a id="ref-fun-matrix-sort"></a>
+
 ### matrix.sort()
 
-The function rearranges the rows in the id matrix following the sorted order of the values in the column .
+The function rearranges the rows in the `id` matrix following the sorted order of the values in the `column`.
 
 **Syntax & Overloads**
 
@@ -13338,7 +15653,7 @@ matrix.sort(id, column, order, sort_field) → void
 **Arguments**
 id (matrix<int/float/string>) A matrix object to be sorted.
 column (series int) Index of the column whose sorted values determine the new order of rows. Optional. The default value is 0.
-order (series sort_order) The sort order. Possible values: order.ascending (default), order.descending .
+order (series sort_order) The sort order. Possible values: [order.ascending](#ref-const-order-ascending) (default), [order.descending](#ref-const-order-descending).
 
 **Example**
 
@@ -13372,9 +15687,11 @@ if barstate.islastconfirmedhistory
 
 ---
 
+<a id="ref-fun-matrix-submatrix"></a>
+
 ### matrix.submatrix()
 
-The function extracts a submatrix of the id matrix within the specified indices.
+The function extracts a submatrix of the `id` matrix within the specified indices.
 
 **Syntax**
 
@@ -13385,9 +15702,9 @@ matrix.submatrix(id, from_row, to_row, from_column, to_column) → matrix<type>
 **Arguments**
 id (any matrix type) A matrix object.
 from_row (series int) Index of the row from which the extraction will begin (inclusive). Optional. The default value is 0.
-to_row (series int) Index of the row where the extraction will end (non inclusive). Optional. The default value is matrix.rows() .
+to_row (series int) Index of the row where the extraction will end (non inclusive). Optional. The default value is [matrix.rows()](#ref-fun-matrix-rows).
 from_column (series int) Index of the column from which the extraction will begin (inclusive). Optional. The default value is 0.
-to_column (series int) Index of the column where the extraction will end (non inclusive). Optional. The default value is matrix.columns() .
+to_column (series int) Index of the column where the extraction will end (non inclusive). Optional. The default value is [matrix.columns()](#ref-fun-matrix-columns).
 
 **Example**
 
@@ -13419,16 +15736,18 @@ if barstate.islastconfirmedhistory
 ```
 
 **Returns**
-A new matrix object containing the submatrix of the id matrix defined by the from_row , to_row , from_column and to_column indices.
+A new matrix object containing the submatrix of the `id` matrix defined by the `from_row`, `to_row`, `from_column` and `to_column` indices.
 
 **Remarks**
 Indexing of the rows and columns starts at zero.
 
 ---
 
+<a id="ref-fun-matrix-sum"></a>
+
 ### matrix.sum()
 
-The function returns a new matrix resulting from the sum of two matrices id1 and id2 , or of an id1 matrix and an id2 scalar (a numerical value).
+The function returns a new matrix resulting from the [sum](https://en.wikipedia.org/wiki/Matrix_addition) of two matrices `id1` and `id2`, or of an `id1` matrix and an `id2` scalar (a numerical value).
 
 **Syntax & Overloads**
 
@@ -13489,13 +15808,15 @@ if barstate.islastconfirmedhistory
 ```
 
 **Returns**
-A new matrix object containing the sum of id2 and id1 .
+A new matrix object containing the sum of `id2` and `id1`.
 
 ---
 
+<a id="ref-fun-matrix-swap-columns"></a>
+
 ### matrix.swap_columns()
 
-The function swaps the columns at the index column1 and column2 in the id matrix.
+The function swaps the columns at the index `column1` and `column2` in the `id` matrix.
 
 **Syntax**
 
@@ -13543,9 +15864,11 @@ Indexing of the rows and columns starts at zero.
 
 ---
 
+<a id="ref-fun-matrix-swap-rows"></a>
+
 ### matrix.swap_rows()
 
-The function swaps the rows at the index row1 and row2 in the id matrix.
+The function swaps the rows at the index `row1` and `row2` in the `id` matrix.
 
 **Syntax**
 
@@ -13595,9 +15918,11 @@ Indexing of the rows and columns starts at zero.
 
 ---
 
+<a id="ref-fun-matrix-trace"></a>
+
 ### matrix.trace()
 
-The function calculates the trace of a matrix (the sum of the main diagonal's elements).
+The function calculates the [trace](https://en.wikipedia.org/wiki/Trace_(linear_algebra)) of a matrix (the sum of the main diagonal's elements).
 
 **Syntax & Overloads**
 
@@ -13640,13 +15965,15 @@ if barstate.islastconfirmedhistory
 ```
 
 **Returns**
-The trace of the id matrix.
+The trace of the `id` matrix.
 
 ---
 
+<a id="ref-fun-matrix-transpose"></a>
+
 ### matrix.transpose()
 
-The function creates a new, transposed version of the id . This interchanges the row and column index of each element.
+The function creates a new, [transposed](https://en.wikipedia.org/wiki/Transpose#Transpose_of_a_matrix) version of the `id`. This interchanges the row and column index of each element.
 
 **Syntax**
 
@@ -13685,9 +16012,11 @@ if barstate.islastconfirmedhistory
 ```
 
 **Returns**
-A new matrix containing the transposed version of the id matrix.
+A new matrix containing the transposed version of the `id` matrix.
 
 ---
+
+<a id="ref-fun-max-bars-back"></a>
 
 ### max_bars_back()
 
@@ -13727,9 +16056,11 @@ void
 
 **Remarks**
 At the moment 'max_bars_back' cannot be applied to built-ins like 'hl2', 'hlc3', 'ohlc4'. Please use multiple 'max_bars_back' calls as workaround here (e.g. instead of a single ‘max_bars_back(hl2, 100)’ call you should call the function twice: ‘max_bars_back(high, 100), max_bars_back(low, 100)’).
-If the indicator() or strategy() 'max_bars_back' parameter is used, all variables in the indicator are affected. This may result in excessive memory usage and cause runtime problems. When possible (i.e. when the cause is a variable rather than a function), please use the max_bars_back() function instead.
+If the [indicator()](#ref-fun-indicator) or [strategy()](#ref-fun-strategy) 'max_bars_back' parameter is used, all variables in the indicator are affected. This may result in excessive memory usage and cause runtime problems. When possible (i.e. when the cause is a variable rather than a function), please use the [max_bars_back()](#ref-fun-max-bars-back) function instead.
 
 ---
+
+<a id="ref-fun-minute"></a>
 
 ### minute()
 
@@ -13741,7 +16072,7 @@ minute(time, timezone) → series int
 
 **Arguments**
 time (series int) UNIX time in milliseconds.
-timezone (series string) Allows adjusting the returned value to a time zone specified in either UTC/GMT notation (e.g., "UTC-5", "GMT+0530") or as an IANA time zone database name (e.g., "America/New_York"). Optional. The default is syminfo.timezone .
+timezone (series string) Allows adjusting the returned value to a time zone specified in either UTC/GMT notation (e.g., "UTC-5", "GMT+0530") or as an IANA time zone database name (e.g., "America/New_York"). Optional. The default is [syminfo.timezone](#ref-var-syminfo-timezone).
 
 **Returns**
 Minute (in exchange timezone) for provided UNIX time.
@@ -13750,6 +16081,8 @@ Minute (in exchange timezone) for provided UNIX time.
 UNIX time is the number of milliseconds that have elapsed since 00:00:00 UTC, 1 January 1970.
 
 ---
+
+<a id="ref-fun-month"></a>
 
 ### month()
 
@@ -13761,7 +16094,7 @@ month(time, timezone) → series int
 
 **Arguments**
 time (series int) UNIX time in milliseconds.
-timezone (series string) Allows adjusting the returned value to a time zone specified in either UTC/GMT notation (e.g., "UTC-5", "GMT+0530") or as an IANA time zone database name (e.g., "America/New_York"). Optional. The default is syminfo.timezone .
+timezone (series string) Allows adjusting the returned value to a time zone specified in either UTC/GMT notation (e.g., "UTC-5", "GMT+0530") or as an IANA time zone database name (e.g., "America/New_York"). Optional. The default is [syminfo.timezone](#ref-var-syminfo-timezone).
 
 **Returns**
 Month (in exchange timezone) for provided UNIX time.
@@ -13772,9 +16105,11 @@ Note that this function returns the month based on the time of the bar's open. F
 
 ---
 
+<a id="ref-fun-na"></a>
+
 ### na()
 
-Tests if x is na .
+Tests if `x` is [na](#ref-var-na).
 
 **Syntax & Overloads**
 
@@ -13802,13 +16137,15 @@ plot(nz(close[1], close))
 ```
 
 **Returns**
-Returns true if x is na , false otherwise.
+Returns [true](#ref-const-true) if `x` is [na](#ref-var-na), [false](#ref-const-false) otherwise.
 
 ---
 
+<a id="ref-fun-nz"></a>
+
 ### nz()
 
-Replaces na (undefined) values with either a type-specific default value or a specified replacement.
+Replaces [na](#ref-var-na) (undefined) values with either a type-specific default value or a specified replacement.
 
 **Syntax & Overloads**
 
@@ -13838,7 +16175,7 @@ nz(source, replacement) → series float
 
 **Arguments**
 source (simple color) The source series to process.
-replacement (simple color) Optional. The value the function uses to replace na values in the source series. The default depends on the source type: 0 for "int", 0.0 for "float", or #00000000 for "color".
+replacement (simple color) Optional. The value the function uses to replace [na](#ref-var-na) values in the `source` series. The default depends on the `source` type: `0` for "int", `0.0` for "float", or `#00000000` for "color".
 
 **Example**
 
@@ -13849,9 +16186,11 @@ plot(nz(ta.sma(close, 100)))
 ```
 
 **Returns**
-The value of source if it is not na . If the value of source is na , returns zero, or the replacement argument when one is used.
+The value of `source` if it is not `na`. If the value of `source` is `na`, returns zero, or the `replacement` argument when one is used.
 
 ---
+
+<a id="ref-fun-plot"></a>
 
 ### plot()
 
@@ -13868,18 +16207,18 @@ series (series int/float) Series of data to be plotted. Required argument.
 title (const string) Title of the plot.
 color (series color) Color of the plot. You can use constants like 'color=color.red' or 'color=#ff001a' as well as complex expressions like 'color = close >= open ? color.green : color.red'. Optional argument.
 linewidth (input int) Width of the plotted line. Default value is 1. Not applicable to every style.
-style (input plot_style) Type of plot. Possible values are: plot.style_line , plot.style_stepline , plot.style_stepline_diamond , plot.style_histogram , plot.style_cross , plot.style_area , plot.style_columns , plot.style_circles , plot.style_linebr , plot.style_areabr , plot.style_steplinebr . Default value is plot.style_line .
+style (input plot_style) Type of plot. Possible values are: [plot.style_line](#ref-const-plot-style-line), [plot.style_stepline](#ref-const-plot-style-stepline), [plot.style_stepline_diamond](#ref-const-plot-style-stepline-diamond), [plot.style_histogram](#ref-const-plot-style-histogram), [plot.style_cross](#ref-const-plot-style-cross), [plot.style_area](#ref-const-plot-style-area), [plot.style_columns](#ref-const-plot-style-columns), [plot.style_circles](#ref-const-plot-style-circles), [plot.style_linebr](#ref-const-plot-style-linebr), [plot.style_areabr](#ref-const-plot-style-areabr), [plot.style_steplinebr](#ref-const-plot-style-steplinebr). Default value is [plot.style_line](#ref-const-plot-style-line).
 trackprice (input bool) If true then a horizontal price line will be shown at the level of the last indicator value. Default is false.
-histbase (input int/float) The price value used as the reference level when rendering plot with plot.style_histogram , plot.style_columns or plot.style_area style. Default is 0.0.
+histbase (input int/float) The price value used as the reference level when rendering plot with [plot.style_histogram](#ref-const-plot-style-histogram), [plot.style_columns](#ref-const-plot-style-columns) or [plot.style_area](#ref-const-plot-style-area) style. Default is 0.0.
 offset (simple int) Shifts the plot to the left or to the right on the given number of bars. Default is 0.
-join (input bool) If true then plot points will be joined with line, applicable only to plot.style_cross and plot.style_circles styles. Default is false.
+join (input bool) If true then plot points will be joined with line, applicable only to [plot.style_cross](#ref-const-plot-style-cross) and [plot.style_circles](#ref-const-plot-style-circles) styles. Default is false.
 editable (input bool) If true then plot style will be editable in Format dialog. Default is true.
 show_last (input int) Optional. The number of bars, counting backwards from the most recent bar, on which the function can draw.
-display (input plot_display) Controls where the plot's information is displayed. Display options support addition and subtraction, meaning that using display.all - display.status_line will display the plot's information everywhere except in the script's status line. display.price_scale + display.status_line will display the plot only in the price scale and status line. When display arguments such as display.price_scale have user-controlled chart settings equivalents, the relevant plot information will only appear when all settings allow for it. Possible values: display.none , display.pane , display.data_window , display.price_scale , display.status_line , display.all . Optional. The default is display.all .
-format (input string) Determines whether the script formats the plot's values as prices, percentages, or volume values. The argument passed to this parameter supersedes the format parameter of the indicator() , and strategy() functions. Optional. The default is the format value used by the indicator() / strategy() function. Possible values: format.price , format.percent , format.volume .
-precision (input int) The number of digits after the decimal point the plot's values show on the chart pane's y-axis, the script's status line, and the Data Window. Accepts a non-negative integer less than or equal to 16. The argument passed to this parameter supersedes the precision parameter of the indicator() and strategy() functions. When the function's format parameter uses format.volume , the precision parameter will not affect the result, as the decimal precision rules defined by format.volume supersede other precision settings. Optional. The default is the precision value used by the indicator() / strategy() function.
-force_overlay (const bool) If true , the plotted results will display on the main chart pane, even when the script occupies a separate pane. Optional. The default is false .
-linestyle (input plot_line_style) Optional. A modifier for plot styles that display lines. It specifies whether the plotted line is solid ( plot.linestyle_solid ), dashed ( plot.linestyle_dashed ), or dotted ( plot.linestyle_dotted ). The modifier applies only when the function uses one of the following style arguments: plot.style_line , plot.style_linebr , plot.style_stepline , plot.style_stepline_diamond , and plot.style_area . The default is plot.linestyle_solid .
+display (input plot_display) Controls where the plot's information is displayed. Display options support addition and subtraction, meaning that using `display.all - display.status_line` will display the plot's information everywhere except in the script's status line. `display.price_scale + display.status_line` will display the plot only in the price scale and status line. When `display` arguments such as `display.price_scale` have user-controlled chart settings equivalents, the relevant plot information will only appear when all settings allow for it. Possible values: [display.none](#ref-const-display-none), [display.pane](#ref-const-display-pane), [display.data_window](#ref-const-display-data-window), [display.price_scale](#ref-const-display-price-scale), [display.status_line](#ref-const-display-status-line), [display.all](#ref-const-display-all). Optional. The default is [display.all](#ref-const-display-all).
+format (input string) Determines whether the script formats the plot's values as prices, percentages, or volume values. The argument passed to this parameter supersedes the `format` parameter of the [indicator()](#ref-fun-indicator), and [strategy()](#ref-fun-strategy) functions. Optional. The default is the `format` value used by the [indicator()](#ref-fun-indicator)/[strategy()](#ref-fun-strategy) function. Possible values: [format.price](#ref-const-format-price), [format.percent](#ref-const-format-percent), [format.volume](#ref-const-format-volume).
+precision (input int) The number of digits after the decimal point the plot's values show on the chart pane's y-axis, the script's status line, and the Data Window. Accepts a non-negative integer less than or equal to 16. The argument passed to this parameter supersedes the `precision` parameter of the [indicator()](#ref-fun-indicator) and [strategy()](#ref-fun-strategy) functions. When the function's `format` parameter uses [format.volume](#ref-const-format-volume), the `precision` parameter will not affect the result, as the decimal precision rules defined by [format.volume](#ref-const-format-volume) supersede other precision settings. Optional. The default is the `precision` value used by the [indicator()](#ref-fun-indicator)/[strategy()](#ref-fun-strategy) function.
+force_overlay (const bool) If [true](#ref-const-true), the plotted results will display on the main chart pane, even when the script occupies a separate pane. Optional. The default is [false](#ref-const-false).
+linestyle (input plot_line_style) Optional. A modifier for plot styles that display lines. It specifies whether the plotted line is solid ([plot.linestyle_solid](#ref-const-plot-linestyle-solid)), dashed ([plot.linestyle_dashed](#ref-const-plot-linestyle-dashed)), or dotted ([plot.linestyle_dotted](#ref-const-plot-linestyle-dotted)). The modifier applies only when the function uses one of the following `style` arguments: [plot.style_line](#ref-const-plot-style-line), [plot.style_linebr](#ref-const-plot-style-linebr), [plot.style_stepline](#ref-const-plot-style-stepline), [plot.style_stepline_diamond](#ref-const-plot-style-stepline-diamond), and [plot.style_area](#ref-const-plot-style-area). The default is [plot.linestyle_solid](#ref-const-plot-linestyle-solid).
 
 **Example**
 
@@ -13895,13 +16234,15 @@ fill(p1, p2, color=color.new(color.green, 90))
 ```
 
 **Returns**
-A plot object, that can be used in fill()
+A plot object, that can be used in [fill()](#ref-fun-fill)
 
 ---
 
+<a id="ref-fun-plotarrow"></a>
+
 ### plotarrow()
 
-Plots up and down arrows on the chart. Up arrow is drawn at every indicator positive value, down arrow is drawn at every negative value. If indicator returns na then no arrow is drawn. Arrows has different height, the more absolute indicator value the longer arrow is drawn.
+Plots up and down arrows on the chart. Up arrow is drawn at every indicator positive value, down arrow is drawn at every negative value. If indicator returns [na](#ref-var-na) then no arrow is drawn. Arrows has different height, the more absolute indicator value the longer arrow is drawn.
 
 **Syntax**
 
@@ -13919,10 +16260,10 @@ minheight (input int) Minimal possible arrow height in pixels. Default is 5.
 maxheight (input int) Maximum possible arrow height in pixels. Default is 100.
 editable (input bool) If true then plotarrow style will be editable in Format dialog. Default is true.
 show_last (input int) Optional. The number of bars, counting backwards from the most recent bar, on which the function can draw.
-display (input plot_display) Controls where the plot's information is displayed. Display options support addition and subtraction, meaning that using display.all - display.status_line will display the plot's information everywhere except in the script's status line. display.price_scale + display.status_line will display the plot only in the price scale and status line. When display arguments such as display.price_scale have user-controlled chart settings equivalents, the relevant plot information will only appear when all settings allow for it. Possible values: display.none , display.pane , display.data_window , display.price_scale , display.status_line , display.all . Optional. The default is display.all .
-format (input string) Determines whether the script formats the plot's values as prices, percentages, or volume values. The argument passed to this parameter supersedes the format parameter of the indicator() , and strategy() functions. Optional. The default is the format value used by the indicator() / strategy() function. Possible values: format.price , format.percent , format.volume .
-precision (input int) The number of digits after the decimal point the plot's values show on the chart pane's y-axis, the script's status line, and the Data Window. Accepts a non-negative integer less than or equal to 16. The argument passed to this parameter supersedes the precision parameter of the indicator() and strategy() functions. When the function's format parameter uses format.volume , the precision parameter will not affect the result, as the decimal precision rules defined by format.volume supersede other precision settings. Optional. The default is the precision value used by the indicator() / strategy() function.
-force_overlay (const bool) If true , the plotted results will display on the main chart pane, even when the script occupies a separate pane. Optional. The default is false .
+display (input plot_display) Controls where the plot's information is displayed. Display options support addition and subtraction, meaning that using `display.all - display.status_line` will display the plot's information everywhere except in the script's status line. `display.price_scale + display.status_line` will display the plot only in the price scale and status line. When `display` arguments such as `display.price_scale` have user-controlled chart settings equivalents, the relevant plot information will only appear when all settings allow for it. Possible values: [display.none](#ref-const-display-none), [display.pane](#ref-const-display-pane), [display.data_window](#ref-const-display-data-window), [display.price_scale](#ref-const-display-price-scale), [display.status_line](#ref-const-display-status-line), [display.all](#ref-const-display-all). Optional. The default is [display.all](#ref-const-display-all).
+format (input string) Determines whether the script formats the plot's values as prices, percentages, or volume values. The argument passed to this parameter supersedes the `format` parameter of the [indicator()](#ref-fun-indicator), and [strategy()](#ref-fun-strategy) functions. Optional. The default is the `format` value used by the [indicator()](#ref-fun-indicator)/[strategy()](#ref-fun-strategy) function. Possible values: [format.price](#ref-const-format-price), [format.percent](#ref-const-format-percent), [format.volume](#ref-const-format-volume).
+precision (input int) The number of digits after the decimal point the plot's values show on the chart pane's y-axis, the script's status line, and the Data Window. Accepts a non-negative integer less than or equal to 16. The argument passed to this parameter supersedes the `precision` parameter of the [indicator()](#ref-fun-indicator) and [strategy()](#ref-fun-strategy) functions. When the function's `format` parameter uses [format.volume](#ref-const-format-volume), the `precision` parameter will not affect the result, as the decimal precision rules defined by [format.volume](#ref-const-format-volume) supersede other precision settings. Optional. The default is the `precision` value used by the [indicator()](#ref-fun-indicator)/[strategy()](#ref-fun-strategy) function.
+force_overlay (const bool) If [true](#ref-const-true), the plotted results will display on the main chart pane, even when the script occupies a separate pane. Optional. The default is [false](#ref-const-false).
 
 **Example**
 
@@ -13934,9 +16275,11 @@ plotarrow(codiff, colorup=color.new(color.teal,40), colordown=color.new(color.or
 ```
 
 **Remarks**
-Use plotarrow() function in conjunction with 'overlay=true' indicator() parameter!
+Use [plotarrow()](#ref-fun-plotarrow) function in conjunction with 'overlay=true' [indicator()](#ref-fun-indicator) parameter!
 
 ---
+
+<a id="ref-fun-plotbar"></a>
 
 ### plotbar()
 
@@ -13957,10 +16300,10 @@ title (const string) Title of the plotbar. Optional argument.
 color (series color) Color of the ohlc bars. You can use constants like 'color=color.red' or 'color=#ff001a' as well as complex expressions like 'color = close >= open ? color.green : color.red'. Optional argument.
 editable (input bool) If true then plotbar style will be editable in Format dialog. Default is true.
 show_last (input int) Optional. The number of bars, counting backwards from the most recent bar, on which the function can draw.
-display (input plot_display) Controls where the plot's information is displayed. Display options support addition and subtraction, meaning that using display.all - display.status_line will display the plot's information everywhere except in the script's status line. display.price_scale + display.status_line will display the plot only in the price scale and status line. When display arguments such as display.price_scale have user-controlled chart settings equivalents, the relevant plot information will only appear when all settings allow for it. Possible values: display.none , display.pane , display.data_window , display.price_scale , display.status_line , display.all . Optional. The default is display.all .
-format (input string) Determines whether the script formats the plot's values as prices, percentages, or volume values. The argument passed to this parameter supersedes the format parameter of the indicator() , and strategy() functions. Optional. The default is the format value used by the indicator() / strategy() function. Possible values: format.price , format.percent , format.volume .
-precision (input int) The number of digits after the decimal point the plot's values show on the chart pane's y-axis, the script's status line, and the Data Window. Accepts a non-negative integer less than or equal to 16. The argument passed to this parameter supersedes the precision parameter of the indicator() and strategy() functions. When the function's format parameter uses format.volume , the precision parameter will not affect the result, as the decimal precision rules defined by format.volume supersede other precision settings. Optional. The default is the precision value used by the indicator() / strategy() function.
-force_overlay (const bool) If true , the plotted results will display on the main chart pane, even when the script occupies a separate pane. Optional. The default is false .
+display (input plot_display) Controls where the plot's information is displayed. Display options support addition and subtraction, meaning that using `display.all - display.status_line` will display the plot's information everywhere except in the script's status line. `display.price_scale + display.status_line` will display the plot only in the price scale and status line. When `display` arguments such as `display.price_scale` have user-controlled chart settings equivalents, the relevant plot information will only appear when all settings allow for it. Possible values: [display.none](#ref-const-display-none), [display.pane](#ref-const-display-pane), [display.data_window](#ref-const-display-data-window), [display.price_scale](#ref-const-display-price-scale), [display.status_line](#ref-const-display-status-line), [display.all](#ref-const-display-all). Optional. The default is [display.all](#ref-const-display-all).
+format (input string) Determines whether the script formats the plot's values as prices, percentages, or volume values. The argument passed to this parameter supersedes the `format` parameter of the [indicator()](#ref-fun-indicator), and [strategy()](#ref-fun-strategy) functions. Optional. The default is the `format` value used by the [indicator()](#ref-fun-indicator)/[strategy()](#ref-fun-strategy) function. Possible values: [format.price](#ref-const-format-price), [format.percent](#ref-const-format-percent), [format.volume](#ref-const-format-volume).
+precision (input int) The number of digits after the decimal point the plot's values show on the chart pane's y-axis, the script's status line, and the Data Window. Accepts a non-negative integer less than or equal to 16. The argument passed to this parameter supersedes the `precision` parameter of the [indicator()](#ref-fun-indicator) and [strategy()](#ref-fun-strategy) functions. When the function's `format` parameter uses [format.volume](#ref-const-format-volume), the `precision` parameter will not affect the result, as the decimal precision rules defined by [format.volume](#ref-const-format-volume) supersede other precision settings. Optional. The default is the `precision` value used by the [indicator()](#ref-fun-indicator)/[strategy()](#ref-fun-strategy) function.
+force_overlay (const bool) If [true](#ref-const-true), the plotted results will display on the main chart pane, even when the script occupies a separate pane. Optional. The default is [false](#ref-const-false).
 
 **Example**
 
@@ -13975,6 +16318,8 @@ Even if one value of open, high, low or close equal NaN then bar no draw.
 The maximal value of open, high, low or close will be set as 'high', and the minimal value will be set as 'low'.
 
 ---
+
+<a id="ref-fun-plotcandle"></a>
 
 ### plotcandle()
 
@@ -13997,10 +16342,10 @@ wickcolor (series color) The color of the wick of candles. An optional argument.
 editable (input bool) If true then plotcandle style will be editable in Format dialog. Default is true.
 show_last (input int) Optional. The number of bars, counting backwards from the most recent bar, on which the function can draw.
 bordercolor (series color) The border color of candles. An optional argument.
-display (input plot_display) Controls where the plot's information is displayed. Display options support addition and subtraction, meaning that using display.all - display.status_line will display the plot's information everywhere except in the script's status line. display.price_scale + display.status_line will display the plot only in the price scale and status line. When display arguments such as display.price_scale have user-controlled chart settings equivalents, the relevant plot information will only appear when all settings allow for it. Possible values: display.none , display.pane , display.data_window , display.price_scale , display.status_line , display.all . Optional. The default is display.all .
-format (input string) Determines whether the script formats the plot's values as prices, percentages, or volume values. The argument passed to this parameter supersedes the format parameter of the indicator() , and strategy() functions. Optional. The default is the format value used by the indicator() / strategy() function. Possible values: format.price , format.percent , format.volume .
-precision (input int) The number of digits after the decimal point the plot's values show on the chart pane's y-axis, the script's status line, and the Data Window. Accepts a non-negative integer less than or equal to 16. The argument passed to this parameter supersedes the precision parameter of the indicator() and strategy() functions. When the function's format parameter uses format.volume , the precision parameter will not affect the result, as the decimal precision rules defined by format.volume supersede other precision settings. Optional. The default is the precision value used by the indicator() / strategy() function.
-force_overlay (const bool) If true , the plotted results will display on the main chart pane, even when the script occupies a separate pane. Optional. The default is false .
+display (input plot_display) Controls where the plot's information is displayed. Display options support addition and subtraction, meaning that using `display.all - display.status_line` will display the plot's information everywhere except in the script's status line. `display.price_scale + display.status_line` will display the plot only in the price scale and status line. When `display` arguments such as `display.price_scale` have user-controlled chart settings equivalents, the relevant plot information will only appear when all settings allow for it. Possible values: [display.none](#ref-const-display-none), [display.pane](#ref-const-display-pane), [display.data_window](#ref-const-display-data-window), [display.price_scale](#ref-const-display-price-scale), [display.status_line](#ref-const-display-status-line), [display.all](#ref-const-display-all). Optional. The default is [display.all](#ref-const-display-all).
+format (input string) Determines whether the script formats the plot's values as prices, percentages, or volume values. The argument passed to this parameter supersedes the `format` parameter of the [indicator()](#ref-fun-indicator), and [strategy()](#ref-fun-strategy) functions. Optional. The default is the `format` value used by the [indicator()](#ref-fun-indicator)/[strategy()](#ref-fun-strategy) function. Possible values: [format.price](#ref-const-format-price), [format.percent](#ref-const-format-percent), [format.volume](#ref-const-format-volume).
+precision (input int) The number of digits after the decimal point the plot's values show on the chart pane's y-axis, the script's status line, and the Data Window. Accepts a non-negative integer less than or equal to 16. The argument passed to this parameter supersedes the `precision` parameter of the [indicator()](#ref-fun-indicator) and [strategy()](#ref-fun-strategy) functions. When the function's `format` parameter uses [format.volume](#ref-const-format-volume), the `precision` parameter will not affect the result, as the decimal precision rules defined by [format.volume](#ref-const-format-volume) supersede other precision settings. Optional. The default is the `precision` value used by the [indicator()](#ref-fun-indicator)/[strategy()](#ref-fun-strategy) function.
+force_overlay (const bool) If [true](#ref-const-true), the plotted results will display on the main chart pane, even when the script occupies a separate pane. Optional. The default is [false](#ref-const-false).
 
 **Example**
 
@@ -14016,6 +16361,8 @@ The maximal value of open, high, low or close will be set as 'high', and the min
 
 ---
 
+<a id="ref-fun-plotchar"></a>
+
 ### plotchar()
 
 Plots visual shapes using any given one Unicode character on the chart.
@@ -14027,21 +16374,21 @@ plotchar(series, title, char, location, color, offset, text, textcolor, editable
 ```
 
 **Arguments**
-series (series int/float/bool) Series of data to be plotted as shapes. Series is treated as a series of boolean values for all location values except location.absolute . Required argument.
+series (series int/float/bool) Series of data to be plotted as shapes. Series is treated as a series of boolean values for all location values except [location.absolute](#ref-const-location-absolute). Required argument.
 title (const string) Title of the plot.
 char (input string) Character to use as a visual shape.
-location (input string) Location of shapes on the chart. Possible values are: location.abovebar , location.belowbar , location.top , location.bottom , location.absolute . Default value is location.abovebar .
+location (input string) Location of shapes on the chart. Possible values are: [location.abovebar](#ref-const-location-abovebar), [location.belowbar](#ref-const-location-belowbar), [location.top](#ref-const-location-top), [location.bottom](#ref-const-location-bottom), [location.absolute](#ref-const-location-absolute). Default value is [location.abovebar](#ref-const-location-abovebar).
 color (series color) Color of the shapes. You can use constants like 'color=color.red' or 'color=#ff001a' as well as complex expressions like 'color = close >= open ? color.green : color.red'. Optional argument.
 offset (simple int) Shifts shapes to the left or to the right on the given number of bars. Default is 0.
 text (const string) Text to display with the shape. You can use multiline text, to separate lines use '\n' escape sequence. Example: 'line one\nline two'.
 textcolor (series color) Color of the text. You can use constants like 'textcolor=color.red' or 'textcolor=#ff001a' as well as complex expressions like 'textcolor = close >= open ? color.green : color.red'. Optional argument.
 editable (input bool) If true then plotchar style will be editable in Format dialog. Default is true.
-size (const string) Size of characters on the chart. Possible values are: size.auto , size.tiny , size.small , size.normal , size.large , size.huge . Default is size.auto .
+size (const string) Size of characters on the chart. Possible values are: [size.auto](#ref-const-size-auto), [size.tiny](#ref-const-size-tiny), [size.small](#ref-const-size-small), [size.normal](#ref-const-size-normal), [size.large](#ref-const-size-large), [size.huge](#ref-const-size-huge). Default is [size.auto](#ref-const-size-auto).
 show_last (input int) Optional. The number of bars, counting backwards from the most recent bar, on which the function can draw.
-display (input plot_display) Controls where the plot's information is displayed. Display options support addition and subtraction, meaning that using display.all - display.status_line will display the plot's information everywhere except in the script's status line. display.price_scale + display.status_line will display the plot only in the price scale and status line. When display arguments such as display.price_scale have user-controlled chart settings equivalents, the relevant plot information will only appear when all settings allow for it. Possible values: display.none , display.pane , display.data_window , display.price_scale , display.status_line , display.all . Optional. The default is display.all .
-format (input string) Determines whether the script formats the plot's values as prices, percentages, or volume values. The argument passed to this parameter supersedes the format parameter of the indicator() , and strategy() functions. Optional. The default is the format value used by the indicator() / strategy() function. Possible values: format.price , format.percent , format.volume .
-precision (input int) The number of digits after the decimal point the plot's values show on the chart pane's y-axis, the script's status line, and the Data Window. Accepts a non-negative integer less than or equal to 16. The argument passed to this parameter supersedes the precision parameter of the indicator() and strategy() functions. When the function's format parameter uses format.volume , the precision parameter will not affect the result, as the decimal precision rules defined by format.volume supersede other precision settings. Optional. The default is the precision value used by the indicator() / strategy() function.
-force_overlay (const bool) If true , the plotted results will display on the main chart pane, even when the script occupies a separate pane. Optional. The default is false .
+display (input plot_display) Controls where the plot's information is displayed. Display options support addition and subtraction, meaning that using `display.all - display.status_line` will display the plot's information everywhere except in the script's status line. `display.price_scale + display.status_line` will display the plot only in the price scale and status line. When `display` arguments such as `display.price_scale` have user-controlled chart settings equivalents, the relevant plot information will only appear when all settings allow for it. Possible values: [display.none](#ref-const-display-none), [display.pane](#ref-const-display-pane), [display.data_window](#ref-const-display-data-window), [display.price_scale](#ref-const-display-price-scale), [display.status_line](#ref-const-display-status-line), [display.all](#ref-const-display-all). Optional. The default is [display.all](#ref-const-display-all).
+format (input string) Determines whether the script formats the plot's values as prices, percentages, or volume values. The argument passed to this parameter supersedes the `format` parameter of the [indicator()](#ref-fun-indicator), and [strategy()](#ref-fun-strategy) functions. Optional. The default is the `format` value used by the [indicator()](#ref-fun-indicator)/[strategy()](#ref-fun-strategy) function. Possible values: [format.price](#ref-const-format-price), [format.percent](#ref-const-format-percent), [format.volume](#ref-const-format-volume).
+precision (input int) The number of digits after the decimal point the plot's values show on the chart pane's y-axis, the script's status line, and the Data Window. Accepts a non-negative integer less than or equal to 16. The argument passed to this parameter supersedes the `precision` parameter of the [indicator()](#ref-fun-indicator) and [strategy()](#ref-fun-strategy) functions. When the function's `format` parameter uses [format.volume](#ref-const-format-volume), the `precision` parameter will not affect the result, as the decimal precision rules defined by [format.volume](#ref-const-format-volume) supersede other precision settings. Optional. The default is the `precision` value used by the [indicator()](#ref-fun-indicator)/[strategy()](#ref-fun-strategy) function.
+force_overlay (const bool) If [true](#ref-const-true), the plotted results will display on the main chart pane, even when the script occupies a separate pane. Optional. The default is [false](#ref-const-false).
 
 **Example**
 
@@ -14053,9 +16400,11 @@ plotchar(data, char='❄')
 ```
 
 **Remarks**
-Use plotchar() function in conjunction with 'overlay=true' indicator() parameter!
+Use [plotchar()](#ref-fun-plotchar) function in conjunction with 'overlay=true' [indicator()](#ref-fun-indicator) parameter!
 
 ---
+
+<a id="ref-fun-plotshape"></a>
 
 ### plotshape()
 
@@ -14068,21 +16417,21 @@ plotshape(series, title, style, location, color, offset, text, textcolor, editab
 ```
 
 **Arguments**
-series (series int/float/bool) Series of data to be plotted as shapes. Series is treated as a series of boolean values for all location values except location.absolute . Required argument.
+series (series int/float/bool) Series of data to be plotted as shapes. Series is treated as a series of boolean values for all location values except [location.absolute](#ref-const-location-absolute). Required argument.
 title (const string) Title of the plot.
-style (input string) Type of plot. Possible values are: shape.xcross , shape.cross , shape.triangleup , shape.triangledown , shape.flag , shape.circle , shape.arrowup , shape.arrowdown , shape.labelup , shape.labeldown , shape.square , shape.diamond . Default value is shape.xcross .
-location (input string) Location of shapes on the chart. Possible values are: location.abovebar , location.belowbar , location.top , location.bottom , location.absolute . Default value is location.abovebar .
+style (input string) Type of plot. Possible values are: [shape.xcross](#ref-const-shape-xcross), [shape.cross](#ref-const-shape-cross), [shape.triangleup](#ref-const-shape-triangleup), [shape.triangledown](#ref-const-shape-triangledown), [shape.flag](#ref-const-shape-flag), [shape.circle](#ref-const-shape-circle), [shape.arrowup](#ref-const-shape-arrowup), [shape.arrowdown](#ref-const-shape-arrowdown), [shape.labelup](#ref-const-shape-labelup), [shape.labeldown](#ref-const-shape-labeldown), [shape.square](#ref-const-shape-square), [shape.diamond](#ref-const-shape-diamond). Default value is [shape.xcross](#ref-const-shape-xcross).
+location (input string) Location of shapes on the chart. Possible values are: [location.abovebar](#ref-const-location-abovebar), [location.belowbar](#ref-const-location-belowbar), [location.top](#ref-const-location-top), [location.bottom](#ref-const-location-bottom), [location.absolute](#ref-const-location-absolute). Default value is [location.abovebar](#ref-const-location-abovebar).
 color (series color) Color of the shapes. You can use constants like 'color=color.red' or 'color=#ff001a' as well as complex expressions like 'color = close >= open ? color.green : color.red'. Optional argument.
 offset (simple int) Shifts shapes to the left or to the right on the given number of bars. Default is 0.
 text (const string) Text to display with the shape. You can use multiline text, to separate lines use '\n' escape sequence. Example: 'line one\nline two'.
 textcolor (series color) Color of the text. You can use constants like 'textcolor=color.red' or 'textcolor=#ff001a' as well as complex expressions like 'textcolor = close >= open ? color.green : color.red'. Optional argument.
 editable (input bool) If true then plotshape style will be editable in Format dialog. Default is true.
-size (const string) Size of shapes on the chart. Possible values are: size.auto , size.tiny , size.small , size.normal , size.large , size.huge . Default is size.auto .
+size (const string) Size of shapes on the chart. Possible values are: [size.auto](#ref-const-size-auto), [size.tiny](#ref-const-size-tiny), [size.small](#ref-const-size-small), [size.normal](#ref-const-size-normal), [size.large](#ref-const-size-large), [size.huge](#ref-const-size-huge). Default is [size.auto](#ref-const-size-auto).
 show_last (input int) Optional. The number of bars, counting backwards from the most recent bar, on which the function can draw.
-display (input plot_display) Controls where the plot's information is displayed. Display options support addition and subtraction, meaning that using display.all - display.status_line will display the plot's information everywhere except in the script's status line. display.price_scale + display.status_line will display the plot only in the price scale and status line. When display arguments such as display.price_scale have user-controlled chart settings equivalents, the relevant plot information will only appear when all settings allow for it. Possible values: display.none , display.pane , display.data_window , display.price_scale , display.status_line , display.all . Optional. The default is display.all .
-format (input string) Determines whether the script formats the plot's values as prices, percentages, or volume values. The argument passed to this parameter supersedes the format parameter of the indicator() , and strategy() functions. Optional. The default is the format value used by the indicator() / strategy() function. Possible values: format.price , format.percent , format.volume .
-precision (input int) The number of digits after the decimal point the plot's values show on the chart pane's y-axis, the script's status line, and the Data Window. Accepts a non-negative integer less than or equal to 16. The argument passed to this parameter supersedes the precision parameter of the indicator() and strategy() functions. When the function's format parameter uses format.volume , the precision parameter will not affect the result, as the decimal precision rules defined by format.volume supersede other precision settings. Optional. The default is the precision value used by the indicator() / strategy() function.
-force_overlay (const bool) If true , the plotted results will display on the main chart pane, even when the script occupies a separate pane. Optional. The default is false .
+display (input plot_display) Controls where the plot's information is displayed. Display options support addition and subtraction, meaning that using `display.all - display.status_line` will display the plot's information everywhere except in the script's status line. `display.price_scale + display.status_line` will display the plot only in the price scale and status line. When `display` arguments such as `display.price_scale` have user-controlled chart settings equivalents, the relevant plot information will only appear when all settings allow for it. Possible values: [display.none](#ref-const-display-none), [display.pane](#ref-const-display-pane), [display.data_window](#ref-const-display-data-window), [display.price_scale](#ref-const-display-price-scale), [display.status_line](#ref-const-display-status-line), [display.all](#ref-const-display-all). Optional. The default is [display.all](#ref-const-display-all).
+format (input string) Determines whether the script formats the plot's values as prices, percentages, or volume values. The argument passed to this parameter supersedes the `format` parameter of the [indicator()](#ref-fun-indicator), and [strategy()](#ref-fun-strategy) functions. Optional. The default is the `format` value used by the [indicator()](#ref-fun-indicator)/[strategy()](#ref-fun-strategy) function. Possible values: [format.price](#ref-const-format-price), [format.percent](#ref-const-format-percent), [format.volume](#ref-const-format-volume).
+precision (input int) The number of digits after the decimal point the plot's values show on the chart pane's y-axis, the script's status line, and the Data Window. Accepts a non-negative integer less than or equal to 16. The argument passed to this parameter supersedes the `precision` parameter of the [indicator()](#ref-fun-indicator) and [strategy()](#ref-fun-strategy) functions. When the function's `format` parameter uses [format.volume](#ref-const-format-volume), the `precision` parameter will not affect the result, as the decimal precision rules defined by [format.volume](#ref-const-format-volume) supersede other precision settings. Optional. The default is the `precision` value used by the [indicator()](#ref-fun-indicator)/[strategy()](#ref-fun-strategy) function.
+force_overlay (const bool) If [true](#ref-const-true), the plotted results will display on the main chart pane, even when the script occupies a separate pane. Optional. The default is [false](#ref-const-false).
 
 **Example**
 
@@ -14094,13 +16443,15 @@ plotshape(data, style=shape.xcross)
 ```
 
 **Remarks**
-Use plotshape() function in conjunction with 'overlay=true' indicator() parameter!
+Use [plotshape()](#ref-fun-plotshape) function in conjunction with 'overlay=true' [indicator()](#ref-fun-indicator) parameter!
 
 ---
 
+<a id="ref-fun-polyline-delete"></a>
+
 ### polyline.delete()
 
-Deletes the specified polyline object. It has no effect if the id doesn't exist.
+Deletes the specified [polyline](#ref-type-polyline) object. It has no effect if the `id` doesn't exist.
 
 **Syntax**
 
@@ -14113,9 +16464,11 @@ id (series polyline) The polyline ID to delete.
 
 ---
 
+<a id="ref-fun-polyline-new"></a>
+
 ### polyline.new()
 
-Creates a new polyline instance and displays it on the chart, sequentially connecting all of the points in the points array with line segments. The segments in the drawing can be straight or curved depending on the curved parameter.
+Creates a new [polyline](#ref-type-polyline) instance and displays it on the chart, sequentially connecting all of the points in the `points` array with line segments. The segments in the drawing can be straight or curved depending on the `curved` parameter.
 
 **Syntax**
 
@@ -14124,15 +16477,15 @@ polyline.new(points, curved, closed, xloc, line_color, fill_color, line_style, l
 ```
 
 **Arguments**
-points (array<chart.point>) An array of chart.point objects for the drawing to sequentially connect.
-curved (series bool) If true , the drawing will connect all points from the points array using curved line segments. Optional. The default is false .
-closed (series bool) If true , the drawing will also connect the first point to the last point from the points array, resulting in a closed polyline. Optional. The default is false .
-xloc (series string) Determines the field of the chart.point objects in the points array that the polyline will use for its x-coordinates. If xloc.bar_index , the polyline will use the index field from each point. If xloc.bar_time , it will use the time field. Optional. The default is xloc.bar_index .
-line_color (series color) The color of the line segments. Optional. The default is color.blue .
-fill_color (series color) The fill color of the polyline. Optional. The default is na .
-line_style (series string) The style of the polyline. Possible values: line.style_solid , line.style_dotted , line.style_dashed , line.style_arrow_left , line.style_arrow_right , line.style_arrow_both . Optional. The default is line.style_solid .
+points (array<chart.point>) An array of [chart.point](#ref-type-chart-point) objects for the drawing to sequentially connect.
+curved (series bool) If [true](#ref-const-true), the drawing will connect all points from the `points` array using curved line segments. Optional. The default is [false](#ref-const-false).
+closed (series bool) If [true](#ref-const-true), the drawing will also connect the first point to the last point from the `points` array, resulting in a closed polyline. Optional. The default is [false](#ref-const-false).
+xloc (series string) Determines the field of the [chart.point](#ref-type-chart-point) objects in the `points` array that the polyline will use for its x-coordinates. If [xloc.bar_index](#ref-const-xloc-bar-index), the polyline will use the `index` field from each point. If [xloc.bar_time](#ref-const-xloc-bar-time), it will use the `time` field. Optional. The default is [xloc.bar_index](#ref-const-xloc-bar-index).
+line_color (series color) The color of the line segments. Optional. The default is [color.blue](#ref-const-color-blue).
+fill_color (series color) The fill color of the polyline. Optional. The default is [na](#ref-var-na).
+line_style (series string) The style of the polyline. Possible values: [line.style_solid](#ref-const-line-style-solid), [line.style_dotted](#ref-const-line-style-dotted), [line.style_dashed](#ref-const-line-style-dashed), [line.style_arrow_left](#ref-const-line-style-arrow-left), [line.style_arrow_right](#ref-const-line-style-arrow-right), [line.style_arrow_both](#ref-const-line-style-arrow-both). Optional. The default is [line.style_solid](#ref-const-line-style-solid).
 line_width (series int) The width of the line segments, expressed in pixels. Optional. The default is 1.
-force_overlay (const bool) If true , the drawing will display on the main chart pane, even when the script occupies a separate pane. Optional. The default is false .
+force_overlay (const bool) If [true](#ref-const-true), the drawing will display on the main chart pane, even when the script occupies a separate pane. Optional. The default is [false](#ref-const-false).
 
 **Example**
 
@@ -14178,13 +16531,15 @@ if barstate.islastconfirmedhistory
 ```
 
 **Returns**
-The ID of a new polyline object that a script can use in other polyline.*() functions.
+The ID of a new polyline object that a script can use in other `polyline.*()` functions.
 
 ---
 
+<a id="ref-fun-request-currency-rate"></a>
+
 ### request.currency_rate()
 
-Provides a daily rate that can be used to convert a value expressed in the from currency to another in the to currency.
+Provides a daily rate that can be used to convert a value expressed in the `from` currency to another in the `to` currency.
 
 **Syntax**
 
@@ -14193,9 +16548,9 @@ request.currency_rate(from, to, ignore_invalid_currency) → series float
 ```
 
 **Arguments**
-from (series string) The currency in which the value to be converted is expressed. Possible values: a three-letter string with the currency code in the ISO 4217 format (e.g. "USD"), or one of the built-in variables that return currency codes, like syminfo.currency or currency.USD .
-to (series string) The currency in which the value is to be converted. Possible values: a three-letter string with the currency code in the ISO 4217 format (e.g. "USD"), or one of the built-in variables that return currency codes, like syminfo.currency or currency.USD .
-ignore_invalid_currency (series bool) Determines the behavior of the function if a conversion rate between the two currencies cannot be calculated: if false , the script will halt and return a runtime error; if true , the function will return na and execution will continue. Optional. The default is false .
+from (series string) The currency in which the value to be converted is expressed. Possible values: a three-letter string with the [currency code in the ISO 4217 format](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) (e.g. "USD"), or one of the built-in variables that return currency codes, like [syminfo.currency](#ref-var-syminfo-currency) or [currency.USD](#ref-const-currency-usd).
+to (series string) The currency in which the value is to be converted. Possible values: a three-letter string with the [currency code in the ISO 4217 format](https://en.wikipedia.org/wiki/ISO_4217#Active_codes) (e.g. "USD"), or one of the built-in variables that return currency codes, like [syminfo.currency](#ref-var-syminfo-currency) or [currency.USD](#ref-const-currency-usd).
+ignore_invalid_currency (series bool) Determines the behavior of the function if a conversion rate between the two currencies cannot be calculated: if [false](#ref-const-false), the script will halt and return a runtime error; if [true](#ref-const-true), the function will return [na](#ref-var-na) and execution will continue. Optional. The default is [false](#ref-const-false).
 
 **Example**
 
@@ -14207,9 +16562,11 @@ plot(close * rate)
 ```
 
 **Remarks**
-If from and to arguments are equal, function returns 1. Please note that using this variable/function can cause indicator repainting .
+If `from` and `to` arguments are equal, function returns 1. Please note that using this variable/function can cause [indicator repainting](./docs_content.md#docs-concepts-repainting).
 
 ---
+
+<a id="ref-fun-request-dividends"></a>
 
 ### request.dividends()
 
@@ -14222,12 +16579,12 @@ request.dividends(ticker, field, gaps, lookahead, ignore_invalid_symbol, currenc
 ```
 
 **Arguments**
-ticker (series string) Symbol. Note that the symbol should be passed with a prefix. For example: "NASDAQ:AAPL" instead of "AAPL". Using syminfo.ticker will cause an error. Use syminfo.tickerid instead.
-field (series string) Input string. Possible values include: dividends.net , dividends.gross . Default value is dividends.gross .
-gaps (simple barmerge_gaps) Merge strategy for the requested data (requested data automatically merges with the main series OHLC data). Possible values: barmerge.gaps_on , barmerge.gaps_off . barmerge.gaps_on - requested data is merged with possible gaps ( na values). barmerge.gaps_off - requested data is merged continuously without gaps, all the gaps are filled with the previous nearest existing values. Default value is barmerge.gaps_off .
-lookahead (simple barmerge_lookahead) Merge strategy for the requested data position. Possible values: barmerge.lookahead_on , barmerge.lookahead_off . Default value is barmerge.lookahead_off starting from version 3. Note that behavour is the same on real-time, and differs only on history.
+ticker (series string) Symbol. Note that the symbol should be passed with a prefix. For example: "NASDAQ:AAPL" instead of "AAPL". Using [syminfo.ticker](#ref-var-syminfo-ticker) will cause an error. Use [syminfo.tickerid](#ref-var-syminfo-tickerid) instead.
+field (series string) Input string. Possible values include: [dividends.net](#ref-const-dividends-net), [dividends.gross](#ref-const-dividends-gross). Default value is [dividends.gross](#ref-const-dividends-gross).
+gaps (simple barmerge_gaps) Merge strategy for the requested data (requested data automatically merges with the main series OHLC data). Possible values: [barmerge.gaps_on](#ref-const-barmerge-gaps-on), [barmerge.gaps_off](#ref-const-barmerge-gaps-off). [barmerge.gaps_on](#ref-const-barmerge-gaps-on) - requested data is merged with possible gaps ([na](#ref-var-na) values). [barmerge.gaps_off](#ref-const-barmerge-gaps-off) - requested data is merged continuously without gaps, all the gaps are filled with the previous nearest existing values. Default value is [barmerge.gaps_off](#ref-const-barmerge-gaps-off).
+lookahead (simple barmerge_lookahead) Merge strategy for the requested data position. Possible values: [barmerge.lookahead_on](#ref-const-barmerge-lookahead-on), [barmerge.lookahead_off](#ref-const-barmerge-lookahead-off). Default value is [barmerge.lookahead_off](#ref-const-barmerge-lookahead-off) starting from version 3. Note that behavour is the same on real-time, and differs only on history.
 ignore_invalid_symbol (input bool) An optional parameter. Determines the behavior of the function if the specified symbol is not found: if false, the script will halt and return a runtime error; if true, the function will return na and execution will continue. The default value is false.
-currency (series string) Currency into which the symbol's currency-related dividends values (e.g. dividends.gross ) are to be converted. The conversion rate depends on the previous daily value of a corresponding currency pair from the most popular exchange. A spread symbol is used if no exchange provides the rate directly. Possible values: a "string" representing a valid currency code (e.g., "USD" or "USDT") or a constant from the currency.* namespace (e.g., currency.USD or currency.USDT ). The default is syminfo.currency .
+currency (series string) Currency into which the symbol's currency-related dividends values (e.g. [dividends.gross](#ref-const-dividends-gross)) are to be converted. The conversion rate depends on the previous daily value of a corresponding currency pair from the most popular exchange. A spread symbol is used if no exchange provides the rate directly. Possible values: a "string" representing a valid currency code (e.g., "USD" or "USDT") or a constant from the `currency.*` namespace (e.g., [currency.USD](#ref-const-currency-usd) or [currency.USDT](#ref-const-currency-usdt)). The default is [syminfo.currency](#ref-var-syminfo-currency).
 
 **Example**
 
@@ -14245,6 +16602,8 @@ Requested series, or n/a if there is no dividends data for the specified symbol.
 
 ---
 
+<a id="ref-fun-request-earnings"></a>
+
 ### request.earnings()
 
 Requests earnings data for the specified symbol.
@@ -14256,12 +16615,12 @@ request.earnings(ticker, field, gaps, lookahead, ignore_invalid_symbol, currency
 ```
 
 **Arguments**
-ticker (series string) Symbol. Note that the symbol should be passed with a prefix. For example: "NASDAQ:AAPL" instead of "AAPL". Using syminfo.ticker will cause an error. Use syminfo.tickerid instead.
-field (series string) Input string. Possible values include: earnings.actual , earnings.estimate , earnings.standardized . Default value is earnings.actual .
-gaps (simple barmerge_gaps) Merge strategy for the requested data (requested data automatically merges with the main series OHLC data). Possible values: barmerge.gaps_on , barmerge.gaps_off . barmerge.gaps_on - requested data is merged with possible gaps ( na values). barmerge.gaps_off - requested data is merged continuously without gaps, all the gaps are filled with the previous nearest existing values. Default value is barmerge.gaps_off .
-lookahead (simple barmerge_lookahead) Merge strategy for the requested data position. Possible values: barmerge.lookahead_on , barmerge.lookahead_off . Default value is barmerge.lookahead_off starting from version 3. Note that behavour is the same on real-time, and differs only on history.
+ticker (series string) Symbol. Note that the symbol should be passed with a prefix. For example: "NASDAQ:AAPL" instead of "AAPL". Using [syminfo.ticker](#ref-var-syminfo-ticker) will cause an error. Use [syminfo.tickerid](#ref-var-syminfo-tickerid) instead.
+field (series string) Input string. Possible values include: [earnings.actual](#ref-const-earnings-actual), [earnings.estimate](#ref-const-earnings-estimate), [earnings.standardized](#ref-const-earnings-standardized). Default value is [earnings.actual](#ref-const-earnings-actual).
+gaps (simple barmerge_gaps) Merge strategy for the requested data (requested data automatically merges with the main series OHLC data). Possible values: [barmerge.gaps_on](#ref-const-barmerge-gaps-on), [barmerge.gaps_off](#ref-const-barmerge-gaps-off). [barmerge.gaps_on](#ref-const-barmerge-gaps-on) - requested data is merged with possible gaps ([na](#ref-var-na) values). [barmerge.gaps_off](#ref-const-barmerge-gaps-off) - requested data is merged continuously without gaps, all the gaps are filled with the previous nearest existing values. Default value is [barmerge.gaps_off](#ref-const-barmerge-gaps-off).
+lookahead (simple barmerge_lookahead) Merge strategy for the requested data position. Possible values: [barmerge.lookahead_on](#ref-const-barmerge-lookahead-on), [barmerge.lookahead_off](#ref-const-barmerge-lookahead-off). Default value is [barmerge.lookahead_off](#ref-const-barmerge-lookahead-off) starting from version 3. Note that behavour is the same on real-time, and differs only on history.
 ignore_invalid_symbol (input bool) An optional parameter. Determines the behavior of the function if the specified symbol is not found: if false, the script will halt and return a runtime error; if true, the function will return na and execution will continue. The default value is false.
-currency (series string) Currency into which the symbol's currency-related earnings values (e.g. earnings.actual ) are to be converted. The conversion rate depends on the previous daily value of a corresponding currency pair from the most popular exchange. A spread symbol is used if no exchange provides the rate directly. Possible values: a "string" representing a valid currency code (e.g., "USD" or "USDT") or a constant from the currency.* namespace (e.g., currency.USD or currency.USDT ). The default is syminfo.currency .
+currency (series string) Currency into which the symbol's currency-related earnings values (e.g. [earnings.actual](#ref-const-earnings-actual)) are to be converted. The conversion rate depends on the previous daily value of a corresponding currency pair from the most popular exchange. A spread symbol is used if no exchange provides the rate directly. Possible values: a "string" representing a valid currency code (e.g., "USD" or "USDT") or a constant from the `currency.*` namespace (e.g., [currency.USD](#ref-const-currency-usd) or [currency.USDT](#ref-const-currency-usdt)). The default is [syminfo.currency](#ref-var-syminfo-currency).
 
 **Example**
 
@@ -14279,6 +16638,8 @@ Requested series, or n/a if there is no earnings data for the specified symbol.
 
 ---
 
+<a id="ref-fun-request-economic"></a>
+
 ### request.economic()
 
 Requests economic data for a symbol. Economic data includes information such as the state of a country's economy (GDP, inflation rate, etc.) or of a particular industry (steel production, ICU beds, etc.).
@@ -14290,10 +16651,10 @@ request.economic(country_code, field, gaps, ignore_invalid_symbol) → series fl
 ```
 
 **Arguments**
-country_code (series string) The code of the country (e.g. "US") or the region (e.g. "EU") for which the economic data is requested. The Help Center article lists the countries and their codes. The countries for which information is available vary with metrics. The Help Center article for each metric lists the countries for which the metric is available.
-field (series string) The code of the requested economic metric (e.g., "GDP"). The Help Center article lists the metrics and their codes.
-gaps (simple barmerge_gaps) Specifies how the returned values are merged on chart bars. Possible values: barmerge.gaps_off , barmerge.gaps_on . With barmerge.gaps_on , a value only appears on the current chart bar when it first becomes available from the function's context, otherwise na is returned (thus a "gap" occurs). With barmerge.gaps_off , what would otherwise be gaps are filled with the latest known value returned, avoiding na values. Optional. The default is barmerge.gaps_off .
-ignore_invalid_symbol (input bool) Determines the behavior of the function if the specified symbol is not found: if false , the script will halt and return a runtime error; if true , the function will return na and execution will continue. Optional. The default is false .
+country_code (series string) The code of the country (e.g. "US") or the region (e.g. "EU") for which the economic data is requested. The [Help Center article](https://www.tradingview.com/chart/?solution=43000665359) lists the countries and their codes. The countries for which information is available vary with metrics. The [Help Center article for each metric](https://www.tradingview.com/support/folders/43000581956-list-of-available-economic-indicators/) lists the countries for which the metric is available.
+field (series string) The code of the requested economic metric (e.g., "GDP"). The [Help Center article](https://www.tradingview.com/chart/?solution=43000665359) lists the metrics and their codes.
+gaps (simple barmerge_gaps) Specifies how the returned values are merged on chart bars. Possible values: [barmerge.gaps_off](#ref-const-barmerge-gaps-off), [barmerge.gaps_on](#ref-const-barmerge-gaps-on). With [barmerge.gaps_on](#ref-const-barmerge-gaps-on), a value only appears on the current chart bar when it first becomes available from the function's context, otherwise [na](#ref-var-na) is returned (thus a "gap" occurs). With [barmerge.gaps_off](#ref-const-barmerge-gaps-off), what would otherwise be gaps are filled with the latest known value returned, avoiding [na](#ref-var-na) values. Optional. The default is [barmerge.gaps_off](#ref-const-barmerge-gaps-off).
+ignore_invalid_symbol (input bool) Determines the behavior of the function if the specified symbol is not found: if [false](#ref-const-false), the script will halt and return a runtime error; if [true](#ref-const-true), the function will return [na](#ref-var-na) and execution will continue. Optional. The default is [false](#ref-const-false).
 
 **Example**
 
@@ -14308,9 +16669,11 @@ plot(e)
 Requested series.
 
 **Remarks**
-Economic data can also be accessed from charts, just like a regular symbol. Use "ECONOMIC" as the exchange name and {country_code}{field} as the ticker. The name of US GDP data is thus "ECONOMIC:USGDP".
+Economic data can also be accessed from charts, just like a regular symbol. Use "ECONOMIC" as the exchange name and `{country_code}{field}` as the ticker. The name of US GDP data is thus "ECONOMIC:USGDP".
 
 ---
+
+<a id="ref-fun-request-financial"></a>
 
 ### request.financial()
 
@@ -14324,11 +16687,11 @@ request.financial(symbol, financial_id, period, gaps, ignore_invalid_symbol, cur
 
 **Arguments**
 symbol (series string) Symbol. Note that the symbol should be passed with a prefix. For example: "NASDAQ:AAPL" instead of "AAPL".
-financial_id (series string) Financial identifier. You can find the list of available ids via our Help Center .
+financial_id (series string) Financial identifier. You can find the list of available ids via our [Help Center](https://www.tradingview.com/?solution=43000564727).
 period (series string) Reporting period. Possible values are "TTM", "FY", "FQ", "FH", "D".
-gaps (simple barmerge_gaps) Merge strategy for the requested data (requested data automatically merges with the main series: OHLC data). Possible values include: barmerge.gaps_on , barmerge.gaps_off . barmerge.gaps_on - requested data is merged with possible gaps ( na values). barmerge.gaps_off - requested data is merged continuously without gaps, all the gaps are filled with the previous, nearest existing values. Default value is barmerge.gaps_off .
+gaps (simple barmerge_gaps) Merge strategy for the requested data (requested data automatically merges with the main series: OHLC data). Possible values include: [barmerge.gaps_on](#ref-const-barmerge-gaps-on), [barmerge.gaps_off](#ref-const-barmerge-gaps-off). [barmerge.gaps_on](#ref-const-barmerge-gaps-on) - requested data is merged with possible gaps ([na](#ref-var-na) values). [barmerge.gaps_off](#ref-const-barmerge-gaps-off) - requested data is merged continuously without gaps, all the gaps are filled with the previous, nearest existing values. Default value is [barmerge.gaps_off](#ref-const-barmerge-gaps-off).
 ignore_invalid_symbol (input bool) An optional parameter. Determines the behavior of the function if the specified symbol is not found: if false, the script will halt and return a runtime error; if true, the function will return na and execution will continue. The default value is false.
-currency (series string) Optional. Currency into which the symbol's financial metrics (e.g. Net Income) are to be converted. The conversion rate depends on the previous daily value of a corresponding currency pair from the most popular exchange. A spread symbol is used if no exchange provides the rate directly. Possible values: a "string" representing a valid currency code (e.g., "USD" or "USDT") or a constant from the currency.* namespace (e.g., currency.USD or currency.USDT ). The default is syminfo.currency .
+currency (series string) Optional. Currency into which the symbol's financial metrics (e.g. Net Income) are to be converted. The conversion rate depends on the previous daily value of a corresponding currency pair from the most popular exchange. A spread symbol is used if no exchange provides the rate directly. Possible values: a "string" representing a valid currency code (e.g., "USD" or "USDT") or a constant from the `currency.*` namespace (e.g., [currency.USD](#ref-const-currency-usd) or [currency.USDT](#ref-const-currency-usdt)). The default is [syminfo.currency](#ref-var-syminfo-currency).
 
 **Example**
 
@@ -14344,9 +16707,11 @@ Requested series.
 
 ---
 
+<a id="ref-fun-request-footprint"></a>
+
 ### request.footprint()
 
-Requests the ID of a footprint object that contains data for calculating volume footprint information for the current chart bar. Scripts can use the returned ID in calls to the footprint.*() functions to retrieve footprint data, including footprint rows, categorized volume sums, and volume delta.
+Requests the ID of a [footprint](#ref-type-footprint) object that contains data for calculating [volume footprint](https://www.tradingview.com/support/solutions/43000726164/) information for the current chart bar. Scripts can use the returned ID in calls to the `footprint.*()` functions to retrieve footprint data, including footprint rows, categorized volume sums, and volume delta.
 
 **Syntax**
 
@@ -14357,22 +16722,24 @@ request.footprint(ticks_per_row, va_percent, imbalance_percent) → footprint
 **Arguments**
 ticks_per_row (simple int) The price range of each footprint row, expressed in ticks.
 va_percent (simple int/float) Optional. The percentage of each footprint's total volume to use for calculating the value area (VA). The default is 70.
-imbalance_percent (simple int/float) Optional. The percentage difference in volume for detecting row imbalances. Scripts can use volume_row IDs retrieved from the returned footprint object in calls to volume_row.has_buy_imbalance() and volume_row.has_sell_imbalance() to identify imbalanced rows. A row is imbalanced if its "buy" volume exceeds the "sell" volume of the row below it by the specified percentage, or if its "sell" volume exceeds the "buy" volume of the row above it by the percentage. The default is 300.
+imbalance_percent (simple int/float) Optional. The percentage difference in volume for detecting row imbalances. Scripts can use [volume_row](#ref-type-volume-row) IDs retrieved from the returned [footprint](#ref-type-footprint) object in calls to [volume_row.has_buy_imbalance()](#ref-fun-volume-row-has-buy-imbalance) and [volume_row.has_sell_imbalance()](#ref-fun-volume-row-has-sell-imbalance) to identify imbalanced rows. A row is imbalanced if its "buy" volume exceeds the "sell" volume of the row below it by the specified percentage, or if its "sell" volume exceeds the "buy" volume of the row above it by the percentage. The default is 300.
 
 **Returns**
-The ID of a footprint object containing volume footprint data for the current bar, or na if no data is available.
+The ID of a [footprint](#ref-type-footprint) object containing volume footprint data for the current bar, or [na](#ref-var-na) if no data is available.
 
 **Remarks**
-Only accounts with Premium or Ultimate plans can use scripts that call this function.
-A single script cannot include more than one request.footprint() call.
+Only accounts with Premium or Ultimate [plans](https://www.tradingview.com/pricing/?status=pro#comparison) can use scripts that call this function.
+A single script cannot include more than one `request.footprint()` call.
 
 ---
 
+<a id="ref-fun-request-quandl"></a>
+
 ### request.quandl()
 
-Note: This function has been deprecated due to the API change from NASDAQ Data Link. Requests for "QUANDL" symbols are no longer valid and requests for them return a runtime error.
-Some of the data previously provided by this function is available on TradingView through other feeds, such as "BCHAIN" or "FRED". Use Symbol Search to look for such data based on its description. Commitment of Traders (COT) data can be requested using the official LibraryCOT library.
-Requests Nasdaq Data Link (formerly Quandl) data for a symbol.
+**Note:** This function has been deprecated due to the API change from NASDAQ Data Link. Requests for "QUANDL" symbols are no longer valid and requests for them return a runtime error.
+Some of the data previously provided by this function is available on TradingView through other feeds, such as "BCHAIN" or "FRED". Use Symbol Search to look for such data based on its description. Commitment of Traders (COT) data can be requested using the official [LibraryCOT](https://www.tradingview.com/v/ysFf2OTq/) library.
+Requests [Nasdaq Data Link](https://data.nasdaq.com/) (formerly Quandl) data for a symbol.
 
 **Syntax**
 
@@ -14382,7 +16749,7 @@ request.quandl(ticker, gaps, index, ignore_invalid_symbol) → series float
 
 **Arguments**
 ticker (series string) Symbol. Note that the name of a time series and Quandl data feed should be divided by a forward slash. For example: "CFTC/SB_FO_ALL".
-gaps (simple barmerge_gaps) Merge strategy for the requested data (requested data automatically merges with the main series: OHLC data). Possible values include: barmerge.gaps_on , barmerge.gaps_off . barmerge.gaps_on - requested data is merged with possible gaps ( na values). barmerge.gaps_off - requested data is merged continuously without gaps, all the gaps are filled with the previous, nearest existing values. Default value is barmerge.gaps_off .
+gaps (simple barmerge_gaps) Merge strategy for the requested data (requested data automatically merges with the main series: OHLC data). Possible values include: [barmerge.gaps_on](#ref-const-barmerge-gaps-on), [barmerge.gaps_off](#ref-const-barmerge-gaps-off). [barmerge.gaps_on](#ref-const-barmerge-gaps-on) - requested data is merged with possible gaps ([na](#ref-var-na) values). [barmerge.gaps_off](#ref-const-barmerge-gaps-off) - requested data is merged continuously without gaps, all the gaps are filled with the previous, nearest existing values. Default value is [barmerge.gaps_off](#ref-const-barmerge-gaps-off).
 index (series int) A Quandl time-series column index.
 ignore_invalid_symbol (input bool) An optional parameter. Determines the behavior of the function if the specified symbol is not found: if false, the script will halt and return a runtime error; if true, the function will return na and execution will continue. The default value is false.
 
@@ -14400,6 +16767,8 @@ Requested series.
 
 ---
 
+<a id="ref-fun-request-security"></a>
+
 ### request.security()
 
 Requests the result of an expression from a specified context (symbol and timeframe).
@@ -14411,14 +16780,14 @@ request.security(symbol, timeframe, expression, gaps, lookahead, ignore_invalid_
 ```
 
 **Arguments**
-symbol (series string) Symbol or ticker identifier of the requested data. Use an empty string or syminfo.tickerid to request data using the chart's symbol. To retrieve data with additional modifiers (extended sessions, dividend adjustments, non-standard chart types like Heikin Ashi and Renko, etc.), create a custom ticker ID for the request using the functions in the ticker.* namespace.
-timeframe (series string) Timeframe of the requested data. Use an empty string or timeframe.period to request data from the chart's timeframe or the timeframe specified in the indicator() function. To request data from a different timeframe, supply a valid timeframe string. See here to learn about specifying timeframe strings.
-expression (variable, function, object, array, matrix, or map of series int/float/bool/string/color/enum, or a tuple of these) The expression to calculate and return from the requested context. It can accept a built-in variable like close , a user-defined variable, an expression such as ta.change(close) / (high - low) , a function call that does not use Pine Script® drawings, an object , a collection , or a tuple of expressions.
-gaps (simple barmerge_gaps) Specifies how the returned values are merged on chart bars. Possible values: barmerge.gaps_on , barmerge.gaps_off . With barmerge.gaps_on a value only appears on the current chart bar when it first becomes available from the function's context, otherwise na is returned (thus a "gap" occurs). With barmerge.gaps_off what would otherwise be gaps are filled with the latest known value returned, avoiding na values. Optional. The default is barmerge.gaps_off .
-lookahead (simple barmerge_lookahead) On historical bars only, returns data from the timeframe before it elapses. Possible values: barmerge.lookahead_on , barmerge.lookahead_off . Has no effect on realtime values. Optional. The default is barmerge.lookahead_off starting from Pine Script® v3. The default is barmerge.lookahead_on in v1 and v2. WARNING: Using barmerge.lookahead_on at timeframes higher than the chart's without offsetting the expression argument like in close[1] will introduce future leak in scripts, as the function will then return the close price before it is actually known in the current context. As is explained in the User Manual's page on Repainting this will produce misleading results.
-ignore_invalid_symbol (input bool) Determines the behavior of the function if the specified symbol is not found: if false , the script will halt and throw a runtime error; if true , the function will return na and execution will continue. Optional. The default is false .
-currency (series string) Optional. Specifies the target currency for converting values expressed in currency units (e.g., open , high , low , close ) or expressions involving such values. Literal values such as 200 are not converted. The conversion rate for monetary values depends on the previous daily value of a corresponding currency pair from the most popular exchange. A spread symbol is used if no exchange provides the rate directly. Possible values: a "string" representing a valid currency code (e.g., "USD" or "USDT") or a constant from the currency.* namespace (e.g., currency.USD or currency.USDT ). The default is syminfo.currency .
-calc_bars_count (simple int) Optional. Determines the maximum number of recent historical bars that the function can request. If specified, the function evaluates the expression argument starting from that number of bars behind the last historical bar in the requested dataset, treating those bars as the only available data. Limiting the number of historical bars in a request can help improve calculation efficiency in some cases. The default is the same as the number of chart bars available for the symbol and timeframe. The maximum number of bars that the function can attempt to retrieve depends on the intrabar limit of the user's plan. However, the request cannot retrieve more bars than are available in the dataset.
+symbol (series string) Symbol or ticker identifier of the requested data. Use an empty string or [syminfo.tickerid](#ref-var-syminfo-tickerid) to request data using the chart's symbol. To retrieve data with additional modifiers (extended sessions, dividend adjustments, non-standard chart types like Heikin Ashi and Renko, etc.), create a custom ticker ID for the request using the functions in the `ticker.*` namespace.
+timeframe (series string) Timeframe of the requested data. Use an empty string or [timeframe.period](#ref-var-timeframe-period) to request data from the chart's timeframe or the `timeframe` specified in the [indicator()](#ref-fun-indicator) function. To request data from a different timeframe, supply a valid timeframe string. See [here](./docs_content.md#docs-concepts-timeframes) to learn about specifying timeframe strings.
+expression (variable, function, object, array, matrix, or map of series int/float/bool/string/color/enum, or a tuple of these) The expression to calculate and return from the requested context. It can accept a built-in variable like [close](#ref-var-close), a user-defined variable, an expression such as `ta.change(close) / (high - low)`, a function call that does not use Pine Script® drawings, an [object](./docs_content.md#docs-language-objects), a [collection](./docs_content.md#docs-language-type-system), or a tuple of expressions.
+gaps (simple barmerge_gaps) Specifies how the returned values are merged on chart bars. Possible values: [barmerge.gaps_on](#ref-const-barmerge-gaps-on), [barmerge.gaps_off](#ref-const-barmerge-gaps-off). With [barmerge.gaps_on](#ref-const-barmerge-gaps-on) a value only appears on the current chart bar when it first becomes available from the function's context, otherwise [na](#ref-var-na) is returned (thus a "gap" occurs). With [barmerge.gaps_off](#ref-const-barmerge-gaps-off) what would otherwise be gaps are filled with the latest known value returned, avoiding [na](#ref-var-na) values. Optional. The default is [barmerge.gaps_off](#ref-const-barmerge-gaps-off).
+lookahead (simple barmerge_lookahead) On historical bars only, returns data from the timeframe before it elapses. Possible values: [barmerge.lookahead_on](#ref-const-barmerge-lookahead-on), [barmerge.lookahead_off](#ref-const-barmerge-lookahead-off). Has no effect on realtime values. Optional. The default is [barmerge.lookahead_off](#ref-const-barmerge-lookahead-off) starting from Pine Script® v3. The default is [barmerge.lookahead_on](#ref-const-barmerge-lookahead-on) in v1 and v2. WARNING: Using [barmerge.lookahead_on](#ref-const-barmerge-lookahead-on) at timeframes higher than the chart's without offsetting the `expression` argument like in `close[1]` will introduce future leak in scripts, as the function will then return the `close` price before it is actually known in the current context. As is explained in the User Manual's page on [Repainting](./docs_content.md#docs-concepts-repainting) this will produce misleading results.
+ignore_invalid_symbol (input bool) Determines the behavior of the function if the specified symbol is not found: if [false](#ref-const-false), the script will halt and throw a runtime error; if [true](#ref-const-true), the function will return [na](#ref-var-na) and execution will continue. Optional. The default is [false](#ref-const-false).
+currency (series string) Optional. Specifies the target currency for converting values expressed in currency units (e.g., [open](#ref-var-open), [high](#ref-var-high), [low](#ref-var-low), [close](#ref-var-close)) or expressions involving such values. Literal values such as `200` are not converted. The conversion rate for monetary values depends on the previous daily value of a corresponding currency pair from the most popular exchange. A spread symbol is used if no exchange provides the rate directly. Possible values: a "string" representing a valid currency code (e.g., "USD" or "USDT") or a constant from the `currency.*` namespace (e.g., [currency.USD](#ref-const-currency-usd) or [currency.USDT](#ref-const-currency-usdt)). The default is [syminfo.currency](#ref-var-syminfo-currency).
+calc_bars_count (simple int) Optional. Determines the maximum number of recent historical bars that the function can request. If specified, the function evaluates the `expression` argument starting from that number of bars behind the last historical bar in the requested dataset, treating those bars as the only available data. Limiting the number of historical bars in a request can help improve calculation efficiency in some cases. The default is the same as the number of [chart bars](./docs_content.md#docs-writing-limitations) available for the symbol and timeframe. The maximum number of bars that the function can attempt to retrieve depends on the [intrabar limit](./docs_content.md#docs-writing-limitations) of the user's plan. However, the request cannot retrieve more bars than are available in the dataset.
 
 **Example**
 
@@ -14474,19 +16843,21 @@ plotcandle(array.get(ohlcArray, 0), array.get(ohlcArray, 1), array.get(ohlcArray
 ```
 
 **Returns**
-A result determined by expression .
+A result determined by `expression`.
 
 **Remarks**
-Scripts using this function might calculate differently on historical and realtime bars, leading to repainting .
-A single script can contain no more than 40 unique request.*() function calls. A call is unique only if it does not call the same function with the same arguments.
-When using two calls to a request.*() function to evaluate the same expression from the same context with different calc_bars_count values, the second call requests the same number of historical bars as the first. For example, if a script calls request.security("AAPL", "", close, calc_bars_count = 3) after it calls request.security("AAPL", "", close, calc_bars_count = 5) , the second call also uses five bars of historical data, not three.
-The symbol of a request.() call can be inherited if it is not specified precisely, i.e., if the symbol argument is an empty string or syminfo.tickerid . Similarly, the timeframe of a request.() call can be inherited if the timeframe argument is an empty string or timeframe.period . These values are normally taken from the chart on which the script is running. However, if request.*() function A is called from within the expression of request.*() function B, then function A can inherit the values from function B. See here for more information.
+Scripts using this function might calculate differently on historical and realtime bars, leading to [repainting](./docs_content.md#docs-concepts-repainting).
+A single script can contain no more than 40 unique `request.*()` function calls. A call is unique only if it does not call the same function with the same arguments.
+When using two calls to a `request.*()` function to evaluate the same expression from the same context with different `calc_bars_count` values, the second call requests the same number of historical bars as the first. For example, if a script calls `request.security("AAPL", "", close, calc_bars_count = 3)` after it calls `request.security("AAPL", "", close, calc_bars_count = 5)`, the second call also uses five bars of historical data, not three.
+The symbol of a `request.()` call can be *inherited* if it is not specified precisely, i.e., if the `symbol` argument is an empty string or [syminfo.tickerid](#ref-var-syminfo-tickerid). Similarly, the timeframe of a `request.()` call can be inherited if the `timeframe` argument is an empty string or [timeframe.period](#ref-var-timeframe-period). These values are normally taken from the chart on which the script is running. However, if `request.*()` function A is called from within the expression of `request.*()` function B, then function A can inherit the values from function B. See [here](./docs_content.md#docs-concepts-other-timeframes-and-data) for more information.
 
 ---
 
+<a id="ref-fun-request-security-lower-tf"></a>
+
 ### request.security_lower_tf()
 
-Requests the results of an expression from a specified symbol on a timeframe lower than or equal to the chart's timeframe. It returns an array containing one element for each lower-timeframe bar within the chart bar. On a 5-minute chart, requesting data using a timeframe argument of "1" typically returns an array with five elements representing the value of the expression on each 1-minute bar, ordered by time with the earliest value first.
+Requests the results of an expression from a specified symbol on a timeframe lower than or equal to the chart's timeframe. It returns an [array](#ref-type-array) containing one element for each lower-timeframe bar within the chart bar. On a 5-minute chart, requesting data using a `timeframe` argument of "1" typically returns an array with five elements representing the value of the `expression` on each 1-minute bar, ordered by time with the earliest value first.
 
 **Syntax**
 
@@ -14495,13 +16866,13 @@ request.security_lower_tf(symbol, timeframe, expression, ignore_invalid_symbol, 
 ```
 
 **Arguments**
-symbol (series string) Symbol or ticker identifier of the requested data. Use an empty string or syminfo.tickerid to request data using the chart's symbol. To retrieve data with additional modifiers (extended sessions, dividend adjustments, non-standard chart types like Heikin Ashi and Renko, etc.), create a custom ticker ID for the request using the functions in the ticker.* namespace.
-timeframe (series string) Timeframe of the requested data. Use an empty string or timeframe.period to request data from the chart's timeframe or the timeframe specified in the indicator() function. To request data from a different timeframe, supply a valid timeframe string. See here to learn about specifying timeframe strings.
-expression (variable, object or function of series int/float/bool/string/color/enum, or a tuple of these) The expression to calculate and return from the requested context. It can accept a built-in variable like close , a user-defined variable, an expression such as ta.change(close) / (high - low) , a function call that does not use Pine Script® drawings, an object , or a tuple of expressions. Collections are not allowed unless they are within the fields of an object
-ignore_invalid_symbol (series bool) Determines the behavior of the function if the specified symbol is not found: if false , the script will halt and throw a runtime error; if true , the function will return na and execution will continue. Optional. The default is false .
-currency (series string) Optional. Specifies the target currency for converting values expressed in currency units (e.g., open , high , low , close ) or expressions involving such values. Literal values such as 200 are not converted. The conversion rate for monetary values depends on the previous daily value of a corresponding currency pair from the most popular exchange. A spread symbol is used if no exchange provides the rate directly. Possible values: a "string" representing a valid currency code (e.g., "USD" or "USDT") or a constant from the currency.* namespace (e.g., currency.USD or currency.USDT ). The default is syminfo.currency .
-ignore_invalid_timeframe (series bool) Determines the behavior of the function when the chart's timeframe is smaller than the timeframe used in the function call. If false , the script will halt and throw a runtime error. If true , the function will return na and execution will continue. Optional. The default is false .
-calc_bars_count (simple int) Optional. Determines the maximum number of recent historical bars that the function can request. If specified, the function evaluates the expression argument starting from that number of bars behind the last historical bar in the requested dataset, treating those bars as the only available data. Limiting the number of historical bars in a request can help improve calculation efficiency in some cases. The default is the same as the number of chart bars available for the symbol and timeframe. The maximum number of bars that the function can attempt to retrieve depends on the intrabar limit of the user's plan. However, the request cannot retrieve more bars than are available in the dataset.
+symbol (series string) Symbol or ticker identifier of the requested data. Use an empty string or [syminfo.tickerid](#ref-var-syminfo-tickerid) to request data using the chart's symbol. To retrieve data with additional modifiers (extended sessions, dividend adjustments, non-standard chart types like Heikin Ashi and Renko, etc.), create a custom ticker ID for the request using the functions in the `ticker.*` namespace.
+timeframe (series string) Timeframe of the requested data. Use an empty string or [timeframe.period](#ref-var-timeframe-period) to request data from the chart's timeframe or the `timeframe` specified in the [indicator()](#ref-fun-indicator) function. To request data from a different timeframe, supply a valid timeframe string. See [here](./docs_content.md#docs-concepts-timeframes) to learn about specifying timeframe strings.
+expression (variable, object or function of series int/float/bool/string/color/enum, or a tuple of these) The expression to calculate and return from the requested context. It can accept a built-in variable like [close](#ref-var-close), a user-defined variable, an expression such as `ta.change(close) / (high - low)`, a function call that does not use Pine Script® drawings, an [object](./docs_content.md#docs-language-objects), or a tuple of expressions. [Collections](./docs_content.md#docs-language-type-system) are not allowed unless they are within the fields of an object
+ignore_invalid_symbol (series bool) Determines the behavior of the function if the specified symbol is not found: if [false](#ref-const-false), the script will halt and throw a runtime error; if [true](#ref-const-true), the function will return [na](#ref-var-na) and execution will continue. Optional. The default is [false](#ref-const-false).
+currency (series string) Optional. Specifies the target currency for converting values expressed in currency units (e.g., [open](#ref-var-open), [high](#ref-var-high), [low](#ref-var-low), [close](#ref-var-close)) or expressions involving such values. Literal values such as `200` are not converted. The conversion rate for monetary values depends on the previous daily value of a corresponding currency pair from the most popular exchange. A spread symbol is used if no exchange provides the rate directly. Possible values: a "string" representing a valid currency code (e.g., "USD" or "USDT") or a constant from the `currency.*` namespace (e.g., [currency.USD](#ref-const-currency-usd) or [currency.USDT](#ref-const-currency-usdt)). The default is [syminfo.currency](#ref-var-syminfo-currency).
+ignore_invalid_timeframe (series bool) Determines the behavior of the function when the chart's timeframe is smaller than the `timeframe` used in the function call. If [false](#ref-const-false), the script will halt and throw a runtime error. If [true](#ref-const-true), the function will return [na](#ref-var-na) and execution will continue. Optional. The default is [false](#ref-const-false).
+calc_bars_count (simple int) Optional. Determines the maximum number of recent historical bars that the function can request. If specified, the function evaluates the `expression` argument starting from that number of bars behind the last historical bar in the requested dataset, treating those bars as the only available data. Limiting the number of historical bars in a request can help improve calculation efficiency in some cases. The default is the same as the number of [chart bars](./docs_content.md#docs-writing-limitations) available for the symbol and timeframe. The maximum number of bars that the function can attempt to retrieve depends on the [intrabar limit](./docs_content.md#docs-writing-limitations) of the user's plan. However, the request cannot retrieve more bars than are available in the dataset.
 
 **Example**
 
@@ -14517,20 +16888,22 @@ if bar_index == last_bar_index - 1
 ```
 
 **Returns**
-An array of a type determined by expression , or a tuple of these.
+An array of a type determined by `expression`, or a tuple of these.
 
 **Remarks**
-Scripts using this function might calculate differently on historical and realtime bars, leading to repainting .
+Scripts using this function might calculate differently on historical and realtime bars, leading to [repainting](./docs_content.md#docs-concepts-repainting).
 Please note that spreads (e.g., "AAPL+MSFT*TSLA") do not always return reliable data with this function.
-A single script can contain no more than 40 unique request.*() function calls. A call is unique only if it does not call the same function with the same arguments.
-When using two calls to a request.*() function to evaluate the same expression from the same context with different calc_bars_count values, the second call requests the same number of historical bars as the first. For example, if a script calls request.security("AAPL", "", close, calc_bars_count = 3) after it calls request.security("AAPL", "", close, calc_bars_count = 5) , the second call also uses five bars of historical data, not three.
-The symbol of a request.() call can be inherited if it is not specified precisely, i.e., if the symbol argument is an empty string or syminfo.tickerid . Similarly, the timeframe of a request.() call can be inherited if the timeframe argument is an empty string or timeframe.period . These values are normally taken from the chart that the script is running on. However, if request.*() function A is called from within the expression of request.*() function B, then function A can inherit the values from function B. See here for more information.
+A single script can contain no more than 40 unique `request.*()` function calls. A call is unique only if it does not call the same function with the same arguments.
+When using two calls to a `request.*()` function to evaluate the same expression from the same context with different `calc_bars_count` values, the second call requests the same number of historical bars as the first. For example, if a script calls `request.security("AAPL", "", close, calc_bars_count = 3)` after it calls `request.security("AAPL", "", close, calc_bars_count = 5)`, the second call also uses five bars of historical data, not three.
+The symbol of a `request.()` call can be *inherited* if it is not specified precisely, i.e., if the `symbol` argument is an empty string or [syminfo.tickerid](#ref-var-syminfo-tickerid). Similarly, the timeframe of a `request.()` call can be inherited if the `timeframe` argument is an empty string or [timeframe.period](#ref-var-timeframe-period). These values are normally taken from the chart that the script is running on. However, if `request.*()` function A is called from within the expression of `request.*()` function B, then function A can inherit the values from function B. See [here](./docs_content.md#docs-concepts-other-timeframes-and-data) for more information.
 
 ---
 
+<a id="ref-fun-request-seed"></a>
+
 ### request.seed()
 
-Requests the result of an expression evaluated on data from a user-maintained GitHub repository. **Note:**The creation of new Pine Seeds repositories is suspended; only existing repositories are currently supported. See the Pine Seeds documentation on GitHub to learn more.
+Requests the result of an expression evaluated on data from a user-maintained GitHub repository. **Note:**The creation of new Pine Seeds repositories is suspended; only existing repositories are currently supported. See the [Pine Seeds documentation](https://github.com/tradingview-eod/pine-seeds-docs) on GitHub to learn more.
 
 **Syntax**
 
@@ -14541,9 +16914,9 @@ request.seed(source, symbol, expression, ignore_invalid_symbol, calc_bars_count)
 **Arguments**
 source (series string) Name of the GitHub repository.
 symbol (series string) Name of the file in the GitHub repository containing the data. The ".csv" file extension must not be included.
-expression (<arg_expr_type>) An expression to be calculated and returned from the requested symbol's context. It can be a built-in variable like close , an expression such as ta.sma(close, 100) , a non-mutable variable previously calculated in the script, a function call that does not use Pine Script® drawings, an array, a matrix, or a tuple. Mutable variables are not allowed, unless they are enclosed in the body of a function used in the expression.
-ignore_invalid_symbol (input bool) Determines the behavior of the function if the specified symbol is not found: if false , the script will halt and throw a runtime error; if true , the function will return na and execution will continue. Optional. The default is false .
-calc_bars_count (simple int) Optional. If specified, the function requests only this number of values from the end of the symbol's history and calculates expression as if these values are the only available data, which might improve calculation speed in some cases. The default is the same as the number of chart bars available for the symbol and timeframe. The maximum number of bars that the function can attempt to retrieve depends on the intrabar limit of the user's plan. However, the request cannot retrieve more bars than are available in the dataset.
+expression (<arg_expr_type>) An expression to be calculated and returned from the requested symbol's context. It can be a built-in variable like [close](#ref-var-close), an expression such as `ta.sma(close, 100)`, a non-mutable variable previously calculated in the script, a function call that does not use Pine Script® drawings, an array, a matrix, or a tuple. Mutable variables are not allowed, unless they are enclosed in the body of a function used in the expression.
+ignore_invalid_symbol (input bool) Determines the behavior of the function if the specified symbol is not found: if [false](#ref-const-false), the script will halt and throw a runtime error; if [true](#ref-const-true), the function will return [na](#ref-var-na) and execution will continue. Optional. The default is [false](#ref-const-false).
+calc_bars_count (simple int) Optional. If specified, the function requests only this number of values from the end of the symbol's history and calculates `expression` as if these values are the only available data, which might improve calculation speed in some cases. The default is the same as the number of [chart bars](./docs_content.md#docs-writing-limitations) available for the symbol and timeframe. The maximum number of bars that the function can attempt to retrieve depends on the [intrabar limit](./docs_content.md#docs-writing-limitations) of the user's plan. However, the request cannot retrieve more bars than are available in the dataset.
 
 **Example**
 
@@ -14562,6 +16935,8 @@ Requested series or tuple of series, which may include array/matrix IDs.
 
 ---
 
+<a id="ref-fun-request-splits"></a>
+
 ### request.splits()
 
 Requests splits data for the specified symbol.
@@ -14573,10 +16948,10 @@ request.splits(ticker, field, gaps, lookahead, ignore_invalid_symbol) → series
 ```
 
 **Arguments**
-ticker (series string) Symbol. Note that the symbol should be passed with a prefix. For example: "NASDAQ:AAPL" instead of "AAPL". Using syminfo.ticker will cause an error. Use syminfo.tickerid instead.
-field (series string) Input string. Possible values include: splits.denominator , splits.numerator .
-gaps (simple barmerge_gaps) Merge strategy for the requested data (requested data automatically merges with the main series OHLC data). Possible values: barmerge.gaps_on , barmerge.gaps_off . barmerge.gaps_on - requested data is merged with possible gaps ( na values). barmerge.gaps_off - requested data is merged continuously without gaps, all the gaps are filled with the previous nearest existing values. Default value is barmerge.gaps_off .
-lookahead (simple barmerge_lookahead) Merge strategy for the requested data position. Possible values: barmerge.lookahead_on , barmerge.lookahead_off . Default value is barmerge.lookahead_off starting from version 3. Note that behavour is the same on real-time, and differs only on history.
+ticker (series string) Symbol. Note that the symbol should be passed with a prefix. For example: "NASDAQ:AAPL" instead of "AAPL". Using [syminfo.ticker](#ref-var-syminfo-ticker) will cause an error. Use [syminfo.tickerid](#ref-var-syminfo-tickerid) instead.
+field (series string) Input string. Possible values include: [splits.denominator](#ref-const-splits-denominator), [splits.numerator](#ref-const-splits-numerator).
+gaps (simple barmerge_gaps) Merge strategy for the requested data (requested data automatically merges with the main series OHLC data). Possible values: [barmerge.gaps_on](#ref-const-barmerge-gaps-on), [barmerge.gaps_off](#ref-const-barmerge-gaps-off). [barmerge.gaps_on](#ref-const-barmerge-gaps-on) - requested data is merged with possible gaps ([na](#ref-var-na) values). [barmerge.gaps_off](#ref-const-barmerge-gaps-off) - requested data is merged continuously without gaps, all the gaps are filled with the previous nearest existing values. Default value is [barmerge.gaps_off](#ref-const-barmerge-gaps-off).
+lookahead (simple barmerge_lookahead) Merge strategy for the requested data position. Possible values: [barmerge.lookahead_on](#ref-const-barmerge-lookahead-on), [barmerge.lookahead_off](#ref-const-barmerge-lookahead-off). Default value is [barmerge.lookahead_off](#ref-const-barmerge-lookahead-off) starting from version 3. Note that behavour is the same on real-time, and differs only on history.
 ignore_invalid_symbol (input bool) An optional parameter. Determines the behavior of the function if the specified symbol is not found: if false, the script will halt and return a runtime error; if true, the function will return na and execution will continue. The default value is false.
 
 **Example**
@@ -14595,9 +16970,11 @@ Requested series, or n/a if there is no splits data for the specified symbol.
 
 ---
 
+<a id="ref-fun-runtime-error"></a>
+
 ### runtime.error()
 
-When called, causes a runtime error with the error message specified in the message argument.
+When called, causes a runtime error with the error message specified in the `message` argument.
 
 **Syntax**
 
@@ -14610,6 +16987,8 @@ message (series string) Error message.
 
 ---
 
+<a id="ref-fun-second"></a>
+
 ### second()
 
 **Syntax**
@@ -14620,7 +16999,7 @@ second(time, timezone) → series int
 
 **Arguments**
 time (series int) UNIX time in milliseconds.
-timezone (series string) Allows adjusting the returned value to a time zone specified in either UTC/GMT notation (e.g., "UTC-5", "GMT+0530") or as an IANA time zone database name (e.g., "America/New_York"). Optional. The default is syminfo.timezone .
+timezone (series string) Allows adjusting the returned value to a time zone specified in either UTC/GMT notation (e.g., "UTC-5", "GMT+0530") or as an IANA time zone database name (e.g., "America/New_York"). Optional. The default is [syminfo.timezone](#ref-var-syminfo-timezone).
 
 **Returns**
 Second (in exchange timezone) for provided UNIX time.
@@ -14630,9 +17009,11 @@ UNIX time is the number of milliseconds that have elapsed since 00:00:00 UTC, 1 
 
 ---
 
+<a id="ref-fun-str-contains"></a>
+
 ### str.contains()
 
-Returns true if the source string contains the str substring, false otherwise.
+Returns true if the `source` string contains the `str` substring, false otherwise.
 
 **Syntax & Overloads**
 
@@ -14663,13 +17044,15 @@ plot(isFutures ? 1 : 0)
 ```
 
 **Returns**
-True if the str was found in the source string, false otherwise.
+True if the `str` was found in the `source` string, false otherwise.
 
 ---
 
+<a id="ref-fun-str-endswith"></a>
+
 ### str.endswith()
 
-Returns true if the source string ends with the substring specified in str , false otherwise.
+Returns true if the `source` string ends with the substring specified in `str`, false otherwise.
 
 **Syntax & Overloads**
 
@@ -14690,13 +17073,15 @@ source (const string) Source string.
 str (const string) The substring to search for.
 
 **Returns**
-True if the source string ends with the substring specified in str , false otherwise.
+True if the `source` string ends with the substring specified in `str`, false otherwise.
 
 ---
 
+<a id="ref-fun-str-format"></a>
+
 ### str.format()
 
-Creates a formatted string using a specified formatting string ( formatString ) and one or more additional arguments ( arg0 , arg1 , etc.). The formatting string defines the structure of the returned string, where all placeholders in curly brackets ( {} ) refer to the additional arguments. Each placeholder requires a number representing an argument's position, starting from 0. For instance, the placeholder {0} refers to the first argument after formatString ( arg0 ), {1} refers to the second ( arg1 ), and so on. The function replaces each placeholder with a string representation of the corresponding argument.
+Creates a formatted string using a specified formatting string (`formatString`) and one or more additional arguments (`arg0`, `arg1`, etc.). The formatting string defines the structure of the returned string, where all placeholders in curly brackets (`{}`) refer to the additional arguments. Each placeholder requires a number representing an argument's position, starting from 0. For instance, the placeholder `{0}` refers to the first argument after `formatString` (`arg0`), `{1}` refers to the second (`arg1`), and so on. The function replaces each placeholder with a string representation of the corresponding argument.
 
 **Syntax & Overloads**
 
@@ -14767,18 +17152,20 @@ label.new(bar_index - 8, close, text=s9)
 The formatted string.
 
 **Remarks**
-The string used as the formatString argument can contain single quote characters ('). However, programmers must pair all single quotes in that string to avoid unexpected formatting results.
+The string used as the `formatString` argument can contain single quote characters ('). However, programmers must pair all single quotes in that string to avoid unexpected formatting results.
 All non-quoted left curly brackets must have corresponding right curly brackets in the formatting string. If the string contains imbalanced left curly brackets, it causes a runtime error. For example, "ab {0} de" and "ab }{0} de" are valid formatting strings, but "ab {0'}' de", "ab }{0}{ de" and "''{''{0}" are not.
 The placeholders for "int" or "float" values or arrays can include modifiers and formatting tokens to customize how the resulting string represents them.
-For example, the placeholder {0,number,#.#) specifies that the result inserts characters representing the arg0 number rounded to one fractional digit.
-For detailed information about placeholders and supported formats, refer to the Formatting strings section of our User Manual's Strings page.
-The apostrophe ( ' ) acts as a quote character rather than a literal character inside formatting strings. If a formatting string has a sequence of characters between two apostrophes, the function's result includes those characters literally. For instance, the substring '{' adds a literal { character to the result instead of treating it as the start of a placeholder. Note that if a formatting string uses apostrophes instead of quotation marks for its enclosing characters, the string must escape any apostrophes within the character sequence using the backslash.
+For example, the placeholder `{0,number,#.#)` specifies that the result inserts characters representing the `arg0` number rounded to one fractional digit.
+For detailed information about placeholders and supported formats, refer to the [Formatting strings](./docs_content.md#docs-concepts-strings) section of our User Manual's [Strings](./docs_content.md#docs-concepts-strings) page.
+The apostrophe (`'`) acts as a quote character rather than a literal character inside formatting strings. If a formatting string has a sequence of characters between two apostrophes, the function's result includes those characters literally. For instance, the substring `'{'` adds a literal `{` character to the result instead of treating it as the start of a placeholder. Note that if a formatting string uses apostrophes instead of quotation marks for its enclosing characters, the string must escape any apostrophes within the character sequence using the backslash.
 
 ---
 
+<a id="ref-fun-str-format-time"></a>
+
 ### str.format_time()
 
-Converts the time timestamp into a string formatted according to format and timezone .
+Converts the `time` timestamp into a string formatted according to `format` and `timezone`.
 
 **Syntax**
 
@@ -14788,8 +17175,8 @@ str.format_time(time, format, timezone) → series string
 
 **Arguments**
 time (series int) UNIX time, in milliseconds.
-format (series string) A format string specifying the date/time representation of the time in the returned string. All letters used in the string, except those escaped by single quotation marks ' , are considered formatting tokens and will be used as a formatting instruction. Refer to the Remarks section for a list of the most useful tokens. Optional. The default is "yyyy-MM-dd'T'HH:mm:ssZ", which represents the ISO 8601 standard.
-timezone (series string) Allows adjusting the returned value to a time zone specified in either UTC/GMT notation (e.g., "UTC-5", "GMT+0530") or as an IANA time zone database name (e.g., "America/New_York"). Optional. The default is syminfo.timezone .
+format (series string) A format string specifying the date/time representation of the `time` in the returned string. All letters used in the string, except those escaped by single quotation marks `'`, are considered formatting tokens and will be used as a formatting instruction. Refer to the Remarks section for a list of the most useful tokens. Optional. The default is "yyyy-MM-dd'T'HH:mm:ssZ", which represents the ISO 8601 standard.
+timezone (series string) Allows adjusting the returned value to a time zone specified in either UTC/GMT notation (e.g., "UTC-5", "GMT+0530") or as an [IANA time zone database name](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) (e.g., "America/New_York"). Optional. The default is [syminfo.timezone](#ref-var-syminfo-timezone).
 
 **Example**
 
@@ -14805,20 +17192,22 @@ if timeframe.change("1D")
 The formatted string.
 
 **Remarks**
-The M , d , h , H , m and s tokens can all be doubled to generate leading zeros. For example, the month of January will display as 1 with M , or 01 with MM .
+The `M`, `d`, `h`, `H`, `m` and `s` tokens can all be doubled to generate leading zeros. For example, the month of January will display as `1` with `M`, or `01` with `MM`.
 The most frequently used formatting tokens are:
-y - Year. Use yy to output the last two digits of the year or yyyy to output all four. Year 2000 will be 00 with yy or 2000 with yyyy .
-M - Month. Not to be confused with lowercase m , which stands for minute.
+y - Year. Use `yy` to output the last two digits of the year or `yyyy` to output all four. Year 2000 will be `00` with `yy` or `2000` with `yyyy`.
+M - Month. Not to be confused with lowercase `m`, which stands for minute.
 d - Day of the month.
 a - AM/PM postfix.
-h - Hour in the 12-hour format. The last hour of the day will be 11 in this format.
-H - Hour in the 24-hour format. The last hour of the day will be 23 in this format.
+h - Hour in the 12-hour format. The last hour of the day will be `11` in this format.
+H - Hour in the 24-hour format. The last hour of the day will be `23` in this format.
 m - Minute.
 s - Second.
 S - Fractions of a second.
-Z - Timezone, the HHmm offset from UTC, preceded by either + or - .
+Z - Timezone, the HHmm offset from UTC, preceded by either `+` or `-`.
 
 ---
+
+<a id="ref-fun-str-length"></a>
 
 ### str.length()
 
@@ -14846,6 +17235,8 @@ The number of chars in source string.
 
 ---
 
+<a id="ref-fun-str-lower"></a>
+
 ### str.lower()
 
 Returns a new string with all letters converted to lowercase.
@@ -14872,9 +17263,11 @@ A new string with all letters converted to lowercase.
 
 ---
 
+<a id="ref-fun-str-match"></a>
+
 ### str.match()
 
-Returns the new substring of the source string if it matches a regex regular expression, an empty string otherwise.
+Returns the new substring of the `source` string if it matches a `regex` regular expression, an empty string otherwise.
 
 **Syntax & Overloads**
 
@@ -14906,17 +17299,19 @@ if barstate.islastconfirmedhistory
 ```
 
 **Returns**
-The new substring of the source string if it matches a regex regular expression, an empty string otherwise.
+The new substring of the `source` string if it matches a `regex` regular expression, an empty string otherwise.
 
 **Remarks**
-Function returns first occurrence of the regular expression in the source string.
-The backslash "\" symbol in the regex string needs to be escaped with additional backslash, e.g. "\\d" stands for regular expression "\d".
+Function returns first occurrence of the [regular expression](https://en.wikipedia.org/wiki/Regular_expression#Perl_and_PCRE) in the `source` string.
+The backslash "\" symbol in the`regex` string needs to be escaped with additional backslash, e.g. "\\d" stands for regular expression "\d".
 
 ---
 
+<a id="ref-fun-str-pos"></a>
+
 ### str.pos()
 
-Returns the position of the first occurrence of the str string in the source string, 'na' otherwise.
+Returns the position of the first occurrence of the `str` string in the `source` string, 'na' otherwise.
 
 **Syntax & Overloads**
 
@@ -14937,16 +17332,18 @@ source (const string) Source string.
 str (const string) The substring to search for.
 
 **Returns**
-Position of the str string in the source string.
+Position of the `str` string in the `source` string.
 
 **Remarks**
 Strings indexing starts at 0.
 
 ---
 
+<a id="ref-fun-str-repeat"></a>
+
 ### str.repeat()
 
-Constructs a new string containing the source string repeated repeat times with the separator injected between each repeated instance.
+Constructs a new string containing the `source` string repeated `repeat` times with the `separator` injected between each repeated instance.
 
 **Syntax & Overloads**
 
@@ -14968,7 +17365,7 @@ str.repeat(source, repeat, separator) → series string
 
 **Arguments**
 source (const string) String to repeat.
-repeat (const int) Number of times to repeat the source string. Must be greater than or equal to 0.
+repeat (const int) Number of times to repeat the `source` string. Must be greater than or equal to 0.
 separator (const string) String to inject between repeated values. Optional. The default is empty string.
 
 **Example**
@@ -14981,13 +17378,15 @@ label.new(bar_index,close,repeat)
 ```
 
 **Remarks**
-Returns na if the source is na .
+Returns [na](#ref-var-na) if the `source` is [na](#ref-var-na).
 
 ---
 
+<a id="ref-fun-str-replace"></a>
+
 ### str.replace()
 
-Returns a new string with the Nth occurrence of the target string replaced by the replacement string, where N is specified in occurrence .
+Returns a new string with the Nth occurrence of the `target` string replaced by the `replacement` string, where N is specified in `occurrence`.
 
 **Syntax & Overloads**
 
@@ -15029,6 +17428,8 @@ Processed string.
 
 ---
 
+<a id="ref-fun-str-replace-all"></a>
+
 ### str.replace_all()
 
 Replaces each occurrence of the target string in the source string with the replacement string.
@@ -15053,6 +17454,8 @@ Processed string.
 
 ---
 
+<a id="ref-fun-str-split"></a>
+
 ### str.split()
 
 Divides a string into an array of substrings and returns its array id.
@@ -15072,9 +17475,11 @@ The id of an array of strings.
 
 ---
 
+<a id="ref-fun-str-startswith"></a>
+
 ### str.startswith()
 
-Returns true if the source string starts with the substring specified in str , false otherwise.
+Returns true if the `source` string starts with the substring specified in `str`, false otherwise.
 
 **Syntax & Overloads**
 
@@ -15095,13 +17500,15 @@ source (const string) Source string.
 str (const string) The substring to search for.
 
 **Returns**
-True if the source string starts with the substring specified in str , false otherwise.
+True if the `source` string starts with the substring specified in `str`, false otherwise.
 
 ---
 
+<a id="ref-fun-str-substring"></a>
+
 ### str.substring()
 
-Returns a new string that is a substring of the source string. The substring begins with the character at the index specified by begin_pos and extends to 'end_pos - 1' of the source string.
+Returns a new string that is a substring of the `source` string. The substring begins with the character at the index specified by `begin_pos` and extends to 'end_pos - 1' of the `source` string.
 
 **Syntax & Overloads**
 
@@ -15120,7 +17527,7 @@ str.substring(source, begin_pos, end_pos) → series string
 **Arguments**
 source (const string) Source string from which to extract the substring.
 begin_pos (const int) The beginning position of the extracted substring. It is inclusive (the extracted substring includes the character at that position).
-end_pos (const int) The ending position. It is exclusive (the extracted string does NOT include that position's character). Optional. The default is the length of the source string.
+end_pos (const int) The ending position. It is exclusive (the extracted string does NOT include that position's character). Optional. The default is the length of the `source` string.
 
 **Example**
 
@@ -15138,13 +17545,15 @@ if barstate.islastconfirmedhistory
 The substring extracted from the source string.
 
 **Remarks**
-Strings indexing starts from 0. If begin_pos is equal to end_pos , the function returns an empty string.
+Strings indexing starts from 0. If `begin_pos` is equal to `end_pos`, the function returns an empty string.
 
 ---
 
+<a id="ref-fun-str-tonumber"></a>
+
 ### str.tonumber()
 
-Converts a value represented in string to its "float" equivalent.
+Converts a value represented in `string` to its "float" equivalent.
 
 **Syntax & Overloads**
 
@@ -15168,9 +17577,11 @@ str.tonumber(string) → series float
 string (const string) String containing the representation of an integer or floating point value.
 
 **Returns**
-A "float" equivalent of the value in string . If the value is not a properly formed integer or floating point value, the function returns na .
+A "float" equivalent of the value in `string`. If the value is not a properly formed integer or floating point value, the function returns [na](#ref-var-na).
 
 ---
+
+<a id="ref-fun-str-tostring"></a>
 
 ### str.tostring()
 
@@ -15200,23 +17611,25 @@ str.tostring(value) → series string
 value (const enum) Value or array ID whose elements are converted to a string.
 
 **Returns**
-The string representation of the value argument.
-If the value argument is a string, it is returned as is.
-When the value is na, the function returns the string "NaN".
+The string representation of the `value` argument.
+If the `value` argument is a string, it is returned as is.
+When the `value` is na, the function returns the string "NaN".
 
 **Remarks**
 The formatting of float values will also round those values when necessary, e.g. str.tostring(3.99, '#') will return "4".
 To display trailing zeros, use '0' instead of '#'. For example, '#.000'.
-When using format.mintick , the value will be rounded to the nearest number that can be divided by syminfo.mintick without the remainder. The string is returned with trailing zeros.
+When using [format.mintick](#ref-const-format-mintick), the value will be rounded to the nearest number that can be divided by [syminfo.mintick](#ref-var-syminfo-mintick) without the remainder. The string is returned with trailing zeros.
 If the x argument is a string, the same string value will be returned.
 Bool type arguments return "true" or "false".
 When x is na, the function returns "NaN".
 
 ---
 
+<a id="ref-fun-str-trim"></a>
+
 ### str.trim()
 
-Constructs a new string with all consecutive whitespaces and other control characters (e.g., “\n”, “\t”, etc.) removed from the left and right of the source .
+Constructs a new string with all consecutive whitespaces and other control characters (e.g., “\n”, “\t”, etc.) removed from the left and right of the `source`.
 
 **Syntax & Overloads**
 
@@ -15249,9 +17662,11 @@ label.new(bar_index,close,trim)
 ```
 
 **Remarks**
-Returns an empty string ("") if the result is empty after the trim or if the source is na .
+Returns an empty string ("") if the result is empty after the trim or if the `source` is [na](#ref-var-na).
 
 ---
+
+<a id="ref-fun-str-upper"></a>
 
 ### str.upper()
 
@@ -15279,6 +17694,8 @@ A new string with all letters converted to uppercase.
 
 ---
 
+<a id="ref-fun-strategy"></a>
+
 ### strategy()
 
 This declaration statement designates the script as a strategy and sets a number of strategy-related properties.
@@ -15290,39 +17707,39 @@ strategy(title, shorttitle, overlay, format, precision, scale, pyramiding, calc_
 ```
 
 **Arguments**
-title (const string) The title of the script. It is displayed on the chart when no shorttitle argument is used, and becomes the publication's default title when publishing the script.
-shorttitle (const string) The script's display name on charts. If specified, it will replace the title argument in most chart-related windows. Optional. The default is the argument used for title .
-overlay (const bool) If true , the script's visuals appear on the main chart pane if the user adds it to the chart directly, or in another script's pane if the user applies it to that script. If false , the script's visuals appear in a separate pane. Changes to the overlay value apply only after the user adds the script to the chart again. Additionally, if the user moves the script to another pane by selecting a "Move to" option in the script's "More" menu, it does not move back to its original pane after any updates to the source code. The default is false . Strategy-specific labels that display entries and exits will be displayed over the main chart regardless of this setting.
-format (const string) Specifies the formatting of the script's displayed values. Possible values: format.inherit , format.price , format.volume , format.percent . Optional. The default is format.inherit .
-precision (const int) Specifies the number of digits after the floating point of the script's displayed values. Must be a non-negative integer no greater than 16. If format is set to format.inherit and precision is specified, the format will instead be set to format.price . When the function's format parameter uses format.volume , the precision parameter will not affect the result, as the decimal precision rules defined by format.volume supersede other precision settings. Optional. The default is inherited from the precision of the chart's symbol.
-scale (const scale_type) Optional. Determines the location of the script's price scale and the scaling behavior of the script's visuals. Possible values are scale.right , scale.left , and scale.none . If specified and the script overlays on the main chart pane or another script's pane, the script scales its visuals independently to fit the pane's visual space. If the script occupies the same pane as the main chart or another script, scale.right or scale.left adds a separate price scale for the script to the left or right side of that pane. If the script occupies a separate pane, either argument positions the price scale for that pane on the left or right side without adding a new scale. If the argument is scale.none , which is valid only if the overlay argument is true , the script displays plotted numbers directly on the scale of the existing pane, or displays values on a new price scale if the user moves it to a new pane. Changes to the argument apply only after the user adds the script to the chart again. If not specified, the script uses the main price scale for the pane it occupies, and it does not scale its visuals separately if it overlays on an existing pane.
+title (const string) The title of the script. It is displayed on the chart when no `shorttitle` argument is used, and becomes the publication's default title when publishing the script.
+shorttitle (const string) The script's display name on charts. If specified, it will replace the `title` argument in most chart-related windows. Optional. The default is the argument used for `title`.
+overlay (const bool) If [true](#ref-const-true), the script's visuals appear on the main chart pane if the user adds it to the chart directly, or in another script's pane if the user applies it to that script. If [false](#ref-const-false), the script's visuals appear in a separate pane. Changes to the `overlay` value apply only after the user adds the script to the chart again. Additionally, if the user moves the script to another pane by selecting a "Move to" option in the script's "More" menu, it does not move back to its original pane after any updates to the source code. The default is [false](#ref-const-false). Strategy-specific labels that display entries and exits will be displayed over the main chart regardless of this setting.
+format (const string) Specifies the formatting of the script's displayed values. Possible values: [format.inherit](#ref-const-format-inherit), [format.price](#ref-const-format-price), [format.volume](#ref-const-format-volume), [format.percent](#ref-const-format-percent). Optional. The default is [format.inherit](#ref-const-format-inherit).
+precision (const int) Specifies the number of digits after the floating point of the script's displayed values. Must be a non-negative integer no greater than 16. If `format` is set to [format.inherit](#ref-const-format-inherit) and `precision` is specified, the format will instead be set to [format.price](#ref-const-format-price). When the function's `format` parameter uses [format.volume](#ref-const-format-volume), the `precision` parameter will not affect the result, as the decimal precision rules defined by [format.volume](#ref-const-format-volume) supersede other precision settings. Optional. The default is inherited from the precision of the chart's symbol.
+scale (const scale_type) Optional. Determines the location of the script's price scale and the scaling behavior of the script's visuals. Possible values are [scale.right](#ref-const-scale-right), [scale.left](#ref-const-scale-left), and [scale.none](#ref-const-scale-none). If specified and the script overlays on the main chart pane or another script's pane, the script scales its visuals independently to fit the pane's visual space. If the script occupies the same pane as the main chart or another script, [scale.right](#ref-const-scale-right) or [scale.left](#ref-const-scale-left) adds a separate price scale for the script to the left or right side of that pane. If the script occupies a separate pane, either argument positions the price scale for that pane on the left or right side without adding a new scale. If the argument is [scale.none](#ref-const-scale-none), which is valid only if the `overlay` argument is `true`, the script displays plotted numbers directly on the scale of the existing pane, or displays values on a new price scale if the user moves it to a new pane. Changes to the argument apply only after the user adds the script to the chart again. If not specified, the script uses the main price scale for the pane it occupies, and it does not scale its visuals separately if it overlays on an existing pane.
 pyramiding (const int) The maximum number of entries allowed in the same direction. If the value is 0, only one entry order in the same direction can be opened, and additional entry orders are rejected. This setting can also be changed in the strategy's "Settings/Properties" tab. Optional. The default is 0.
-calc_on_order_fills (const bool) Specifies whether the strategy should be recalculated after an order is filled. If true , the strategy recalculates after an order is filled, as opposed to recalculating only when the bar closes. This setting can also be changed in the strategy's "Settings/Properties" tab. Optional. The default is false .
-calc_on_every_tick (const bool) Specifies whether the strategy should be recalculated on each realtime tick. If true , when the strategy is running on a realtime bar, it will recalculate on each chart update. If false , the strategy only calculates when the realtime bar closes. The argument used does not affect strategy calculation on historical data. This setting can also be changed in the strategy's "Settings/Properties" tab. Optional. The default is false .
-max_bars_back (const int) The length of the historical buffer the script keeps for every variable and function, which determines how many past values can be referenced using the [] history-referencing operator. The required buffer size is automatically detected by the Pine Script® runtime. Using this parameter is only necessary when a runtime error occurs because automatic detection fails. More information on the underlying mechanics of the historical buffer can be found in our Help Center . Optional. The default is 0.
+calc_on_order_fills (const bool) Specifies whether the strategy should be recalculated after an order is filled. If [true](#ref-const-true), the strategy recalculates after an order is filled, as opposed to recalculating only when the bar closes. This setting can also be changed in the strategy's "Settings/Properties" tab. Optional. The default is [false](#ref-const-false).
+calc_on_every_tick (const bool) Specifies whether the strategy should be recalculated on each realtime tick. If [true](#ref-const-true), when the strategy is running on a realtime bar, it will recalculate on each chart update. If [false](#ref-const-false), the strategy only calculates when the realtime bar closes. The argument used does not affect strategy calculation on historical data. This setting can also be changed in the strategy's "Settings/Properties" tab. Optional. The default is [false](#ref-const-false).
+max_bars_back (const int) The length of the historical buffer the script keeps for every variable and function, which determines how many past values can be referenced using the `[]` history-referencing operator. The required buffer size is automatically detected by the Pine Script® runtime. Using this parameter is only necessary when a runtime error occurs because automatic detection fails. More information on the underlying mechanics of the historical buffer can be found [in our Help Center](https://www.tradingview.com/chart/?solution=43000587849). Optional. The default is 0.
 backtest_fill_limits_assumption (const int) Limit order execution threshold in ticks. When it is used, limit orders are only filled if the market price exceeds the order's limit level by the specified number of ticks. Optional. The default is 0.
-default_qty_type (const string) Specifies the units used for default_qty_value . Possible values are: strategy.fixed for contracts/shares/lots, strategy.cash for currency amounts, or strategy.percent_of_equity for a percentage of available equity. This setting can also be changed in the strategy's "Settings/Properties" tab. Optional. The default is strategy.fixed .
-default_qty_value (const int/float) The default quantity to trade, in units determined by the argument used with the default_qty_type parameter. This setting can also be changed in the strategy's "Settings/Properties" tab. Optional. The default is 1.
-initial_capital (const int/float) The amount of funds initially available for the strategy to trade, in units of currency . Optional. The default is 1000000.
-currency (const string) Currency used by the strategy in currency-related calculations. Market positions are still opened by converting currency into the chart symbol's currency. The conversion rate depends on the previous daily value of a corresponding currency pair from the most popular exchange. A spread symbol is used if no exchange provides the rate directly. Possible values: a "string" representing a valid currency code (e.g., "USD" or "USDT") or a constant from the currency.* namespace (e.g., currency.USD or currency.USDT ). The default is syminfo.currency .
-slippage (const int) Slippage expressed in ticks. This value is added to or subtracted from the fill price of market/stop orders to make the fill price less favorable for the strategy. E.g., if syminfo.mintick is 0.01 and slippage is set to 5, a long market order will enter at 5 * 0.01 = 0.05 points above the actual price. This setting can also be changed in the strategy's "Settings/Properties" tab. Optional. The default is 0.
-commission_type (const string) Determines what the number passed to the commission_value expresses: strategy.commission.percent for a percentage of the cash volume of the order, strategy.commission.cash_per_contract for currency per contract, strategy.commission.cash_per_order for currency per order. This setting can also be changed in the strategy's "Settings/Properties" tab. Optional. The default is strategy.commission.percent .
-commission_value (const int/float) Commission applied to the strategy's orders in units determined by the argument passed to the commission_type parameter. This setting can also be changed in the strategy's "Settings/Properties" tab. Optional. The default is 0.
-process_orders_on_close (const bool) When set to true , generates an additional attempt to execute orders after a bar closes and strategy calculations are completed. If the orders are market orders, the broker emulator executes them before the next bar's open. If the orders are price-dependent, they will only be filled if the price conditions are met. This option is useful if you wish to close positions on the current bar. This setting can also be changed in the strategy's "Settings/Properties" tab. Optional. The default is false .
-close_entries_rule (const string) Determines the order in which trades are closed. Possible values are: "FIFO" (First-In, First-Out) if the earliest exit order must close the earliest entry order, or "ANY" if the orders are closed based on the from_entry parameter of the strategy.exit() function. "FIFO" can only be used with stocks, futures and US forex (NFA Compliance Rule 2-43b), while "ANY" is allowed in non-US forex. Optional. The default is "FIFO".
-margin_long (const int/float) Margin long is the percentage of the purchase price of a security that must be covered by cash or collateral for long positions. Must be a non-negative number. The logic used to simulate margin calls is explained in the Help Center . This setting can also be changed in the strategy's "Settings/Properties" tab. Optional. If the value is 0, the strategy does not enforce any limits on position size. The default is 100, in which case the strategy only uses its own funds and the long positions cannot be margin called.
-margin_short (const int/float) Margin short is the percentage of the purchase price of a security that must be covered by cash or collateral for short positions. Must be a non-negative number. The logic used to simulate margin calls is explained in the Help Center . This setting can also be changed in the strategy's "Settings/Properties" tab. Optional. If the value is 0, the strategy does not enforce any limits on position size. The default is 100, in which case the strategy only uses its own funds. Note that even with no margin used, short positions can be margin called if the loss exceeds available funds.
-explicit_plot_zorder (const bool) Specifies the order in which the script's plots, fills, and hlines are rendered. If true , plots are drawn in the order in which they appear in the script's code, each newer plot being drawn above the previous ones. This only applies to plot*() functions, fill() , and hline() . Optional. The default is false .
-max_lines_count (const int) The number of last line drawings displayed. Possible values: 1-500. Optional. The default is 50.
-max_labels_count (const int) The number of last label drawings displayed. Possible values: 1-500. Optional. The default is 50.
-max_boxes_count (const int) The number of last box drawings displayed. Possible values: 1-500. Optional. The default is 50.
+default_qty_type (const string) Specifies the units used for `default_qty_value`. Possible values are: [strategy.fixed](#ref-const-strategy-fixed) for contracts/shares/lots, [strategy.cash](#ref-const-strategy-cash) for currency amounts, or [strategy.percent_of_equity](#ref-const-strategy-percent-of-equity) for a percentage of available equity. This setting can also be changed in the strategy's "Settings/Properties" tab. Optional. The default is [strategy.fixed](#ref-const-strategy-fixed).
+default_qty_value (const int/float) The default quantity to trade, in units determined by the argument used with the `default_qty_type` parameter. This setting can also be changed in the strategy's "Settings/Properties" tab. Optional. The default is 1.
+initial_capital (const int/float) The amount of funds initially available for the strategy to trade, in units of `currency`. Optional. The default is 1000000.
+currency (const string) Currency used by the strategy in currency-related calculations. Market positions are still opened by converting `currency` into the chart symbol's currency. The conversion rate depends on the previous daily value of a corresponding currency pair from the most popular exchange. A spread symbol is used if no exchange provides the rate directly. Possible values: a "string" representing a valid currency code (e.g., "USD" or "USDT") or a constant from the `currency.*` namespace (e.g., [currency.USD](#ref-const-currency-usd) or [currency.USDT](#ref-const-currency-usdt)). The default is [syminfo.currency](#ref-var-syminfo-currency).
+slippage (const int) Slippage expressed in ticks. This value is added to or subtracted from the fill price of market/stop orders to make the fill price less favorable for the strategy. E.g., if [syminfo.mintick](#ref-var-syminfo-mintick) is 0.01 and `slippage` is set to 5, a long market order will enter at 5 * 0.01 = 0.05 points above the actual price. This setting can also be changed in the strategy's "Settings/Properties" tab. Optional. The default is 0.
+commission_type (const string) Determines what the number passed to the `commission_value` expresses: [strategy.commission.percent](#ref-const-strategy-commission-percent) for a percentage of the cash volume of the order, [strategy.commission.cash_per_contract](#ref-const-strategy-commission-cash-per-contract) for currency per contract, [strategy.commission.cash_per_order](#ref-const-strategy-commission-cash-per-order) for currency per order. This setting can also be changed in the strategy's "Settings/Properties" tab. Optional. The default is [strategy.commission.percent](#ref-const-strategy-commission-percent).
+commission_value (const int/float) Commission applied to the strategy's orders in units determined by the argument passed to the `commission_type` parameter. This setting can also be changed in the strategy's "Settings/Properties" tab. Optional. The default is 0.
+process_orders_on_close (const bool) When set to [true](#ref-const-true), generates an additional attempt to execute orders after a bar closes and strategy calculations are completed. If the orders are market orders, the broker emulator executes them before the next bar's open. If the orders are price-dependent, they will only be filled if the price conditions are met. This option is useful if you wish to close positions on the current bar. This setting can also be changed in the strategy's "Settings/Properties" tab. Optional. The default is [false](#ref-const-false).
+close_entries_rule (const string) Determines the order in which trades are closed. Possible values are: "FIFO" (First-In, First-Out) if the earliest exit order must close the earliest entry order, or "ANY" if the orders are closed based on the `from_entry` parameter of the [strategy.exit()](#ref-fun-strategy-exit) function. "FIFO" can only be used with stocks, futures and US forex (NFA Compliance Rule 2-43b), while "ANY" is allowed in non-US forex. Optional. The default is "FIFO".
+margin_long (const int/float) Margin long is the percentage of the purchase price of a security that must be covered by cash or collateral for long positions. Must be a non-negative number. The logic used to simulate margin calls is explained in the [Help Center](https://www.tradingview.com/chart/?solution=43000628599). This setting can also be changed in the strategy's "Settings/Properties" tab. Optional. If the value is 0, the strategy does not enforce any limits on position size. The default is 100, in which case the strategy only uses its own funds and the long positions cannot be margin called.
+margin_short (const int/float) Margin short is the percentage of the purchase price of a security that must be covered by cash or collateral for short positions. Must be a non-negative number. The logic used to simulate margin calls is explained in the [Help Center](https://www.tradingview.com/chart/?solution=43000628599). This setting can also be changed in the strategy's "Settings/Properties" tab. Optional. If the value is 0, the strategy does not enforce any limits on position size. The default is 100, in which case the strategy only uses its own funds. Note that even with no margin used, short positions *can* be margin called if the loss exceeds available funds.
+explicit_plot_zorder (const bool) Specifies the order in which the script's plots, fills, and hlines are rendered. If [true](#ref-const-true), plots are drawn in the order in which they appear in the script's code, each newer plot being drawn above the previous ones. This only applies to `plot*()` functions, [fill()](#ref-fun-fill), and [hline()](#ref-fun-hline). Optional. The default is [false](#ref-const-false).
+max_lines_count (const int) The number of last [line](#ref-type-line) drawings displayed. Possible values: 1-500. Optional. The default is 50.
+max_labels_count (const int) The number of last [label](#ref-type-label) drawings displayed. Possible values: 1-500. Optional. The default is 50.
+max_boxes_count (const int) The number of last [box](#ref-type-box) drawings displayed. Possible values: 1-500. Optional. The default is 50.
 calc_bars_count (const int) Limits the initial calculation of a script to the last number of bars specified. When specified, a "Calculated bars" field will be included in the "Calculation" section of the script's "Settings/Inputs" tab. Optional. The default is 0, in which case the script executes on all available bars.
-risk_free_rate (const int/float) The risk-free rate of return is the annual percentage change in the value of an investment with minimal or zero risk. It is used to calculate the Sharpe and Sortino ratios. Optional. The default is 2.
-use_bar_magnifier (const bool) Optional. When true , the Broker Emulator uses lower timeframe data during backtesting on historical bars to achieve more realistic results. The default is false . Only Premium and higher-tier plans have access to this feature.
-fill_orders_on_standard_ohlc (const bool) When true , forces strategies running on Heikin Ashi charts to fill orders using actual OHLC prices, for more realistic results. Optional. The default is false .
-max_polylines_count (const int) The number of last polyline drawings displayed. Possible values: 1-100. The count is approximate; more drawings than the specified count may be displayed. Optional. The default is 50.
-dynamic_requests (const bool) Specifies whether the script can dynamically call functions from the request.*() namespace. Dynamic request.*() calls are allowed within the local scopes of conditional structures (e.g., if ), loops (e.g., for ), and exported functions. Additionally, such calls allow "series" arguments for many of their parameters. Optional. The default is true . See the User Manual's Dynamic requests section for more information.
-behind_chart (const bool) Optional. Controls whether all plots and drawings appear behind the chart display (if true ) or in front of it (if false ). This parameter only takes effect when the overlay parameter is true . The default is true .
+risk_free_rate (const int/float) The risk-free rate of return is the annual percentage change in the value of an investment with minimal or zero risk. It is used to calculate the [Sharpe](https://www.tradingview.com/support/solutions/43000681694) and [Sortino](https://www.tradingview.com/support/solutions/43000681697) ratios. Optional. The default is 2.
+use_bar_magnifier (const bool) Optional. When [true](#ref-const-true), the [Broker Emulator](./docs_content.md#docs-concepts-strategies) uses lower timeframe data during backtesting on historical bars to achieve more realistic results. The default is [false](#ref-const-false). Only [Premium](https://www.tradingview.com/gopro/) and higher-tier plans have access to this feature.
+fill_orders_on_standard_ohlc (const bool) When [true](#ref-const-true), forces strategies running on Heikin Ashi charts to fill orders using actual OHLC prices, for more realistic results. Optional. The default is [false](#ref-const-false).
+max_polylines_count (const int) The number of last [polyline](#ref-type-polyline) drawings displayed. Possible values: 1-100. The count is approximate; more drawings than the specified count may be displayed. Optional. The default is 50.
+dynamic_requests (const bool) Specifies whether the script can dynamically call functions from the `request.*()` namespace. Dynamic `request.*()` calls are allowed within the local scopes of conditional structures (e.g., [if](#ref-kw-if)), loops (e.g., [for](#ref-kw-for)), and exported functions. Additionally, such calls allow "series" arguments for many of their parameters. Optional. The default is [true](#ref-const-true). See the User Manual's [Dynamic requests](./docs_content.md#docs-concepts-other-timeframes-and-data) section for more information.
+behind_chart (const bool) Optional. Controls whether all plots and drawings appear behind the chart display (if [true](#ref-const-true)) or in front of it (if [false](#ref-const-false)). This parameter only takes effect when the `overlay` parameter is `true`. The default is [true](#ref-const-true).
 
 **Example**
 
@@ -15338,18 +17755,20 @@ strategy.exit("Exit", "Long", profit = 10, loss = 5)
 ```
 
 **Remarks**
-You can learn more about strategies in our User Manual .
-Every strategy script must have one strategy() call.
-Strategies using calc_on_every_tick = true parameter may calculate differently on historical and realtime bars, which causes repainting .
+You can learn more about strategies in our [User Manual](./docs_content.md#docs-concepts-strategies).
+Every strategy script must have one [strategy()](#ref-fun-strategy) call.
+Strategies using `calc_on_every_tick = true` parameter may calculate differently on historical and realtime bars, which causes [repainting](./docs_content.md#docs-concepts-repainting).
 Strategies always use the chart's prices to enter and exit positions. Using them on non-standard chart types (Heikin Ashi, Renko, etc.) will produce misleading results, as their prices are synthetic. Backtesting on non-standard charts is thus not recommended.
-The maximum number of orders a strategy can open, unless it uses Deep Backtesting mode, is 9000. If the strategy exceeds this limit, it removes the oldest order's information when a new entry appears in the "List of Trades" tab. The strategy.closedtrades.*() functions return na for trades opened or closed by removed orders. To retrieve the index of the oldest available closed trade, use the strategy.closedtrades.first_index variable.
+The maximum number of orders a strategy can open, unless it uses Deep Backtesting mode, is 9000. If the strategy exceeds this limit, it removes the oldest order's information when a new entry appears in the "List of Trades" tab. The `strategy.closedtrades.*()` functions return [na](#ref-var-na) for trades opened or closed by removed orders. To retrieve the index of the oldest available closed trade, use the [strategy.closedtrades.first_index](#ref-var-strategy-closedtrades-first-index) variable.
 
 ---
 
+<a id="ref-fun-strategy-cancel"></a>
+
 ### strategy.cancel()
 
-Cancels a pending or unfilled order with a specific identifier. If multiple unfilled orders share the same ID, calling this command with that ID as the id argument cancels all of them. If a script calls this command with an id representing the ID of a filled order, it has no effect.
-This command is most useful when working with price-based orders (e.g., limit orders ). Calls to this command can also cancel market orders , but only if they execute on the same ticks as the order placement commands.
+Cancels a pending or unfilled order with a specific identifier. If multiple unfilled orders share the same ID, calling this command with that ID as the `id` argument cancels all of them. If a script calls this command with an `id` representing the ID of a filled order, it has no effect.
+This command is most useful when working with price-based orders (e.g., [limit orders](./docs_content.md#docs-concepts-strategies)). Calls to this command can also cancel [market orders](./docs_content.md#docs-concepts-strategies), but only if they execute on the same ticks as the order placement commands.
 
 **Syntax**
 
@@ -15375,10 +17794,12 @@ if not conditionForBuy
 
 ---
 
+<a id="ref-fun-strategy-cancel-all"></a>
+
 ### strategy.cancel_all()
 
 Cancels all pending or unfilled orders, regardless of their identifiers.
-This command is most useful when working with price-based orders (e.g., limit orders ). Calls to this command can also cancel market orders , but only if they execute on the same ticks as the order placement commands.
+This command is most useful when working with price-based orders (e.g., [limit orders](./docs_content.md#docs-concepts-strategies)). Calls to this command can also cancel [market orders](./docs_content.md#docs-concepts-strategies), but only if they execute on the same ticks as the order placement commands.
 
 **Syntax**
 
@@ -15405,10 +17826,12 @@ if conditionForStopTrading
 
 ---
 
+<a id="ref-fun-strategy-close"></a>
+
 ### strategy.close()
 
-Creates an order to exit from the part of a position opened by entry orders with a specific identifier. If multiple entries in the position share the same ID, the orders from this command apply to all those entries, starting from the first open trade, when its calls use that ID as the id argument.
-This command always generates market orders . To exit from a position using price-based orders (e.g., stop-loss orders), use the strategy.exit() command.
+Creates an order to exit from the part of a position opened by entry orders with a specific identifier. If multiple entries in the position share the same ID, the orders from this command apply to all those entries, starting from the first open trade, when its calls use that ID as the `id` argument.
+This command always generates [market orders](./docs_content.md#docs-concepts-strategies). To exit from a position using price-based orders (e.g., [stop-loss](./docs_content.md#docs-concepts-strategies) orders), use the [strategy.exit()](#ref-fun-strategy-exit) command.
 
 **Syntax**
 
@@ -15419,11 +17842,11 @@ strategy.close(id, comment, qty, qty_percent, alert_message, immediately, disabl
 **Arguments**
 id (series string) The entry identifier of the open trades to close.
 comment (series string) Optional. Additional notes on the filled order. If the value is not an empty string, the Strategy Tester and the chart show this text for the order instead of the automatically generated exit identifier. The default is an empty string.
-qty (series int/float) Optional. The number of contracts/lots/shares/units to close when an exit order fills. If specified, the command uses this value instead of qty_percent to determine the order size. The default is na , which means the order size depends on the qty_percent value.
-qty_percent (series int/float) Optional. A value between 0 and 100 representing the percentage of the open trade quantity to close when an exit order fills. The percentage calculation depends on the total size of the open trades with the id entry identifier. The command ignores this parameter if the qty value is not na . The default is 100.
-alert_message (series string) Optional. Custom text for the alert that fires when an order fills. If the "Message" field of the "Create Alert" dialog box contains the {{strategy.order.alert_message}} placeholder, the alert message replaces the placeholder with this text. The default is an empty string.
-immediately (series bool) Optional. If true , the closing order executes on the same tick when the strategy places it, ignoring the strategy properties that restrict execution to the opening tick of the following bar. The default is false .
-disable_alert (series bool) Optional. If true when the command creates an order, the strategy does not trigger an alert when that order fills. This parameter accepts a "series" value, meaning users can control which orders trigger alerts when they execute. The default is false .
+qty (series int/float) Optional. The number of contracts/lots/shares/units to close when an exit order fills. If specified, the command uses this value instead of `qty_percent` to determine the order size. The default is [na](#ref-var-na), which means the order size depends on the `qty_percent` value.
+qty_percent (series int/float) Optional. A value between 0 and 100 representing the percentage of the open trade quantity to close when an exit order fills. The percentage calculation depends on the total size of the open trades with the `id` entry identifier. The command ignores this parameter if the `qty` value is not [na](#ref-var-na). The default is 100.
+alert_message (series string) Optional. Custom text for the alert that fires when an order fills. If the "Message" field of the "Create Alert" dialog box contains the `{{strategy.order.alert_message}}` placeholder, the alert message replaces the placeholder with this text. The default is an empty string.
+immediately (series bool) Optional. If [true](#ref-const-true), the closing order executes on the same tick when the strategy places it, ignoring the strategy properties that restrict execution to the opening tick of the following bar. The default is [false](#ref-const-false).
+disable_alert (series bool) Optional. If [true](#ref-const-true) when the command creates an order, the strategy does not trigger an alert when that order fills. This parameter accepts a "series" value, meaning users can control which orders trigger alerts when they execute. The default is [false](#ref-const-false).
 
 **Example**
 
@@ -15448,14 +17871,16 @@ plot(strategy.position_size)
 ```
 
 **Remarks**
-When a position consists of several open trades and the close_entries_rule in the strategy() declaration statement is "FIFO" (default), a strategy.close() call exits from the position starting with the first open trade. This behavior applies even if the id value is the entry ID of different open trades. However, in that case, the maximum exit order size still depends on the trades opened by orders with the id identifier. For more information, see this section of our User Manual.
+When a position consists of several open trades and the `close_entries_rule` in the [strategy()](#ref-fun-strategy) declaration statement is "FIFO" (default), a [strategy.close()](#ref-fun-strategy-close) call exits from the position starting with the first open trade. This behavior applies even if the `id` value is the entry ID of different open trades. However, in that case, the maximum exit order size still depends on the trades opened by orders with the `id` identifier. For more information, see [this](./docs_content.md#docs-concepts-strategies) section of our User Manual.
 
 ---
+
+<a id="ref-fun-strategy-close-all"></a>
 
 ### strategy.close_all()
 
 Creates an order to close an open position completely, regardless of the identifiers of the entry orders that opened or added to it.
-This command always generates market orders . To exit from a position using price-based orders (e.g., stop-loss orders), use the strategy.exit() command.
+This command always generates [market orders](./docs_content.md#docs-concepts-strategies). To exit from a position using price-based orders (e.g., [stop-loss](./docs_content.md#docs-concepts-strategies) orders), use the [strategy.exit()](#ref-fun-strategy-exit) command.
 
 **Syntax**
 
@@ -15465,9 +17890,9 @@ strategy.close_all(comment, alert_message, immediately, disable_alert) → void
 
 **Arguments**
 comment (series string) Optional. Additional notes on the filled order. If the value is not an empty string, the Strategy Tester and the chart show this text for the order instead of the automatically generated exit identifier. The default is an empty string.
-alert_message (series string) Optional. Custom text for the alert that fires when an order fills. If the "Message" field of the "Create Alert" dialog box contains the {{strategy.order.alert_message}} placeholder, the alert message replaces the placeholder with this text. The default is an empty string.
-immediately (series bool) Optional. If true , the closing order executes on the same tick when the strategy places it, ignoring the strategy properties that restrict execution to the opening tick of the following bar. The default is false .
-disable_alert (series bool) Optional. If true when the command creates an order, the strategy does not trigger an alert when that order fills. This parameter accepts a "series" value, meaning users can control which orders trigger alerts when they execute. The default is false .
+alert_message (series string) Optional. Custom text for the alert that fires when an order fills. If the "Message" field of the "Create Alert" dialog box contains the `{{strategy.order.alert_message}}` placeholder, the alert message replaces the placeholder with this text. The default is an empty string.
+immediately (series bool) Optional. If [true](#ref-const-true), the closing order executes on the same tick when the strategy places it, ignoring the strategy properties that restrict execution to the opening tick of the following bar. The default is [false](#ref-const-false).
+disable_alert (series bool) Optional. If [true](#ref-const-true) when the command creates an order, the strategy does not trigger an alert when that order fills. This parameter accepts a "series" value, meaning users can control which orders trigger alerts when they execute. The default is [false](#ref-const-false).
 
 **Example**
 
@@ -15493,9 +17918,11 @@ plot(strategy.position_size)
 
 ---
 
+<a id="ref-fun-strategy-closedtrades-commission"></a>
+
 ### strategy.closedtrades.commission()
 
-Returns the sum of entry and exit fees paid in the closed trade, expressed in strategy.account_currency .
+Returns the sum of entry and exit fees paid in the closed trade, expressed in [strategy.account_currency](#ref-var-strategy-account-currency).
 
 **Syntax**
 
@@ -15523,6 +17950,8 @@ plot(strategy.closedtrades.commission(strategy.closedtrades - 1))
 ```
 
 ---
+
+<a id="ref-fun-strategy-closedtrades-entry-bar-index"></a>
 
 ### strategy.closedtrades.entry_bar_index()
 
@@ -15559,9 +17988,11 @@ plot(avgBarsPerTrade())
 
 ---
 
+<a id="ref-fun-strategy-closedtrades-entry-comment"></a>
+
 ### strategy.closedtrades.entry_comment()
 
-Returns the comment message of the closed trade's entry, or na if there is no entry with this trade_num .
+Returns the comment message of the closed trade's entry, or [na](#ref-var-na) if there is no entry with this `trade_num`.
 
 **Syntax**
 
@@ -15595,6 +18026,8 @@ if barstate.islastconfirmedhistory or barstate.isrealtime
 ```
 
 ---
+
+<a id="ref-fun-strategy-closedtrades-entry-id"></a>
 
 ### strategy.closedtrades.entry_id()
 
@@ -15633,6 +18066,8 @@ Returns the id of the closed trade's entry.
 The function returns na if trade_num is not in the range: 0 to strategy.closedtrades-1.
 
 ---
+
+<a id="ref-fun-strategy-closedtrades-entry-price"></a>
 
 ### strategy.closedtrades.entry_price()
 
@@ -15696,6 +18131,8 @@ plot(avgProfitPct)
 
 ---
 
+<a id="ref-fun-strategy-closedtrades-entry-time"></a>
+
 ### strategy.closedtrades.entry_time()
 
 Returns the UNIX time of the closed trade's entry, expressed in milliseconds..
@@ -15734,6 +18171,8 @@ if barstate.islastconfirmedhistory
 ```
 
 ---
+
+<a id="ref-fun-strategy-closedtrades-exit-bar-index"></a>
 
 ### strategy.closedtrades.exit_bar_index()
 
@@ -15792,9 +18231,11 @@ plot(avgBarsPerTrade())
 
 ---
 
+<a id="ref-fun-strategy-closedtrades-exit-comment"></a>
+
 ### strategy.closedtrades.exit_comment()
 
-Returns the comment message of the closed trade's exit, or na if there is no entry with this trade_num .
+Returns the comment message of the closed trade's exit, or [na](#ref-var-na) if there is no entry with this `trade_num`.
 
 **Syntax**
 
@@ -15841,6 +18282,8 @@ if barstate.islastconfirmedhistory
 
 ---
 
+<a id="ref-fun-strategy-closedtrades-exit-id"></a>
+
 ### strategy.closedtrades.exit_id()
 
 Returns the id of the closed trade's exit.
@@ -15885,6 +18328,8 @@ Returns the id of the closed trade's exit.
 The function returns na if trade_num is not in the range: 0 to strategy.closedtrades-1.
 
 ---
+
+<a id="ref-fun-strategy-closedtrades-exit-price"></a>
 
 ### strategy.closedtrades.exit_price()
 
@@ -15946,6 +18391,8 @@ plot(avgProfitPct)
 ```
 
 ---
+
+<a id="ref-fun-strategy-closedtrades-exit-time"></a>
 
 ### strategy.closedtrades.exit_time()
 
@@ -16009,9 +18456,11 @@ if ta.change(strategy.opentrades) != 0
 
 ---
 
+<a id="ref-fun-strategy-closedtrades-max-drawdown"></a>
+
 ### strategy.closedtrades.max_drawdown()
 
-Returns the maximum drawdown of the closed trade, i.e., the maximum possible loss during the trade, expressed in strategy.account_currency .
+Returns the maximum drawdown of the closed trade, i.e., the maximum possible loss during the trade, expressed in [strategy.account_currency](#ref-var-strategy-account-currency).
 
 **Syntax**
 
@@ -16049,9 +18498,11 @@ The function returns na if trade_num is not in the range: 0 to strategy.closedtr
 
 ---
 
+<a id="ref-fun-strategy-closedtrades-max-drawdown-percent"></a>
+
 ### strategy.closedtrades.max_drawdown_percent()
 
-Returns the maximum drawdown of the closed trade, i.e., the maximum possible loss during the trade, expressed as a percentage and calculated by formula: Lowest Value During Trade / (Entry Price x Quantity) * 100 .
+Returns the maximum drawdown of the closed trade, i.e., the maximum possible loss during the trade, expressed as a percentage and calculated by formula: `Lowest Value During Trade / (Entry Price x Quantity) * 100`.
 
 **Syntax**
 
@@ -16064,9 +18515,11 @@ trade_num (series int) The trade number of the closed trade. The number of the f
 
 ---
 
+<a id="ref-fun-strategy-closedtrades-max-runup"></a>
+
 ### strategy.closedtrades.max_runup()
 
-Returns the maximum run up of the closed trade, i.e., the maximum possible profit during the trade, expressed in strategy.account_currency .
+Returns the maximum run up of the closed trade, i.e., the maximum possible profit during the trade, expressed in [strategy.account_currency](#ref-var-strategy-account-currency).
 
 **Syntax**
 
@@ -16101,9 +18554,11 @@ plot(maxTradeRunUp(), "Max trade runup")
 
 ---
 
+<a id="ref-fun-strategy-closedtrades-max-runup-percent"></a>
+
 ### strategy.closedtrades.max_runup_percent()
 
-Returns the maximum run-up of the closed trade, i.e., the maximum possible profit during the trade, expressed as a percentage and calculated by formula: Highest Value During Trade / (Entry Price x Quantity) * 100 .
+Returns the maximum run-up of the closed trade, i.e., the maximum possible profit during the trade, expressed as a percentage and calculated by formula: `Highest Value During Trade / (Entry Price x Quantity) * 100`.
 
 **Syntax**
 
@@ -16115,6 +18570,8 @@ strategy.closedtrades.max_runup_percent(trade_num) → series float
 trade_num (series int) The trade number of the closed trade. The number of the first trade is zero.
 
 ---
+
+<a id="ref-fun-strategy-closedtrades-profit"></a>
 
 ### strategy.closedtrades.profit()
 
@@ -16156,6 +18613,8 @@ plot(avgGrossProfit(), "Average gross profit")
 
 ---
 
+<a id="ref-fun-strategy-closedtrades-profit-percent"></a>
+
 ### strategy.closedtrades.profit_percent()
 
 Returns the profit/loss value of the closed trade, expressed as a percentage. Losses are expressed as negative values.
@@ -16170,6 +18629,8 @@ strategy.closedtrades.profit_percent(trade_num) → series float
 trade_num (series int) The trade number of the closed trade. The number of the first trade is zero.
 
 ---
+
+<a id="ref-fun-strategy-closedtrades-size"></a>
 
 ### strategy.closedtrades.size()
 
@@ -16230,9 +18691,11 @@ plot(avgProfitPct)
 
 ---
 
+<a id="ref-fun-strategy-convert-to-account"></a>
+
 ### strategy.convert_to_account()
 
-Converts the value from the currency that the symbol on the chart is traded in ( syminfo.currency ) to the currency used by the strategy ( strategy.account_currency ).
+Converts the value from the currency that the symbol on the chart is traded in ([syminfo.currency](#ref-var-syminfo-currency)) to the currency used by the strategy ([strategy.account_currency](#ref-var-strategy-account-currency)).
 
 **Syntax**
 
@@ -16273,9 +18736,11 @@ plot(buyAndHoldReturnPct(dateInput))
 
 ---
 
+<a id="ref-fun-strategy-convert-to-symbol"></a>
+
 ### strategy.convert_to_symbol()
 
-Converts the value from the currency used by the strategy ( strategy.account_currency ) to the currency that the symbol on the chart is traded in ( syminfo.currency ).
+Converts the value from the currency used by the strategy ([strategy.account_currency](#ref-var-strategy-account-currency)) to the currency that the symbol on the chart is traded in ([syminfo.currency](#ref-var-syminfo-currency)).
 
 **Syntax**
 
@@ -16308,9 +18773,11 @@ if bar_index % 20 == 0
 
 ---
 
+<a id="ref-fun-strategy-default-entry-qty"></a>
+
 ### strategy.default_entry_qty()
 
-Calculates the default quantity, in units, of an entry order from strategy.entry() or strategy.order() if it were to fill at the specified fill_price value. The calculation depends on several strategy properties, including default_qty_type , default_qty_value , currency , and other parameters in the strategy() function and their representation in the "Properties" tab of the strategy's settings.
+Calculates the default quantity, in units, of an entry order from [strategy.entry()](#ref-fun-strategy-entry) or [strategy.order()](#ref-fun-strategy-order) if it were to fill at the specified `fill_price` value. The calculation depends on several strategy properties, including `default_qty_type`, `default_qty_value`, `currency`, and other parameters in the [strategy()](#ref-fun-strategy) function and their representation in the "Properties" tab of the strategy's settings.
 
 **Syntax**
 
@@ -16350,18 +18817,20 @@ if ta.change(direction) > 0
 ```
 
 **Remarks**
-This function does not consider open positions simulated by a strategy. For example, if a strategy script has an open position from a long order with a qty of 10 units, using the strategy.entry() function to simulate a short order with a qty of 5 will prompt the script to sell 15 units to reverse the position. This function will still return 5 in such a case since it doesn't consider an open trade.
+This function does not consider open positions simulated by a strategy. For example, if a strategy script has an open position from a long order with a `qty` of 10 units, using the [strategy.entry()](#ref-fun-strategy-entry) function to simulate a short order with a `qty` of 5 will prompt the script to sell 15 units to reverse the position. This function will still return 5 in such a case since it doesn't consider an open trade.
 This value represents the default calculated quantity of an order.
-Order placement commands can override the default value by explicitly passing a new qty value in the function call.
+Order placement commands can override the default value by explicitly passing a new `qty` value in the function call.
 
 ---
 
+<a id="ref-fun-strategy-entry"></a>
+
 ### strategy.entry()
 
-Creates a new order to open or add to a position. If an unfilled order with the same id exists, a call to this command modifies that order.
-The resulting order's type depends on the limit and stop parameters. If the call does not contain limit or stop arguments, it creates a market order that executes on the next tick. If the call specifies a limit value but no stop value, it places a limit order that executes after the market price reaches the limit value or a better price (lower for buy orders and higher for sell orders). If the call specifies a stop value but no limit value, it places a stop order that executes after the market price reaches the stop value or a worse price (higher for buy orders and lower for sell orders). If the call contains limit and stop arguments, it creates a stop-limit order, which generates a limit order at the limit price only after the market price reaches the stop value or a worse price.
-Orders from this command, unlike those from strategy.order() , are affected by the pyramiding parameter of the strategy() declaration statement. Pyramiding specifies the number of concurrent open entries allowed per position. For example, with pyramiding = 3 , the strategy can have up to three open trades, and the command cannot create orders to open additional trades until at least one existing trade closes.
-By default, when a strategy executes an order from this command in the opposite direction of the current market position, it reverses that position. For example, if there is an open long position of five shares, an order from this command with a qty of 5 and a direction of strategy.short triggers the sale of 10 shares to close the long position and open a new five-share short position. Users can change this behavior by specifying an allowed direction with the strategy.risk_allow_entry_in() function.
+Creates a new order to open or add to a position. If an unfilled order with the same `id` exists, a call to this command modifies that order.
+The resulting order's type depends on the `limit` and `stop` parameters. If the call does not contain `limit` or `stop` arguments, it creates a [market order](./docs_content.md#docs-concepts-strategies) that executes on the next tick. If the call specifies a `limit` value but no `stop` value, it places a [limit order](./docs_content.md#docs-concepts-strategies) that executes after the market price reaches the `limit` value or a better price (lower for buy orders and higher for sell orders). If the call specifies a `stop` value but no `limit` value, it places a [stop order](./docs_content.md#docs-concepts-strategies) that executes after the market price reaches the `stop` value or a worse price (higher for buy orders and lower for sell orders). If the call contains `limit` and `stop` arguments, it creates a [stop-limit](./docs_content.md#docs-concepts-strategies) order, which generates a limit order at the `limit` price only after the market price reaches the `stop` value or a worse price.
+Orders from this command, unlike those from [strategy.order()](#ref-fun-strategy-order), are affected by the `pyramiding` parameter of the [strategy()](#ref-fun-strategy) declaration statement. Pyramiding specifies the number of concurrent open entries allowed per position. For example, with `pyramiding = 3`, the strategy can have up to three open trades, and the command cannot create orders to open additional trades until at least one existing trade closes.
+By default, when a strategy executes an order from this command in the opposite direction of the current market position, it reverses that position. For example, if there is an open long position of five shares, an order from this command with a `qty` of 5 and a `direction` of [strategy.short](#ref-const-strategy-short) triggers the sale of 10 shares to close the long position and open a new five-share short position. Users can change this behavior by specifying an allowed direction with the [strategy.risk_allow_entry_in()](#ref-fun-strategy-risk-allow-entry-in) function.
 
 **Syntax**
 
@@ -16370,16 +18839,16 @@ strategy.entry(id, direction, qty, limit, stop, oca_name, oca_type, comment, ale
 ```
 
 **Arguments**
-id (series string) The identifier of the order, which corresponds to an entry ID in the strategy's trades after the order fills. If the strategy opens a new position after filling the order, the order's ID becomes the strategy.position_entry_name value. Strategy commands can reference the order ID to cancel or modify pending orders and generate exit orders for specific open trades. The Strategy Tester and the chart display the order ID unless the command specifies a comment value.
-direction (series strategy_direction) The direction of the trade. Possible values: strategy.long for a long trade, strategy.short for a short one.
-qty (series int/float) Optional. The number of contracts/shares/lots/units in the resulting open trade when the order fills. The default is na , which means that the command uses the default_qty_type and default_qty_value parameters of the strategy() declaration statement to determine the quantity.
-limit (series int/float) Optional. The limit price of the order. If specified, the command creates a limit or stop-limit order, depending on whether the stop value is also specified. The default is na , which means the resulting order is not of the limit or stop-limit type.
-stop (series int/float) Optional. The stop price of the order. If specified, the command creates a stop or stop-limit order, depending on whether the limit value is also specified. The default is na , which means the resulting order is not of the stop or stop-limit type.
-oca_name (series string) Optional. The name of the order's One-Cancels-All (OCA) group. When a pending order with the same oca_name and oca_type parameters executes, that order affects all unfilled orders in the group. The default is an empty string, which means the order does not belong to an OCA group.
-oca_type (input string) Optional. Specifies how an unfilled order behaves when another pending order with the same oca_name and oca_type values executes. Possible values: strategy.oca.cancel , strategy.oca.reduce , strategy.oca.none . The default is strategy.oca.none .
-comment (series string) Optional. Additional notes on the filled order. If the value is not an empty string, the Strategy Tester and the chart show this text for the order instead of the specified id . The default is an empty string.
-alert_message (series string) Optional. Custom text for the alert that fires when an order fills. If the "Message" field of the "Create Alert" dialog box contains the {{strategy.order.alert_message}} placeholder, the alert message replaces the placeholder with this text. The default is an empty string.
-disable_alert (series bool) Optional. If true when the command creates an order, the strategy does not trigger an alert when that order fills. This parameter accepts a "series" value, meaning users can control which orders trigger alerts when they execute. The default is false .
+id (series string) The identifier of the order, which corresponds to an entry ID in the strategy's trades after the order fills. If the strategy opens a new position after filling the order, the order's ID becomes the [strategy.position_entry_name](#ref-var-strategy-position-entry-name) value. Strategy commands can reference the order ID to cancel or modify pending orders and generate exit orders for specific open trades. The Strategy Tester and the chart display the order ID unless the command specifies a `comment` value.
+direction (series strategy_direction) The direction of the trade. Possible values: [strategy.long](#ref-const-strategy-long) for a long trade, [strategy.short](#ref-const-strategy-short) for a short one.
+qty (series int/float) Optional. The number of contracts/shares/lots/units in the resulting open trade when the order fills. The default is [na](#ref-var-na), which means that the command uses the `default_qty_type` and `default_qty_value` parameters of the [strategy()](#ref-fun-strategy) declaration statement to determine the quantity.
+limit (series int/float) Optional. The limit price of the order. If specified, the command creates a limit or stop-limit order, depending on whether the `stop` value is also specified. The default is [na](#ref-var-na), which means the resulting order is not of the limit or stop-limit type.
+stop (series int/float) Optional. The stop price of the order. If specified, the command creates a stop or stop-limit order, depending on whether the `limit` value is also specified. The default is [na](#ref-var-na), which means the resulting order is not of the stop or stop-limit type.
+oca_name (series string) Optional. The name of the order's One-Cancels-All (OCA) group. When a pending order with the same `oca_name` and `oca_type` parameters executes, that order affects all unfilled orders in the group. The default is an empty string, which means the order does not belong to an OCA group.
+oca_type (input string) Optional. Specifies how an unfilled order behaves when another pending order with the same `oca_name` and `oca_type` values executes. Possible values: [strategy.oca.cancel](#ref-const-strategy-oca-cancel), [strategy.oca.reduce](#ref-const-strategy-oca-reduce), [strategy.oca.none](#ref-const-strategy-oca-none). The default is [strategy.oca.none](#ref-const-strategy-oca-none).
+comment (series string) Optional. Additional notes on the filled order. If the value is not an empty string, the Strategy Tester and the chart show this text for the order instead of the specified `id`. The default is an empty string.
+alert_message (series string) Optional. Custom text for the alert that fires when an order fills. If the "Message" field of the "Create Alert" dialog box contains the `{{strategy.order.alert_message}}` placeholder, the alert message replaces the placeholder with this text. The default is an empty string.
+disable_alert (series bool) Optional. If [true](#ref-const-true) when the command creates an order, the strategy does not trigger an alert when that order fills. This parameter accepts a "series" value, meaning users can control which orders trigger alerts when they execute. The default is [false](#ref-const-false).
 
 **Example**
 
@@ -16456,12 +18925,14 @@ if ta.crossunder(sma14, sma28)
 
 ---
 
+<a id="ref-fun-strategy-exit"></a>
+
 ### strategy.exit()
 
-Creates price-based orders to exit from an open position. If unfilled exit orders with the same id exist, calls to this command modify those orders. This command can generate more than one type of exit order, depending on the specified parameters. However, it does not create market orders . To exit from a position with a market order, use strategy.close() or strategy.close_all() .
-If a call to this command contains a profit or limit argument, it creates take-profit orders to exit from applicable trades at the determined price levels or better values (higher for long trades and lower for short ones). If the call contains loss or stop arguments, it creates stop-loss orders to exit from applicable trades at the determined levels or worse values (lower for long trades and higher for short ones). Calling this command with profit or limit and loss or stop arguments creates an order bracket with both order types.
-This command can create trailing stop orders when its call specifies a trail_price or trail_points argument and a trail_offset argument. A trailing stop order activates when the price moves trail_points ticks past the entry price or touches the trail_price level. Once activated, the stop follows trail_offset ticks behind the market price each time the trade's profit reaches a new high. The stop does not move when the trade does not achieve a new best value.
-Each call to this command reserves a portion of the position to close until the strategy fills or cancels its orders. For example, if there is an open position of 50 contracts and a strategy.exit() call specifies a qty of 20, that call's orders reserve 20 contracts out of the position. A second call can close a maximum of 30 contracts, even if its qty is 50 and one of its orders executes first. This behavior does not affect the orders from other commands, such as strategy.close() or strategy.order() .
+Creates price-based orders to exit from an open position. If unfilled exit orders with the same `id` exist, calls to this command modify those orders. This command can generate more than one type of exit order, depending on the specified parameters. However, it does not create [market orders](./docs_content.md#docs-concepts-strategies). To exit from a position with a market order, use [strategy.close()](#ref-fun-strategy-close) or [strategy.close_all()](#ref-fun-strategy-close-all).
+If a call to this command contains a `profit` or `limit` argument, it creates [take-profit](./docs_content.md#docs-concepts-strategies) orders to exit from applicable trades at the determined price levels or better values (higher for long trades and lower for short ones). If the call contains `loss` or `stop` arguments, it creates [stop-loss](./docs_content.md#docs-concepts-strategies) orders to exit from applicable trades at the determined levels or worse values (lower for long trades and higher for short ones). Calling this command with `profit` or `limit` and `loss` or `stop` arguments creates an order bracket with both order types.
+This command can create [trailing stop](./docs_content.md#docs-concepts-strategies) orders when its call specifies a `trail_price` or `trail_points` argument and a `trail_offset` argument. A trailing stop order activates when the price moves `trail_points` ticks past the entry price or touches the `trail_price` level. Once activated, the stop follows `trail_offset` ticks behind the market price each time the trade's profit reaches a new high. The stop does not move when the trade does not achieve a new best value.
+Each call to this command reserves a portion of the position to close until the strategy fills or cancels its orders. For example, if there is an open position of 50 contracts and a [strategy.exit()](#ref-fun-strategy-exit) call specifies a `qty` of 20, that call's orders reserve 20 contracts out of the position. A second call can close a maximum of 30 contracts, even if its `qty` is 50 and one of its orders executes first. This behavior does not affect the orders from other commands, such as [strategy.close()](#ref-fun-strategy-close) or [strategy.order()](#ref-fun-strategy-order).
 If a call to this command occurs before a created entry order's execution, the strategy waits and does not create the exit orders until after the entry order executes.
 
 **Syntax**
@@ -16471,27 +18942,27 @@ strategy.exit(id, from_entry, qty, qty_percent, profit, limit, loss, stop, trail
 ```
 
 **Arguments**
-id (series string) The identifier of the orders, which corresponds to an exit ID in the strategy's trades after an order fills. Strategy commands can reference the order ID to cancel or modify pending exit orders. The Strategy Tester and the chart display the order ID unless the command includes a comment* argument that applies to the filled order.
+id (series string) The identifier of the orders, which corresponds to an exit ID in the strategy's trades after an order fills. Strategy commands can reference the order ID to cancel or modify pending exit orders. The Strategy Tester and the chart display the order ID unless the command includes a `comment*` argument that applies to the filled order.
 from_entry (series string) Optional. The entry order ID of the trade to exit from. If there is more than one open trade with the specified entry ID, the command generates exit orders for all the entries from before or at the time of the call. The default is an empty string, which means the command generates exit orders for all open trades until the position closes.
-qty (series int/float) Optional. The number of contracts/lots/shares/units to close when an exit order fills. If specified, the command uses this value instead of qty_percent to determine the order size. The exit orders reserve this quantity from the position, meaning other calls to this command cannot close this portion until the strategy fills or cancels those orders. The default is na , which means the order size depends on the qty_percent value.
-qty_percent (series int/float) Optional. A value between 0 and 100 representing the percentage of the open trade quantity to close when an exit order fills. The exit orders reserve this percentage from the applicable open trades, meaning other calls to this command cannot close this portion until the strategy fills or cancels those orders. The percentage calculation depends on the total size of the applicable open trades without considering the reserved amount from other strategy.exit() calls. The command ignores this parameter if the qty value is not na . The default is 100.
-profit (series int/float) Optional. The take-profit distance, expressed in ticks. If specified, the command creates a limit order to exit the trade profit ticks away from the entry price in the favorable direction. The order executes at the calculated price or a better value. If this parameter and limit are not na , the command places a take-profit order only at the price level expected to trigger an exit first. The default is na .
-limit (series int/float) Optional. The take-profit price. If this parameter and profit are not na , the command places a take-profit order only at the price level expected to trigger an exit first. The default is na .
-loss (series int/float) Optional. The stop-loss distance, expressed in ticks. If specified, the command creates a stop order to exit the trade loss ticks away from the entry price in the unfavorable direction. The order executes at the calculated price or a worse value. If this parameter and stop are not na , the command places a stop-loss order only at the price level expected to trigger an exit first. The default is na .
-stop (series int/float) Optional. The stop-loss price. If this parameter and loss are not na , the command places a stop-loss order only at the price level expected to trigger an exit first. The default is na .
-trail_price (series int/float) Optional. The price of the trailing stop activation level. If the value is more favorable than the entry price, the command creates a trailing stop when the market price reaches that value. If less favorable than the entry price, the command creates the trailing stop immediately when the current market price is equal to or more favorable than the value. If this parameter and trail_points are not na , the command sets the activation level using the value expected to activate the stop first. The default is na .
-trail_points (series int/float) Optional. The trailing stop activation distance, expressed in ticks. If the value is positive, the command creates a trailing stop order when the market price moves trail_points ticks away from the trade's entry price in the favorable direction. If the value is negative, the command creates the trailing stop immediately when the market price is equal to or more favorable than the level trail_points ticks away from the entry price in the unfavorable direction. The default is na .
-trail_offset (series int/float) Optional. The trailing stop offset. When the market price reaches the activation level determined by the trail_price or trail_points parameter, or exceeds the level in the favorable direction, the command creates a trailing stop with an initial value trail_offset ticks away from that level in the unfavorable direction. After activation, the trailing stop moves toward the market price each time the trade's profit reaches a better value, maintaining the specified distance behind the best price. The default is na .
-oca_name (series string) Optional. The name of the One-Cancels-All (OCA) group that the command's take-profit, stop-loss, and trailing stop orders belong to. All orders from this command are of the strategy.oca.reduce OCA type. When an order of this OCA type with the same oca_name executes, the strategy reduces the sizes of other unfilled orders in the OCA group by the filled quantity. The default is an empty string, which means the strategy assigns the OCA name automatically, and the resulting orders cannot reduce or be reduced by the orders from other commands.
-comment (series string) Optional. Additional notes on the filled order. If the value is not an empty string, the Strategy Tester and the chart show this text for the order instead of the specified id . The command ignores this value if the call includes an argument for a comment_* parameter that applies to the order. The default is an empty string.
-comment_profit (series string) Optional. Additional notes on the filled order. If the value is not an empty string, the Strategy Tester and the chart show this text for the order instead of the specified id or comment . This comment applies only to the command's take-profit orders created using the profit or limit parameter. The default is an empty string.
-comment_loss (series string) Optional. Additional notes on the filled order. If the value is not an empty string, the Strategy Tester and the chart show this text for the order instead of the specified id or comment . This comment applies only to the command's stop-loss orders created using the loss or stop parameter. The default is an empty string.
-comment_trailing (series string) Optional. Additional notes on the filled order. If the value is not an empty string, the Strategy Tester and the chart show this text for the order instead of the specified id or comment . This comment applies only to the command's trailing stop orders created using the trail_price or trail_points and trail_offset parameters. The default is an empty string.
-alert_message (series string) Optional. Custom text for the alert that fires when an order fills. If the "Message" field of the "Create Alert" dialog box contains the {{strategy.order.alert_message}} placeholder, the alert message replaces the placeholder with this text. The command ignores this value if the call includes an argument for the other alert_* parameter that applies to the order. The default is an empty string.
-alert_profit (series string) Optional. Custom text for the alert that fires when an order fills. If the "Message" field of the "Create Alert" dialog box contains the {{strategy.order.alert_message}} placeholder, the alert message replaces the placeholder with this text. This message applies only to the command's take-profit orders created using the profit or limit parameter. The default is an empty string.
-alert_loss (series string) Optional. Custom text for the alert that fires when an order fills. If the "Message" field of the "Create Alert" dialog box contains the {{strategy.order.alert_message}} placeholder, the alert message replaces the placeholder with this text. This message applies only to the command's stop-loss orders created using the loss or stop parameter. The default is an empty string.
-alert_trailing (series string) Optional. Custom text for the alert that fires when an order fills. If the "Message" field of the "Create Alert" dialog box contains the {{strategy.order.alert_message}} placeholder, the alert message replaces the placeholder with this text. This message applies only to the command's trailing stop orders created using the trail_price or trail_points and trail_offset parameters. The default is an empty string.
-disable_alert (series bool) Optional. If true when the command creates an order, the strategy does not trigger an alert when that order fills. This parameter accepts a "series" value, meaning users can control which orders trigger alerts when they execute. The default is false .
+qty (series int/float) Optional. The number of contracts/lots/shares/units to close when an exit order fills. If specified, the command uses this value instead of `qty_percent` to determine the order size. The exit orders reserve this quantity from the position, meaning other calls to this command cannot close this portion until the strategy fills or cancels those orders. The default is [na](#ref-var-na), which means the order size depends on the `qty_percent` value.
+qty_percent (series int/float) Optional. A value between 0 and 100 representing the percentage of the open trade quantity to close when an exit order fills. The exit orders reserve this percentage from the applicable open trades, meaning other calls to this command cannot close this portion until the strategy fills or cancels those orders. The percentage calculation depends on the total size of the applicable open trades without considering the reserved amount from other [strategy.exit()](#ref-fun-strategy-exit) calls. The command ignores this parameter if the `qty` value is not [na](#ref-var-na). The default is 100.
+profit (series int/float) Optional. The take-profit distance, expressed in ticks. If specified, the command creates a limit order to exit the trade `profit` ticks away from the entry price in the favorable direction. The order executes at the calculated price or a better value. If this parameter and `limit` are not [na](#ref-var-na), the command places a take-profit order only at the price level expected to trigger an exit first. The default is [na](#ref-var-na).
+limit (series int/float) Optional. The take-profit price. If this parameter and `profit` are not [na](#ref-var-na), the command places a take-profit order only at the price level expected to trigger an exit first. The default is [na](#ref-var-na).
+loss (series int/float) Optional. The stop-loss distance, expressed in ticks. If specified, the command creates a stop order to exit the trade `loss` ticks away from the entry price in the unfavorable direction. The order executes at the calculated price or a worse value. If this parameter and `stop` are not [na](#ref-var-na), the command places a stop-loss order only at the price level expected to trigger an exit first. The default is [na](#ref-var-na).
+stop (series int/float) Optional. The stop-loss price. If this parameter and `loss` are not [na](#ref-var-na), the command places a stop-loss order only at the price level expected to trigger an exit first. The default is [na](#ref-var-na).
+trail_price (series int/float) Optional. The price of the trailing stop activation level. If the value is more favorable than the entry price, the command creates a trailing stop when the market price reaches that value. If less favorable than the entry price, the command creates the trailing stop immediately when the current market price is equal to or more favorable than the value. If this parameter and `trail_points` are not [na](#ref-var-na), the command sets the activation level using the value expected to activate the stop first. The default is [na](#ref-var-na).
+trail_points (series int/float) Optional. The trailing stop activation distance, expressed in ticks. If the value is positive, the command creates a trailing stop order when the market price moves `trail_points` ticks away from the trade's entry price in the favorable direction. If the value is negative, the command creates the trailing stop immediately when the market price is equal to or more favorable than the level `trail_points` ticks away from the entry price in the unfavorable direction. The default is [na](#ref-var-na).
+trail_offset (series int/float) Optional. The trailing stop offset. When the market price reaches the activation level determined by the `trail_price` or `trail_points` parameter, or exceeds the level in the favorable direction, the command creates a trailing stop with an initial value `trail_offset` ticks away from that level in the unfavorable direction. After activation, the trailing stop moves toward the market price each time the trade's profit reaches a better value, maintaining the specified distance behind the best price. The default is [na](#ref-var-na).
+oca_name (series string) Optional. The name of the One-Cancels-All (OCA) group that the command's take-profit, stop-loss, and trailing stop orders belong to. All orders from this command are of the [strategy.oca.reduce](#ref-const-strategy-oca-reduce) OCA type. When an order of this OCA type with the same `oca_name` executes, the strategy reduces the sizes of other unfilled orders in the OCA group by the filled quantity. The default is an empty string, which means the strategy assigns the OCA name automatically, and the resulting orders cannot reduce or be reduced by the orders from other commands.
+comment (series string) Optional. Additional notes on the filled order. If the value is not an empty string, the Strategy Tester and the chart show this text for the order instead of the specified `id`. The command ignores this value if the call includes an argument for a `comment_*` parameter that applies to the order. The default is an empty string.
+comment_profit (series string) Optional. Additional notes on the filled order. If the value is not an empty string, the Strategy Tester and the chart show this text for the order instead of the specified `id` or `comment`. This comment applies only to the command's take-profit orders created using the `profit` or `limit` parameter. The default is an empty string.
+comment_loss (series string) Optional. Additional notes on the filled order. If the value is not an empty string, the Strategy Tester and the chart show this text for the order instead of the specified `id` or `comment`. This comment applies only to the command's stop-loss orders created using the `loss` or `stop` parameter. The default is an empty string.
+comment_trailing (series string) Optional. Additional notes on the filled order. If the value is not an empty string, the Strategy Tester and the chart show this text for the order instead of the specified `id` or `comment`. This comment applies only to the command's trailing stop orders created using the `trail_price` or `trail_points` and `trail_offset` parameters. The default is an empty string.
+alert_message (series string) Optional. Custom text for the alert that fires when an order fills. If the "Message" field of the "Create Alert" dialog box contains the `{{strategy.order.alert_message}}` placeholder, the alert message replaces the placeholder with this text. The command ignores this value if the call includes an argument for the other `alert_*` parameter that applies to the order. The default is an empty string.
+alert_profit (series string) Optional. Custom text for the alert that fires when an order fills. If the "Message" field of the "Create Alert" dialog box contains the `{{strategy.order.alert_message}}` placeholder, the alert message replaces the placeholder with this text. This message applies only to the command's take-profit orders created using the `profit` or `limit` parameter. The default is an empty string.
+alert_loss (series string) Optional. Custom text for the alert that fires when an order fills. If the "Message" field of the "Create Alert" dialog box contains the `{{strategy.order.alert_message}}` placeholder, the alert message replaces the placeholder with this text. This message applies only to the command's stop-loss orders created using the `loss` or `stop` parameter. The default is an empty string.
+alert_trailing (series string) Optional. Custom text for the alert that fires when an order fills. If the "Message" field of the "Create Alert" dialog box contains the `{{strategy.order.alert_message}}` placeholder, the alert message replaces the placeholder with this text. This message applies only to the command's trailing stop orders created using the `trail_price` or `trail_points` and `trail_offset` parameters. The default is an empty string.
+disable_alert (series bool) Optional. If [true](#ref-const-true) when the command creates an order, the strategy does not trigger an alert when that order fills. This parameter accepts a "series" value, meaning users can control which orders trigger alerts when they execute. The default is [false](#ref-const-false).
 
 **Example**
 
@@ -16607,15 +19078,17 @@ plot(trailingStopPrice, "Trailing stop", color.red, 3, plot.style_linebr)
 ```
 
 **Remarks**
-A single call to the strategy.exit() command can generate exit orders for several entries in an open position, depending on the call's from_entry value. If the call does not include a from_entry argument, it creates exit orders for all open trades, even the ones opened after the call, until the position closes. See this section of our User Manual to learn more.
-When a position consists of several open trades, and the close_entries_rule in the strategy() declaration statement is "FIFO" (default), the orders from a strategy.exit() call exit from the position starting with the first open trade. This behavior applies even if the from_entry value is the entry ID of different open trades. However, in that case, the maximum size of the exit orders still depends on the trades opened by orders with the from_entry ID. For more information, see this section of our User Manual.
-If a strategy.exit() call includes arguments for creating stop-loss and trailing stop orders, the command places only the order that is supposed to fill first, because both orders are of the "stop" type.
+A single call to the [strategy.exit()](#ref-fun-strategy-exit) command can generate exit orders for several entries in an open position, depending on the call's `from_entry` value. If the call does not include a `from_entry` argument, it creates exit orders for all open trades, even the ones opened after the call, until the position closes. See [this](./docs_content.md#docs-concepts-strategies) section of our User Manual to learn more.
+When a position consists of several open trades, and the `close_entries_rule` in the [strategy()](#ref-fun-strategy) declaration statement is "FIFO" (default), the orders from a [strategy.exit()](#ref-fun-strategy-exit) call exit from the position starting with the first open trade. This behavior applies even if the `from_entry` value is the entry ID of different open trades. However, in that case, the maximum size of the exit orders still depends on the trades opened by orders with the `from_entry` ID. For more information, see [this](./docs_content.md#docs-concepts-strategies) section of our User Manual.
+If a [strategy.exit()](#ref-fun-strategy-exit) call includes arguments for creating stop-loss and trailing stop orders, the command places only the order that is supposed to fill first, because both orders are of the "stop" type.
 
 ---
 
+<a id="ref-fun-strategy-opentrades-commission"></a>
+
 ### strategy.opentrades.commission()
 
-Returns the sum of entry and exit fees paid in the open trade, expressed in strategy.account_currency .
+Returns the sum of entry and exit fees paid in the open trade, expressed in [strategy.account_currency](#ref-var-strategy-account-currency).
 
 **Syntax**
 
@@ -16651,6 +19124,8 @@ plot(tradeOpenGrossPL())
 
 ---
 
+<a id="ref-fun-strategy-opentrades-entry-bar-index"></a>
+
 ### strategy.opentrades.entry_bar_index()
 
 Returns the bar_index of the open trade's entry.
@@ -16685,9 +19160,11 @@ if barsSinceLastEntry() >= 10
 
 ---
 
+<a id="ref-fun-strategy-opentrades-entry-comment"></a>
+
 ### strategy.opentrades.entry_comment()
 
-Returns the comment message of the open trade's entry, or na if there is no entry with this trade_num .
+Returns the comment message of the open trade's entry, or [na](#ref-var-na) if there is no entry with this `trade_num`.
 
 **Syntax**
 
@@ -16720,6 +19197,8 @@ if barstate.islastconfirmedhistory or barstate.isrealtime
 ```
 
 ---
+
+<a id="ref-fun-strategy-opentrades-entry-id"></a>
 
 ### strategy.opentrades.entry_id()
 
@@ -16763,6 +19242,8 @@ Returns the id of the open trade's entry.
 The function returns na if trade_num is not in the range: 0 to strategy.opentrades-1.
 
 ---
+
+<a id="ref-fun-strategy-opentrades-entry-price"></a>
 
 ### strategy.opentrades.entry_price()
 
@@ -16823,6 +19304,8 @@ plot(avgOpenPositionPrice())
 
 ---
 
+<a id="ref-fun-strategy-opentrades-entry-time"></a>
+
 ### strategy.opentrades.entry_time()
 
 Returns the UNIX time of the open trade's entry, expressed in milliseconds.
@@ -16857,9 +19340,11 @@ plot(timeSinceLastEntry() / 1000 * 60 * 60 * 24, "Days since last entry")
 
 ---
 
+<a id="ref-fun-strategy-opentrades-max-drawdown"></a>
+
 ### strategy.opentrades.max_drawdown()
 
-Returns the maximum drawdown of the open trade, i.e., the maximum possible loss during the trade, expressed in strategy.account_currency .
+Returns the maximum drawdown of the open trade, i.e., the maximum possible loss during the trade, expressed in [strategy.account_currency](#ref-var-strategy-account-currency).
 
 **Syntax**
 
@@ -16914,9 +19399,11 @@ The function returns na if trade_num is not in the range: 0 to strategy.closedtr
 
 ---
 
+<a id="ref-fun-strategy-opentrades-max-drawdown-percent"></a>
+
 ### strategy.opentrades.max_drawdown_percent()
 
-Returns the maximum drawdown of the open trade, i.e., the maximum possible loss during the trade, expressed as a percentage and calculated by formula: Lowest Value During Trade / (Entry Price x Quantity) * 100 .
+Returns the maximum drawdown of the open trade, i.e., the maximum possible loss during the trade, expressed as a percentage and calculated by formula: `Lowest Value During Trade / (Entry Price x Quantity) * 100`.
 
 **Syntax**
 
@@ -16929,9 +19416,11 @@ trade_num (series int) The trade number of the closed trade. The number of the f
 
 ---
 
+<a id="ref-fun-strategy-opentrades-max-runup"></a>
+
 ### strategy.opentrades.max_runup()
 
-Returns the maximum run up of the open trade, i.e., the maximum possible profit during the trade, expressed in strategy.account_currency .
+Returns the maximum run up of the open trade, i.e., the maximum possible profit during the trade, expressed in [strategy.account_currency](#ref-var-strategy-account-currency).
 
 **Syntax**
 
@@ -16981,9 +19470,11 @@ plot(maxOpenTradeRunUp(), "Biggest max runup of all open trades")
 
 ---
 
+<a id="ref-fun-strategy-opentrades-max-runup-percent"></a>
+
 ### strategy.opentrades.max_runup_percent()
 
-Returns the maximum run-up of the open trade, i.e., the maximum possible profit during the trade, expressed as a percentage and calculated by formula: Highest Value During Trade / (Entry Price x Quantity) * 100 .
+Returns the maximum run-up of the open trade, i.e., the maximum possible profit during the trade, expressed as a percentage and calculated by formula: `Highest Value During Trade / (Entry Price x Quantity) * 100`.
 
 **Syntax**
 
@@ -16996,9 +19487,11 @@ trade_num (series int) The trade number of the closed trade. The number of the f
 
 ---
 
+<a id="ref-fun-strategy-opentrades-profit"></a>
+
 ### strategy.opentrades.profit()
 
-Returns the profit/loss of the open trade, expressed in strategy.account_currency . Losses are expressed as negative values.
+Returns the profit/loss of the open trade, expressed in [strategy.account_currency](#ref-var-strategy-account-currency). Losses are expressed as negative values.
 
 **Syntax**
 
@@ -17048,6 +19541,8 @@ plot(tradeOpenPL(), "Profit of all open trades")
 
 ---
 
+<a id="ref-fun-strategy-opentrades-profit-percent"></a>
+
 ### strategy.opentrades.profit_percent()
 
 Returns the profit/loss of the open trade, expressed as a percentage. Losses are expressed as negative values.
@@ -17062,6 +19557,8 @@ strategy.opentrades.profit_percent(trade_num) → series float
 trade_num (series int) The trade number of the closed trade. The number of the first trade is zero.
 
 ---
+
+<a id="ref-fun-strategy-opentrades-size"></a>
 
 ### strategy.opentrades.size()
 
@@ -17121,12 +19618,14 @@ plot(avgProfitPct)
 
 ---
 
+<a id="ref-fun-strategy-order"></a>
+
 ### strategy.order()
 
-Creates a new order to open, add to, or exit from a position. If an unfilled order with the same id exists, a call to this command modifies that order.
-The resulting order's type depends on the limit and stop parameters. If the call does not contain limit or stop arguments, it creates a market order that executes on the next tick. If the call specifies a limit value but no stop value, it places a limit order that executes after the market price reaches the limit value or a better price (lower for buy orders and higher for sell orders). If the call specifies a stop value but no limit value, it places a stop order that executes after the market price reaches the stop value or a worse price (higher for buy orders and lower for sell orders). If the call contains limit and stop arguments, it creates a stop-limit order, which generates a limit order at the limit price only after the market price reaches the stop value or a worse price.
-Orders from this command, unlike those from strategy.entry() , are not affected by the pyramiding parameter of the strategy() declaration statement. Strategies can open any number of trades in the same direction with calls to this function.
-This command does not automatically reverse open positions because it does not exclusively create entry orders like strategy.entry() does. For example, if there is an open long position of five shares, an order from this command with a qty of 5 and a direction of strategy.short triggers the sale of five shares, which closes the position.
+Creates a new order to open, add to, or exit from a position. If an unfilled order with the same `id` exists, a call to this command modifies that order.
+The resulting order's type depends on the `limit` and `stop` parameters. If the call does not contain `limit` or `stop` arguments, it creates a [market order](./docs_content.md#docs-concepts-strategies) that executes on the next tick. If the call specifies a `limit` value but no `stop` value, it places a [limit order](./docs_content.md#docs-concepts-strategies) that executes after the market price reaches the `limit` value or a better price (lower for buy orders and higher for sell orders). If the call specifies a `stop` value but no `limit` value, it places a [stop order](./docs_content.md#docs-concepts-strategies) that executes after the market price reaches the `stop` value or a worse price (higher for buy orders and lower for sell orders). If the call contains `limit` and `stop` arguments, it creates a [stop-limit](./docs_content.md#docs-concepts-strategies) order, which generates a limit order at the `limit` price only after the market price reaches the `stop` value or a worse price.
+Orders from this command, unlike those from [strategy.entry()](#ref-fun-strategy-entry), are not affected by the `pyramiding` parameter of the [strategy()](#ref-fun-strategy) declaration statement. Strategies can open any number of trades in the same direction with calls to this function.
+This command does not automatically reverse open positions because it does not exclusively create entry orders like [strategy.entry()](#ref-fun-strategy-entry) does. For example, if there is an open long position of five shares, an order from this command with a `qty` of 5 and a `direction` of [strategy.short](#ref-const-strategy-short) triggers the sale of five shares, which closes the position.
 
 **Syntax**
 
@@ -17135,16 +19634,16 @@ strategy.order(id, direction, qty, limit, stop, oca_name, oca_type, comment, ale
 ```
 
 **Arguments**
-id (series string) The identifier of the order, which corresponds to an entry or exit ID in the strategy's trades after the order fills. If the strategy opens a new position after filling the order, the order's ID becomes the strategy.position_entry_name value. Strategy commands can reference the order ID to cancel or modify pending orders and generate exit orders for specific open trades. The Strategy Tester and the chart display the order ID unless the command specifies a comment value.
-direction (series strategy_direction) The direction of the trade. Possible values: strategy.long for a long trade, strategy.short for a short one.
-qty (series int/float) Optional. The number of contracts/shares/lots/units to trade when the order fills. The default is na , which means that the command uses the default_qty_type and default_qty_value parameters of the strategy() declaration statement to determine the quantity.
-limit (series int/float) Optional. The limit price of the order. If specified, the command creates a limit or stop-limit order, depending on whether the stop value is also specified. The default is na , which means the resulting order is not of the limit or stop-limit type.
-stop (series int/float) Optional. The stop price of the order. If specified, the command creates a stop or stop-limit order, depending on whether the limit value is also specified. The default is na , which means the resulting order is not of the stop or stop-limit type.
-oca_name (series string) Optional. The name of the order's One-Cancels-All (OCA) group. When a pending order with the same oca_name and oca_type parameters executes, that order affects all unfilled orders in the group. The default is an empty string, which means the order does not belong to an OCA group.
-oca_type (input string) Optional. Specifies how an unfilled order behaves when another pending order with the same oca_name and oca_type values executes. Possible values: strategy.oca.cancel , strategy.oca.reduce , strategy.oca.none . The default is strategy.oca.none .
-comment (series string) Optional. Additional notes on the filled order. If the value is not an empty string, the Strategy Tester and the chart show this text for the order instead of the specified id . The default is an empty string.
-alert_message (series string) Optional. Custom text for the alert that fires when an order fills. If the "Message" field of the "Create Alert" dialog box contains the {{strategy.order.alert_message}} placeholder, the alert message replaces the placeholder with this text. The default is an empty string.
-disable_alert (series bool) Optional. If true when the command creates an order, the strategy does not trigger an alert when that order fills. This parameter accepts a "series" value, meaning users can control which orders trigger alerts when they execute. The default is false .
+id (series string) The identifier of the order, which corresponds to an entry or exit ID in the strategy's trades after the order fills. If the strategy opens a new position after filling the order, the order's ID becomes the [strategy.position_entry_name](#ref-var-strategy-position-entry-name) value. Strategy commands can reference the order ID to cancel or modify pending orders and generate exit orders for specific open trades. The Strategy Tester and the chart display the order ID unless the command specifies a `comment` value.
+direction (series strategy_direction) The direction of the trade. Possible values: [strategy.long](#ref-const-strategy-long) for a long trade, [strategy.short](#ref-const-strategy-short) for a short one.
+qty (series int/float) Optional. The number of contracts/shares/lots/units to trade when the order fills. The default is [na](#ref-var-na), which means that the command uses the `default_qty_type` and `default_qty_value` parameters of the [strategy()](#ref-fun-strategy) declaration statement to determine the quantity.
+limit (series int/float) Optional. The limit price of the order. If specified, the command creates a limit or stop-limit order, depending on whether the `stop` value is also specified. The default is [na](#ref-var-na), which means the resulting order is not of the limit or stop-limit type.
+stop (series int/float) Optional. The stop price of the order. If specified, the command creates a stop or stop-limit order, depending on whether the `limit` value is also specified. The default is [na](#ref-var-na), which means the resulting order is not of the stop or stop-limit type.
+oca_name (series string) Optional. The name of the order's One-Cancels-All (OCA) group. When a pending order with the same `oca_name` and `oca_type` parameters executes, that order affects all unfilled orders in the group. The default is an empty string, which means the order does not belong to an OCA group.
+oca_type (input string) Optional. Specifies how an unfilled order behaves when another pending order with the same `oca_name` and `oca_type` values executes. Possible values: [strategy.oca.cancel](#ref-const-strategy-oca-cancel), [strategy.oca.reduce](#ref-const-strategy-oca-reduce), [strategy.oca.none](#ref-const-strategy-oca-none). The default is [strategy.oca.none](#ref-const-strategy-oca-none).
+comment (series string) Optional. Additional notes on the filled order. If the value is not an empty string, the Strategy Tester and the chart show this text for the order instead of the specified `id`. The default is an empty string.
+alert_message (series string) Optional. Custom text for the alert that fires when an order fills. If the "Message" field of the "Create Alert" dialog box contains the `{{strategy.order.alert_message}}` placeholder, the alert message replaces the placeholder with this text. The default is an empty string.
+disable_alert (series bool) Optional. If [true](#ref-const-true) when the command creates an order, the strategy does not trigger an alert when that order fills. This parameter accepts a "series" value, meaning users can control which orders trigger alerts when they execute. The default is [false](#ref-const-false).
 
 **Example**
 
@@ -17222,9 +19721,11 @@ if ta.change(strategy.closedtrades) > 0
 
 ---
 
+<a id="ref-fun-strategy-risk-allow-entry-in"></a>
+
 ### strategy.risk.allow_entry_in()
 
-This function can be used to specify in which market direction the strategy.entry() function is allowed to open positions.
+This function can be used to specify in which market direction the [strategy.entry()](#ref-fun-strategy-entry) function is allowed to open positions.
 
 **Syntax**
 
@@ -17233,7 +19734,7 @@ strategy.risk.allow_entry_in(value) → void
 ```
 
 **Arguments**
-value (simple string) The allowed direction. Possible values: strategy.direction.all , strategy.direction.long , strategy.direction.short
+value (simple string) The allowed direction. Possible values: [strategy.direction.all](#ref-const-strategy-direction-all), [strategy.direction.long](#ref-const-strategy-direction-long), [strategy.direction.short](#ref-const-strategy-direction-short)
 
 **Example**
 
@@ -17250,6 +19751,8 @@ if open < close
 ```
 
 ---
+
+<a id="ref-fun-strategy-risk-max-cons-loss-days"></a>
 
 ### strategy.risk.max_cons_loss_days()
 
@@ -17276,6 +19779,8 @@ plot(strategy.position_size)
 
 ---
 
+<a id="ref-fun-strategy-risk-max-drawdown"></a>
+
 ### strategy.risk.max_drawdown()
 
 The purpose of this rule is to determine maximum drawdown. The rule affects the whole strategy. Once the maximum drawdown value is reached, all pending orders are cancelled, all open positions are closed and no new orders can be placed.
@@ -17288,7 +19793,7 @@ strategy.risk.max_drawdown(value, type, alert_message) → void
 
 **Arguments**
 value (simple int/float) A required parameter. The maximum drawdown value. It is specified either in money (base currency), or in percentage of maximum equity. For % of equity the range of allowed values is from 0 to 100.
-type (simple string) A required parameter. The type of the value. Please specify one of the following values: strategy.percent_of_equity or strategy.cash . Note: if equity drops down to zero or to a negative and the 'strategy.percent_of_equity' is specified, all pending orders are cancelled, all open positions are closed and no new orders can be placed for good.
+type (simple string) A required parameter. The type of the value. Please specify one of the following values: [strategy.percent_of_equity](#ref-const-strategy-percent-of-equity) or [strategy.cash](#ref-const-strategy-cash). Note: if equity drops down to zero or to a negative and the 'strategy.percent_of_equity' is specified, all pending orders are cancelled, all open positions are closed and no new orders can be placed for good.
 alert_message (simple string) An optional parameter which replaces the {{strategy.order.alert_message}} placeholder when it is used in the "Create Alert" dialog box's "Message" field.
 
 **Example**
@@ -17310,6 +19815,8 @@ plot(strategy.position_size)
 ```
 
 ---
+
+<a id="ref-fun-strategy-risk-max-intraday-filled-orders"></a>
 
 ### strategy.risk.max_intraday_filled_orders()
 
@@ -17339,6 +19846,8 @@ if open < close
 
 ---
 
+<a id="ref-fun-strategy-risk-max-intraday-loss"></a>
+
 ### strategy.risk.max_intraday_loss()
 
 The maximum loss value allowed during a day. It is specified either in money (base currency), or in percentage of maximum intraday equity (0 -100).
@@ -17351,7 +19860,7 @@ strategy.risk.max_intraday_loss(value, type, alert_message) → void
 
 **Arguments**
 value (simple int/float) A required parameter. The maximum loss value. It is specified either in money (base currency), or in percentage of maximum intraday equity. For % of equity the range of allowed values is from 0 to 100.
-type (simple string) A required parameter. The type of the value. Please specify one of the following values: strategy.percent_of_equity or strategy.cash . Note: if equity drops down to zero or to a negative and the strategy.percent_of_equity is specified, all pending orders are cancelled, all open positions are closed and no new orders can be placed for good.
+type (simple string) A required parameter. The type of the value. Please specify one of the following values: [strategy.percent_of_equity](#ref-const-strategy-percent-of-equity) or [strategy.cash](#ref-const-strategy-cash). Note: if equity drops down to zero or to a negative and the [strategy.percent_of_equity](#ref-const-strategy-percent-of-equity) is specified, all pending orders are cancelled, all open positions are closed and no new orders can be placed for good.
 alert_message (simple string) An optional parameter which replaces the {{strategy.order.alert_message}} placeholder when it is used in the "Create Alert" dialog box's "Message" field.
 
 **Example**
@@ -17411,9 +19920,11 @@ plot(priceChg)
 
 ---
 
+<a id="ref-fun-strategy-risk-max-position-size"></a>
+
 ### strategy.risk.max_position_size()
 
-The purpose of this rule is to determine maximum size of a market position. The rule affects the following function: strategy.entry() . The 'entry' quantity can be reduced (if needed) to such number of contracts/shares/lots/units, so the total position size doesn't exceed the value specified in 'strategy.risk.max_position_size'. If minimum possible quantity still violates the rule, the order will not be placed.
+The purpose of this rule is to determine maximum size of a market position. The rule affects the following function: [strategy.entry()](#ref-fun-strategy-entry). The 'entry' quantity can be reduced (if needed) to such number of contracts/shares/lots/units, so the total position size doesn't exceed the value specified in 'strategy.risk.max_position_size'. If minimum possible quantity still violates the rule, the order will not be placed.
 
 **Syntax**
 
@@ -17436,6 +19947,8 @@ plot(strategy.position_size) // max plot value will be 10
 ```
 
 ---
+
+<a id="ref-fun-string"></a>
 
 ### string()
 
@@ -17460,16 +19973,18 @@ string(x) → series string
 ```
 
 **Arguments**
-x (const string) The value to convert to the specified type, usually na .
+x (const string) The value to convert to the specified type, usually [na](#ref-var-na).
 
 **Returns**
 The value of the argument after casting to string.
 
 ---
 
+<a id="ref-fun-syminfo-prefix"></a>
+
 ### syminfo.prefix()
 
-Returns exchange prefix of the symbol , e.g. "NASDAQ".
+Returns exchange prefix of the `symbol`, e.g. "NASDAQ".
 
 **Syntax & Overloads**
 
@@ -17498,16 +20013,18 @@ plot(s)
 ```
 
 **Returns**
-Returns exchange prefix of the symbol , e.g. "NASDAQ".
+Returns exchange prefix of the `symbol`, e.g. "NASDAQ".
 
 **Remarks**
-The result of the function is used in the ticker.new() / ticker.modify() and request.security() .
+The result of the function is used in the [ticker.new()](#ref-fun-ticker-new)/[ticker.modify()](#ref-fun-ticker-modify) and [request.security()](#ref-fun-request-security).
 
 ---
 
+<a id="ref-fun-syminfo-ticker"></a>
+
 ### syminfo.ticker()
 
-Returns symbol name without exchange prefix, e.g. "AAPL".
+Returns `symbol` name without exchange prefix, e.g. "AAPL".
 
 **Syntax & Overloads**
 
@@ -17536,12 +20053,14 @@ plot(s)
 ```
 
 **Returns**
-Returns symbol name without exchange prefix, e.g. "AAPL".
+Returns `symbol` name without exchange prefix, e.g. "AAPL".
 
 **Remarks**
-The result of the function is used in the ticker.new() / ticker.modify() and request.security() .
+The result of the function is used in the [ticker.new()](#ref-fun-ticker-new)/[ticker.modify()](#ref-fun-ticker-modify) and [request.security()](#ref-fun-request-security).
 
 ---
+
+<a id="ref-fun-ta-alma"></a>
 
 ### ta.alma()
 
@@ -17586,9 +20105,11 @@ plot(pine_alma(close, 9, 0.85, 6))
 Arnaud Legoux Moving Average.
 
 **Remarks**
-na values in the source series are included in calculations and will produce an na result.
+`na` values in the `source` series are included in calculations and will produce an `na` result.
 
 ---
+
+<a id="ref-fun-ta-atr"></a>
 
 ### ta.atr()
 
@@ -17623,9 +20144,11 @@ plot(pine_atr(14))
 Average true range.
 
 **Remarks**
-na values in the source series are ignored; the function calculates on the length quantity of non- na values.
+`na` values in the `source` series are ignored; the function calculates on the `length` quantity of non-`na` values.
 
 ---
+
+<a id="ref-fun-ta-barssince"></a>
 
 ### ta.barssince()
 
@@ -17654,9 +20177,11 @@ Number of bars since condition was true.
 
 **Remarks**
 If the condition has never been met prior to the current bar, the function returns na.
-Please note that using this variable/function can cause indicator repainting .
+Please note that using this variable/function can cause [indicator repainting](./docs_content.md#docs-concepts-repainting).
 
 ---
+
+<a id="ref-fun-ta-bb"></a>
 
 ### ta.bb()
 
@@ -17701,9 +20226,11 @@ plot(pineLower)
 Bollinger Bands.
 
 **Remarks**
-na values in the source series are ignored; the function calculates on the length quantity of non- na values.
+`na` values in the `source` series are ignored; the function calculates on the `length` quantity of non-`na` values.
 
 ---
+
+<a id="ref-fun-ta-bbw"></a>
 
 ### ta.bbw()
 
@@ -17741,9 +20268,11 @@ plot(f_bbw(close, 5, 4))
 Bollinger Bands Width.
 
 **Remarks**
-na values in the source series are ignored; the function calculates on the length quantity of non- na values.
+`na` values in the `source` series are ignored; the function calculates on the `length` quantity of non-`na` values.
 
 ---
+
+<a id="ref-fun-ta-cci"></a>
 
 ### ta.cci()
 
@@ -17763,13 +20292,15 @@ length (series int) Number of bars (length).
 Commodity channel index of source for length bars back.
 
 **Remarks**
-na values in the source series are ignored.
+`na` values in the `source` series are ignored.
 
 ---
 
+<a id="ref-fun-ta-change"></a>
+
 ### ta.change()
 
-Compares the current source value to its value length bars ago and returns the difference.
+Compares the current `source` value to its value `length` bars ago and returns the difference.
 
 **Syntax & Overloads**
 
@@ -17787,7 +20318,7 @@ ta.change(source, length) → series bool
 
 **Arguments**
 source (series int) Source series.
-length (series int) How far the past source value is offset from the current one, in bars. Optional. The default is 1.
+length (series int) How far the past `source` value is offset from the current one, in bars. Optional. The default is 1.
 
 **Example**
 
@@ -17804,12 +20335,14 @@ plotshape(colorChange, 'Direction Change')
 ```
 
 **Returns**
-The difference between the values when they are numerical. When a 'bool' source is used, returns true when the current source is different from the previous source.
+The difference between the values when they are numerical. When a 'bool' source is used, returns `true` when the current source is different from the previous source.
 
 **Remarks**
-na values in the source series are included in calculations and will produce an na result.
+`na` values in the `source` series are included in calculations and will produce an `na` result.
 
 ---
+
+<a id="ref-fun-ta-cmo"></a>
 
 ### ta.cmo()
 
@@ -17846,9 +20379,11 @@ plot(f_cmo(close, 5))
 Chande Momentum Oscillator.
 
 **Remarks**
-na values in the source series are ignored.
+`na` values in the `source` series are ignored.
 
 ---
+
+<a id="ref-fun-ta-cog"></a>
 
 ### ta.cog()
 
@@ -17887,13 +20422,15 @@ plot(pine_cog(close, 10))
 Center of Gravity.
 
 **Remarks**
-na values in the source series are ignored.
+`na` values in the `source` series are ignored.
 
 ---
 
+<a id="ref-fun-ta-correlation"></a>
+
 ### ta.correlation()
 
-Correlation coefficient. Describes the degree to which two series tend to deviate from their ta.sma() values.
+Correlation coefficient. Describes the degree to which two series tend to deviate from their [ta.sma()](#ref-fun-ta-sma) values.
 
 **Syntax**
 
@@ -17910,9 +20447,11 @@ length (series int) Length (number of bars back).
 Correlation coefficient.
 
 **Remarks**
-na values in the source series are ignored; the function calculates on the length quantity of non- na values.
+`na` values in the `source` series are ignored; the function calculates on the `length` quantity of non-`na` values.
 
 ---
+
+<a id="ref-fun-ta-cross"></a>
 
 ### ta.cross()
 
@@ -17931,9 +20470,11 @@ true if two series have crossed each other, otherwise false.
 
 ---
 
+<a id="ref-fun-ta-crossover"></a>
+
 ### ta.crossover()
 
-The source1 -series is defined as having crossed over source2 -series if, on the current bar, the value of source1 is greater than the value of source2 , and on the previous bar, the value of source1 was less than or equal to the value of source2 .
+The `source1`-series is defined as having crossed over `source2`-series if, on the current bar, the value of `source1` is greater than the value of `source2`, and on the previous bar, the value of `source1` was less than or equal to the value of `source2`.
 
 **Syntax**
 
@@ -17946,13 +20487,15 @@ source1 (series int/float) First data series.
 source2 (series int/float) Second data series.
 
 **Returns**
-true if source1 crossed over source2 otherwise false.
+true if `source1` crossed over `source2` otherwise false.
 
 ---
 
+<a id="ref-fun-ta-crossunder"></a>
+
 ### ta.crossunder()
 
-The source1 -series is defined as having crossed under source2 -series if, on the current bar, the value of source1 is less than the value of source2 , and on the previous bar, the value of source1 was greater than or equal to the value of source2 .
+The `source1`-series is defined as having crossed under `source2`-series if, on the current bar, the value of `source1` is less than the value of `source2`, and on the previous bar, the value of `source1` was greater than or equal to the value of `source2`.
 
 **Syntax**
 
@@ -17965,13 +20508,15 @@ source1 (series int/float) First data series.
 source2 (series int/float) Second data series.
 
 **Returns**
-true if source1 crossed under source2 otherwise false.
+true if `source1` crossed under `source2` otherwise false.
 
 ---
 
+<a id="ref-fun-ta-cum"></a>
+
 ### ta.cum()
 
-Cumulative (total) sum of source . In other words it's a sum of all elements of source .
+Cumulative (total) sum of `source`. In other words it's a sum of all elements of `source`.
 
 **Syntax**
 
@@ -17987,9 +20532,11 @@ Total sum series.
 
 ---
 
+<a id="ref-fun-ta-dev"></a>
+
 ### ta.dev()
 
-Measure of difference between the series and it's ta.sma()
+Measure of difference between the series and it's [ta.sma()](#ref-fun-ta-sma)
 
 **Syntax**
 
@@ -18020,12 +20567,14 @@ plot(pine_dev(close, 10))
 ```
 
 **Returns**
-Deviation of source for length bars back.
+Deviation of `source` for `length` bars back.
 
 **Remarks**
-na values in the source series are ignored.
+`na` values in the `source` series are ignored.
 
 ---
+
+<a id="ref-fun-ta-dmi"></a>
 
 ### ta.dmi()
 
@@ -18055,13 +20604,15 @@ plot(diminus, color=color.orange, title="-DI")
 ```
 
 **Returns**
-Tuple of three DMI series: Positive Directional Movement (+DI), Negative Directional Movement (-DI) and Average Directional Movement Index (ADX).
+[Tuple](./docs_content.md#docs-language-type-system) of three DMI series: Positive Directional Movement (+DI), Negative Directional Movement (-DI) and Average Directional Movement Index (ADX).
 
 ---
 
+<a id="ref-fun-ta-ema"></a>
+
 ### ta.ema()
 
-The ema function returns the exponentially weighted moving average. In ema weighting factors decrease exponentially. It calculates by using a formula: EMA = alpha * source + (1 - alpha) * EMA[1] , where alpha = 2 / (length + 1) .
+The ema function returns the exponentially weighted moving average. In ema weighting factors decrease exponentially. It calculates by using a formula: `EMA = alpha * source + (1 - alpha) * EMA[1]`, where `alpha = 2 / (length + 1)`.
 
 **Syntax**
 
@@ -18089,17 +20640,19 @@ plot(pine_ema(close,15))
 ```
 
 **Returns**
-Exponential moving average of source with alpha = 2 / (length + 1).
+Exponential moving average of `source` with alpha = 2 / (length + 1).
 
 **Remarks**
-Please note that using this variable/function can cause indicator repainting .
-na values in the source series are ignored; the function calculates on the length quantity of non- na values.
+Please note that using this variable/function can cause [indicator repainting](./docs_content.md#docs-concepts-repainting).
+`na` values in the `source` series are ignored; the function calculates on the `length` quantity of non-`na` values.
 
 ---
 
+<a id="ref-fun-ta-falling"></a>
+
 ### ta.falling()
 
-Test if the source series is now falling for length bars long.
+Test if the `source` series is now falling for `length` bars long.
 
 **Syntax**
 
@@ -18112,12 +20665,14 @@ source (series int/float) Series of values to process.
 length (series int) Number of bars (length).
 
 **Returns**
-true if current source value is less than any previous source value for length bars back, false otherwise.
+true if current `source` value is less than any previous `source` value for `length` bars back, false otherwise.
 
 **Remarks**
-na values in the source series are ignored; the function calculates on the length quantity of non- na values.
+`na` values in the `source` series are ignored; the function calculates on the `length` quantity of non-`na` values.
 
 ---
+
+<a id="ref-fun-ta-highest"></a>
 
 ### ta.highest()
 
@@ -18137,11 +20692,13 @@ length (series int) Number of bars (length).
 Highest value in the series.
 
 **Remarks**
-Two args version: source is a series and length is the number of bars back.
-One arg version: length is the number of bars back. Algorithm uses high as a source series.
-na values in the source series are ignored.
+Two args version: `source` is a series and `length` is the number of bars back.
+One arg version: `length` is the number of bars back. Algorithm uses high as a `source` series.
+`na` values in the `source` series are ignored.
 
 ---
+
+<a id="ref-fun-ta-highestbars"></a>
 
 ### ta.highestbars()
 
@@ -18161,11 +20718,13 @@ length (series int) Number of bars (length).
 Offset to the highest bar.
 
 **Remarks**
-Two args version: source is a series and length is the number of bars back.
-One arg version: length is the number of bars back. Algorithm uses high as a source series.
-na values in the source series are ignored.
+Two args version: `source` is a series and `length` is the number of bars back.
+One arg version: `length` is the number of bars back. Algorithm uses high as a `source` series.
+`na` values in the `source` series are ignored.
 
 ---
+
+<a id="ref-fun-ta-hma"></a>
 
 ### ta.hma()
 
@@ -18196,9 +20755,11 @@ plot(hmaBuildIn, title="Hull MA", color=#674EA7)
 Hull moving average of 'source' for 'length' bars back.
 
 **Remarks**
-na values in the source series are ignored.
+`na` values in the `source` series are ignored.
 
 ---
+
+<a id="ref-fun-ta-kc"></a>
 
 ### ta.kc()
 
@@ -18245,9 +20806,11 @@ plot(pineLower)
 Keltner Channels.
 
 **Remarks**
-na values in the source series are ignored; the function calculates on the length quantity of non- na values.
+`na` values in the `source` series are ignored; the function calculates on the `length` quantity of non-`na` values.
 
 ---
+
+<a id="ref-fun-ta-kcw"></a>
 
 ### ta.kcw()
 
@@ -18288,13 +20851,15 @@ plot(f_kcw(close, 5, 4, true))
 Keltner Channels Width.
 
 **Remarks**
-na values in the source series are ignored; the function calculates on the length quantity of non- na values.
+`na` values in the `source` series are ignored; the function calculates on the `length` quantity of non-`na` values.
 
 ---
 
+<a id="ref-fun-ta-linreg"></a>
+
 ### ta.linreg()
 
-Linear regression curve. A line that best fits the prices specified over a user-defined time period. It is calculated using the least squares method. The result of this function is calculated using the formula: linreg = intercept + slope * (length - 1 - offset), where intercept and slope are the values calculated with the least squares method on source series.
+Linear regression curve. A line that best fits the prices specified over a user-defined time period. It is calculated using the least squares method. The result of this function is calculated using the formula: linreg = intercept + slope * (length - 1 - offset), where intercept and slope are the values calculated with the least squares method on `source` series.
 
 **Syntax**
 
@@ -18311,9 +20876,11 @@ offset (simple int) Offset.
 Linear regression curve.
 
 **Remarks**
-na values in the source series are included in calculations and will produce an na result.
+`na` values in the `source` series are included in calculations and will produce an `na` result.
 
 ---
+
+<a id="ref-fun-ta-lowest"></a>
 
 ### ta.lowest()
 
@@ -18333,11 +20900,13 @@ length (series int) Number of bars (length).
 Lowest value in the series.
 
 **Remarks**
-Two args version: source is a series and length is the number of bars back.
-One arg version: length is the number of bars back. Algorithm uses low as a source series.
-na values in the source series are ignored.
+Two args version: `source` is a series and `length` is the number of bars back.
+One arg version: `length` is the number of bars back. Algorithm uses low as a `source` series.
+`na` values in the `source` series are ignored.
 
 ---
+
+<a id="ref-fun-ta-lowestbars"></a>
 
 ### ta.lowestbars()
 
@@ -18357,11 +20926,13 @@ length (series int) Number of bars back.
 Offset to the lowest bar.
 
 **Remarks**
-Two args version: source is a series and length is the number of bars back.
-One arg version: length is the number of bars back. Algorithm uses low as a source series.
-na values in the source series are ignored.
+Two args version: `source` is a series and `length` is the number of bars back.
+One arg version: `length` is the number of bars back. Algorithm uses low as a `source` series.
+`na` values in the `source` series are ignored.
 
 ---
+
+<a id="ref-fun-ta-macd"></a>
 
 ### ta.macd()
 
@@ -18402,16 +20973,18 @@ plot(signalLine, color=color.orange)
 ```
 
 **Returns**
-Tuple of three MACD series: MACD line, signal line and histogram line.
+[Tuple](./docs_content.md#docs-language-type-system) of three MACD series: MACD line, signal line and histogram line.
 
 **Remarks**
-na values in the source series are ignored; the function calculates on the length quantity of non- na values.
+`na` values in the `source` series are ignored; the function calculates on the `length` quantity of non-`na` values.
 
 ---
 
+<a id="ref-fun-ta-max"></a>
+
 ### ta.max()
 
-Returns the all-time high value of source from the beginning of the chart up to the current bar.
+Returns the all-time high value of `source` from the beginning of the chart up to the current bar.
 
 **Syntax**
 
@@ -18423,9 +20996,11 @@ ta.max(source) → series float
 source (series int/float) Source used for the calculation.
 
 **Remarks**
-na
+[na](#ref-var-na)
 
 ---
+
+<a id="ref-fun-ta-median"></a>
 
 ### ta.median()
 
@@ -18449,9 +21024,11 @@ length (series int) Number of bars (length).
 The median of the series.
 
 **Remarks**
-na values in the source series are ignored; the function calculates on the length quantity of non- na values.
+`na` values in the `source` series are ignored; the function calculates on the `length` quantity of non-`na` values.
 
 ---
+
+<a id="ref-fun-ta-mfi"></a>
 
 ### ta.mfi()
 
@@ -18489,13 +21066,15 @@ plot(pine_mfi(hlc3, 14))
 Money Flow Index.
 
 **Remarks**
-na values in the source series are ignored; the function calculates on the length quantity of non- na values.
+`na` values in the `source` series are ignored; the function calculates on the `length` quantity of non-`na` values.
 
 ---
 
+<a id="ref-fun-ta-min"></a>
+
 ### ta.min()
 
-Returns the all-time low value of source from the beginning of the chart up to the current bar.
+Returns the all-time low value of `source` from the beginning of the chart up to the current bar.
 
 **Syntax**
 
@@ -18507,13 +21086,15 @@ ta.min(source) → series float
 source (series int/float) Source used for the calculation.
 
 **Remarks**
-na
+[na](#ref-var-na)
 
 ---
 
+<a id="ref-fun-ta-mode"></a>
+
 ### ta.mode()
 
-Returns the mode of the series. If there are several values with the same frequency, it returns the smallest value.
+Returns the [mode](https://en.wikipedia.org/wiki/Mode_(statistics)) of the series. If there are several values with the same frequency, it returns the smallest value.
 
 **Syntax & Overloads**
 
@@ -18530,16 +21111,18 @@ source (series int) Series of values to process.
 length (series int) Number of bars (length).
 
 **Returns**
-The most frequently occurring value from the source . If none exists, returns the smallest value instead.
+The most frequently occurring value from the `source`. If none exists, returns the smallest value instead.
 
 **Remarks**
-na values in the source series are ignored; the function calculates on the length quantity of non- na values.
+`na` values in the `source` series are ignored; the function calculates on the `length` quantity of non-`na` values.
 
 ---
 
+<a id="ref-fun-ta-mom"></a>
+
 ### ta.mom()
 
-Momentum of source price and source price length bars ago. This is simply a difference: source - source[length].
+Momentum of `source` price and `source` price `length` bars ago. This is simply a difference: source - source[length].
 
 **Syntax**
 
@@ -18552,12 +21135,14 @@ source (series int/float) Series of values to process.
 length (series int) Offset from the current bar to the previous bar.
 
 **Returns**
-Momentum of source price and source price length bars ago.
+Momentum of `source` price and `source` price `length` bars ago.
 
 **Remarks**
-na values in the source series are included in calculations and will produce an na result.
+`na` values in the `source` series are included in calculations and will produce an `na` result.
 
 ---
+
+<a id="ref-fun-ta-percentile-linear-interpolation"></a>
 
 ### ta.percentile_linear_interpolation()
 
@@ -18575,13 +21160,15 @@ length (series int) Number of bars back (length).
 percentage (simple int/float) Percentage, a number from range 0..100.
 
 **Returns**
-P-th percentile of source series for length bars back.
+P-th percentile of `source` series for `length` bars back.
 
 **Remarks**
 Note that a percentile calculated using this method will NOT always be a member of the input data set.
-na values in the source series are included in calculations and will produce an na result.
+`na` values in the `source` series are included in calculations and will produce an `na` result.
 
 ---
+
+<a id="ref-fun-ta-percentile-nearest-rank"></a>
 
 ### ta.percentile_nearest_rank()
 
@@ -18599,15 +21186,17 @@ length (series int) Number of bars back (length).
 percentage (simple int/float) Percentage, a number from range 0..100.
 
 **Returns**
-P-th percentile of source series for length bars back.
+P-th percentile of `source` series for `length` bars back.
 
 **Remarks**
 Using the Nearest Rank method on lengths less than 100 bars back can result in the same number being used for more than one percentile.
 A percentile calculated using the Nearest Rank method will always be a member of the input data set.
 The 100th percentile is defined to be the largest value in the input data set.
-na values in the source series are ignored.
+`na` values in the `source` series are ignored.
 
 ---
+
+<a id="ref-fun-ta-percentrank"></a>
 
 ### ta.percentrank()
 
@@ -18624,16 +21213,18 @@ source (series int/float) Series of values to process.
 length (series int) Number of bars (length).
 
 **Returns**
-Percent rank of source for length bars back.
+Percent rank of `source` for `length` bars back.
 
 **Remarks**
-na values in the source series are included in calculations and will produce an na result.
+`na` values in the `source` series are included in calculations and will produce an `na` result.
 
 ---
 
+<a id="ref-fun-ta-pivot-point-levels"></a>
+
 ### ta.pivot_point_levels()
 
-Calculates the pivot point levels using the specified type and anchor .
+Calculates the pivot point levels using the specified `type` and `anchor`.
 
 **Syntax**
 
@@ -18643,8 +21234,8 @@ ta.pivot_point_levels(type, anchor, developing) → array<float>
 
 **Arguments**
 type (series string) The type of pivot point levels. Possible values: "Traditional", "Fibonacci", "Woodie", "Classic", "DM", "Camarilla".
-anchor (series bool) The condition that triggers the reset of the pivot point calculations. When true , calculations reset; when false , results calculated at the last reset persist.
-developing (series bool) If false , the values are those calculated the last time the anchor condition was true . They remain constant until the anchor condition becomes true again. If true , the pivots are developing, i.e., they constantly recalculate on the data developing between the point of the last anchor (or bar zero if the anchor condition was never true ) and the current bar. Optional. The default is false .
+anchor (series bool) The condition that triggers the reset of the pivot point calculations. When [true](#ref-const-true), calculations reset; when [false](#ref-const-false), results calculated at the last reset persist.
+developing (series bool) If [false](#ref-const-false), the values are those calculated the last time the anchor condition was [true](#ref-const-true). They remain constant until the anchor condition becomes [true](#ref-const-true) again. If [true](#ref-const-true), the pivots are developing, i.e., they constantly recalculate on the data developing between the point of the last anchor (or bar zero if the anchor condition was never [true](#ref-const-true)) and the current bar. Optional. The default is [false](#ref-const-false).
 
 **Example**
 
@@ -18661,12 +21252,14 @@ if weekChange
 ```
 
 **Returns**
-An array<float> with numerical values representing 11 pivot point levels: [P, R1, S1, R2, S2, R3, S3, R4, S4, R5, S5]. Levels absent from the specified type return na values (e.g., "DM" only calculates P, R1, and S1).
+An `array<float>` with numerical values representing 11 pivot point levels: [P, R1, S1, R2, S2, R3, S3, R4, S4, R5, S5]. Levels absent from the specified `type` return [na](#ref-var-na) values (e.g., "DM" only calculates P, R1, and S1).
 
 **Remarks**
-The developing parameter cannot be true when type is set to "Woodie", because the Woodie calculation for a period depends on that period's open, which means that the pivot value is either available or unavailable, but never developing. If used together, the indicator will return a runtime error.
+The `developing` parameter cannot be `true` when `type` is set to "Woodie", because the Woodie calculation for a period depends on that period's open, which means that the pivot value is either available or unavailable, but never developing. If used together, the indicator will return a runtime error.
 
 ---
+
+<a id="ref-fun-ta-pivothigh"></a>
 
 ### ta.pivothigh()
 
@@ -18701,9 +21294,11 @@ plot(ph, style=plot.style_cross, linewidth=3, color= color.red, offset=-rightBar
 Price of the point or 'NaN'.
 
 **Remarks**
-If parameters 'leftbars' or 'rightbars' are series you should use max_bars_back() function for the 'source' variable.
+If parameters 'leftbars' or 'rightbars' are series you should use [max_bars_back()](#ref-fun-max-bars-back) function for the 'source' variable.
 
 ---
+
+<a id="ref-fun-ta-pivotlow"></a>
 
 ### ta.pivotlow()
 
@@ -18738,9 +21333,11 @@ plot(pl, style=plot.style_cross, linewidth=3, color= color.blue, offset=-rightBa
 Price of the point or 'NaN'.
 
 **Remarks**
-If parameters 'leftbars' or 'rightbars' are series you should use max_bars_back() function for the 'source' variable.
+If parameters 'leftbars' or 'rightbars' are series you should use [max_bars_back()](#ref-fun-max-bars-back) function for the 'source' variable.
 
 ---
+
+<a id="ref-fun-ta-range"></a>
 
 ### ta.range()
 
@@ -18764,13 +21361,15 @@ length (series int) Number of bars (length).
 The difference between the min and max values in the series.
 
 **Remarks**
-na values in the source series are ignored; the function calculates on the length quantity of non- na values.
+`na` values in the `source` series are ignored; the function calculates on the `length` quantity of non-`na` values.
 
 ---
 
+<a id="ref-fun-ta-rci"></a>
+
 ### ta.rci()
 
-Calculates the Rank Correlation Index (RCI), which measures the directional consistency of price movements. It evaluates the monotonic relationship between a source series and the bar index over length bars using Spearman's rank correlation coefficient. The resulting value is scaled to a range of -100 to 100, where 100 indicates the source consistently increased over the period, and -100 indicates it consistently decreased. Values between -100 and 100 reflect varying degrees of upward or downward consistency.
+Calculates the Rank Correlation Index (RCI), which measures the directional consistency of price movements. It evaluates the monotonic relationship between a `source` series and the bar index over `length` bars using Spearman's rank correlation coefficient. The resulting value is scaled to a range of -100 to 100, where 100 indicates the `source` consistently increased over the period, and -100 indicates it consistently decreased. Values between -100 and 100 reflect varying degrees of upward or downward consistency.
 
 **Syntax**
 
@@ -18787,9 +21386,11 @@ The Rank Correlation Index, a value between -100 to 100.
 
 ---
 
+<a id="ref-fun-ta-rising"></a>
+
 ### ta.rising()
 
-Test if the source series is now rising for length bars long.
+Test if the `source` series is now rising for `length` bars long.
 
 **Syntax**
 
@@ -18802,12 +21403,14 @@ source (series int/float) Series of values to process.
 length (series int) Number of bars (length).
 
 **Returns**
-true if current source is greater than any previous source for length bars back, false otherwise.
+true if current `source` is greater than any previous `source` for `length` bars back, false otherwise.
 
 **Remarks**
-na values in the source series are ignored.
+`na` values in the `source` series are ignored.
 
 ---
+
+<a id="ref-fun-ta-rma"></a>
 
 ### ta.rma()
 
@@ -18839,16 +21442,18 @@ plot(pine_rma(close, 15))
 ```
 
 **Returns**
-Exponential moving average of source with alpha = 1 / length .
+Exponential moving average of `source` with alpha = 1 / `length`.
 
 **Remarks**
-na values in the source series are ignored; the function calculates on the length quantity of non- na values.
+`na` values in the `source` series are ignored; the function calculates on the `length` quantity of non-`na` values.
 
 ---
 
+<a id="ref-fun-ta-roc"></a>
+
 ### ta.roc()
 
-Calculates the percentage of change (rate of change) between the current value of source and its value length bars ago.
+Calculates the percentage of change (rate of change) between the current value of `source` and its value `length` bars ago.
 It is calculated by the formula: 100 * change(src, length) / src[length].
 
 **Syntax**
@@ -18862,16 +21467,18 @@ source (series int/float) Series of values to process.
 length (series int) Number of bars (length).
 
 **Returns**
-The rate of change of source for length bars back.
+The rate of change of `source` for `length` bars back.
 
 **Remarks**
-na values in the source series are included in calculations and will produce an na result.
+`na` values in the `source` series are included in calculations and will produce an `na` result.
 
 ---
 
+<a id="ref-fun-ta-rsi"></a>
+
 ### ta.rsi()
 
-Relative strength index. It is calculated using the ta.rma() of upward and downward changes of source over the last length bars.
+Relative strength index. It is calculated using the `ta.rma()` of upward and downward changes of `source` over the last `length` bars.
 
 **Syntax**
 
@@ -18905,9 +21512,11 @@ plot(pine_rsi(close, 7))
 Relative strength index.
 
 **Remarks**
-na values in the source series are ignored; the function calculates on the length quantity of non- na values.
+`na` values in the `source` series are ignored; the function calculates on the `length` quantity of non-`na` values.
 
 ---
+
+<a id="ref-fun-ta-sar"></a>
 
 ### ta.sar()
 
@@ -18998,6 +21607,8 @@ Parabolic SAR.
 
 ---
 
+<a id="ref-fun-ta-sma"></a>
+
 ### ta.sma()
 
 The sma function returns the moving average, that is the sum of last y values of x, divided by y.
@@ -19029,12 +21640,14 @@ plot(pine_sma(close, 15))
 ```
 
 **Returns**
-Simple moving average of source for length bars back.
+Simple moving average of `source` for `length` bars back.
 
 **Remarks**
-na values in the source series are ignored.
+`na` values in the `source` series are ignored.
 
 ---
+
+<a id="ref-fun-ta-stdev"></a>
 
 ### ta.stdev()
 
@@ -19085,10 +21698,12 @@ plot(pine_stdev(close, 5))
 Standard deviation.
 
 **Remarks**
-If biased is true, function will calculate using a biased estimate of the entire population, if false - unbiased estimate of a sample.
-na values in the source series are ignored; the function calculates on the length quantity of non- na values.
+If `biased` is true, function will calculate using a biased estimate of the entire population, if false - unbiased estimate of a sample.
+`na` values in the `source` series are ignored; the function calculates on the `length` quantity of non-`na` values.
 
 ---
+
+<a id="ref-fun-ta-stoch"></a>
 
 ### ta.stoch()
 
@@ -19110,9 +21725,11 @@ length (series int) Length (number of bars back).
 Stochastic.
 
 **Remarks**
-na values in the source series are ignored.
+`na` values in the `source` series are ignored.
 
 ---
+
+<a id="ref-fun-ta-supertrend"></a>
 
 ### ta.supertrend()
 
@@ -19167,9 +21784,11 @@ plot(pineDirection > 0 ? Pine_Supertrend : na, "Down direction", color = color.r
 ```
 
 **Returns**
-Tuple of two supertrend series: supertrend line and direction of trend. Possible values are 1 (down direction) and -1 (up direction).
+[Tuple](./docs_content.md#docs-language-type-system) of two supertrend series: supertrend line and direction of trend. Possible values are 1 (down direction) and -1 (up direction).
 
 ---
+
+<a id="ref-fun-ta-swma"></a>
 
 ### ta.swma()
 
@@ -19201,13 +21820,15 @@ plot(pine_swma(close))
 Symmetrically weighted moving average.
 
 **Remarks**
-na values in the source series are included in calculations and will produce an na result.
+`na` values in the `source` series are included in calculations and will produce an `na` result.
 
 ---
 
+<a id="ref-fun-ta-tr"></a>
+
 ### ta.tr()
 
-Calculates the current bar's true range. Unlike a bar's actual range ( high - low ), true range accounts for potential gaps by taking the maximum of the current bar's actual range and the absolute distances from the previous bar's close to the current bar's high and low . The formula is: math.max(high - low, math.abs(high - close[1]), math.abs(low - close[1])) .
+Calculates the current bar's true range. Unlike a bar's actual range (`high - low`), true range accounts for potential gaps by taking the maximum of the current bar's actual range and the absolute distances from the previous bar's [close](#ref-var-close) to the current bar's [high](#ref-var-high) and [low](#ref-var-low). The formula is: `math.max(high - low, math.abs(high - close[1]), math.abs(low - close[1]))`.
 
 **Syntax**
 
@@ -19216,15 +21837,17 @@ ta.tr(handle_na) → series float
 ```
 
 **Arguments**
-handle_na (simple bool) Defines how the function calculates the result when the previous bar's close is na . If true , the function returns the bar's high - low value. If false , it returns na .
+handle_na (simple bool) Defines how the function calculates the result when the previous bar's [close](#ref-var-close) is [na](#ref-var-na). If [true](#ref-const-true), the function returns the bar's `high - low` value. If [false](#ref-const-false), it returns [na](#ref-var-na).
 
 **Returns**
 True range. It is math.max(high - low, math.abs(high - close[1]), math.abs(low - close[1])).
 
 **Remarks**
-ta.tr(false) is exactly the same as ta.tr .
+ta.tr(false) is exactly the same as [ta.tr](#ref-var-ta-tr).
 
 ---
+
+<a id="ref-fun-ta-tsi"></a>
 
 ### ta.tsi()
 
@@ -19245,13 +21868,15 @@ long_length (simple int) Long length.
 True strength index. A value in range [-1, 1].
 
 **Remarks**
-na values in the source series are ignored; the function calculates on the length quantity of non- na values.
+`na` values in the `source` series are ignored; the function calculates on the `length` quantity of non-`na` values.
 
 ---
 
+<a id="ref-fun-ta-valuewhen"></a>
+
 ### ta.valuewhen()
 
-Returns the value of the source series on the bar where the condition was true on the nth most recent occurrence.
+Returns the value of the `source` series on the bar where the `condition` was true on the nth most recent occurrence.
 
 **Syntax & Overloads**
 
@@ -19274,7 +21899,7 @@ ta.valuewhen(condition, source, occurrence) → series bool
 **Arguments**
 condition (series bool) The condition to search for.
 source (series color) The value to be returned from the bar where the condition is met.
-occurrence (simple int) The occurrence of the condition. The numbering starts from 0 and goes back in time, so '0' is the most recent occurrence of condition , '1' is the second most recent and so forth. Must be an integer >= 0.
+occurrence (simple int) The occurrence of the condition. The numbering starts from 0 and goes back in time, so '0' is the most recent occurrence of `condition`, '1' is the second most recent and so forth. Must be an integer >= 0.
 
 **Example**
 
@@ -19288,13 +21913,15 @@ plot(ta.valuewhen(ta.cross(slow, fast), close, 1))
 ```
 
 **Remarks**
-This function requires execution on every bar. It is not recommended to use it inside a for or while loop structure, where its behavior can be unexpected. Please note that using this function can cause indicator repainting .
+This function requires execution on every bar. It is not recommended to use it inside a [for](#ref-kw-for) or [while](#ref-kw-while) loop structure, where its behavior can be unexpected. Please note that using this function can cause [indicator repainting](./docs_content.md#docs-concepts-repainting).
 
 ---
 
+<a id="ref-fun-ta-variance"></a>
+
 ### ta.variance()
 
-Variance is the expectation of the squared deviation of a series from its mean ( ta.sma() ), and it informally measures how far a set of numbers are spread out from their mean.
+Variance is the expectation of the squared deviation of a series from its mean ([ta.sma()](#ref-fun-ta-sma)), and it informally measures how far a set of numbers are spread out from their mean.
 
 **Syntax**
 
@@ -19308,13 +21935,15 @@ length (series int) Number of bars (length).
 biased (series bool) Determines which estimate should be used. Optional. The default is true.
 
 **Returns**
-Variance of source for length bars back.
+Variance of `source` for `length` bars back.
 
 **Remarks**
-If biased is true, function will calculate using a biased estimate of the entire population, if false - unbiased estimate of a sample.
-na values in the source series are ignored; the function calculates on the length quantity of non- na values.
+If `biased` is true, function will calculate using a biased estimate of the entire population, if false - unbiased estimate of a sample.
+`na` values in the `source` series are ignored; the function calculates on the `length` quantity of non-`na` values.
 
 ---
+
+<a id="ref-fun-ta-vwap"></a>
 
 ### ta.vwap()
 
@@ -19332,7 +21961,7 @@ ta.vwap(source, anchor, stdev_mult) → [series float, series float, series floa
 
 **Arguments**
 source (series int/float) Source used for the VWAP calculation.
-anchor (series bool) The condition that triggers the reset of VWAP calculations. When true , calculations reset; when false , calculations proceed using the values accumulated since the previous reset. Optional. The default is equivalent to passing timeframe.change() with "1D" as its argument.
+anchor (series bool) The condition that triggers the reset of VWAP calculations. When [true](#ref-const-true), calculations reset; when [false](#ref-const-false), calculations proceed using the values accumulated since the previous reset. Optional. The default is equivalent to passing [timeframe.change()](#ref-fun-timeframe-change) with "1D" as its argument.
 
 **Example**
 
@@ -19362,16 +21991,18 @@ plot(lower, color = color.green)
 ```
 
 **Returns**
-A VWAP series, or a tuple [vwap, upper_band, lower_band] if stdev_mult is specified.
+A VWAP series, or a tuple [vwap, upper_band, lower_band] if `stdev_mult` is specified.
 
 **Remarks**
-Calculations only begin the first time the anchor condition becomes true . Until then, the function returns na .
+Calculations only begin the first time the anchor condition becomes [true](#ref-const-true). Until then, the function returns [na](#ref-var-na).
 
 ---
 
+<a id="ref-fun-ta-vwma"></a>
+
 ### ta.vwma()
 
-The vwma function returns volume-weighted moving average of source for length bars back. It is the same as: sma(source * volume, length) / sma(volume, length).
+The vwma function returns volume-weighted moving average of `source` for `length` bars back. It is the same as: sma(source * volume, length) / sma(volume, length).
 
 **Syntax**
 
@@ -19397,16 +22028,18 @@ plot(pine_vwma(close, 15))
 ```
 
 **Returns**
-Volume-weighted moving average of source for length bars back.
+Volume-weighted moving average of `source` for `length` bars back.
 
 **Remarks**
-na values in the source series are ignored.
+`na` values in the `source` series are ignored.
 
 ---
 
+<a id="ref-fun-ta-wma"></a>
+
 ### ta.wma()
 
-The wma function returns weighted moving average of source for length bars back. In wma weighting factors decrease in arithmetical progression.
+The wma function returns weighted moving average of `source` for `length` bars back. In wma weighting factors decrease in arithmetical progression.
 
 **Syntax**
 
@@ -19438,12 +22071,14 @@ plot(pine_wma(close, 15))
 ```
 
 **Returns**
-Weighted moving average of source for length bars back.
+Weighted moving average of `source` for `length` bars back.
 
 **Remarks**
-na values in the source series are ignored.
+`na` values in the `source` series are ignored.
 
 ---
+
+<a id="ref-fun-ta-wpr"></a>
 
 ### ta.wpr()
 
@@ -19470,9 +22105,11 @@ plot(ta.wpr(14), title="%R", color=color.new(#ff6d00, 0))
 Williams %R.
 
 **Remarks**
-na values in the source series are ignored.
+`na` values in the `source` series are ignored.
 
 ---
+
+<a id="ref-fun-table"></a>
 
 ### table()
 
@@ -19485,12 +22122,14 @@ table(x) → series table
 ```
 
 **Arguments**
-x (series table) The value to convert to the specified type, usually na .
+x (series table) The value to convert to the specified type, usually [na](#ref-var-na).
 
 **Returns**
 The value of the argument after casting to table.
 
 ---
+
+<a id="ref-fun-table-cell"></a>
 
 ### table.cell()
 
@@ -19509,21 +22148,23 @@ row (series int) The index of the cell's row. Numbering starts at 0.
 text (series string) The text to be displayed inside the cell. Optional. The default is empty string.
 width (series int/float) The width of the cell as a % of the indicator's visual space. Optional. By default, auto-adjusts the width based on the text inside the cell. Value 0 has the same effect.
 height (series int/float) The height of the cell as a % of the indicator's visual space. Optional. By default, auto-adjusts the height based on the text inside of the cell. Value 0 has the same effect.
-text_color (series color) The color of the text. Optional. The default is color.black .
-text_halign (series string) The horizontal alignment of the cell's text. Optional. The default value is text.align_center . Possible values: text.align_left , text.align_center , text.align_right .
-text_valign (series string) The vertical alignment of the cell's text. Optional. The default value is text.align_center . Possible values: text.align_top , text.align_center , text.align_bottom .
-text_size (series int/string) Size of the object. The size can be any positive integer, or one of the size.* built-in constant strings. The constant strings and their equivalent integer values are: size.auto (0), size.tiny (8), size.small (10), size.normal (14), size.large (20), size.huge (36). The default value is size.normal or 14.
+text_color (series color) The color of the text. Optional. The default is [color.black](#ref-const-color-black).
+text_halign (series string) The horizontal alignment of the cell's text. Optional. The default value is [text.align_center](#ref-const-text-align-center). Possible values: [text.align_left](#ref-const-text-align-left), [text.align_center](#ref-const-text-align-center), [text.align_right](#ref-const-text-align-right).
+text_valign (series string) The vertical alignment of the cell's text. Optional. The default value is [text.align_center](#ref-const-text-align-center). Possible values: [text.align_top](#ref-const-text-align-top), [text.align_center](#ref-const-text-align-center), [text.align_bottom](#ref-const-text-align-bottom).
+text_size (series int/string) Size of the object. The size can be any positive integer, or one of the size.* built-in constant strings. The constant strings and their equivalent integer values are: [size.auto](#ref-const-size-auto) (0), [size.tiny](#ref-const-size-tiny) (8), [size.small](#ref-const-size-small) (10), [size.normal](#ref-const-size-normal) (14), [size.large](#ref-const-size-large) (20), [size.huge](#ref-const-size-huge) (36). The default value is [size.normal](#ref-const-size-normal) or 14.
 bgcolor (series color) The background color of the text. Optional. The default is no color.
 tooltip (series string) The tooltip to be displayed inside the cell. Optional.
-text_font_family (series string) The font family of the text. Optional. The default value is font.family_default . Possible values: font.family_default , font.family_monospace .
-text_formatting (series text_format) The formatting of the displayed text. Formatting options support addition. For example, text.format_bold + text.format_italic will make the text both bold and italicized. Possible values: text.format_none , text.format_bold , text.format_italic . Optional. The default is text.format_none .
+text_font_family (series string) The font family of the text. Optional. The default value is [font.family_default](#ref-const-font-family-default). Possible values: [font.family_default](#ref-const-font-family-default), [font.family_monospace](#ref-const-font-family-monospace).
+text_formatting (series text_format) The formatting of the displayed text. Formatting options support addition. For example, `text.format_bold + text.format_italic` will make the text both bold and italicized. Possible values: [text.format_none](#ref-var-text-format-none), [text.format_bold](#ref-var-text-format-bold), [text.format_italic](#ref-var-text-format-italic). Optional. The default is [text.format_none](#ref-var-text-format-none).
 
 **Remarks**
-This function does not create the table itself, but defines the table’s cells. To use it, you first need to create a table object with table.new() .
-Each table.cell() call overwrites all previously defined properties of a cell. If you call table.cell() twice in a row, e.g., the first time with text='Test Text', and the second time with text_color= color.red but without a new text argument, the default value of the 'text' being an empty string, it will overwrite 'Test Text', and your cell will display an empty string. If you want, instead, to modify any of the cell's properties, use the table.cell_set_*() functions.
-A single script can only display one table in each of the possible locations. If table.cell() is used on several bars to change the same attribute of a cell (e.g. change the background color of the cell to red on the first bar, then to yellow on the second bar), only the last change will be reflected in the table, i.e., the cell’s background will be yellow. Avoid unnecessary setting of cell properties by enclosing function calls in an if barstate.islast block whenever possible, to restrict their execution to the last bar of the series.
+This function does not create the table itself, but defines the table’s cells. To use it, you first need to create a table object with [table.new()](#ref-fun-table-new).
+Each [table.cell()](#ref-fun-table-cell) call overwrites all previously defined properties of a cell. If you call [table.cell()](#ref-fun-table-cell) twice in a row, e.g., the first time with text='Test Text', and the second time with text_color=[color.red](#ref-const-color-red) but without a new text argument, the default value of the 'text' being an empty string, it will overwrite 'Test Text', and your cell will display an empty string. If you want, instead, to modify any of the cell's properties, use the table.cell_set_*() functions.
+A single script can only display one table in each of the possible locations. If [table.cell()](#ref-fun-table-cell) is used on several bars to change the same attribute of a cell (e.g. change the background color of the cell to red on the first bar, then to yellow on the second bar), only the last change will be reflected in the table, i.e., the cell’s background will be yellow. Avoid unnecessary setting of cell properties by enclosing function calls in an [if](#ref-kw-if) [barstate.islast](#ref-var-barstate-islast) block whenever possible, to restrict their execution to the last bar of the series.
 
 ---
+
+<a id="ref-fun-table-cell-set-bgcolor"></a>
 
 ### table.cell_set_bgcolor()
 
@@ -19543,6 +22184,8 @@ bgcolor (series color) The background color of the cell.
 
 ---
 
+<a id="ref-fun-table-cell-set-height"></a>
+
 ### table.cell_set_height()
 
 The function sets the height of cell.
@@ -19560,6 +22203,8 @@ row (series int) The index of the cell's row. Numbering starts at 0.
 height (series int/float) The height of the cell as a % of the chart window. Passing 0 auto-adjusts the height based on the text inside of the cell.
 
 ---
+
+<a id="ref-fun-table-cell-set-text"></a>
 
 ### table.cell_set_text()
 
@@ -19589,6 +22234,8 @@ table.cell_set_text(tLog, row = 0, column = 0, text = "sometext")
 
 ---
 
+<a id="ref-fun-table-cell-set-text-color"></a>
+
 ### table.cell_set_text_color()
 
 The function sets the color of the text inside the cell.
@@ -19607,6 +22254,8 @@ text_color (series color) The color of the text.
 
 ---
 
+<a id="ref-fun-table-cell-set-text-font-family"></a>
+
 ### table.cell_set_text_font_family()
 
 The function sets the font family of the text inside the cell.
@@ -19621,7 +22270,7 @@ table.cell_set_text_font_family(table_id, column, row, text_font_family) → voi
 table_id (series table) A table object.
 column (series int) The index of the cell's column. Numbering starts at 0.
 row (series int) The index of the cell's row. Numbering starts at 0.
-text_font_family (series string) The font family of the text. Possible values: font.family_default , font.family_monospace .
+text_font_family (series string) The font family of the text. Possible values: [font.family_default](#ref-const-font-family-default), [font.family_monospace](#ref-const-font-family-monospace).
 
 **Example**
 
@@ -19634,6 +22283,8 @@ table.cell_set_text_font_family(t, 0, 0, font.family_monospace)
 ```
 
 ---
+
+<a id="ref-fun-table-cell-set-text-formatting"></a>
 
 ### table.cell_set_text_formatting()
 
@@ -19649,9 +22300,11 @@ table.cell_set_text_formatting(table_id, column, row, text_formatting) → void
 table_id (series table) A table object.
 column (series int) The index of the cell's column. Numbering starts at 0.
 row (series int) The index of the cell's row. Numbering starts at 0.
-text_formatting (series text_format) The formatting of the displayed text. Formatting options support addition. For example, text.format_bold + text.format_italic will make the text both bold and italicized. Possible values: text.format_none , text.format_bold , text.format_italic . Optional. The default is text.format_none .
+text_formatting (series text_format) The formatting of the displayed text. Formatting options support addition. For example, `text.format_bold + text.format_italic` will make the text both bold and italicized. Possible values: [text.format_none](#ref-var-text-format-none), [text.format_bold](#ref-var-text-format-bold), [text.format_italic](#ref-var-text-format-italic). Optional. The default is [text.format_none](#ref-var-text-format-none).
 
 ---
+
+<a id="ref-fun-table-cell-set-text-halign"></a>
 
 ### table.cell_set_text_halign()
 
@@ -19667,9 +22320,11 @@ table.cell_set_text_halign(table_id, column, row, text_halign) → void
 table_id (series table) A table object.
 column (series int) The index of the cell's column. Numbering starts at 0.
 row (series int) The index of the cell's row. Numbering starts at 0.
-text_halign (series string) The horizontal alignment of a cell's text. Possible values: text.align_left , text.align_center , text.align_right .
+text_halign (series string) The horizontal alignment of a cell's text. Possible values: [text.align_left](#ref-const-text-align-left), [text.align_center](#ref-const-text-align-center), [text.align_right](#ref-const-text-align-right).
 
 ---
+
+<a id="ref-fun-table-cell-set-text-size"></a>
 
 ### table.cell_set_text_size()
 
@@ -19685,9 +22340,11 @@ table.cell_set_text_size(table_id, column, row, text_size) → void
 table_id (series table) A table object.
 column (series int) The index of the cell's column. Numbering starts at 0.
 row (series int) The index of the cell's row. Numbering starts at 0.
-text_size (series int/string) Size of the object. The size can be any positive integer, or one of the size.* built-in constant strings. The constant strings and their equivalent integer values are: size.auto (0), size.tiny (8), size.small (10), size.normal (14), size.large (20), size.huge (36). The default value is size.normal or 14.
+text_size (series int/string) Size of the object. The size can be any positive integer, or one of the size.* built-in constant strings. The constant strings and their equivalent integer values are: [size.auto](#ref-const-size-auto) (0), [size.tiny](#ref-const-size-tiny) (8), [size.small](#ref-const-size-small) (10), [size.normal](#ref-const-size-normal) (14), [size.large](#ref-const-size-large) (20), [size.huge](#ref-const-size-huge) (36). The default value is [size.normal](#ref-const-size-normal) or 14.
 
 ---
+
+<a id="ref-fun-table-cell-set-text-valign"></a>
 
 ### table.cell_set_text_valign()
 
@@ -19703,9 +22360,11 @@ table.cell_set_text_valign(table_id, column, row, text_valign) → void
 table_id (series table) A table object.
 column (series int) The index of the cell's column. Numbering starts at 0.
 row (series int) The index of the cell's row. Numbering starts at 0.
-text_valign (series string) The vertical alignment of the cell's text. Possible values: text.align_top , text.align_center , text.align_bottom .
+text_valign (series string) The vertical alignment of the cell's text. Possible values: [text.align_top](#ref-const-text-align-top), [text.align_center](#ref-const-text-align-center), [text.align_bottom](#ref-const-text-align-bottom).
 
 ---
+
+<a id="ref-fun-table-cell-set-tooltip"></a>
 
 ### table.cell_set_tooltip()
 
@@ -19735,6 +22394,8 @@ table.cell_set_tooltip(tLog, row = 0, column = 0, tooltip = "sometext")
 
 ---
 
+<a id="ref-fun-table-cell-set-width"></a>
+
 ### table.cell_set_width()
 
 The function sets the width of the cell.
@@ -19752,6 +22413,8 @@ row (series int) The index of the cell's row. Numbering starts at 0.
 width (series int/float) The width of the cell as a % of the chart window. Passing 0 auto-adjusts the width based on the text inside of the cell.
 
 ---
+
+<a id="ref-fun-table-clear"></a>
 
 ### table.clear()
 
@@ -19787,6 +22450,8 @@ if barstate.islast
 
 ---
 
+<a id="ref-fun-table-delete"></a>
+
 ### table.delete()
 
 The function deletes a table.
@@ -19814,6 +22479,8 @@ if barstate.isrealtime
 ```
 
 ---
+
+<a id="ref-fun-table-merge-cells"></a>
 
 ### table.merge_cells()
 
@@ -19856,12 +22523,14 @@ if barstate.islast
 ```
 
 **Remarks**
-This function will merge cells, even if their properties are not yet defined with table.cell() .
-The resulting merged cell inherits all of its values from the cell located at start_column : start_row , except width and height. The width and height of the resulting merged cell are based on the width/height of other cells in the neighboring columns/rows and cannot be set manually.
-To modify the merged cell with any of the table.cell_set_* functions, target the cell at the start_column : start_row coordinates.
+This function will merge cells, even if their properties are not yet defined with [table.cell()](#ref-fun-table-cell).
+The resulting merged cell inherits all of its values from the cell located at `start_column`:`start_row`, except width and height. The width and height of the resulting merged cell are based on the width/height of other cells in the neighboring columns/rows and cannot be set manually.
+To modify the merged cell with any of the `table.cell_set_*` functions, target the cell at the `start_column`:`start_row` coordinates.
 An attempt to merge a cell that has already been merged will result in an error.
 
 ---
+
+<a id="ref-fun-table-new"></a>
 
 ### table.new()
 
@@ -19874,7 +22543,7 @@ table.new(position, columns, rows, bgcolor, frame_color, frame_width, border_col
 ```
 
 **Arguments**
-position (series string) Position of the table. Possible values are: position.top_left , position.top_center , position.top_right , position.middle_left , position.middle_center , position.middle_right , position.bottom_left , position.bottom_center , position.bottom_right .
+position (series string) Position of the table. Possible values are: [position.top_left](#ref-const-position-top-left), [position.top_center](#ref-const-position-top-center), [position.top_right](#ref-const-position-top-right), [position.middle_left](#ref-const-position-middle-left), [position.middle_center](#ref-const-position-middle-center), [position.middle_right](#ref-const-position-middle-right), [position.bottom_left](#ref-const-position-bottom-left), [position.bottom_center](#ref-const-position-bottom-center), [position.bottom_right](#ref-const-position-bottom-right).
 columns (series int) The number of columns in the table.
 rows (series int) The number of rows in the table.
 bgcolor (series color) The background color of the table. Optional. The default is no color.
@@ -19882,7 +22551,7 @@ frame_color (series color) The color of the outer frame of the table. Optional. 
 frame_width (series int) The width of the outer frame of the table. Optional. The default is 0.
 border_color (series color) The color of the borders of the cells (excluding the outer frame). Optional. The default is no color.
 border_width (series int) The width of the borders of the cells (excluding the outer frame). Optional. The default is 0.
-force_overlay (const bool) If true , the drawing will display on the main chart pane, even when the script occupies a separate pane. Optional. The default is false .
+force_overlay (const bool) If [true](#ref-const-true), the drawing will display on the main chart pane, even when the script occupies a separate pane. Optional. The default is [false](#ref-const-false).
 
 **Example**
 
@@ -19899,10 +22568,12 @@ if barstate.islast
 The ID of a table object that can be passed to other table.*() functions.
 
 **Remarks**
-This function creates the table object itself, but the table will not be displayed until its cells are populated. To define a cell and change its contents or attributes, use table.cell() and other table.cell_*() functions.
-One table.new() call can only display one table (the last one drawn), but the function itself will be recalculated on each bar it is used on. For performance reasons, it is wise to use table.new() in conjunction with either the var keyword (so the table object is only created on the first bar) or in an if barstate.islast block (so the table object is only created on the last bar).
+This function creates the table object itself, but the table will not be displayed until its cells are populated. To define a cell and change its contents or attributes, use [table.cell()](#ref-fun-table-cell) and other table.cell_*() functions.
+One [table.new()](#ref-fun-table-new) call can only display one table (the last one drawn), but the function itself will be recalculated on each bar it is used on. For performance reasons, it is wise to use [table.new()](#ref-fun-table-new) in conjunction with either the [var](#ref-kw-var) keyword (so the table object is only created on the first bar) or in an [if](#ref-kw-if) [barstate.islast](#ref-var-barstate-islast) block (so the table object is only created on the last bar).
 
 ---
+
+<a id="ref-fun-table-set-bgcolor"></a>
 
 ### table.set_bgcolor()
 
@@ -19920,6 +22591,8 @@ bgcolor (series color) The background color of the table. Optional. The default 
 
 ---
 
+<a id="ref-fun-table-set-border-color"></a>
+
 ### table.set_border_color()
 
 The function sets the color of the borders (excluding the outer frame) of the table's cells.
@@ -19935,6 +22608,8 @@ table_id (series table) A table object.
 border_color (series color) The color of the borders. Optional. The default is no color.
 
 ---
+
+<a id="ref-fun-table-set-border-width"></a>
 
 ### table.set_border_width()
 
@@ -19952,6 +22627,8 @@ border_width (series int) The width of the borders. Optional. The default is 0.
 
 ---
 
+<a id="ref-fun-table-set-frame-color"></a>
+
 ### table.set_frame_color()
 
 The function sets the color of the outer frame of a table.
@@ -19967,6 +22644,8 @@ table_id (series table) A table object.
 frame_color (series color) The color of the frame of the table. Optional. The default is no color.
 
 ---
+
+<a id="ref-fun-table-set-frame-width"></a>
 
 ### table.set_frame_width()
 
@@ -19984,6 +22663,8 @@ frame_width (series int) The width of the outer frame of the table. Optional. Th
 
 ---
 
+<a id="ref-fun-table-set-position"></a>
+
 ### table.set_position()
 
 The function sets the position of a table.
@@ -19996,9 +22677,11 @@ table.set_position(table_id, position) → void
 
 **Arguments**
 table_id (series table) A table object.
-position (series string) Position of the table. Possible values are: position.top_left , position.top_center , position.top_right , position.middle_left , position.middle_center , position.middle_right , position.bottom_left , position.bottom_center , position.bottom_right .
+position (series string) Position of the table. Possible values are: [position.top_left](#ref-const-position-top-left), [position.top_center](#ref-const-position-top-center), [position.top_right](#ref-const-position-top-right), [position.middle_left](#ref-const-position-middle-left), [position.middle_center](#ref-const-position-middle-center), [position.middle_right](#ref-const-position-middle-right), [position.bottom_left](#ref-const-position-bottom-left), [position.bottom_center](#ref-const-position-bottom-center), [position.bottom_right](#ref-const-position-bottom-right).
 
 ---
+
+<a id="ref-fun-ticker-heikinashi"></a>
 
 ### ticker.heikinashi()
 
@@ -20030,13 +22713,15 @@ plot(heikinashi_aapl_60_close)
 ```
 
 **Returns**
-String value of ticker id, that can be supplied to request.security() function.
+String value of ticker id, that can be supplied to [request.security()](#ref-fun-request-security) function.
 
 ---
 
+<a id="ref-fun-ticker-inherit"></a>
+
 ### ticker.inherit()
 
-Constructs a ticker ID for the specified symbol with additional parameters inherited from the ticker ID passed into the function call, allowing the script to request a symbol's data using the same modifiers that the from_tickerid has, including extended session, dividend adjustment, currency conversion, non-standard chart types, back-adjustment, settlement-as-close, etc.
+Constructs a ticker ID for the specified `symbol` with additional parameters inherited from the ticker ID passed into the function call, allowing the script to request a symbol's data using the same modifiers that the `from_tickerid` has, including extended session, dividend adjustment, currency conversion, non-standard chart types, back-adjustment, settlement-as-close, etc.
 
 **Syntax & Overloads**
 
@@ -20077,9 +22762,11 @@ plot(compareData)
 ```
 
 **Remarks**
-If the constructed ticker ID inherits a modifier that doesn't apply to the symbol (e.g., if the from_tickerid has Extended Hours enabled, but no such option is available for the symbol ), the script will ignore the modifier when requesting data using the ID.
+If the constructed ticker ID inherits a modifier that doesn't apply to the symbol (e.g., if the `from_tickerid` has Extended Hours enabled, but no such option is available for the `symbol`), the script will ignore the modifier when requesting data using the ID.
 
 ---
+
+<a id="ref-fun-ticker-kagi"></a>
 
 ### ticker.kagi()
 
@@ -20118,9 +22805,11 @@ plot(kagi_close)
 ```
 
 **Returns**
-String value of ticker id, that can be supplied to request.security() function.
+String value of ticker id, that can be supplied to [request.security()](#ref-fun-request-security) function.
 
 ---
+
+<a id="ref-fun-ticker-linebreak"></a>
 
 ### ticker.linebreak()
 
@@ -20151,9 +22840,11 @@ plot(linebreak_close)
 ```
 
 **Returns**
-String value of ticker id, that can be supplied to request.security() function.
+String value of ticker id, that can be supplied to [request.security()](#ref-fun-request-security) function.
 
 ---
+
+<a id="ref-fun-ticker-modify"></a>
 
 ### ticker.modify()
 
@@ -20170,11 +22861,11 @@ ticker.modify(tickerid, session, adjustment, backadjustment, settlement_as_close
 ```
 
 **Arguments**
-tickerid (simple string) Symbol name with exchange prefix, e.g. 'BATS:MSFT', 'NASDAQ:MSFT' or tickerid with session and adjustment from the ticker.new() function.
-session (simple string) Session type. Optional argument. Possible values: session.regular , session.extended . Session type of the current chart is syminfo.session . If session is not given, then syminfo.session value is used.
-adjustment (simple string) Adjustment type. Optional argument. Possible values: adjustment.none , adjustment.splits , adjustment.dividends . If adjustment is not given, then default adjustment value is used (can be different depending on particular instrument).
-backadjustment (simple backadjustment) Specifies whether past contract data on continuous futures symbols is back-adjusted. This setting only affects the data from symbols with this option available on their charts. Optional. The default is backadjustment.inherit , meaning that the modified ticker ID inherits the setting from the ticker ID passed to the tickerid parameter, or it inherits the symbol's default if the tickerid does not specify this setting. Possible values: backadjustment.inherit , backadjustment.on , backadjustment.off .
-settlement_as_close (simple settlement) Specifies whether a futures symbol's close value represents the actual closing price or the settlement price on "1D" and higher timeframes. This setting only affects the data from symbols with this option available on their charts. Optional. The default is settlement_as_close.inherit , meaning that the modified ticker ID inherits the setting from the tickerid passed into the function, or it inherits the chart symbol's default if the tickerid does not specify this setting. Possible values: settlement_as_close.inherit , settlement_as_close.on , settlement_as_close.off .
+tickerid (simple string) Symbol name with exchange prefix, e.g. 'BATS:MSFT', 'NASDAQ:MSFT' or tickerid with session and adjustment from the [ticker.new()](#ref-fun-ticker-new) function.
+session (simple string) Session type. Optional argument. Possible values: [session.regular](#ref-const-session-regular), [session.extended](#ref-const-session-extended). Session type of the current chart is [syminfo.session](#ref-var-syminfo-session). If session is not given, then [syminfo.session](#ref-var-syminfo-session) value is used.
+adjustment (simple string) Adjustment type. Optional argument. Possible values: [adjustment.none](#ref-const-adjustment-none), [adjustment.splits](#ref-const-adjustment-splits), [adjustment.dividends](#ref-const-adjustment-dividends). If adjustment is not given, then default adjustment value is used (can be different depending on particular instrument).
+backadjustment (simple backadjustment) Specifies whether past contract data on continuous futures symbols is back-adjusted. This setting only affects the data from symbols with this option available on their charts. Optional. The default is [backadjustment.inherit](#ref-var-backadjustment-inherit), meaning that the modified ticker ID inherits the setting from the ticker ID passed to the `tickerid` parameter, or it inherits the symbol's default if the `tickerid` does not specify this setting. Possible values: [backadjustment.inherit](#ref-var-backadjustment-inherit), [backadjustment.on](#ref-var-backadjustment-on), [backadjustment.off](#ref-var-backadjustment-off).
+settlement_as_close (simple settlement) Specifies whether a futures symbol's [close](#ref-var-close) value represents the actual closing price or the settlement price on "1D" and higher timeframes. This setting only affects the data from symbols with this option available on their charts. Optional. The default is [settlement_as_close.inherit](#ref-var-settlement-as-close-inherit), meaning that the modified ticker ID inherits the setting from the `tickerid` passed into the function, or it inherits the chart symbol's default if the `tickerid` does not specify this setting. Possible values: [settlement_as_close.inherit](#ref-var-settlement-as-close-inherit), [settlement_as_close.on](#ref-var-settlement-as-close-on), [settlement_as_close.off](#ref-var-settlement-as-close-off).
 
 **Example**
 
@@ -20190,9 +22881,11 @@ plot(c2)
 ```
 
 **Returns**
-String value of ticker id, that can be supplied to request.security() function.
+String value of ticker id, that can be supplied to [request.security()](#ref-fun-request-security) function.
 
 ---
+
+<a id="ref-fun-ticker-new"></a>
 
 ### ticker.new()
 
@@ -20209,12 +22902,12 @@ ticker.new(prefix, ticker, session, adjustment, backadjustment, settlement_as_cl
 ```
 
 **Arguments**
-prefix (simple string) Exchange prefix. For example: 'BATS', 'NYSE', 'NASDAQ'. Exchange prefix of main series is syminfo.prefix .
-ticker (simple string) Ticker name. For example 'AAPL', 'MSFT', 'EURUSD'. Ticker name of the main series is syminfo.ticker .
-session (simple string) Session type. Optional argument. Possible values: session.regular , session.extended . Session type of the current chart is syminfo.session . If session is not given, then syminfo.session value is used.
-adjustment (simple string) Adjustment type. Optional argument. Possible values: adjustment.none , adjustment.splits , adjustment.dividends . If adjustment is not given, then default adjustment value is used (can be different depending on particular instrument).
-backadjustment (simple backadjustment) Specifies whether past contract data on continuous futures symbols is back-adjusted. This setting only affects the data from symbols with this option available on their charts. Optional. The default is backadjustment.inherit , meaning that the new ticker ID inherits the symbol's default setting. Possible values: backadjustment.inherit , backadjustment.on , backadjustment.off .
-settlement_as_close (simple settlement) Specifies whether a futures symbol's close value represents the actual closing price or the settlement price on "1D" and higher timeframes. This setting only affects the data from symbols with this option available on their charts. Optional. The default is settlement_as_close.inherit , meaning that the new ticker ID inherits the chart symbol's default setting. Possible values: settlement_as_close.inherit , settlement_as_close.on , settlement_as_close.off .
+prefix (simple string) Exchange prefix. For example: 'BATS', 'NYSE', 'NASDAQ'. Exchange prefix of main series is [syminfo.prefix](#ref-var-syminfo-prefix).
+ticker (simple string) Ticker name. For example 'AAPL', 'MSFT', 'EURUSD'. Ticker name of the main series is [syminfo.ticker](#ref-var-syminfo-ticker).
+session (simple string) Session type. Optional argument. Possible values: [session.regular](#ref-const-session-regular), [session.extended](#ref-const-session-extended). Session type of the current chart is [syminfo.session](#ref-var-syminfo-session). If session is not given, then [syminfo.session](#ref-var-syminfo-session) value is used.
+adjustment (simple string) Adjustment type. Optional argument. Possible values: [adjustment.none](#ref-const-adjustment-none), [adjustment.splits](#ref-const-adjustment-splits), [adjustment.dividends](#ref-const-adjustment-dividends). If adjustment is not given, then default adjustment value is used (can be different depending on particular instrument).
+backadjustment (simple backadjustment) Specifies whether past contract data on continuous futures symbols is back-adjusted. This setting only affects the data from symbols with this option available on their charts. Optional. The default is [backadjustment.inherit](#ref-var-backadjustment-inherit), meaning that the new ticker ID inherits the symbol's default setting. Possible values: [backadjustment.inherit](#ref-var-backadjustment-inherit), [backadjustment.on](#ref-var-backadjustment-on), [backadjustment.off](#ref-var-backadjustment-off).
+settlement_as_close (simple settlement) Specifies whether a futures symbol's [close](#ref-var-close) value represents the actual closing price or the settlement price on "1D" and higher timeframes. This setting only affects the data from symbols with this option available on their charts. Optional. The default is [settlement_as_close.inherit](#ref-var-settlement-as-close-inherit), meaning that the new ticker ID inherits the chart symbol's default setting. Possible values: [settlement_as_close.inherit](#ref-var-settlement-as-close-inherit), [settlement_as_close.on](#ref-var-settlement-as-close-on), [settlement_as_close.off](#ref-var-settlement-as-close-off).
 
 **Example**
 
@@ -20228,12 +22921,14 @@ plot(c, style=plot.style_linebr)
 ```
 
 **Returns**
-String value of ticker id, that can be supplied to request.security() function.
+String value of ticker id, that can be supplied to [request.security()](#ref-fun-request-security) function.
 
 **Remarks**
-You may use return value of ticker.new() function as input argument for ticker.heikinashi() , ticker.renko() , ticker.linebreak() , ticker.kagi() , ticker.pointfigure() functions.
+You may use return value of [ticker.new()](#ref-fun-ticker-new) function as input argument for [ticker.heikinashi()](#ref-fun-ticker-heikinashi), [ticker.renko()](#ref-fun-ticker-renko), [ticker.linebreak()](#ref-fun-ticker-linebreak), [ticker.kagi()](#ref-fun-ticker-kagi), [ticker.pointfigure()](#ref-fun-ticker-pointfigure) functions.
 
 ---
+
+<a id="ref-fun-ticker-pointfigure"></a>
 
 ### ticker.pointfigure()
 
@@ -20253,7 +22948,7 @@ ticker.pointfigure(symbol, source, style, param, reversal) → series string
 symbol (simple string) Symbol ticker identifier.
 source (simple string) The source for calculating Point & Figure. Possible values are: 'hl', 'close'.
 style (simple string) Specifies the ticker's box size assignment method. Possible values: "ATR" for Average True Range sizing, "Traditional" to use a fixed size, or "PercentageLTP" to use a percentage of the last trading price.
-param (simple int/float) Represents the ticker's "ATR length" value if the style value is "ATR", "Box size" value if the style is "Traditional", or "Percentage" value if the style is "PercentageLTP".
+param (simple int/float) Represents the ticker's "ATR length" value if the `style` value is "ATR", "Box size" value if the `style` is "Traditional", or "Percentage" value if the `style` is "PercentageLTP".
 reversal (simple int) Reversal amount.
 
 **Example**
@@ -20267,9 +22962,11 @@ plot(pnf_close)
 ```
 
 **Returns**
-String value of ticker id, that can be supplied to request.security() function.
+String value of ticker id, that can be supplied to [request.security()](#ref-fun-request-security) function.
 
 ---
+
+<a id="ref-fun-ticker-renko"></a>
 
 ### ticker.renko()
 
@@ -20288,8 +22985,8 @@ ticker.renko(symbol, style, param, request_wicks, source) → series string
 **Arguments**
 symbol (simple string) Symbol ticker identifier.
 style (simple string) Specifies the ticker's box size assignment method. Possible values: "ATR" for Average True Range sizing, "Traditional" to use a fixed size, or "PercentageLTP" to use a percentage of the last trading price.
-param (simple int/float) Represents the ticker's "ATR length" value if the style value is "ATR", "Box size" value if the style is "Traditional", or "Percentage" value if the style is "PercentageLTP".
-request_wicks (simple bool) Specifies if wick values are returned for Renko bricks. When true , high and low values requested from a symbol using the ticker formed by this function will include wick values when they are present. When false , high and low will always be equal to either open or close . Optional. The default is false . A detailed explanation of how Renko wicks are calculated can be found in our Help Center .
+param (simple int/float) Represents the ticker's "ATR length" value if the `style` value is "ATR", "Box size" value if the `style` is "Traditional", or "Percentage" value if the `style` is "PercentageLTP".
+request_wicks (simple bool) Specifies if wick values are returned for Renko bricks. When [true](#ref-const-true), [high](#ref-var-high) and [low](#ref-var-low) values requested from a symbol using the ticker formed by this function will include wick values when they are present. When [false](#ref-const-false), [high](#ref-var-high) and [low](#ref-var-low) will always be equal to either [open](#ref-var-open) or [close](#ref-var-close). Optional. The default is [false](#ref-const-false). A detailed explanation of how Renko wicks are calculated can be found in our [Help Center](https://www.tradingview.com/support/solutions/43000481040-what-do-renko-wicks-mean/).
 source (simple string) The source used to calculate bricks. Optional. Possible values: "Close", "OHLC". The default is "Close".
 
 **Example**
@@ -20313,9 +23010,11 @@ plotcandle(renko_open, renko_high, renko_low, renko_close, color = renko_close >
 ```
 
 **Returns**
-String value of ticker id, that can be supplied to request.security() function.
+String value of ticker id, that can be supplied to [request.security()](#ref-fun-request-security) function.
 
 ---
+
+<a id="ref-fun-ticker-standard"></a>
 
 ### ticker.standard()
 
@@ -20332,7 +23031,7 @@ ticker.standard(symbol) → series string
 ```
 
 **Arguments**
-symbol (simple string) A ticker ID to be converted into its standard form. Optional. The default is syminfo.tickerid .
+symbol (simple string) A ticker ID to be converted into its standard form. Optional. The default is [syminfo.tickerid](#ref-var-syminfo-tickerid).
 
 **Example**
 
@@ -20355,13 +23054,15 @@ plot(standardChartValue, color = color.green)
 ```
 
 **Returns**
-A string representing the ticker of a standard chart in the "prefix:ticker" format. If the symbol argument does not contain the prefix and ticker information, the function returns the supplied argument as is.
+A string representing the ticker of a standard chart in the "prefix:ticker" format. If the `symbol` argument does not contain the prefix and ticker information, the function returns the supplied argument as is.
 
 ---
 
+<a id="ref-fun-time"></a>
+
 ### time()
 
-Returns the opening UNIX timestamp for the specified timeframe and session, or na if the time point is outside the session.
+Returns the opening UNIX timestamp for the specified timeframe and session, or [na](#ref-var-na) if the time point is outside the session.
 
 **Syntax & Overloads**
 
@@ -20375,9 +23076,9 @@ time(timeframe, session, timezone, bars_back, timeframe_bars_back) → series in
 
 **Arguments**
 timeframe (series string) The timeframe of the timestamp calculation. If the value is an empty string, the function uses the script's main timeframe.
-session (series string) Optional. The session string for filtering times. The function returns a timestamp if the time is in the specified session, or na if the time is outside the session. If the argument is an empty string, the function uses the default, which is the symbol's session.
-bars_back (series int) Optional. The bar offset on the script's main timeframe. If the value is positive, the function finds the bar that is N bars before the current bar on the main timeframe, then retrieves the timestamp of the corresponding bar on the timeframe specified by the timeframe argument. If the value is a negative number from -1 to -500, the function calculates the expected timestamp of the timeframe bar corresponding to N bars after the current bar on the main timeframe. The default is 0.
-timeframe_bars_back (series int) Optional. The additional bar offset on the timeframe specified by the timeframe argument. If the value is positive, the function retrieves the timestamp of the bar that is N timeframe bars before the one corresponding to the bars_back offset. If the value is a negative number from -1 to -500, the function calculates the expected timestamp of the timeframe bar that is N timeframe bars after the one corresponding to the bars_back offset. The default is 0.
+session (series string) Optional. The [session string](./docs_content.md#docs-concepts-sessions) for filtering times. The function returns a timestamp if the time is in the specified session, or [na](#ref-var-na) if the time is outside the session. If the argument is an empty string, the function uses the default, which is the symbol's session.
+bars_back (series int) Optional. The bar offset on the script's main timeframe. If the value is positive, the function finds the bar that is N bars before the current bar on the main timeframe, then retrieves the timestamp of the corresponding bar on the timeframe specified by the `timeframe` argument. If the value is a negative number from -1 to -500, the function calculates the expected timestamp of the `timeframe` bar corresponding to N bars after the current bar on the main timeframe. The default is 0.
+timeframe_bars_back (series int) Optional. The additional bar offset on the timeframe specified by the `timeframe` argument. If the value is positive, the function retrieves the timestamp of the bar that is N `timeframe` bars before the one corresponding to the `bars_back` offset. If the value is a negative number from -1 to -500, the function calculates the expected timestamp of the `timeframe` bar that is N `timeframe` bars after the one corresponding to the `bars_back` offset. The default is 0.
 
 **Example**
 
@@ -20406,7 +23107,7 @@ t1 = time(timeframe.period, "0000-0000:23456")
 bgcolor(not na(t1) ? color.new(color.blue, 90) : na)
 ```
 
-One session argument can include several different sessions, separated by commas. For example, the following script will highlight the bars from 10:00 to 11:00 and from 14:00 to 15:00 (workdays only):
+One `session` argument can include several different sessions, separated by commas. For example, the following script will highlight the bars from 10:00 to 11:00 and from 14:00 to 15:00 (workdays only):
 
 **Example**
 
@@ -20421,13 +23122,15 @@ bgcolor(not na(t1) ? color.new(color.blue, 90) : na)
 The opening UNIX timestamp.
 
 **Remarks**
-UNIX time is a standardized date and time representation that measures the number of non-leap seconds elapsed since January 1, 1970 at 00:00:00 UTC. Pine Script expresses UNIX time values in milliseconds. See the UNIX timestamps section of the User Manual's Time page to learn more.
+UNIX time is a standardized date and time representation that measures the number of non-leap seconds elapsed since January 1, 1970 at 00:00:00 UTC. Pine Script expresses UNIX time values in milliseconds. See the [UNIX timestamps](./docs_content.md#docs-concepts-time) section of the User Manual's [Time](./docs_content.md#docs-concepts-time) page to learn more.
 
 ---
 
+<a id="ref-fun-time-close"></a>
+
 ### time_close()
 
-Returns the closing UNIX timestamp for the specified timeframe and session, or na if the time point is outside the session. On tick charts and price-based charts such as Renko, line break, Kagi, point & figure, and range, the function returns na on the latest realtime bar because the future closing time is unpredictable. However, it returns a valid timestamp for any previous bar.
+Returns the closing UNIX timestamp for the specified timeframe and session, or [na](#ref-var-na) if the time point is outside the session. On tick charts and price-based charts such as Renko, line break, Kagi, point & figure, and range, the function returns [na](#ref-var-na) on the latest realtime bar because the future closing time is unpredictable. However, it returns a valid timestamp for any previous bar.
 
 **Syntax & Overloads**
 
@@ -20441,9 +23144,9 @@ time_close(timeframe, session, timezone, bars_back, timeframe_bars_back) → ser
 
 **Arguments**
 timeframe (series string) The timeframe of the timestamp calculation. If the value is an empty string, the function uses the script's main timeframe.
-session (series string) Optional. The session string for filtering times. The function returns a timestamp if the time is in the specified session, or na if the time is outside the session. If the argument is an empty string, the function uses the default, which is the symbol's session.
-bars_back (series int) Optional. The bar offset on the script's main timeframe. If the value is positive, the function finds the bar that is N bars before the current bar on the main timeframe, then retrieves the timestamp of the corresponding bar on the timeframe specified by the timeframe argument. If the value is a negative number from -1 to -500, the function calculates the expected timestamp of the timeframe bar corresponding to N bars after the current bar on the main timeframe. The default is 0.
-timeframe_bars_back (series int) Optional. The additional bar offset on the timeframe specified by the timeframe argument. If the value is positive, the function retrieves the timestamp of the bar that is N timeframe bars before the one corresponding to the bars_back offset. If the value is a negative number from -1 to -500, the function calculates the expected timestamp of the timeframe bar that is N timeframe bars after the one corresponding to the bars_back offset. The default is 0.
+session (series string) Optional. The [session string](./docs_content.md#docs-concepts-sessions) for filtering times. The function returns a timestamp if the time is in the specified session, or [na](#ref-var-na) if the time is outside the session. If the argument is an empty string, the function uses the default, which is the symbol's session.
+bars_back (series int) Optional. The bar offset on the script's main timeframe. If the value is positive, the function finds the bar that is N bars before the current bar on the main timeframe, then retrieves the timestamp of the corresponding bar on the timeframe specified by the `timeframe` argument. If the value is a negative number from -1 to -500, the function calculates the expected timestamp of the `timeframe` bar corresponding to N bars after the current bar on the main timeframe. The default is 0.
+timeframe_bars_back (series int) Optional. The additional bar offset on the timeframe specified by the `timeframe` argument. If the value is positive, the function retrieves the timestamp of the bar that is N `timeframe` bars before the one corresponding to the `bars_back` offset. If the value is a negative number from -1 to -500, the function calculates the expected timestamp of the `timeframe` bar that is N `timeframe` bars after the one corresponding to the `bars_back` offset. The default is 0.
 
 **Example**
 
@@ -20458,13 +23161,15 @@ bgcolor(not na(t1) ? color.new(color.blue, 90) : na)
 The closing UNIX timestamp.
 
 **Remarks**
-UNIX time is a standardized date and time representation that measures the number of non-leap seconds elapsed since January 1, 1970 at 00:00:00 UTC. Pine Script expresses UNIX time values in milliseconds. See the UNIX timestamps section of the User Manual's Time page to learn more.
+UNIX time is a standardized date and time representation that measures the number of non-leap seconds elapsed since January 1, 1970 at 00:00:00 UTC. Pine Script expresses UNIX time values in milliseconds. See the [UNIX timestamps](./docs_content.md#docs-concepts-time) section of the User Manual's [Time](./docs_content.md#docs-concepts-time) page to learn more.
 
 ---
 
+<a id="ref-fun-timeframe-change"></a>
+
 ### timeframe.change()
 
-Detects changes in the specified timeframe .
+Detects changes in the specified `timeframe`.
 
 **Syntax**
 
@@ -20473,7 +23178,7 @@ timeframe.change(timeframe) → series bool
 ```
 
 **Arguments**
-timeframe (series string) String formatted according to the User manual's timeframe string specifications .
+timeframe (series string) String formatted according to the [User manual's timeframe string specifications](./docs_content.md#docs-concepts-timeframes).
 
 **Example**
 
@@ -20487,9 +23192,11 @@ bgcolor(isNewDay ? color.new(color.green, 80) : na)
 ```
 
 **Returns**
-Returns true on the first bar of a new timeframe , false otherwise.
+Returns [true](#ref-const-true) on the first bar of a new `timeframe`, [false](#ref-const-false) otherwise.
 
 ---
+
+<a id="ref-fun-timeframe-from-seconds"></a>
 
 ### timeframe.from_seconds()
 
@@ -20520,7 +23227,7 @@ plot(htfClose)
 ```
 
 **Returns**
-A timeframe string compliant with timeframe string specifications .
+A timeframe string compliant with [timeframe string specifications](./docs_content.md#docs-concepts-timeframes).
 
 **Remarks**
 If no valid timeframe exists for the quantity of seconds supplied, the next higher valid timeframe will be returned. Accordingly, one second or less will return "1S", 2-5 seconds will return "5S", and 604,799 seconds (one second less than 7 days) will return "7D".
@@ -20528,6 +23235,8 @@ If the seconds exactly represent two or more valid timeframes, the one with the 
 All values above 31,622,400 (366 days) return "12M".
 
 ---
+
+<a id="ref-fun-timeframe-in-seconds"></a>
 
 ### timeframe.in_seconds()
 
@@ -20544,7 +23253,7 @@ timeframe.in_seconds(timeframe) → series int
 ```
 
 **Arguments**
-timeframe (simple string) Timeframe string in timeframe string specifications format. Optional. The default is timeframe.period .
+timeframe (simple string) Timeframe string in [timeframe string specifications](./docs_content.md#docs-concepts-timeframes) format. Optional. The default is [timeframe.period](#ref-var-timeframe-period).
 
 **Example**
 
@@ -20568,6 +23277,8 @@ The "int" representation of the number of seconds in the timeframe string.
 When the timeframe is "1M" or more, calculations use 2628003 as the number of seconds in one month, which represents 30.4167 (365/12) days.
 
 ---
+
+<a id="ref-fun-timestamp"></a>
 
 ### timestamp()
 
@@ -20600,7 +23311,7 @@ timestamp(timezone, year, month, day, hour, minute, second) → series int
 ```
 
 **Arguments**
-dateString (const string) A string containing the date and, optionally, the time and time zone. Its format must comply with either the IETF RFC 2822 or ISO 8601 standards ("DD MMM YYYY hh:mm:ss ±hhmm" or "YYYY-MM-DDThh:mm:ss±hh:mm", so "20 Feb 2020" or "2020-02-20"). If no time is supplied, "00:00" is used. If no time zone is supplied, GMT+0 will be used. Note that this diverges from the usual behavior of the function where it returns time in the exchange's timezone.
+dateString (const string) A string containing the date and, optionally, the time and time zone. Its format must comply with either the [IETF RFC 2822](https://tools.ietf.org/html/rfc2822#section-3.3) or [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601) standards ("DD MMM YYYY hh:mm:ss ±hhmm" or "YYYY-MM-DDThh:mm:ss±hh:mm", so "20 Feb 2020" or "2020-02-20"). If no time is supplied, "00:00" is used. If no time zone is supplied, GMT+0 will be used. Note that this diverges from the usual behavior of the function where it returns time in the exchange's timezone.
 
 **Example**
 
@@ -20626,9 +23337,11 @@ UNIX time is the number of milliseconds that have elapsed since 00:00:00 UTC, 1 
 
 ---
 
+<a id="ref-fun-volume-row-buy-volume"></a>
+
 ### volume_row.buy_volume()
 
-Calculates the total "buy" volume for the volume footprint row represented by a volume_row object.
+Calculates the total "buy" volume for the volume footprint row represented by a [volume_row](#ref-type-volume-row) object.
 
 **Syntax**
 
@@ -20637,16 +23350,18 @@ volume_row.buy_volume(id) → series float
 ```
 
 **Arguments**
-id (volume_row) The reference (ID) of the volume_row object to analyze.
+id (volume_row) The reference (ID) of the [volume_row](#ref-type-volume-row) object to analyze.
 
 **Returns**
 The total "buy" volume for the footprint row.
 
 ---
 
+<a id="ref-fun-volume-row-delta"></a>
+
 ### volume_row.delta()
 
-Calculates the volume delta for the volume footprint row represented by a volume_row object. The value represents the difference between the row's "buy" volume and "sell" volume. A positive value indicates that the "buy" volume for the row exceeds the "sell" volume, and a negative value indicates the opposite.
+Calculates the volume delta for the volume footprint row represented by a [volume_row](#ref-type-volume-row) object. The value represents the difference between the row's "buy" volume and "sell" volume. A positive value indicates that the "buy" volume for the row exceeds the "sell" volume, and a negative value indicates the opposite.
 
 **Syntax**
 
@@ -20655,16 +23370,18 @@ volume_row.delta(id) → series float
 ```
 
 **Arguments**
-id (volume_row) The reference (ID) of the volume_row object to analyze.
+id (volume_row) The reference (ID) of the [volume_row](#ref-type-volume-row) object to analyze.
 
 **Returns**
 The volume delta for the footprint row.
 
 ---
 
+<a id="ref-fun-volume-row-down-price"></a>
+
 ### volume_row.down_price()
 
-Retrieves the lower price level of the volume footprint row represented by a volume_row object.
+Retrieves the lower price level of the volume footprint row represented by a [volume_row](#ref-type-volume-row) object.
 
 **Syntax**
 
@@ -20673,16 +23390,18 @@ volume_row.down_price(id) → series float
 ```
 
 **Arguments**
-id (volume_row) The reference (ID) of the volume_row object to analyze.
+id (volume_row) The reference (ID) of the [volume_row](#ref-type-volume-row) object to analyze.
 
 **Returns**
 The lower boundary of the footprint row's price range.
 
 ---
 
+<a id="ref-fun-volume-row-has-buy-imbalance"></a>
+
 ### volume_row.has_buy_imbalance()
 
-Checks whether the volume footprint row represented by a volume_row object has a "buy" imbalance, based on the imbalance_percent argument of the request.footprint() call that the object depends on. Returns true if the row's "buy" volume exceeds the "sell" volume of the row below it in the footprint by the specified percentage, and false otherwise.
+Checks whether the volume footprint row represented by a [volume_row](#ref-type-volume-row) object has a "buy" imbalance, based on the `imbalance_percent` argument of the [request.footprint()](#ref-fun-request-footprint) call that the object depends on. Returns `true` if the row's "buy" volume exceeds the "sell" volume of the row below it in the footprint by the specified percentage, and `false` otherwise.
 
 **Syntax**
 
@@ -20691,16 +23410,18 @@ volume_row.has_buy_imbalance(id) → series bool
 ```
 
 **Arguments**
-id (volume_row) The reference (ID) of the volume_row object to analyze.
+id (volume_row) The reference (ID) of the [volume_row](#ref-type-volume-row) object to analyze.
 
 **Returns**
-A value of true if the footprint row has a detected buy imbalance, and false otherwise.
+A value of `true` if the footprint row has a detected buy imbalance, and `false` otherwise.
 
 ---
 
+<a id="ref-fun-volume-row-has-sell-imbalance"></a>
+
 ### volume_row.has_sell_imbalance()
 
-Checks whether the volume footprint row represented by a volume_row object has a sell imbalance, based on the imbalance_percent argument of the request.footprint() call that the object depends on. Returns true if the row's "sell" volume exceeds the "buy" volume of the row above it in the footprint by the specified percentage, and false otherwise.
+Checks whether the volume footprint row represented by a [volume_row](#ref-type-volume-row) object has a sell imbalance, based on the `imbalance_percent` argument of the [request.footprint()](#ref-fun-request-footprint) call that the object depends on. Returns `true` if the row's "sell" volume exceeds the "buy" volume of the row above it in the footprint by the specified percentage, and `false` otherwise.
 
 **Syntax**
 
@@ -20709,16 +23430,18 @@ volume_row.has_sell_imbalance(id) → series bool
 ```
 
 **Arguments**
-id (volume_row) The reference (ID) of the volume_row object to analyze.
+id (volume_row) The reference (ID) of the [volume_row](#ref-type-volume-row) object to analyze.
 
 **Returns**
-A value of true if the footprint row has a detected sell imbalance, and false otherwise.
+A value of `true` if the footprint row has a detected sell imbalance, and `false` otherwise.
 
 ---
 
+<a id="ref-fun-volume-row-sell-volume"></a>
+
 ### volume_row.sell_volume()
 
-Calculates the total "sell" volume for the volume footprint row represented by a volume_row object.
+Calculates the total "sell" volume for the volume footprint row represented by a [volume_row](#ref-type-volume-row) object.
 
 **Syntax**
 
@@ -20727,16 +23450,18 @@ volume_row.sell_volume(id) → series float
 ```
 
 **Arguments**
-id (volume_row) The reference (ID) of the volume_row object to analyze.
+id (volume_row) The reference (ID) of the [volume_row](#ref-type-volume-row) object to analyze.
 
 **Returns**
 The total "sell" volume for the footprint row.
 
 ---
 
+<a id="ref-fun-volume-row-total-volume"></a>
+
 ### volume_row.total_volume()
 
-Calculates the sum of the "buy" and "sell" volume for the volume footprint row represented by a volume_row object.
+Calculates the sum of the "buy" and "sell" volume for the volume footprint row represented by a [volume_row](#ref-type-volume-row) object.
 
 **Syntax**
 
@@ -20745,16 +23470,18 @@ volume_row.total_volume(id) → series float
 ```
 
 **Arguments**
-id (volume_row) The reference (ID) of the volume_row object to analyze.
+id (volume_row) The reference (ID) of the [volume_row](#ref-type-volume-row) object to analyze.
 
 **Returns**
 The total volume for the footprint row.
 
 ---
 
+<a id="ref-fun-volume-row-up-price"></a>
+
 ### volume_row.up_price()
 
-Retrieves the upper price level of the volume footprint row represented by a volume_row object.
+Retrieves the upper price level of the volume footprint row represented by a [volume_row](#ref-type-volume-row) object.
 
 **Syntax**
 
@@ -20763,12 +23490,14 @@ volume_row.up_price(id) → series float
 ```
 
 **Arguments**
-id (volume_row) The reference (ID) of the volume_row object to analyze.
+id (volume_row) The reference (ID) of the [volume_row](#ref-type-volume-row) object to analyze.
 
 **Returns**
 The upper boundary of the footprint row's price range.
 
 ---
+
+<a id="ref-fun-weekofyear"></a>
 
 ### weekofyear()
 
@@ -20782,15 +23511,17 @@ weekofyear(time, timezone) → series int
 
 **Arguments**
 time (series int) A UNIX timestamp in milliseconds.
-timezone (series string) Optional. Specifies the time zone of the returned week number. The value can be a time zone string in UTC/GMT offset notation (e.g., "UTC-5") or IANA time zone database notation (e.g., "America/New_York"). The default is syminfo.timezone .
+timezone (series string) Optional. Specifies the time zone of the returned week number. The value can be a time zone string in UTC/GMT offset notation (e.g., "UTC-5") or IANA time zone database notation (e.g., "America/New_York"). The default is [syminfo.timezone](#ref-var-syminfo-timezone).
 
 **Returns**
 The calculated week number, expressed in the specified time zone.
 
 **Remarks**
-A UNIX timestamp represents the number of milliseconds elapsed since 00:00 UTC on 1970-01-01. The meaning of a UNIX timestamp does not change relative to any time zone.
+A [UNIX timestamp](./docs_content.md#docs-concepts-time) represents the number of milliseconds elapsed since 00:00 UTC on 1970-01-01. The meaning of a UNIX timestamp does not change relative to any time zone.
 
 ---
+
+<a id="ref-fun-year"></a>
 
 ### year()
 
@@ -20802,7 +23533,7 @@ year(time, timezone) → series int
 
 **Arguments**
 time (series int) UNIX time in milliseconds.
-timezone (series string) Allows adjusting the returned value to a time zone specified in either UTC/GMT notation (e.g., "UTC-5", "GMT+0530") or as an IANA time zone database name (e.g., "America/New_York"). Optional. The default is syminfo.timezone .
+timezone (series string) Allows adjusting the returned value to a time zone specified in either UTC/GMT notation (e.g., "UTC-5", "GMT+0530") or as an IANA time zone database name (e.g., "America/New_York"). Optional. The default is [syminfo.timezone](#ref-var-syminfo-timezone).
 
 **Returns**
 Year (in exchange timezone) for provided UNIX time.
@@ -20814,6 +23545,8 @@ Note that this function returns the year based on the time of the bar's open. Fo
 ---
 
 ## Keywords
+
+<a id="ref-kw-and"></a>
 
 ### and
 
@@ -20829,15 +23562,17 @@ expr1 and expr2
 Boolean value, or series of boolean values.
 
 **Remarks**
-If expr1 evaluates to false , the and operator returns false without evaluating expr2 .
+If `expr1` evaluates to [false](#ref-const-false), the `and` operator returns [false](#ref-const-false) without evaluating `expr2`.
 
 ---
+
+<a id="ref-kw-enum"></a>
 
 ### enum
 
 This keyword allows the creation of an enumeration, enum for short. Enums are unique constructs that hold groups of predefined constants.
-Each field in an enum has a const string title. Scripts can access the fields in an enum using dot notation, similar to accessing the fields of a user-defined type.
-Each field represents a value of the enumName enum. Scripts can declare each field in an enum with an optional const string title. If a field's title is not specified, its title is the string representation of its name. Use str.tostring() on an enum field to retrieve its title.
+Each field in an enum has a `const string` title. Scripts can access the fields in an enum using dot notation, similar to accessing the fields of a user-defined type.
+Each field represents a value of the `enumName` enum. Scripts can declare each field in an `enum` with an optional `const string` title. If a field's title is not specified, its title is the string representation of its name. Use [str.tostring()](#ref-fun-str-tostring) on an enum field to retrieve its title.
 
 **Syntax**
 
@@ -20849,7 +23584,7 @@ Each field represents a value of the enumName enum. Scripts can declare each fie
 <field_N> [= <title_N>]
 ```
 
-One can use an enum to quickly create a dropdown input with the help of the input.enum() function. The options that appear in the dropdown represent the titles of the enum fields.
+One can use an enum to quickly create a dropdown input with the help of the [input.enum()](#ref-fun-input-enum) function. The options that appear in the dropdown represent the titles of the enum fields.
 
 **Example**
 
@@ -20910,6 +23645,8 @@ plot(data.get(symbols.aapl))
 
 ---
 
+<a id="ref-kw-export"></a>
+
 ### export
 
 Used in libraries to prefix the declaration of functions or user-defined type definitions that will be available from other scripts importing the library.
@@ -20933,12 +23670,14 @@ print("Library Test")
 
 **Remarks**
 Each library must have at least one exported function or user-defined type (UDT).
-Exported functions cannot use variables from the global scope if they are arrays, mutable variables (reassigned with := ), or variables of 'input' form.
-Exported functions cannot use request.*() functions.
-Exported functions must explicitly declare each parameter's type and all parameters must be used in the function's body. By default, all arguments passed to exported functions are of the series form, unless they are explicitly specified as simple in the function's signature.
+Exported functions cannot use variables from the global scope if they are arrays, mutable variables (reassigned with `:=`), or variables of 'input' form.
+Exported functions cannot use `request.*()` functions.
+Exported functions must explicitly declare each parameter's type and all parameters must be used in the function's body. By default, all arguments passed to exported functions are of the [series](#ref-type-series) form, unless they are explicitly specified as [simple](#ref-type-simple) in the function's signature.
 The @description, @function, @param, @type, @field, and @returns compiler annotations are used to automatically generate the library's description and release notes, and in the Pine Script® Editor's tooltips.
 
 ---
+
+<a id="ref-kw-for"></a>
 
 ### for
 
@@ -20952,15 +23691,15 @@ Creates a count-controlled loop, which uses a counter variable to manage the ite
     return_expression
 ```
 
-variables (return_expression type) Optional. A variable or tuple to hold the values or references from the last evaluation of return_expression after the loop terminates. The script can assign the loop's returned results to variables only if the results are not of the "void" type. If the loop's conditions prevent iteration, or if no iterations evaluate return_expression , the variables' assigned values or references are na , or false if the return type is "bool".
-counter (series int/float) The counter variable. The loop increments the variable's value from the initial value ( from_num ) to the final value ( to_num ) by a fixed amount ( step_num ) after each iteration. The last possible iteration occurs when the variable's value reaches the to_num value.
-from_num (series int/float) The value of the counter variable on the loop's first iteration.
-to_num (series int/float) The final counter value for which the loop's header allows a new iteration. The loop increments the counter value by the step_num until it reaches or passes this value. If the script modifies this value during a loop iteration, the loop header uses the new value to control the allowed subsequent iterations.
-step_num (series int/float) Optional. A positive value specifying the amount by which the counter value increases or decreases until it reaches or passes the to_num value. If the from_num value is greater than the initial to_num value, the loop subtracts this amount from the counter value after each iteration. Otherwise, the loop adds this amount after each iteration. The default is 1.
-statements The code statements and expressions within the loop's body, i.e., the indented block of code beneath the loop header.
-return_expression (any type) The last expression or statement within the loop's body. The loop returns the results from this code after the final iteration. If the loop stops prematurely due to a continue or break statement, the returned values or references are those of the latest iteration that evaluated this code. To use the loop's returned results, assign them to a variable or tuple.
-continue A loop-specific keyword that instructs the script to skip the remainder of the current loop iteration and continue to the next iteration.
-break A loop-specific keyword that prompts the script to stop the current iteration and exit the loop entirely.
+**variables (return_expression type)** Optional. A variable or tuple to hold the values or references from the last evaluation of `return_expression` after the loop terminates. The script can assign the loop's returned results to variables only if the results are not of the "void" type. If the loop's conditions prevent iteration, or if no iterations evaluate `return_expression`, the variables' assigned values or references are [na](#ref-var-na), or `false` if the return type is "bool".
+**counter (series int/float)** The counter variable. The loop increments the variable's value from the initial value (`from_num`) to the final value (`to_num`) by a fixed amount (`step_num`) after each iteration. The last possible iteration occurs when the variable's value reaches the `to_num` value.
+**from_num (series int/float)** The value of the `counter` variable on the loop's first iteration.
+**to_num (series int/float)** The final `counter` value for which the loop's header allows a new iteration. The loop increments the `counter` value by the `step_num` until it reaches or passes this value. If the script modifies this value during a loop iteration, the loop header uses the new value to control the allowed subsequent iterations.
+**step_num (series int/float)** Optional. A positive value specifying the amount by which the `counter` value increases or decreases until it reaches or passes the `to_num` value. If the `from_num` value is greater than the initial `to_num` value, the loop subtracts this amount from the `counter` value after each iteration. Otherwise, the loop adds this amount after each iteration. The default is 1.
+**statements** The code statements and expressions within the loop's body, i.e., the indented block of code beneath the loop header.
+**return_expression (any type)** The last expression or statement within the loop's body. The loop returns the results from this code after the final iteration. If the loop stops prematurely due to a `continue` or `break` statement, the returned values or references are those of the latest iteration that evaluated this code. To use the loop's returned results, assign them to a variable or tuple.
+**continue** A loop-specific keyword that instructs the script to skip the remainder of the current loop iteration and continue to the next iteration.
+**break** A loop-specific keyword that prompts the script to stop the current iteration and exit the loop entirely.
 
 **Example**
 
@@ -20997,15 +23736,17 @@ plot(sum)
 ```
 
 **Remarks**
-Modifying a loop's to_num value during an iteration does not change the direction of the loop's counter. For a loop that counts upward, setting the to_num to a value less than the from_num value on an iteration stops the loop immediately after that iteration ends. Likewise, a loop that counts downward stops after an iteration where the to_num value becomes greater than the from_num value.
-If a script initializes a variable declared with var or varip using a loop's result, the loop stops after the first iteration, even if the header's criteria allow more iterations. Instead of initializing the variable with the result of this structure directly, declare the variable first and use := to update it with the result. Alternatively, move the loop into a Declaring functions and initialize the variable using a call to that function.
-See the Loops page of our User Manual to learn more about loops and how they work.
+Modifying a loop's `to_num` value during an iteration does not change the direction of the loop's counter. For a loop that counts upward, setting the `to_num` to a value less than the `from_num` value on an iteration stops the loop immediately after that iteration ends. Likewise, a loop that counts downward stops after an iteration where the `to_num` value becomes greater than the `from_num` value.
+If a script initializes a variable declared with [var](#ref-kw-var) or [varip](#ref-kw-varip) using a loop's result, the loop stops after the *first* iteration, even if the header's criteria allow more iterations. Instead of initializing the variable with the result of this structure directly, declare the variable first and use [:=](#ref-op-3a-3d) to update it with the result. Alternatively, move the loop into a [Declaring functions](./docs_content.md#docs-language-user-defined-functions) and initialize the variable using a call to that function.
+See the [Loops](./docs_content.md#docs-language-loops) page of our User Manual to learn more about loops and how they work.
 
 ---
 
+<a id="ref-kw-for-in"></a>
+
 ### for...in
 
-Creates a collection-controlled loop, which iterates over the elements of an array , the rows of a matrix , or the key-value pairs of a map in order. The loop's local code block executes once for each element, row, or pair in the specified collection.
+Creates a collection-controlled loop, which iterates over the *elements* of an [array](#ref-type-array), the *rows* of a [matrix](#ref-type-matrix), or the *key-value pairs* of a [map](#ref-type-map) in order. The loop's local code block executes once for each element, row, or pair in the specified collection.
 
 **Syntax**
 
@@ -21019,15 +23760,15 @@ Creates a collection-controlled loop, which iterates over the elements of an arr
     return_expression
 ```
 
-variables (return_expression type) - Optional. A variable or tuple to hold the values or references from the last evaluation of return_expression after the loop terminates. The script can assign the loop's returned results to variables only if the results are not of the "void" type. If the loop's conditions prevent iteration, or if no iterations evaluate return_expression , the variables' assigned values or references are na , or false if the return type is "bool".
-index - A variable to track the array element index, matrix row index, or map key of the current iteration. The loop cannot modify this variable using reassignment or compound assignment operators. This variable is valid only in the second form of the loop structure.
-item - A variable to track the array element, matrix row, or map value element of the current iteration. The loop cannot modify this variable using reassignment or compound assignment operators.
-collection_id (array/matrix/map) - The ID of the array, matrix, or map whose items the loop iterates over.
-statements - The code statements and expressions within the loop's body, i.e., the indented block of code beneath the loop header.
-return_expression (any type) - The last expression or statement within the loop's body. The loop returns the results from this code after the final iteration. If the loop stops prematurely due to a continue or break statement, the returned values or references are those of the latest iteration that evaluated this code. To use the loop's returned results, assign them to a variable or tuple.
-continue - A loop-specific keyword that instructs the script to skip the remainder of the current loop iteration and continue to the next iteration.
-break - A loop-specific keyword that prompts the script to stop the current iteration and exit the loop entirely.
-The following example uses the first form of the for...in loop to count the number of array element values that are greater than a specified value:
+**variables (return_expression type)** - Optional. A variable or tuple to hold the values or references from the last evaluation of `return_expression` after the loop terminates. The script can assign the loop's returned results to variables only if the results are not of the "void" type. If the loop's conditions prevent iteration, or if no iterations evaluate `return_expression`, the variables' assigned values or references are [na](#ref-var-na), or `false` if the return type is "bool".
+**index** - A variable to track the array element index, matrix row index, or map key of the current iteration. The loop cannot modify this variable using reassignment or compound assignment operators. This variable is valid only in the second form of the loop structure.
+**item** - A variable to track the array element, matrix row, or map value element of the current iteration. The loop cannot modify this variable using reassignment or compound assignment operators.
+**collection_id (array/matrix/map)** - The ID of the array, matrix, or map whose items the loop iterates over.
+**statements** - The code statements and expressions within the loop's body, i.e., the indented block of code beneath the loop header.
+**return_expression (any type)** - The last expression or statement within the loop's body. The loop returns the results from this code after the final iteration. If the loop stops prematurely due to a `continue` or `break` statement, the returned values or references are those of the latest iteration that evaluated this code. To use the loop's returned results, assign them to a variable or tuple.
+**continue** - A loop-specific keyword that instructs the script to skip the remainder of the current loop iteration and continue to the next iteration.
+**break** - A loop-specific keyword that prompts the script to stop the current iteration and exit the loop entirely.
+The following example uses the first form of the `for...in` loop to count the number of array element values that are greater than a specified value:
 
 **Example**
 
@@ -21079,7 +23820,7 @@ if barstate.isfirst
     log.info(str.tostring(sums))
 ```
 
-This example uses the first form of the loop structure to iterate over the rows of a matrix and create an array containing each one's sum. The header's loop variable, rowArrayID , references an array containing the current row's values:
+This example uses the first form of the loop structure to iterate over the rows of a matrix and create an array containing each one's sum. The header's loop variable, `rowArrayID`, references an array containing the current row's values:
 
 **Example**
 
@@ -21112,7 +23853,7 @@ if barstate.isfirst
     log.info(str.tostring(calcRowSums(randMat)))
 ```
 
-The following example uses a for...in loop to iterate over a map's key-value pairs and construct a custom string representation of its contents:
+The following example uses a `for...in` loop to iterate over a map's key-value pairs and construct a custom string representation of its contents:
 
 **Example**
 
@@ -21142,12 +23883,14 @@ if barstate.islastconfirmedhistory
 ```
 
 **Remarks**
-Only the second form of the for...in loop is compatible with maps. The loop iterates over the key-value pairs of a map in the insertion order of its keys.
-Scripts can modify the sizes of arrays and matrices while iterating over their contents with a for...in loop. However, they cannot modify the sizes of maps while looping over them directly with this structure. To modify a map while using a for...in loop, use the loop on a copy of the map or on the map's map.keys() array.
-If a script initializes a variable declared with var or varip using a loop's result, the loop stops after the first iteration, even if the header's criteria allow more iterations. Instead of initializing the variable with the result of this structure directly, declare the variable first and use := to update it with the result. Alternatively, move the loop into a Declaring functions and initialize the variable using a call to that function.
-See the Loops page of our User Manual to learn more about loops and how they work.
+Only the *second* form of the `for...in` loop is compatible with maps. The loop iterates over the key-value pairs of a map in the *insertion order* of its keys.
+Scripts can modify the sizes of arrays and matrices while iterating over their contents with a `for...in` loop. However, they cannot modify the sizes of maps while looping over them directly with this structure. To modify a map while using a `for...in` loop, use the loop on a copy of the map or on the map's [map.keys()](#ref-fun-map-keys) array.
+If a script initializes a variable declared with [var](#ref-kw-var) or [varip](#ref-kw-varip) using a loop's result, the loop stops after the *first* iteration, even if the header's criteria allow more iterations. Instead of initializing the variable with the result of this structure directly, declare the variable first and use [:=](#ref-op-3a-3d) to update it with the result. Alternatively, move the loop into a [Declaring functions](./docs_content.md#docs-language-user-defined-functions) and initialize the variable using a call to that function.
+See the [Loops](./docs_content.md#docs-language-loops) page of our User Manual to learn more about loops and how they work.
 
 ---
+
+<a id="ref-kw-if"></a>
 
 ### if
 
@@ -21178,10 +23921,10 @@ else
 ```
 
 where
-var_declarationX — this variable gets the value of the if statement
-condition — if the condition is true, the logic from the block 'then' (var_decl_then0, var_decl_then1, etc.) is used.
+**var_declarationX** — this variable gets the value of the if statement
+**condition** — if the condition is true, the logic from the block 'then' (var_decl_then0, var_decl_then1, etc.) is used.
 If the condition is false, the logic from the block 'else' (var_decl_else0, var_decl_else1, etc.) is used.
-return_expression_then , return_expression_else — the last expression from the block then or from the block else will return the final value of the statement. If declaration of the variable is in the end, its value will be the result.
+**return_expression_then**, **return_expression_else** — the last expression from the block then or from the block else will return the final value of the statement. If declaration of the variable is in the end, its value will be the result.
 The type of returning value of the if statement depends on return_expression_then and return_expression_else type (their types must match: it is not possible to return an integer value from then, while you have a string value in else block).
 
 **Example**
@@ -21203,7 +23946,7 @@ else
 plot(x)
 ```
 
-It is possible to omit the else block. In this case if the condition is false, an “empty” value (na, false, or “”) will be assigned to the var_declarationX variable:
+It is possible to omit the `else` block. In this case if the condition is false, an “empty” value (na, false, or “”) will be assigned to the var_declarationX variable:
 
 **Example**
 
@@ -21233,7 +23976,7 @@ else
 plot(x)
 ```
 
-It is possible to ignore the resulting value of an if statement (“var_declarationX=“ can be omitted). It may be useful if you need the side effect of the expression, for example in strategy trading:
+It is possible to ignore the resulting value of an `if` statement (“var_declarationX=“ can be omitted). It may be useful if you need the side effect of the expression, for example in strategy trading:
 
 **Example**
 
@@ -21266,9 +24009,11 @@ plot(x)
 
 ---
 
+<a id="ref-kw-import"></a>
+
 ### import
 
-Used to load an external library() into a script and bind its functions to a namespace. The importing script can be an indicator, a strategy, or another library. A library must be published (privately or publicly) before it can be imported.
+Used to load an external [library()](#ref-fun-library) into a script and bind its functions to a namespace. The importing script can be an indicator, a strategy, or another library. A library must be published (privately or publicly) before it can be imported.
 
 **Syntax**
 
@@ -21278,9 +24023,9 @@ import {username}/{libraryName}/{libraryVersion} as {alias}
 
 **Arguments**
 username (literal string) User name of the library's author.
-libraryName (literal string) Name of the imported library, which corresponds to the title argument used by the author in his library script.
+libraryName (literal string) Name of the imported library, which corresponds to the `title` argument used by the author in his library script.
 libraryVersion (literal int) Version number of the imported library.
-alias (literal string) A non-numeric identifier used as a namespace to refer to the library's functions. Optional. The default is the libraryName string.
+alias (literal string) A non-numeric identifier used as a namespace to refer to the library's functions. Optional. The default is the `libraryName` string.
 
 **Example**
 
@@ -21296,9 +24041,11 @@ plot(y)
 ```
 
 **Remarks**
-Using an alias that replaces a built-in namespace such as math.* or strategy.* is allowed, but if the library contains function names that shadow Pine Script®'s built-in functions, the built-ins will become unavailable. The same version of a library can only be imported once. Aliases must be distinct for each imported library. When calling library functions, casting their arguments to types other than their declared type is not allowed. An import statement cannot use 'as' or 'import' as username , libraryName , or alias identifiers.
+Using an alias that replaces a built-in namespace such as math.* or strategy.* is allowed, but if the library contains function names that shadow Pine Script®'s built-in functions, the built-ins will become unavailable. The same version of a library can only be imported once. Aliases must be distinct for each imported library. When calling library functions, casting their arguments to types other than their declared type is not allowed. An import statement cannot use 'as' or 'import' as `username`, `libraryName`, or `alias` identifiers.
 
 ---
+
+<a id="ref-kw-method"></a>
 
 ### method
 
@@ -21340,6 +24087,8 @@ plot(prices.avg())
 
 ---
 
+<a id="ref-kw-not"></a>
+
 ### not
 
 Logical negation (NOT). Applicable to boolean expressions.
@@ -21355,6 +24104,8 @@ Boolean value, or series of boolean values.
 
 ---
 
+<a id="ref-kw-or"></a>
+
 ### or
 
 Logical OR. Applicable to boolean expressions.
@@ -21369,9 +24120,11 @@ expr1 or expr2
 Boolean value, or series of boolean values.
 
 **Remarks**
-If expr1 evaluates to true , the or operator returns true without evaluating expr2 .
+If `expr1` evaluates to [true](#ref-const-true), the `or` operator returns [true](#ref-const-true) without evaluating `expr2`.
 
 ---
+
+<a id="ref-kw-switch"></a>
 
 ### switch
 
@@ -21433,9 +24186,11 @@ switch
 The value of the last expression in the local block of statements that is executed.
 
 **Remarks**
-Only one of the local_block instances or the default_local_block can be executed. The default_local_block is introduced with the => token alone and is only executed when none of the preceding blocks are executed. If the result of the switch statement is assigned to a variable and a default_local_block is not specified, the statement returns na if no local_block is executed. When assigning the result of the switch statement to a variable, all local_block instances must return the same type of value.
+Only one of the `local_block` instances or the `default_local_block` can be executed. The `default_local_block` is introduced with the `=>` token alone and is only executed when none of the preceding blocks are executed. If the result of the `switch` statement is assigned to a variable and a `default_local_block` is not specified, the statement returns `na` if no `local_block` is executed. When assigning the result of the `switch` statement to a variable, all `local_block` instances must return the same type of value.
 
 ---
+
+<a id="ref-kw-type"></a>
 
 ### type
 
@@ -21449,10 +24204,10 @@ This keyword allows the declaration of user-defined types (UDT) from which scrip
     …
 ```
 
-Once a UDT is defined, scripts can instantiate objects from it with the UDT_identifier.new() construct. When creating a new type instance, the fields of the resulting object will initialize with the default values from the UDT's definition. Any type fields without specified defaults will initialize as na . Alternatively, users can pass initial values as arguments in the *.new() method to override the type's defaults. For example, newFooObject = foo.new(x = true) assigns a new foo object to the newFooObject variable with its x field initialized using a value of true .
-Field declarations can include the varip keyword, in which case the field values persist between successive script iterations on the same bar.
-For more information see the User Manual's sections on defining UDTs and using objects .
-Libraries can export UDTs. See the Libraries page of our User Manual to learn more.
+Once a UDT is defined, scripts can instantiate objects from it with the `UDT_identifier.new()` construct. When creating a new type instance, the fields of the resulting object will initialize with the default values from the UDT's definition. Any type fields without specified defaults will initialize as [na](#ref-var-na). Alternatively, users can pass initial values as arguments in the `*.new()` method to override the type's defaults. For example, `newFooObject = foo.new(x = true)` assigns a new `foo` object to the `newFooObject` variable with its `x` field initialized using a value of [true](#ref-const-true).
+Field declarations can include the [varip](#ref-kw-varip) keyword, in which case the field values persist between successive script iterations on the same bar.
+For more information see the User Manual's sections on [defining UDTs](./docs_content.md#docs-language-type-system) and [using objects](./docs_content.md#docs-language-objects).
+Libraries can export UDTs. See the [Libraries](./docs_content.md#docs-concepts-libraries) page of our User Manual to learn more.
 
 **Example**
 
@@ -21501,9 +24256,11 @@ if not na(secBar)
 
 ---
 
+<a id="ref-kw-var"></a>
+
 ### var
 
-var is the keyword used for assigning and one-time initializing of the variable.
+**var** is the keyword used for assigning and one-time initializing of the variable.
 Normally, a syntax of assignment of variables, which doesn’t include the keyword var, results in the value of the variable being overwritten with every update of the data. Contrary to that, when assigning variables with the keyword var, they can “keep the state” despite the data updating, only changing it when conditions within if-expressions are met.
 
 **Syntax**
@@ -21513,8 +24270,8 @@ var variable_name = expression
 ```
 
 where:
-variable_name - any name of the user’s variable that’s allowed in Pine Script® (can contain capital and lowercase Latin characters, numbers, and underscores (_), but can’t start with a number).
-expression - any arithmetic expression, just as with defining a regular variable. The expression will be calculated and assigned to a variable once.
+**variable_name** - any name of the user’s variable that’s allowed in Pine Script® (can contain capital and lowercase Latin characters, numbers, and underscores (_), but can’t start with a number).
+**expression** - any arithmetic expression, just as with defining a regular variable. The expression will be calculated and assigned to a variable once.
 
 **Example**
 
@@ -21543,9 +24300,11 @@ The variable 'c' keeps the closing price of the tenth "green" bar in the series.
 
 ---
 
+<a id="ref-kw-varip"></a>
+
 ### varip
 
-varip (var intrabar persist) is the keyword used for the assignment and one-time initialization of a variable or a field of a user-defined type . It’s similar to the var keyword, but variables and fields declared with varip retain their values between executions of the script on the same bar.
+**varip** (var intrabar persist) is the keyword used for the assignment and one-time initialization of a variable or a field of a user-defined [type](#ref-kw-type). It’s similar to the [var](#ref-kw-var) keyword, but variables and fields declared with [varip](#ref-kw-varip) retain their values between executions of the script on the same bar.
 
 **Syntax**
 
@@ -21557,10 +24316,10 @@ varip [<variable_type> ]<variable_name> = <expression>
 ```
 
 where:
-variable_type - An optional fundamental type ( int , float , bool , color , string ) or a user-defined type, or an array or matrix of one of those types. Special types are not compatible with this keyword.
-variable_name - A valid identifier . The variable can also be an object created from a UDT.
-expression - Any arithmetic expression, just as when defining a regular variable. The expression will be calculated and assigned to the variable only once, on the first bar.
-UDT_identifier, field_type, field_name, value - Constructs related to user-defined types as described in the type section.
+**variable_type** - An optional fundamental type ([int](#ref-type-int), [float](#ref-type-float), [bool](#ref-type-bool), [color](#ref-type-color), [string](#ref-type-string)) or a user-defined type, or an array or matrix of one of those types. Special types are not compatible with this keyword.
+**variable_name** - A [valid identifier](./docs_content.md#docs-language-identifiers). The variable can also be an object created from a UDT.
+**expression** - Any arithmetic expression, just as when defining a regular variable. The expression will be calculated and assigned to the variable only once, on the first bar.
+**UDT_identifier, field_type, field_name, value** - Constructs related to user-defined types as described in the [type](#ref-kw-type) section.
 
 **Example**
 
@@ -21572,7 +24331,7 @@ v := v + 1
 plot(v)
 ```
 
-With var , v would equal the value of the bar_index . On historical bars, where the script calculates only once per chart bar, the value of v is the same as with var . However, on realtime bars, the script will evaluate the expression on each new chart update, producing a different result.
+With [var](#ref-kw-var), `v` would equal the value of the [bar_index](#ref-var-bar-index). On historical bars, where the script calculates only once per chart bar, the value of `v` is the same as with [var](#ref-kw-var). However, on realtime bars, the script will evaluate the expression on each new chart update, producing a different result.
 
 **Example**
 
@@ -21593,17 +24352,19 @@ plot(currBar.index)
 plot(currBar.ticks)
 ```
 
-The same += operation applied to both the index and ticks fields results in different real-time values because ticks increases on every chart update, while index only does so once per bar. Note how the currBar object does not use the varip keyword. The ticks field of the object can increment on every tick, but the reference itself is defined once and then stays unchanged. If we were to declare currBar using varip , the behavior of index would remain unchanged because while the reference to the type instance would persist between chart updates, the index field of the object would not.
+The same [+=](#ref-op-2b-3d) operation applied to both the `index` and `ticks` fields results in different real-time values because `ticks` increases on every chart update, while `index` only does so once per bar. Note how the `currBar` object does not use the [varip](#ref-kw-varip) keyword. The `ticks` field of the object can increment on every tick, but the reference itself is defined once and then stays unchanged. If we were to declare `currBar` using [varip](#ref-kw-varip), the behavior of `index` would remain unchanged because while the reference to the type instance would persist between chart updates, the `index` field of the object would not.
 
 **Remarks**
-When using varip to declare variables in strategies that may execute more than once per historical chart bar, the values of such variables are preserved across successive iterations of the script on the same bar.
-The effect of varip eliminates the rollback of variables before each successive execution of a script on the same bar.
+When using [varip](#ref-kw-varip) to declare variables in strategies that may execute more than once per historical chart bar, the values of such variables are preserved across successive iterations of the script on the same bar.
+The effect of [varip](#ref-kw-varip) eliminates the [rollback](./docs_content.md#docs-language-execution-model) of variables before each successive execution of a script on the same bar.
 
 ---
 
+<a id="ref-kw-while"></a>
+
 ### while
 
-Creates a condition-controlled loop whose local code block executes repeatedly while the value of a conditional expression remains true . The loop's iterations end after the condition's value becomes false .
+Creates a condition-controlled loop whose local code block executes repeatedly while the value of a conditional expression remains `true`. The loop's iterations end after the condition's value becomes `false`.
 
 **Syntax**
 
@@ -21613,12 +24374,12 @@ Creates a condition-controlled loop whose local code block executes repeatedly w
     return_expression
 ```
 
-variables (return_expression type) - Optional. A variable or tuple to hold the values or references from the last evaluation of return_expression after the loop terminates. The script can assign the loop's returned results to variables only if the results are not of the "void" type. If the loop's conditions prevent iteration, or if no iterations evaluate return_expression , the variables' assigned values or references are na , or false if the return type is "bool".
-condition (series bool) - The conditional expression that controls the loop's iterations. If true , the script performs a new iteration. If false , the script exits the loop without performing a new iteration.
-statements - The code statements and expressions within the loop's body, i.e., the indented block of code beneath the loop header.
-return_expression (any type) - The last expression or statement within the loop's body. The loop returns the results from this code after the final iteration. If the loop stops prematurely due to a continue or break statement, the returned values or references are those of the latest iteration that evaluated this code. To use the loop's returned results, assign them to a variable or tuple.
-continue - A loop-specific keyword that instructs the script to skip the remainder of the current loop iteration and continue to the next iteration.
-break - A loop-specific keyword that prompts the script to stop the current iteration and exit the loop entirely.
+**variables (return_expression type)** - Optional. A variable or tuple to hold the values or references from the last evaluation of `return_expression` after the loop terminates. The script can assign the loop's returned results to variables only if the results are not of the "void" type. If the loop's conditions prevent iteration, or if no iterations evaluate `return_expression`, the variables' assigned values or references are [na](#ref-var-na), or `false` if the return type is "bool".
+**condition (series bool)** - The conditional expression that controls the loop's iterations. If `true`, the script performs a new iteration. If `false`, the script exits the loop without performing a new iteration.
+**statements** - The code statements and expressions within the loop's body, i.e., the indented block of code beneath the loop header.
+**return_expression (any type)** - The last expression or statement within the loop's body. The loop returns the results from this code after the final iteration. If the loop stops prematurely due to a `continue` or `break` statement, the returned values or references are those of the latest iteration that evaluated this code. To use the loop's returned results, assign them to a variable or tuple.
+**continue** - A loop-specific keyword that instructs the script to skip the remainder of the current loop iteration and continue to the next iteration.
+**break** - A loop-specific keyword that prompts the script to stop the current iteration and exit the loop entirely.
 
 **Example**
 
@@ -21646,12 +24407,14 @@ plot(factorial, "N!")
 ```
 
 **Remarks**
-If a script initializes a variable declared with var or varip using a loop's result, the loop stops after the first iteration, even if the header's criteria allow more iterations. Instead of initializing the variable with the result of this structure directly, declare the variable first and use := to update it with the result. Alternatively, move the loop into a Declaring functions and initialize the variable using a call to that function.
-See the Loops page of our User Manual to learn more about loops and how they work.
+If a script initializes a variable declared with [var](#ref-kw-var) or [varip](#ref-kw-varip) using a loop's result, the loop stops after the *first* iteration, even if the header's criteria allow more iterations. Instead of initializing the variable with the result of this structure directly, declare the variable first and use [:=](#ref-op-3a-3d) to update it with the result. Alternatively, move the loop into a [Declaring functions](./docs_content.md#docs-language-user-defined-functions) and initialize the variable using a call to that function.
+See the [Loops](./docs_content.md#docs-language-loops) page of our User Manual to learn more about loops and how they work.
 
 ---
 
 ## Operators
+
+<a id="ref-op-2d"></a>
 
 ### -
 
@@ -21665,13 +24428,15 @@ expr1 - expr2
 
 **Returns**
 Returns integer or float value, or series of values:
-Binary - returns expr1 minus expr2.
-Unary - returns the negation of expr.
+Binary `-` returns expr1 minus expr2.
+Unary `-` returns the negation of expr.
 
 **Remarks**
 You may use arithmetic operators with numbers as well as with series variables. In case of usage with series the operators are applied elementwise.
 
 ---
+
+<a id="ref-op-2d-3d"></a>
 
 ### -=
 
@@ -21700,6 +24465,8 @@ plot(a)
 Integer or float value, or series of values.
 
 ---
+
+<a id="ref-op-3a-3d"></a>
 
 ### :=
 
@@ -21731,9 +24498,11 @@ plot(myVar)
 
 ---
 
+<a id="ref-op-21-3d"></a>
+
 ### !=
 
-Inequality operator. Returns true if the operands are considered not equal, and false otherwise. This operator is compatible with all value types, including "int", "float", "bool", "color", and "string". The operator can also compare two line or label IDs.
+Inequality operator. Returns [true](#ref-const-true) if the operands are considered not equal, and [false](#ref-const-false) otherwise. This operator is compatible with all value types, including "int", "float", "bool", "color", and "string". The operator can also compare two line or label IDs.
 
 **Syntax**
 
@@ -21748,6 +24517,8 @@ Boolean value, or series of boolean values.
 This operator rounds "float" operands to nine fractional digits.
 
 ---
+
+<a id="ref-op-3f-3a"></a>
 
 ### ?:
 
@@ -21777,11 +24548,13 @@ plot(hl2, color=c)
 expr2 if expr1 is evaluated to true, expr3 otherwise. Zero value (0 and also NaN, +Infinity, -Infinity) is considered to be false, any other value is true.
 
 **Remarks**
-Use na for 'else' branch if you do not need it.
-You can combine two or more ?: operators to achieve the equivalent of a 'switch'-like statement (see examples above).
+Use [na](#ref-var-na) for 'else' branch if you do not need it.
+You can combine two or more [?:](#ref-op-3f-3a) operators to achieve the equivalent of a 'switch'-like statement (see examples above).
 You may use arithmetic operators with numbers as well as with series variables. In case of usage with series the operators are applied elementwise.
 
 ---
+
+<a id="ref-op-5b-5d"></a>
 
 ### []
 
@@ -21811,6 +24584,8 @@ A series of values.
 
 ---
 
+<a id="ref-op-2a"></a>
+
 ### *
 
 Multiplication. Applicable to numerical expressions.
@@ -21825,6 +24600,8 @@ expr1 * expr2
 Integer or float value, or series of values.
 
 ---
+
+<a id="ref-op-2a-3d"></a>
 
 ### *=
 
@@ -21854,6 +24631,8 @@ Integer or float value, or series of values.
 
 ---
 
+<a id="ref-op-2f"></a>
+
 ### /
 
 Division. Applicable to numerical expressions.
@@ -21868,6 +24647,8 @@ expr1 / expr2
 Integer or float value, or series of values.
 
 ---
+
+<a id="ref-op-2f-3d"></a>
 
 ### /=
 
@@ -21897,6 +24678,8 @@ Integer or float value, or series of values.
 
 ---
 
+<a id="ref-op-25"></a>
+
 ### %
 
 Modulo (integer remainder). Applicable to numerical expressions.
@@ -21912,9 +24695,11 @@ Integer or float value, or series of values.
 
 **Remarks**
 In Pine Script®, when the integer remainder is calculated, the quotient is truncated, i.e. rounded towards the lowest absolute value. The resulting value will have the same sign as the dividend.
-Example: -1 % 9 = -1 - 9 * int(-1/9) = -1 - 9 * int(-0.111) = -1 - 9 * 0 = -1.
+Example: `-1 % 9 = -1 - 9 * int(-1/9) = -1 - 9 * int(-0.111) = -1 - 9 * 0 = -1.`
 
 ---
+
+<a id="ref-op-25-3d"></a>
 
 ### %=
 
@@ -21944,6 +24729,8 @@ Integer or float value, or series of values.
 
 ---
 
+<a id="ref-op-2b"></a>
+
 ### +
 
 Addition or unary plus. Applicable to numerical expressions or strings.
@@ -21955,15 +24742,17 @@ expr1 + expr2
 ```
 
 **Returns**
-Binary + for strings returns concatenation of expr1 and expr2
+Binary `+` for strings returns concatenation of expr1 and expr2
 For numbers returns integer or float value, or series of values:
-Binary + returns expr1 plus expr2.
-Unary + returns expr (does nothing added just for the symmetry with the unary - operator).
+Binary `+` returns expr1 plus expr2.
+Unary `+` returns expr (does nothing added just for the symmetry with the unary - operator).
 
 **Remarks**
 You may use arithmetic operators with numbers as well as with series variables. In case of usage with series the operators are applied elementwise.
 
 ---
+
+<a id="ref-op-2b-3d"></a>
 
 ### +=
 
@@ -21996,6 +24785,8 @@ You may use arithmetic operators with numbers as well as with series variables. 
 
 ---
 
+<a id="ref-op-3c"></a>
+
 ### <
 
 Less than. Applicable to numerical expressions.
@@ -22010,6 +24801,8 @@ expr1 < expr2
 Boolean value, or series of boolean values.
 
 ---
+
+<a id="ref-op-3c-3d"></a>
 
 ### <=
 
@@ -22026,9 +24819,11 @@ Boolean value, or series of boolean values.
 
 ---
 
+<a id="ref-op-3d"></a>
+
 ### =
 
-Assignment operator. Assigns an initial value or reference to a declared variable. It means this is a new variable, and it starts with this value .
+Assignment operator. Assigns an initial value or reference to a declared variable. It means *this is a new variable, and it starts with this value*.
 
 **Syntax**
 
@@ -22053,9 +24848,11 @@ plot(pHi, color = plotColor, display = showPlotInput ? display.all : display.non
 
 ---
 
+<a id="ref-op-3d-3d"></a>
+
 ### ==
 
-Equality operator. Returns true if the operands are considered equal, and false otherwise. This operator is compatible with all value types, including "int", "float", "bool", "color", and "string". The operator can also compare two line or label IDs.
+Equality operator. Returns [true](#ref-const-true) if the operands are considered equal, and [false](#ref-const-false) otherwise. This operator is compatible with all value types, including "int", "float", "bool", "color", and "string". The operator can also compare two line or label IDs.
 
 **Syntax**
 
@@ -22071,9 +24868,11 @@ This operator rounds "float" operands to nine fractional digits.
 
 ---
 
+<a id="ref-op-3d-3e"></a>
+
 ### =>
 
-The '=>' operator is used in user-defined function declarations and in switch statements.
+The '=>' operator is used in user-defined function declarations and in [switch](#ref-kw-switch) statements.
 The function declaration syntax is:
 
 **Syntax**
@@ -22103,9 +24902,11 @@ plot(f1(30, 8) + f2(1, 3))
 ```
 
 **Remarks**
-You can learn more about user-defined functions in the User Manual's pages on Declaring functions and Libraries .
+You can learn more about user-defined functions in the User Manual's pages on [Declaring functions](./docs_content.md#docs-language-user-defined-functions) and [Libraries](./docs_content.md#docs-concepts-libraries).
 
 ---
+
+<a id="ref-op-3e"></a>
 
 ### >
 
@@ -22121,6 +24922,8 @@ expr1 > expr2
 Boolean value, or series of boolean values.
 
 ---
+
+<a id="ref-op-3e-3d"></a>
 
 ### >=
 
@@ -22139,9 +24942,11 @@ Boolean value, or series of boolean values.
 
 ## Annotations
 
+<a id="ref-an-40-description"></a>
+
 ### @description
 
-Sets a custom description for scripts that use the library() declaration statement. The text provided with this annotation will be used to pre-fill the "Description" field in the publication dialogue.
+Sets a custom description for scripts that use the [library()](#ref-fun-library) declaration statement. The text provided with this annotation will be used to pre-fill the "Description" field in the publication dialogue.
 
 **Example**
 
@@ -22159,9 +24964,11 @@ export drawLabel(string labelText) =>
 
 ---
 
+<a id="ref-an-40-enum"></a>
+
 ### @enum
 
-If placed above an enum declaration, it adds a custom description for the enum. The Pine Editor's autosuggest uses this description and displays it when a user hovers over the enum name. When used in library scripts, the descriptions of all enums using the export keyword will pre-fill the "Description" field in the publication dialogue.
+If placed above an enum declaration, it adds a custom description for the enum. The Pine Editor's autosuggest uses this description and displays it when a user hovers over the enum name. When used in library scripts, the descriptions of all enums using the [export](#ref-kw-export) keyword will pre-fill the "Description" field in the publication dialogue.
 
 **Example**
 
@@ -22195,10 +25002,12 @@ bgcolor(inSession ? color.new(color.green, 90) : na, title = "Active session hig
 
 ---
 
+<a id="ref-an-40-field"></a>
+
 ### @field
 
-If placed above a type or enum declaration, it adds a custom description for a field of the type/enum. After the annotation, users should specify the field name, followed by its description.
-The Pine Editor's autosuggest uses this description and displays it when a user hovers over the type/enum or field name. When used in library() scripts, the descriptions of all types/enums using the export keyword will pre-fill the "Description" field in the publication dialogue.
+If placed above a [type](#ref-kw-type) or [enum](#ref-kw-enum) declaration, it adds a custom description for a field of the type/enum. After the annotation, users should specify the field name, followed by its description.
+The Pine Editor's autosuggest uses this description and displays it when a user hovers over the type/enum or field name. When used in [library()](#ref-fun-library) scripts, the descriptions of all types/enums using the [export](#ref-kw-export) keyword will pre-fill the "Description" field in the publication dialogue.
 
 **Example**
 
@@ -22223,10 +25032,12 @@ if ta.highestbars(high, 20) == 0
 
 ---
 
+<a id="ref-an-40-function"></a>
+
 ### @function
 
 If placed above a function declaration, it adds a custom description for the function.
-The Pine Editor's autosuggest uses this description and displays it when a user hovers over the function name. When used in library() scripts, the descriptions of all functions using the export keyword will pre-fill the "Description" field in the publication dialogue.
+The Pine Editor's autosuggest uses this description and displays it when a user hovers over the function name. When used in [library()](#ref-fun-library) scripts, the descriptions of all functions using the [export](#ref-kw-export) keyword will pre-fill the "Description" field in the publication dialogue.
 
 **Example**
 
@@ -22243,11 +25054,13 @@ export drawLabel(string labelText) =>
 ```
 
 ---
+
+<a id="ref-an-40-param"></a>
 
 ### @param
 
 If placed above a function declaration, it adds a custom description for a function parameter. After the annotation, users should specify the parameter name, then its description.
-The Pine Editor's autosuggest uses this description and displays it when a user hovers over the function name. When used in library() scripts, the descriptions of all functions using the export keyword will pre-fill the "Description" field in the publication dialogue.
+The Pine Editor's autosuggest uses this description and displays it when a user hovers over the function name. When used in [library()](#ref-fun-library) scripts, the descriptions of all functions using the [export](#ref-kw-export) keyword will pre-fill the "Description" field in the publication dialogue.
 
 **Example**
 
@@ -22264,11 +25077,13 @@ export drawLabel(string labelText) =>
 ```
 
 ---
+
+<a id="ref-an-40-returns"></a>
 
 ### @returns
 
 If placed above a function declaration, it adds a custom description for what that function returns.
-The Pine Editor's autosuggest uses this description and displays it when a user hovers over the function name. When used in library() scripts, the descriptions of all functions using the export keyword will pre-fill the "Description" field in the publication dialogue.
+The Pine Editor's autosuggest uses this description and displays it when a user hovers over the function name. When used in [library()](#ref-fun-library) scripts, the descriptions of all functions using the [export](#ref-kw-export) keyword will pre-fill the "Description" field in the publication dialogue.
 
 **Example**
 
@@ -22286,9 +25101,11 @@ export drawLabel(string labelText) =>
 
 ---
 
+<a id="ref-an-40-strategy-alert-message"></a>
+
 ### @strategy_alert_message
 
-If used within a strategy() script, it provides a default message to pre-fill the "Message" field in the alert creation dialogue.
+If used within a [strategy()](#ref-fun-strategy) script, it provides a default message to pre-fill the "Message" field in the alert creation dialogue.
 
 **Example**
 
@@ -22305,10 +25122,12 @@ strategy.exit("Exit", "My Long Entry Id", profit = 10 / syminfo.mintick, loss = 
 
 ---
 
+<a id="ref-an-40-type"></a>
+
 ### @type
 
 If placed above a type declaration, it adds a custom description for the type.
-The Pine Editor's autosuggest uses this description and displays it when a user hovers over the type name. When used in library() scripts, the descriptions of all types using the export keyword will pre-fill the "Description" field in the publication dialogue.
+The Pine Editor's autosuggest uses this description and displays it when a user hovers over the type name. When used in [library()](#ref-fun-library) scripts, the descriptions of all types using the [export](#ref-kw-export) keyword will pre-fill the "Description" field in the publication dialogue.
 
 **Example**
 
@@ -22332,6 +25151,8 @@ if ta.highestbars(high, 20) == 0
 ```
 
 ---
+
+<a id="ref-an-40-variable"></a>
 
 ### @variable
 
@@ -22360,6 +25181,8 @@ if ta.highestbars(high, 20) == 0
 ```
 
 ---
+
+<a id="ref-an-40-version-3d"></a>
 
 ### @version=
 

@@ -8,10 +8,16 @@ excluding the "En esta página" sidebar (red box).
 import asyncio
 from datetime import datetime
 from pathlib import Path
-from urllib.parse import urljoin
 
-from bs4 import BeautifulSoup, NavigableString
+from bs4 import BeautifulSoup
 from playwright.async_api import async_playwright
+
+from markdown_helpers import (
+    anchor_for_item,
+    html_to_markdown,
+    rewrite_internal_links,
+    slugify,
+)
 
 ROOT = Path(__file__).resolve().parent.parent
 OUTPUT_DIR = ROOT / "output"
@@ -43,56 +49,8 @@ def remove_sidebar_content(main):
             node.decompose()
 
 
-def normalize_whitespace(text: str) -> str:
-    return " ".join(text.split()).strip()
-
-
-def extract_markdown_from_main(main) -> str:
-    if not main:
-        return ""
-    lines = []
-    for elem in main.find_all(
-        ["h1", "h2", "h3", "h4", "h5", "h6", "p", "li", "pre", "code"],
-        recursive=True,
-    ):
-        if elem.name in {"h1", "h2", "h3", "h4", "h5", "h6"}:
-            level = int(elem.name[1])
-            heading_text = normalize_whitespace(elem.get_text(" ", strip=True))
-            if heading_text:
-                lines.append(f"{'#' * level} {heading_text}")
-        elif elem.name == "pre":
-            code_text = elem.get_text("\n", strip=False)
-            if code_text.strip():
-                lines.append("```")
-                lines.append(code_text.rstrip())
-                lines.append("```")
-        elif elem.name == "code":
-            if elem.parent and elem.parent.name == "pre":
-                continue
-            code_text = elem.get_text(" ", strip=True)
-            if code_text:
-                lines.append(f"`{code_text}`")
-        elif elem.name == "li":
-            text = normalize_whitespace(elem.get_text(" ", strip=True))
-            if text:
-                lines.append(f"- {text}")
-        else:
-            text = normalize_whitespace(elem.get_text(" ", strip=True))
-            if text:
-                lines.append(text)
-
-    cleaned = []
-    last_blank = False
-    for line in lines:
-        if not line:
-            if not last_blank:
-                cleaned.append("")
-            last_blank = True
-            continue
-        cleaned.append(line)
-        last_blank = False
-
-    return "\n".join(cleaned).strip()
+def extract_markdown_from_main(main, base_url: str = "") -> str:
+    return html_to_markdown(main, base_url=base_url)
 
 
 def parse_urls_from_markdown(urls_file: Path):
@@ -120,7 +78,7 @@ async def extract_page_content(page, url: str):
     soup = BeautifulSoup(html, "html.parser")
     main = get_main_container(soup)
     remove_sidebar_content(main)
-    return extract_markdown_from_main(main)
+    return extract_markdown_from_main(main, base_url=url)
 
 
 def generate_content_document(sections: dict, output_file: Path):
@@ -131,16 +89,22 @@ def generate_content_document(sections: dict, output_file: Path):
     for section, items in sections.items():
         count = len(items)
         total += count
-        anchor = section.lower().replace(" ", "-")
+        anchor = slugify(section)
         doc += f"- [{section}](#{anchor}) ({count})\n"
+        for item in items:
+            item_anchor = anchor_for_item(item, output_file.name, item.get("name", ""))
+            doc += f"  - [{item['name']}](#{item_anchor})\n"
     doc += f"\n**Total: {total} items**\n\n"
     doc += "---\n\n"
 
     for section, items in sections.items():
         doc += f"## {section}\n\n"
         for item in items:
+            item_anchor = anchor_for_item(item, output_file.name, item.get("name", ""))
+            content = rewrite_internal_links(item["content"].strip(), output_file.name)
+            doc += f'<a id="{item_anchor}"></a>\n\n'
             doc += f"### {item['name']}\n\n"
-            doc += item["content"].strip() + "\n\n"
+            doc += content + "\n\n"
             doc += "---\n\n"
 
     output_file.write_text(doc, encoding="utf-8")

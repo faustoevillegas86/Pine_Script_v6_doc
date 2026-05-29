@@ -18,6 +18,14 @@ from datetime import datetime
 from playwright.async_api import async_playwright
 from crawl4ai import AsyncWebCrawler, BrowserConfig
 from bs4 import BeautifulSoup, NavigableString
+from markdown_helpers import (
+    anchor_for_item,
+    inline_markdown,
+    rewrite_internal_links,
+    rewrite_markdown_links_in_line,
+    slugify,
+    strip_heading_link_targets,
+)
 
 # Configuration
 ROOT = Path(__file__).resolve().parent.parent
@@ -63,28 +71,7 @@ def get_text_with_spacing(elem) -> str:
     """
     if isinstance(elem, NavigableString):
         return str(elem)
-    
-    # For code elements, get text without extra spaces
-    if elem.name in ['code', 'span'] and elem.parent and elem.parent.name not in ['pre']:
-        return elem.get_text()
-    
-    result = ""
-    for child in elem.children:
-        if isinstance(child, NavigableString):
-            result += str(child)
-        elif hasattr(child, 'name'):
-            child_text = get_text_with_spacing(child)
-            # Add space before inline elements if needed
-            if child.name in ['code', 'a', 'span', 'strong', 'em', 'b', 'i']:
-                if result and not result.endswith(' ') and not result.endswith('\n'):
-                    result += ' '
-                result += child_text
-                if not child_text.endswith(' '):
-                    result += ' '
-            else:
-                result += child_text
-    
-    return result
+    return inline_markdown(elem)
 
 
 def extract_code_block_text(elem) -> str:
@@ -139,18 +126,21 @@ def extract_item_content(item_div) -> dict:
             content_div = working_div
         
         # Remove "SEE ALSO" section
-        see_also = content_div.find('div', {'class': 'tv-pine-reference-item__sub-header'}, 
-                                     string=re.compile(r'see\s*also', re.I))
+        see_also = content_div.find(
+            'div',
+            {'class': 'tv-pine-reference-item__sub-header'},
+            string=re.compile(r'see\s*also', re.I),
+        )
         if see_also:
             # Remove see_also and its next siblings
             for sibling in list(see_also.find_next_siblings()):
                 try:
                     sibling.decompose()
-                except:
+                except Exception:
                     pass
             try:
                 see_also.decompose()
-            except:
+            except Exception:
                 pass
         
         # Also try text matching
@@ -158,7 +148,7 @@ def extract_item_content(item_div) -> dict:
             if (tag.get_text(strip=True) or '').lower() == 'see also':
                 try:
                     tag.decompose()
-                except:
+                except Exception:
                     pass
                 break
         
@@ -166,12 +156,11 @@ def extract_item_content(item_div) -> dict:
         for see_also_links in content_div.find_all('div', {'class': 'tv-pine-reference-item__see-also'}):
             try:
                 see_also_links.decompose()
-            except:
+            except Exception:
                 pass
         
         # Build content from structure
         content_parts = []
-        current_section = None
         
         for elem in content_div.find_all(['div', 'pre', 'code'], recursive=True):
             classes = elem.get('class', [])
@@ -181,7 +170,6 @@ def extract_item_content(item_div) -> dict:
                 section_text = elem.get_text(strip=True)
                 if section_text.lower() == 'see also':
                     break  # Stop at see also
-                current_section = section_text
                 content_parts.append(f"\n**{section_text}**")
             
             # Main text content
@@ -264,7 +252,7 @@ async def extract_reference_content():
     
     try:
         soup = BeautifulSoup(html, 'lxml')
-    except:
+    except Exception:
         soup = BeautifulSoup(html, 'html.parser')
     
     items = soup.find_all('div', {'class': 'tv-pine-reference-item'})
@@ -369,7 +357,7 @@ async def extract_docs_content():
                     
                     print("[OK]")
                 else:
-                    print(f"[FAIL]")
+                    print("[FAIL]")
                     
             except Exception as e:
                 print(f"[FAIL] {str(e)[:30]}")
@@ -389,11 +377,7 @@ def clean_docs_navigation(content: str) -> str:
     """
     import re
     
-    # Remove markdown links but keep text: [text](url) -> text
-    content = re.sub(r'\[([^\]]+)\]\([^\)]+\)', r'\1', content)
-    
-    # Remove bare URLs
-    content = re.sub(r'https?://[^\s\)]+', '', content)
+    content = strip_heading_link_targets(content)
     
     # Remove any line containing "On this page" (case insensitive)
     content = re.sub(r'^.*[Oo]n this page.*$', '', content, flags=re.MULTILINE)
@@ -401,7 +385,6 @@ def clean_docs_navigation(content: str) -> str:
     lines = content.split('\n')
     cleaned = []
     started_content = False
-    in_sidebar_nav = False
     
     for line in lines:
         stripped = line.strip()
@@ -430,13 +413,24 @@ def clean_docs_navigation(content: str) -> str:
         # Skip Previous/Next navigation links
         if stripped.startswith('Previous') or stripped.startswith('Next'):
             continue
+        if re.match(r'^\[\s*(?:Previous|Next)\b.*\]\([^)]*\)', stripped):
+            continue
+        if re.match(r'^#{1,6}\s+Next$', stripped):
+            continue
+        if stripped.startswith('We now recommend you go to the'):
+            continue
+        if stripped == '[' or re.match(r'^\[\s*\]\([^)]*\)$', stripped):
+            continue
         
         # Skip "Copied" markers (from code copy buttons)
         if stripped == 'Copied':
             continue
         
-        # Skip "Pine Script®" standalone lines (code block markers)
-        if stripped == 'Pine Script®':
+        # Skip source UI language labels; fenced code already keeps the language.
+        if stripped == 'Pine Script®' or re.fullmatch(
+            r'\[Pine Script®\]\(https?://(?:www\.)?tradingview\.com/pine-script-docs/?\)',
+            stripped,
+        ):
             continue
         
         # Skip external community links (footer elements)
@@ -446,6 +440,12 @@ def clean_docs_navigation(content: str) -> str:
             '↗'  # External link indicator
         ]
         if any(pattern in stripped for pattern in skip_patterns):
+            continue
+
+        if (
+            not stripped.startswith(('* [', '- ['))
+            and re.match(r'^\*\s+.+\]\(https://www\.tradingview\.com/pine-script-docs/[^)]*#[^)]+\)\[?$', stripped)
+        ):
             continue
         
         # Skip empty image markers (!image without path/alt text)
@@ -469,16 +469,26 @@ def clean_docs_navigation(content: str) -> str:
     lines = result.split('\n')
     fixed_lines = []
     in_code_block = False
-    code_buffer = []
     
+    admonition_start = re.compile(r'^(Tip|Note|Notice|Warning|Caution|Important)(?:$|(?=[A-Z]))')
+
     for line in lines:
         stripped = line.strip()
+
+        if in_code_block and admonition_start.match(stripped):
+            in_code_block = False
+            fixed_lines.append('```')
         
         # Check for line starting with backtick (start of code block)
         if stripped.startswith('`') and not stripped.startswith('```') and not in_code_block:
             # Check if this looks like Pine code
             content_after = stripped[1:]  # Remove the backtick
-            if content_after.startswith('//@') or content_after.startswith('indicator') or content_after.startswith('strategy') or content_after.startswith('library'):
+            if is_pine_code_block_start(content_after):
+                if content_after.endswith('`') and len(content_after) > 1 and content_after.count('`') % 2 == 1:
+                    fixed_lines.append('```pine')
+                    fixed_lines.append(content_after[:-1].rstrip())
+                    fixed_lines.append('```')
+                    continue
                 in_code_block = True
                 fixed_lines.append('```pine')
                 fixed_lines.append(content_after)  # Add code without backtick
@@ -490,7 +500,7 @@ def clean_docs_navigation(content: str) -> str:
             fixed_lines.append('```')
             continue
         
-        if in_code_block and stripped.endswith('`') and not stripped.endswith('```'):
+        if in_code_block and stripped.endswith('`') and not stripped.endswith('```') and stripped.count('`') % 2 == 1:
             # End of code block with content
             in_code_block = False
             fixed_lines.append(stripped[:-1])  # Remove trailing backtick
@@ -498,13 +508,174 @@ def clean_docs_navigation(content: str) -> str:
             continue
         
         fixed_lines.append(line)
+
+    if in_code_block:
+        fixed_lines.append('```')
     
     result = '\n'.join(fixed_lines)
+    result = repair_premature_pine_fence_closures(result)
+    result = format_docs_admonitions(result)
+    result = rewrite_internal_links(
+        result,
+        "docs_content.md",
+        format_reference_code=True,
+    )
+    result = rewrite_reference_links_in_pine_comments(result)
     
     # Clean up excessive whitespace
     result = re.sub(r'\n{3,}', '\n\n', result)
     
     return result.strip()
+
+
+def repair_premature_pine_fence_closures(content: str) -> str:
+    """Keep Crawl4AI-split Pine code blocks open until their stray ` terminator."""
+    lines = content.split('\n')
+    repaired = []
+    in_pine_fence = False
+
+    for index, line in enumerate(lines):
+        stripped = line.strip()
+
+        if stripped.startswith('```pine'):
+            in_pine_fence = True
+            repaired.append(line)
+            continue
+
+        if in_pine_fence and stripped == '```':
+            if has_stray_tick_terminator(lines, index + 1):
+                continue
+            in_pine_fence = False
+            repaired.append(line)
+            continue
+
+        if in_pine_fence and stripped == '`':
+            in_pine_fence = False
+            repaired.append('```')
+            continue
+
+        repaired.append(line)
+
+    return '\n'.join(repaired)
+
+
+def has_stray_tick_terminator(lines: list[str], start_index: int) -> bool:
+    """Return True when code-like continuation is closed by a single ` line."""
+    saw_code_continuation = False
+    for line in lines[start_index:]:
+        stripped = line.strip()
+        if not stripped:
+            continue
+        if stripped == '`':
+            return saw_code_continuation
+        if stripped.startswith('```') or stripped.startswith('#') or stripped == '---':
+            return False
+        if stripped.startswith(('//', '/*')) or is_pine_code_block_start(stripped):
+            saw_code_continuation = True
+            continue
+        if not saw_code_continuation:
+            return False
+    return False
+
+
+def rewrite_reference_links_in_pine_comments(content: str) -> str:
+    """Rewrite markdown reference links in Pine comments without touching URL literals."""
+    lines = []
+    in_fenced_code = False
+    for line in content.split('\n'):
+        stripped = line.strip()
+        if stripped.startswith('```'):
+            in_fenced_code = not in_fenced_code
+            lines.append(line)
+            continue
+        if (
+            in_fenced_code
+            and line.lstrip().startswith('//')
+            and 'pine-script-reference' in line
+        ):
+            lines.append(rewrite_markdown_links_in_line(line, "docs_content.md", False))
+            continue
+        lines.append(line)
+    return '\n'.join(lines)
+
+
+def is_pine_code_block_start(text: str) -> bool:
+    """Return True when a Crawl4AI single-backtick line starts Pine code."""
+    stripped = text.lstrip()
+    if not stripped:
+        return False
+
+    normalized = re.sub(r'\s+', ' ', stripped)
+
+    starts_with_comment = stripped.startswith(('//', '/*'))
+    if not starts_with_comment:
+        inline_tick = stripped.find('`')
+        if inline_tick != -1 and stripped[inline_tick + 1:].strip():
+            return False
+
+    if starts_with_comment:
+        return True
+
+    if stripped.startswith(('[', '<', '(')):
+        return True
+
+    if re.match(r'^(?:[+-]?\d|#[0-9A-Fa-f]{3,8}\b|["\']|true\b|false\b|na\b)', normalized):
+        return True
+
+    pine_prefixes = (
+        '@', 'indicator', 'strategy', 'library', 'import ', 'type ', 'enum ',
+        'method ', 'export ', 'if ', 'else', 'for ', 'while ', 'switch',
+        'plot', 'hline', 'fill', 'bgcolor', 'barcolor', 'alert', 'label.',
+        'line.', 'box.', 'table.', 'array.', 'matrix.', 'map.', 'request.',
+        'ta.', 'math.', 'str.', 'color.', 'runtime.', 'log.',
+    )
+    if normalized.startswith(pine_prefixes):
+        return True
+
+    qualifiers = r'(?:var|varip|const|simple|series|input)\s+'
+    types = r'(?:int|float|bool|string|color|array|matrix|map|label|line|box|table|chart\.point|polyline|long)'
+    if re.match(rf'^(?:{qualifiers})*{types}\b', normalized):
+        return True
+
+    if re.match(r'^[A-Za-z_]\w*(?:<[^>]+>)?\s+[A-Za-z_]\w*\s*(?:=|:=)', normalized):
+        return True
+
+    if re.match(r'^[A-Za-z_][\w.]*\s*(?:\[|[+\-*/%<>]=?|==|!=|\?|and\b|or\b)', normalized):
+        return True
+
+    if not normalized.endswith('`') and re.match(r'^[A-Za-z_][\w.]*$', normalized):
+        return True
+
+    return bool(re.match(r'^[A-Za-z_][\w.]*\s*(?:=|:=|\+=|-=|\*=|/=|=>|\()', normalized))
+
+
+def format_docs_admonitions(content: str) -> str:
+    """Format doc callout labels that Crawl4AI sometimes joins to body text."""
+    labels = "Tip|Note|Notice|Warning|Caution|Important"
+    lines = []
+    in_fenced_code = False
+    for line in content.split('\n'):
+        stripped = line.strip()
+        if stripped.startswith('```'):
+            in_fenced_code = not in_fenced_code
+            lines.append(line)
+            continue
+        if in_fenced_code:
+            lines.append(line)
+            continue
+
+        leading = line[:len(line) - len(line.lstrip())]
+        body = line.lstrip()
+        if re.fullmatch(labels, body):
+            lines.append(f"{leading}**{body}:**")
+            continue
+        match = re.match(rf'^({labels})(?=[A-Z])(.+)$', body)
+        if match:
+            lines.append(f"{leading}**{match.group(1)}:**")
+            lines.append(f"{leading}{match.group(2).lstrip()}")
+            continue
+        lines.append(line)
+    return '\n'.join(lines)
 
 
 def generate_content_document(sections: dict, source_name: str, output_file: Path):
@@ -520,8 +691,12 @@ def generate_content_document(sections: dict, source_name: str, output_file: Pat
         items = sections[section]
         count = len(items)
         total += count
-        section_anchor = section.lower().replace(' ', '-')
+        section_anchor = slugify(section)
         doc += f"- [{section}](#{section_anchor}) ({count})\n"
+        for item in items:
+            name = item.get('name', item.get('id', 'Unknown'))
+            item_anchor = anchor_for_item(item, output_file.name, name)
+            doc += f"  - [{name}](#{item_anchor})\n"
     
     doc += f"\n**Total: {total} items**\n\n"
     doc += "---\n\n"
@@ -534,7 +709,13 @@ def generate_content_document(sections: dict, source_name: str, output_file: Pat
         for item in items:  # Preserve original order
             name = item.get('name', item.get('id', 'Unknown'))
             content = item.get('content', '')
+            item_anchor = anchor_for_item(item, output_file.name, name)
+            content = rewrite_internal_links(
+                content,
+                output_file.name,
+            )
             
+            doc += f'<a id="{item_anchor}"></a>\n\n'
             doc += f"### {name}\n\n"
             doc += content + "\n\n"
             doc += "---\n\n"

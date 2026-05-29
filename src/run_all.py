@@ -7,10 +7,10 @@ Usage:
     python src/run_all.py
 """
 
-import asyncio
 import subprocess
 import sys
 from pathlib import Path
+
 
 def main():
     """Run all extraction scripts in order."""

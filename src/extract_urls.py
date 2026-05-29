@@ -14,6 +14,7 @@ from pathlib import Path
 from datetime import datetime
 from playwright.async_api import async_playwright
 from bs4 import BeautifulSoup
+from markdown_helpers import slugify
 
 # Configuration
 ROOT = Path(__file__).resolve().parent.parent
@@ -229,7 +230,7 @@ def generate_url_document(sections: dict, source_name: str, output_file: Path):
     for section in sections.keys():
         count = len(sections[section])
         total += count
-        anchor = section.lower().replace(' ', '-')
+        anchor = slugify(section)
         doc += f"- [{section}](#{anchor}) ({count})\n"
     
     doc += f"\n**Total: {total} items**\n\n"

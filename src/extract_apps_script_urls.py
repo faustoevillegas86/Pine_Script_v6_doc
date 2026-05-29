@@ -14,7 +14,7 @@ Sources:
 import asyncio
 from datetime import datetime
 from pathlib import Path
-from urllib.parse import urljoin, urlparse
+from urllib.parse import urljoin
 
 from bs4 import BeautifulSoup
 from playwright.async_api import async_playwright

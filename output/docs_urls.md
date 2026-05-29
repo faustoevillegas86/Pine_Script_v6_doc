@@ -1,11 +1,11 @@
 # Pine Script V6 Documentation - URL Index
 
-Generated: 2026-05-27 18:12
+Generated: 2026-05-28 19:42
 
 ## Table of Contents
 
-- [Welcome to Pine Script® v6](#welcome-to-pine-script®-v6) (1)
-- [Pine Script® primer](#pine-script®-primer) (3)
+- [Welcome to Pine Script® v6](#welcome-to-pine-script-v6) (1)
+- [Pine Script® primer](#pine-script-primer) (3)
 - [Language](#language) (17)
 - [Visuals](#visuals) (11)
 - [Concepts](#concepts) (13)
@@ -14,7 +14,7 @@ Generated: 2026-05-27 18:12
 - [FAQ](#faq) (13)
 - [Release notes](#release-notes) (1)
 - [Migration guides](#migration-guides) (6)
-- [Where can I get more information?](#where-can-i-get-more-information?) (1)
+- [Where can I get more information?](#where-can-i-get-more-information) (1)
 
 **Total: 76 items**
 
